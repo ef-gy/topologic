@@ -1,0 +1,5 @@
+*.swp
+*.svg
+topologic
+!include/topologic
+include/ef.gy
