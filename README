@@ -1,0 +1,19 @@
+###- INSTALLATION -###########################################################
+
+You'll need to have libxml2 with development files and a recent version of
+clang++ available on your system.
+
+Furhermore, you'll need a recent version of libefgy - a header-only C++
+template library for maths. If you don't want to install the library
+system-wide, you could instead just create a symlink at include/ef.gy that
+would point to the directory of the same name in libefgy's sources.
+
+To compile the binary, run:
+
+$ make
+
+To install the programme, run:
+
+# make PREFIX=/usr install
+
+Adjust PREFIX as appropriate.
