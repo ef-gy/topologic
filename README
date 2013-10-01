@@ -17,3 +17,29 @@ To install the programme, run:
 # make PREFIX=/usr install
 
 Adjust PREFIX as appropriate.
+
+###- COMPILE-TIME OPTIONS -###################################################
+
+The rather unusual design of this programme allows you to set an arbitrary
+limit to the number of dimensions supported by the projection code. This is
+set at compile time with the MAXDEPTH constant. The default value of this
+constant - if not set otherwise - is 7, meaning that the default topologic
+binary will be able to generate, process and render primitives in up to 7
+spatial dimensions.
+
+This limit applies to both the model depth as well as the render depth. I.e.
+with MAXDEPTH set to 7, then the deepest cube you can render is a 7-cube, in
+7-space. But at the same time you couldn't render a 7-sphere, because that
+would have to be rendered in 8-space - but a 6-sphere in 7-space will work.
+
+To set a compile-time constant, use the -D flag in your CFLAGS, like so:
+
+$ make "CFLAGS=-g -D MAXDEPTH=8"
+
+To confirm the number of dimensions that a topologic binary suppors, use the
+--version flag:
+
+$ ./topologic --version
+Topologic CLI; Version 5
+Maximum render depth of this binary is 8 dimensions.
+
