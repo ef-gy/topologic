@@ -308,7 +308,7 @@ namespace topologic
 #if !defined (NOLIBRARIES)
                     else try
                     {
-                        std::ifstream in(arg);
+                        std::ifstream in(argv[i]);
                         std::istreambuf_iterator<char> eos;
                         std::string s(std::istreambuf_iterator<char>(in), eos);
     
