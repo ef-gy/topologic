@@ -1,4 +1,4 @@
-.TH topologic 1 "OCTOBER 2013" FEED "Application Manuals"
+.TH topologic 1 "OCTOBER 2013" TOPOLOGIC "Application Manuals"
 
 .SH NAME
 topologic \- render SVGs of basic geometric shapes
@@ -56,6 +56,55 @@ Render an
 Render the model in
 .I N
 -space.
+.IP "--precision F"
+Set the precision parameter for certain models to
+.I F
+; higher precisions will result in smoother surface but larger files.
+.IP "--multiplier F"
+Set the export multiplier to
+.I F
+; this binary only produces exports, so this multiplier is always applied to
+ those models that use the precision parameter.
+.IP "--radius F"
+Set the radius parameter for certain models to
+.I F
+; larger radii tend to produce larger models.
+.IP "--background R G B A"
+Set the background colour to (red, green, blue, alpha) = 
+(
+.I R
+,
+.I G
+,
+.I B
+,
+.I A
+). Use values between 0 and 1 (inclusive). The colour space will typically be
+sRGB.
+.IP "--wireframe R G B A"
+Set the wireframe colour to (red, green, blue, alpha) = 
+(
+.I R
+,
+.I G
+,
+.I B
+,
+.I A
+). Use values between 0 and 1 (inclusive). The colour space will typically be
+sRGB.
+.IP "--surface R G B A"
+Set the surface colour to (red, green, blue, alpha) = 
+(
+.I R
+,
+.I G
+,
+.I B
+,
+.I A
+). Use values between 0 and 1 (inclusive). The colour space will typically be
+sRGB.
 .IP "--polar"
 Use and manipulate coordinates as polar coordinates, i.e. (radius, theta-1,
 theta-2, ..., theta-n). This is the default.
@@ -94,7 +143,7 @@ use environment variables.
 .SH "SOURCE CODE"
 Almost all of the code for
 .B topologic
-is in header files, which are typically installed along the main binary. This
+is in header files, which are typically installed with the main binary. This
 makes it possible to easily write your own adaptions, or to recompile the basic
 binary with a higher dimensional limit.
 
@@ -113,8 +162,24 @@ limiting factor, meaning that a 7D topologic will only be able to render
 6-spheres in 7-space, not 7-spheres, because those would have to render in
 8-space.
 
+Calculating the projection matrices requires calculating the determinants of
+several
+.I D+1
+x
+.I D+1
+matrices - the solver for this is, at this time, not exactly efficient. It's
+using a slightly modified Laplace expansion, which is roughly O(n!). This
+works well for anything up to about 9 dimensions, but above that things will
+slow down considerably during the generation of the projection matrices.
+
 .SH BUGS
 The simplex renderer produces rather strange looking simplices.
+
+Not all primitives will render properly in all depths.
+
+With high precision settings, the resulting SVGs may end up being extremely
+large, which may in turn crash or lock up some SVG renderers. Try to be
+reasonable with your precision settings.
 
 .SH AUTHOR
 Magnus Deininger <magnus@ef.gy>
