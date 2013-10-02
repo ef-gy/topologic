@@ -4,6 +4,9 @@ BINDIR:=$(DESTDIR)$(PREFIX)/bin
 INCLUDEDIR:=$(DESTDIR)$(PREFIX)/include
 MANDIR:=$(DESTDIR)$(PREFIX)/share/man
 
+NAME:=topologic
+VERSION:=5
+
 CC:=clang
 CXX:=clang++
 PKGCONFIG:=pkg-config
@@ -39,6 +42,11 @@ scrub: clean
 install: $(IBINARIES) $(IINCLUDES) $(IMANPAGES)
 uninstall:
 	rm -f $(IBINARIES) $(IINCLUDES) $(IMANPAGES)
+
+archive: ../$(NAME)-$(VERSION).tar.gz
+
+../$(NAME)-$(VERSION).tar.gz:
+	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 >$@
 
 # pattern rules to install things
 $(BINDIR)/%: %
