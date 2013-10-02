@@ -28,5 +28,5 @@
 
 int main (int argc, char* argv[])
 {
-    return topologic::cli (argc, argv);
+    return topologic::cli<topologic::FP> (argc, argv);
 }

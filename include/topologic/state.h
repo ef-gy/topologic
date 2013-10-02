@@ -107,10 +107,10 @@ namespace topologic
               << gState.metadata()
               << "</metadata>"
                  "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
-                 " path#wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
+                 " path#" << gState.S2::idPrefix << "wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
                  " path { stroke: none; fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
             object.renderSolid();
-            gState.S2::svg.output << "<path id='wireframe' d='";
+            gState.S2::svg.output << "<path id='" << gState.S2::idPrefix << "wireframe' d='";
             object.renderWireframe();
             gState.S2::svg.output << "'/></svg>\n";
             return gState.S2::svg.output;
@@ -296,7 +296,8 @@ namespace topologic
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
-              model(0)
+              model(0),
+              idPrefix("")
             {
                 parameter.polarRadius    = Q(1);
                 parameter.polarPrecision = Q(10);
@@ -311,7 +312,7 @@ namespace topologic
             {
                 rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>";
             }
-            rv << "<t:options radius='" << double(parameter.polarRadius) << "'/>"
+            rv << "<t:options radius='" << double(parameter.polarRadius) << "' id-prefix='" << idPrefix << "'/>"
                << "<t:precision polar='" << double(parameter.polarPrecision) << "' export-multiplier='" << double(exportMultiplier) << "'/>"
                << "<t:colour-background red='" << double(background.red) << "' green='" << double(background.green) << "' blue='" << double(background.blue) << "' alpha='" << double(background.alpha) << "'/>"
                << "<t:colour-wireframe red='" << double(wireframe.red) << "' green='" << double(wireframe.green) << "' blue='" << double(wireframe.blue) << "' alpha='" << double(wireframe.alpha) << "'/>"
@@ -331,6 +332,7 @@ namespace topologic
         typename efgy::colour::RGBA<Q>::value background;
         typename efgy::colour::RGBA<Q>::value wireframe;
         typename efgy::colour::RGBA<Q>::value surface;
+        std::string idPrefix;
     };
 };
 
