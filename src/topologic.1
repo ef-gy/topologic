@@ -1,0 +1,120 @@
+.TH topologic 1 "OCTOBER 2013" FEED "Application Manuals"
+
+.SH NAME
+topologic \- render SVGs of basic geometric shapes
+
+.SH SYNOPSIS
+.B topologic [
+.I options ...
+.B ] [
+.I files ...
+.B ]
+
+.SH DESCRIPTION
+.B topologic
+is a programme that renders SVGs of certain basic geometric shapes.
+
+The shapes may exceed the basic 3D primitives, as may the space that these
+primitives are rendered in. For example, it is possible to render a 3-cube in
+4-space, a 4-cube in 4-space or a 4-cube in 5-space.
+
+All output is sent to stdout. To save data to a file, use your shell's output
+redirection features.
+
+.SH EXAMPLES
+.IP "$ topologic"
+Render the default model (a 4-cube in 4-space) with the default viewpoint to
+stdout.
+.IP "$ topologic --model sphere --depth 2 --render-depth 3"
+Render a 2-sphere - i.e. the 'normal' sphere - in 3-space.
+.IP "$ topologic --model cube --depth 3 --render-depth 4 --from 4 1 1 1 1"
+Render a 3-cube in 4-space but set the (polar) coordinates for the 4th
+dimension as (radius, theta-1, theta-2, theta-3) = (1, 1, 1, 1).
+.IP "$ topologic frob.svg"
+Load the settings stored in frob.svg and then try to render a new image based
+on those settings.
+.IP "$ topologic frob.svg --model moebius-strip"
+Load the settings stored in frob.svg, but then render a moebius-strip instead
+of the model information in frob.svg.
+
+.SH OPTIONS
+.IP "--help"
+Display a short summary of the available command line options, then exit.
+.IP "--version"
+Display the version of the binary and the maximum number of supported
+dimensions, then exit.
+.IP "--model model"
+Render the given
+.I model
+instead of a cube. The available models include "cube", "sphere", "simplex",
+"moebius-strip" and "klein-bagel".
+.IP "--depth N"
+Render an
+.I N
+-model.
+.IP "--render-depth N"
+Render the model in
+.I N
+-space.
+.IP "--polar"
+Use and manipulate coordinates as polar coordinates, i.e. (radius, theta-1,
+theta-2, ..., theta-n). This is the default.
+.IP "--cartesian"
+Use and manipulate coordinates as cartesian coordinates, i.e. (x, y, z, ...
+d-n).
+.IP "--from D X Y ..."
+Set the camera position for the Dth dimension to the tuple (X, Y, ...). These
+coordinates are specified in the currently active coordinate scheme - i.e.
+polar or cartesian.
+
+.SH FILES
+The SVG files produced by
+.B topologic
+contain metadata that allows reconstructing the settings used to generate
+them. This allows the programme to read these files back in to set the current
+state of the programme. Options and files can be mixed freely on the command
+line, with settings coming from later files or options overriding those set by
+earlier ones.
+
+So, for instance, it is possible to load settings from a file and to then
+override some settings - like the model, depth or camera positions - after
+those settings have been read in.
+
+Additionally, it is possible to write plain XML files that contain the same
+kind of metadata as the SVGs, thus making the programme scriptable. The format
+of this metadata will be described separately at a later date, although it is
+quite straightforward if you look at the <svg:metadata/> element in the
+generated SVGs.
+
+.SH ENVIRONMENT
+.B topologic
+does not heed any environment variables, but it does use libxml2 which might
+use environment variables.
+
+.SH "SOURCE CODE"
+Almost all of the code for
+.B topologic
+is in header files, which are typically installed along the main binary. This
+makes it possible to easily write your own adaptions, or to recompile the basic
+binary with a higher dimensional limit.
+
+See the header files in the "topologic" directory in your system's default C++
+include directory - typically /usr/include - for most of the source code. The
+main() function for this binary in particular is in the "topologic/cli.h" file.
+
+.SH LIMITATIONS
+The maximum depth is set at compile time. The default depth is 7, which should
+suffice for most situations. This means that the default binary will only be
+able to handle, e.g., cubes up to a 7-cube in 7-space.
+
+Some primitives require a higher render depth than their inherent depth.
+Spheres, for instance, render in D+1. For these models, the render depth is the
+limiting factor, meaning that a 7D topologic will only be able to render
+6-spheres in 7-space, not 7-spheres, because those would have to render in
+8-space.
+
+.SH BUGS
+The simplex renderer produces rather strange looking simplices.
+
+.SH AUTHOR
+Magnus Deininger <magnus@ef.gy>

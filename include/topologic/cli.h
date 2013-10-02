@@ -66,7 +66,21 @@ namespace topologic
                     if (arg == "--help")
                     {
                         std::cout << "Usage:\n" << argv[0] << " [ options ] [ files ]\n\n"
-                                  << argv[0] << " will render an SVG of a specific model to stdout.\n";
+                                  << argv[0] << " will render an SVG of a specific model to stdout.\n\n"
+                                     "Options\n"
+                                     "  --help           Show this help text, then exit.\n"
+                                     "  --version        Show version information, then exit.\n"
+                                     "\n"
+                                     "  --depth N        Set model depth to N\n"
+                                     "  --render-depth N Set render depth to N\n"
+                                     "  --model M        Set model to M (cube, sphere, ...)\n"
+                                     "\n"
+                                     "  --polar          Use/manipulate polar coordinates (default)\n"
+                                     "  --cartesian      Use/manipulate cartesian coordinates\n"
+                                     "  --from D X Y ... Set the from-point of the D-to-D-1 projection to X Y ...\n"
+                                     "\n"
+                                     "See the man page of this programme for further details; e.g. run:\n"
+                                     "man topologic\n\n";
                         return 0;
                     }
                     else if (arg == "--version")
