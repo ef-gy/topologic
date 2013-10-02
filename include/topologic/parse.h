@@ -28,16 +28,19 @@
 #define TOPOLOGIC_PARSE_H
 
 #include <topologic/state.h>
+#if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
+#endif
 #include <set>
 #include <stdexcept>
 #include <sstream>
 
 namespace topologic
 {
+#if !defined (NOLIBRARIES)
     class xml
     {
     public:
@@ -208,6 +211,7 @@ namespace topologic
     protected:
         std::set<parser*> parsers;
     };
+#endif
 
     static double stringToDouble (const std::string &s)
     {
@@ -217,6 +221,7 @@ namespace topologic
         return d;
     }
 
+#if !defined (NOLIBRARIES)
     template<typename Q, unsigned int d>
     static bool parse (state<Q,d> &s, xml::parser &parser)
     {
@@ -343,6 +348,7 @@ namespace topologic
         }
         return true;
     }
+#endif
 
     template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T>
     static bool setModel (const state<Q,d> &s, state<Q,e> &so)
@@ -481,6 +487,7 @@ namespace topologic
         return setModelWithTypeStringParameters (s, s, type, dims, rdims);
     }
 
+#if !defined (NOLIBRARIES)
     template<typename Q, unsigned int d>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
@@ -508,6 +515,7 @@ namespace topologic
 
         return false;
     }
+#endif
 
     template<typename Q, unsigned int d>
     static bool setPolar (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)

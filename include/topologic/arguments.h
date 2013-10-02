@@ -45,7 +45,9 @@ namespace topologic
     {
         try
         {
+#if !defined (NOLIBRARIES)
             topologic::xml xml;
+#endif
             unsigned int depth = 4, rdepth = 4;
             std::string model = "cube";
 
@@ -303,6 +305,7 @@ namespace topologic
                             topologicState.state<FP,2>::idPrefix = std::string(argv[i]);
                         }
                     }
+#if !defined (NOLIBRARIES)
                     else try
                     {
                         std::ifstream in(arg);
@@ -323,6 +326,7 @@ namespace topologic
                     {
                         std::cerr << "Exception: " << e.what() << "\n";
                     }
+#endif
                 }
             }
 

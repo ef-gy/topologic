@@ -5,10 +5,11 @@ INCLUDEDIR:=$(DESTDIR)$(PREFIX)/include
 MANDIR:=$(DESTDIR)$(PREFIX)/share/man
 
 NAME:=topologic
-VERSION:=5
+VERSION:=6
 
 CC:=clang
 CXX:=clang++
+EMXX:=em++
 PKGCONFIG:=pkg-config
 INSTALL:=install
 
@@ -20,10 +21,13 @@ PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
 PCLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES) 2>/dev/null)
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
+EMCFLAGS:=-O2 --llvm-lto 3
+EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
 DATABASE:=
 BINARIES:=$(basename $(notdir $(wildcard src/*.cpp)))
+JSBINARIES:=$(addsuffix .js,$(basename $(notdir $(wildcard src/*.cpp))))
 
 IGNOREBINARIES:=
 IBINARIES:=$(addprefix $(BINDIR)/,$(BINARIES))
@@ -48,6 +52,9 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 ../$(NAME)-$(VERSION).tar.gz:
 	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 >$@
 
+# meta rules for javascript
+js: $(JSBINARIES)
+
 # pattern rules to install things
 $(BINDIR)/%: %
 	$(INSTALL) -D $< $@
@@ -65,3 +72,6 @@ $(MANDIR)/man1/%.1: src/%.1
 # pattern rules for C++ code
 %: src/%.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
+
+%.js: src/%.cpp include/*/*.h
+	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@
