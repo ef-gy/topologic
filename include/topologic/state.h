@@ -35,7 +35,6 @@
 #include <ef.gy/render-opengl.h>
 #endif
 #include <ef.gy/render-svg.h>
-#include <type_traits>
 #include <sstream>
 
 namespace topologic
@@ -59,8 +58,11 @@ namespace topologic
     {
     };
 
+    template<bool B, typename T, typename F> class conditional { public: typedef T type; };
+    template<typename T, typename F> class conditional<false, T, F> { public: typedef F type; };
+
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderSVG : public std::conditional<isVirtual, renderer, empty>::type
+    class renderSVG : public conditional<isVirtual, renderer, empty>::type
     {
     public:
         typedef T<Q,d,efgy::render::svg<Q,rd>,rd > P;
