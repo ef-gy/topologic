@@ -226,7 +226,6 @@ namespace topologic
 
             glPopMatrix();
             glFlush();
-            glutSwapBuffers();
 
             return gState.S2::svg.output;
         }

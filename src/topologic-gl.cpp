@@ -67,6 +67,8 @@ void displayCall(void)
     {
         (*topologicState.model)(true);
     }
+
+    glutSwapBuffers();
 }
 
 void reshape(GLint width, GLint height)
