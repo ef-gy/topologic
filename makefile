@@ -27,7 +27,8 @@ LDFLAGS:=
 
 DATABASE:=
 BINARIES:=$(basename $(notdir $(wildcard src/*.cpp)))
-JSBINARIES:=$(addsuffix .js,$(basename $(notdir $(wildcard src/*.cpp))))
+JSBINARIES:=$(addsuffix .js,$(BINARIES))
+TESTBINARIES:=$(filter test-%,$(BINARIES))
 
 IGNOREBINARIES:=
 IBINARIES:=$(addprefix $(BINDIR)/,$(BINARIES))
@@ -54,6 +55,10 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 
 # meta rules for javascript
 js: $(JSBINARIES)
+
+# run unit tests
+test: $(TESTBINARIES)
+	for i in $^; do echo TEST: $$i; ./$$i; done
 
 # pattern rules to install things
 $(BINDIR)/%: %
