@@ -133,6 +133,67 @@ namespace topologic
         P object;
     };
 
+#if !defined (NO_OPENGL)
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
+    class renderGL : public conditional<isVirtual, renderer, empty>::type
+    {
+    public:
+        typedef T<Q,d,efgy::render::opengl<Q,rd>,rd > P;
+        typedef state<Q,rd> S;
+        typedef state<Q,2> S2;
+
+        renderSVG(S &pState)
+            : gState(pState),
+              object(gState.S::opengl,
+                     gState.S2::parameter,
+                     gState.S2::exportMultiplier)
+            {}
+
+        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+            : gState(pState),
+              object(gState.S::opengl,
+                     pParameter,
+                     Q(1))
+            {}
+
+        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+            : gState(pState),
+              object(gState.S::opengl,
+                     pParameter,
+                     pMultiplier)
+            {}
+
+        std::stringstream &operator () (bool updateMatrix = false)
+        {
+            if (updateMatrix)
+            {
+                gState.S::updateMatrix();
+            }
+
+            gState.S2::svg.output.str("");
+
+            object.renderSolid();
+            object.renderWireframe();
+
+            return gState.S2::svg.output;
+        }
+
+        unsigned int depth (void) const { return P::depth(); };
+        unsigned int renderDepth (void) const { return P::renderDepth(); };
+        const char *id (void) const { return P::id(); };
+        std::string name (void) const
+        {
+            std::stringstream rv;
+            rv << depth() << "-" << id();
+            return rv.str();
+        }
+
+    protected:
+        S &gState;
+        P object;
+    };
+#endif
+
     template<typename Q, unsigned int d>
     class state : public state<Q,d-1>
     {
