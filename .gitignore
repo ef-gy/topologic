@@ -1,6 +1,9 @@
+.DS_Store
 *.swp
 *.svg
 topologic
 !include/topologic
 include/ef.gy
 topologic.js
+topologic-gl
+!src/topologic*

@@ -13,12 +13,25 @@ EMXX:=em++
 PKGCONFIG:=pkg-config
 INSTALL:=install
 
+UNAME:=$(shell uname)
 LIBRARIES:=libxml-2.0
+LIBRARIES_GL:=
+FRAMEWORKS:=
+FRAMEWORKS_GL:=GLUT OpenGL Cocoa
 
 DEBUG:=false
 
+ifneq ($(UNAME),Darwin)
 PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
 PCLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES) 2>/dev/null)
+GLCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES_GL) 2>/dev/null)
+GLLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES_GL) 2>/dev/null)
+else
+PCCFLAGS:=-I/usr/include/libxml2
+PCLDFLAGS:=-lxml2 $(addprefix -framework ,$(FRAMEWORKS))
+GLCFLAGS:=
+GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
+endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
 EMCFLAGS:=-O2 --llvm-lto 3
@@ -77,6 +90,9 @@ $(MANDIR)/man1/%.1: src/%.1
 # pattern rules for C++ code
 %: src/%.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
+
+%-gl: src/%-gl.cpp include/*/*.h
+	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $(GLCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) $(GLLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
 %.js: src/%.cpp include/*/*.h
 	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@

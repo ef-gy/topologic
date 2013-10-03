@@ -24,54 +24,14 @@
  * THE SOFTWARE.
 */
 
-#if !defined(TOPOLOGIC_CLI_H)
-#define TOPOLOGIC_CLI_H
+#if !defined(TOPOLOGIC_GLUT_H)
+#define TOPOLOGIC_GLUT_H
 
-#define NO_OPENGL
 #include <topologic/arguments.h>
-
-#if !defined(MAXDEPTH)
-#define MAXDEPTH 7
-#endif
 
 namespace topologic
 {
-    typedef efgy::math::primitive<double> FP;
-
-    template<typename FP>
-    int cli (int argc, char* argv[])
-    {
-        try
-        {
-            state<FP,MAXDEPTH> topologicState;
-
-            if (!parseArguments (topologicState, argc, argv, outSVG))
-            {
-                return 1;
-            }
-
-            if (!topologicState.model)
-            {
-                std::cerr << "error: no model to render\n";
-            }
-            else
-            {
-                std::cout << (*topologicState.model)(true).str();
-            }
-        }
-        catch (std::exception &e)
-        {
-            std::cerr << "Exception: " << e.what() << "\n";
-            return 1;
-        }
-        catch (...)
-        {
-            std::cerr << "Unknown Exception\n";
-            return 1;
-        }
-
-        return 0;
-    }
+    typedef efgy::math::primitive<GLdouble> GLFP;
 };
 
 #endif

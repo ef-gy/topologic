@@ -43,6 +43,12 @@ namespace topologic
 
     template<typename Q, unsigned int d> class state;
 
+    enum outputMode
+    {
+        outSVG = 1,
+        outGL  = 2
+    };
+
     class renderer
     {
     public:
@@ -142,21 +148,21 @@ namespace topologic
         typedef state<Q,rd> S;
         typedef state<Q,2> S2;
 
-        renderSVG(S &pState)
+        renderGL(S &pState)
             : gState(pState),
               object(gState.S::opengl,
                      gState.S2::parameter,
                      gState.S2::exportMultiplier)
             {}
 
-        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+        renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
             : gState(pState),
               object(gState.S::opengl,
                      pParameter,
                      Q(1))
             {}
 
-        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+        renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
             : gState(pState),
               object(gState.S::opengl,
                      pParameter,
@@ -172,8 +178,55 @@ namespace topologic
 
             gState.S2::svg.output.str("");
 
-            object.renderSolid();
+            glClearColor(gState.S2::background.red,
+                         gState.S2::background.green,
+                         gState.S2::background.blue,
+                         gState.S2::background.alpha);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            glPushMatrix();
+#if defined(GL3D)
+            glEnable(GL_DEPTH_TEST);
+            gluLookAt(gState.state<Q,3>::from.data[0],
+                      gState.state<Q,3>::from.data[1],
+                      gState.state<Q,3>::from.data[2],
+                      gState.state<Q,3>::to.data[0],
+                      gState.state<Q,3>::to.data[1],
+                      gState.state<Q,3>::to.data[2],
+                      0.0, 1.0, 0.0);
+#endif
+
+            glDepthMask(GL_TRUE);
+
+            glColor4d(gState.S2::wireframe.red,
+                      gState.S2::wireframe.green,
+                      gState.S2::wireframe.blue,
+                      gState.S2::wireframe.alpha);
+
             object.renderWireframe();
+
+            glDepthMask (gState.S2::surface.alpha < 1. ? GL_TRUE : GL_FALSE);
+
+            static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+            static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
+            static const GLfloat mat_shininess[] = { 50.0 };
+
+            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+            glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+            glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+
+            glColor4d(gState.S2::surface.red,
+                      gState.S2::surface.green,
+                      gState.S2::surface.blue,
+                      gState.S2::surface.alpha);
+
+            object.renderSolid();
+
+            glPopMatrix();
+            glFlush();
+            glutSwapBuffers();
 
             return gState.S2::svg.output;
         }

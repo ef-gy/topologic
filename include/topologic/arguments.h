@@ -41,7 +41,7 @@
 namespace topologic
 {
     template<typename FP, unsigned int dim>
-    bool parseArguments (state<FP, dim> &topologicState, int argc, char* argv[])
+    bool parseArguments (state<FP, dim> &topologicState, int argc, char* argv[], enum outputMode out)
     {
         try
         {
@@ -314,7 +314,7 @@ namespace topologic
     
                         xml::parser p = xml.parse(s, arg);
                         parse (topologicState, p);
-                        parseModel (topologicState, p);
+                        parseModel (topologicState, p, out);
                         if (topologicState.model)
                         {
                             model = topologicState.model->id();
@@ -332,7 +332,7 @@ namespace topologic
 
             if (!topologicState.model)
             {
-                parseModelWithTypeStringParameters (topologicState, model, depth, rdepth);
+                parseModelWithTypeStringParameters (topologicState, model, depth, rdepth, out);
             }
         }
         catch (std::exception &e)
