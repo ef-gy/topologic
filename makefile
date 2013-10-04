@@ -39,12 +39,14 @@ EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
 DATABASE:=
-BINARIES:=$(basename $(notdir $(wildcard src/*.cpp)))
+BINARIES:=$(filter-out %-gl,$(basename $(notdir $(wildcard src/*.cpp))))
+GLBINARIES:=$(filter %-gl,$(basename $(notdir $(wildcard src/*.cpp))))
 JSBINARIES:=$(addsuffix .js,$(BINARIES))
 TESTBINARIES:=$(filter test-%,$(BINARIES))
 
 IGNOREBINARIES:=
 IBINARIES:=$(addprefix $(BINDIR)/,$(BINARIES))
+IGLBINARIES:=$(addprefix $(BINDIR)/,$(GLBINARIES))
 IINCLUDES:=$(addprefix $(INCLUDEDIR)/topologic/,$(notdir $(wildcard include/topologic/*.h)))
 IMANPAGES:=$(addprefix $(MANDIR)/man1/,$(notdir $(wildcard src/*.1)))
 
@@ -68,6 +70,12 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 
 # meta rules for javascript
 js: $(JSBINARIES)
+
+# meta rules for OpenGL
+gl: $(GLBINARIES)
+install-gl: $(IGLBINARIES)
+uninstall-gl:
+	rm -f $(IGLBINARIES)
 
 # run unit tests
 test: $(TESTBINARIES)
