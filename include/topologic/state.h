@@ -176,7 +176,7 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
-            gState.S2::svg.output.str("");
+            gState.S2::output.str("");
 
             glClearColor(gState.S2::background.red,
                          gState.S2::background.green,
@@ -227,7 +227,7 @@ namespace topologic
             glPopMatrix();
             glFlush();
 
-            return gState.S2::svg.output;
+            return gState.S2::output;
         }
 
         unsigned int depth (void) const { return P::depth(); };
@@ -384,6 +384,7 @@ namespace topologic
         typename efgy::colour::RGBA<Q>::value wireframe;
         typename efgy::colour::RGBA<Q>::value surface;
         std::string idPrefix;
+        std::stringstream output;
     };
 };
 
