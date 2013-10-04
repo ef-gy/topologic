@@ -81,11 +81,36 @@ const char *getProjection()
 
 int mouseDrag (double x, double y)
 {
+#if 0
     x /= 1000.;
     y /= 1000.;
 
     topologicState.topologic::state<FP,3>::fromp.data[1] += x;
     topologicState.topologic::state<FP,3>::fromp.data[2] += y;
+#else
+    efgy::geometry::transformation<FP,3> rotationX;
+    FP t = x / (M_PI * 50.);
 
+    rotationX.transformationMatrix.data[0][0] =  cos(t);
+    rotationX.transformationMatrix.data[0][2] = -sin(t);
+    rotationX.transformationMatrix.data[2][2] =  cos(t);
+    rotationX.transformationMatrix.data[2][0] =  sin(t);
+
+    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        * rotationX.transformationMatrix;
+
+    efgy::geometry::transformation<FP,3> rotationY;
+    t = y / (M_PI * -50.);
+
+    rotationY.transformationMatrix.data[1][1] =  cos(t);
+    rotationY.transformationMatrix.data[1][2] = -sin(t);
+    rotationY.transformationMatrix.data[2][2] =  cos(t);
+    rotationY.transformationMatrix.data[2][1] =  sin(t);
+
+    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        * rotationY.transformationMatrix;
+#endif
     return 0;
 }

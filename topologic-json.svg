@@ -43,7 +43,7 @@ function initialise()
             output.appendChild (newNode);
         }
 
-        if (data.length > 1)
+        if (data.length > 0)
         {
             var newNode = document.createElementNS ('http://www.w3.org/2000/svg', 'path');
 
