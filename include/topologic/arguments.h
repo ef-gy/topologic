@@ -40,8 +40,8 @@
 
 namespace topologic
 {
-    template<typename FP, unsigned int dim>
-    bool parseArguments (state<FP, dim> &topologicState, int argc, char* argv[], enum outputMode out)
+    template<typename Q, unsigned int dim>
+    bool parseArguments (state<Q, dim> &topologicState, int argc, char* argv[], enum outputMode out)
     {
         try
         {
@@ -127,7 +127,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::parameter.polarPrecision = FP(dv);
+                            topologicState.state<Q,2>::parameter.polarPrecision = Q(dv);
                         }
                     }
                     else if (arg == "--radius")
@@ -138,7 +138,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::parameter.polarRadius = FP(dv);
+                            topologicState.state<Q,2>::parameter.polarRadius = Q(dv);
                         }
                     }
                     else if (arg == "--multiplier")
@@ -149,7 +149,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::exportMultiplier = FP(dv);
+                            topologicState.state<Q,2>::exportMultiplier = Q(dv);
                         }
                     }
                     else if (arg == "--background")
@@ -160,7 +160,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::background.red = FP(dv);
+                            topologicState.state<Q,2>::background.red = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -168,7 +168,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::background.green = FP(dv);
+                            topologicState.state<Q,2>::background.green = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -176,7 +176,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::background.blue = FP(dv);
+                            topologicState.state<Q,2>::background.blue = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -184,7 +184,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::background.alpha = FP(dv);
+                            topologicState.state<Q,2>::background.alpha = Q(dv);
                         }
                     }
                     else if (arg == "--surface")
@@ -195,7 +195,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::surface.red = FP(dv);
+                            topologicState.state<Q,2>::surface.red = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -203,7 +203,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::surface.green = FP(dv);
+                            topologicState.state<Q,2>::surface.green = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -211,7 +211,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::surface.blue = FP(dv);
+                            topologicState.state<Q,2>::surface.blue = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -219,7 +219,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::surface.alpha = FP(dv);
+                            topologicState.state<Q,2>::surface.alpha = Q(dv);
                         }
                     }
                     else if (arg == "--wireframe")
@@ -230,7 +230,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::wireframe.red = FP(dv);
+                            topologicState.state<Q,2>::wireframe.red = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -238,7 +238,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::wireframe.green = FP(dv);
+                            topologicState.state<Q,2>::wireframe.green = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -246,7 +246,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::wireframe.blue = FP(dv);
+                            topologicState.state<Q,2>::wireframe.blue = Q(dv);
                         }
                         i++;
                         if (i < argc)
@@ -254,16 +254,16 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<FP,2>::wireframe.alpha = FP(dv);
+                            topologicState.state<Q,2>::wireframe.alpha = Q(dv);
                         }
                     }
                     else if (arg == "--polar")
                     {
-                        topologicState.state<FP,2>::polarCoordinates = true;
+                        topologicState.state<Q,2>::polarCoordinates = true;
                     }
                     else if (arg == "--cartesian")
                     {
-                        topologicState.state<FP,2>::polarCoordinates = false;
+                        topologicState.state<Q,2>::polarCoordinates = false;
                     }
                     else if (arg == "--from")
                     {
@@ -286,13 +286,13 @@ namespace topologic
                                 st.str(argv[i]);
                                 st >> value;
                                 st.clear();
-                                if (topologicState.state<FP,2>::polarCoordinates)
+                                if (topologicState.state<Q,2>::polarCoordinates)
                                 {
-                                    setPolar(topologicState, d, j, FP(value));
+                                    setPolar(topologicState, d, j, Q(value));
                                 }
                                 else
                                 {
-                                    setCartesian(topologicState, d, j, FP(value));
+                                    setCartesian(topologicState, d, j, Q(value));
                                 }
                             }
                         }
@@ -302,7 +302,7 @@ namespace topologic
                         i++;
                         if (i < argc)
                         {
-                            topologicState.state<FP,2>::idPrefix = std::string(argv[i]);
+                            topologicState.state<Q,2>::idPrefix = std::string(argv[i]);
                         }
                     }
 #if !defined (NOLIBRARIES)
@@ -314,7 +314,16 @@ namespace topologic
     
                         xml::parser p = xml.parse(s, arg);
                         parse (topologicState, p);
-                        parseModel (topologicState, p, out);
+                        if (out == outSVG)
+                        {
+                            parseModel<Q,dim,renderSVG> (topologicState, p);
+                        }
+#if !defined(NO_OPENGL)
+                        else if (out == outGL)
+                        {
+                            parseModel<Q,dim,renderGL> (topologicState, p);
+                        }
+#endif
                         if (topologicState.model)
                         {
                             model = topologicState.model->id();
@@ -332,7 +341,16 @@ namespace topologic
 
             if (!topologicState.model)
             {
-                parseModelWithTypeStringParameters (topologicState, model, depth, rdepth, out);
+                if (out == outSVG)
+                {
+                    parseModelWithTypeStringParameters<Q,dim,renderSVG> (topologicState, model, depth, rdepth);
+                }
+#if !defined(NO_OPENGL)
+                else if (out == outGL)
+                {
+                    parseModelWithTypeStringParameters<Q,dim,renderGL> (topologicState, model, depth, rdepth);
+                }
+#endif
             }
         }
         catch (std::exception &e)

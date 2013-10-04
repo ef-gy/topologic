@@ -350,8 +350,9 @@ namespace topologic
     }
 #endif
 
-    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T>
-    static bool setModel (const state<Q,d> &s, state<Q,e> &so, const enum outputMode &out)
+    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool setModel (const state<Q,d> &s, state<Q,e> &so)
     {
         if (so.state<Q,2>::model)
         {
@@ -359,146 +360,152 @@ namespace topologic
             so.state<Q,2>::model = 0;
         }
 
-        if (out == outSVG)
-        {
-            so.state<Q,2>::model = new renderSVG<Q,d,T,e,true>(so);
-        }
-#if !defined (NO_OPENGL)
-        else if (out == outGL)
-        {
-            so.state<Q,2>::model = new renderGL<Q,d,T,e,true>(so);
-        }
-#endif
+        so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
 
         return so.state<Q,2>::model != 0;
     }
 
-    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T>
+    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model
     {
-    public: static bool set (const state<Q,d> &s, state<Q,e> &so, const unsigned int &rdims, const enum outputMode &out)
+    public: static bool set (const state<Q,d> &s, state<Q,e> &so, const unsigned int &rdims)
         {
             if (e == rdims)
             {
-                return setModel<Q,d,e,T>(s, so, out);
+                return setModel<Q,d,e,T,C>(s, so);
             }
 
-            return model<Q,d,e-1,T>::set (s, so, rdims, out);
+            return model<Q,d,e-1,T,C>::set (s, so, rdims);
         }
     };
 
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T>
-    class model<Q,d,d,T>
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,d,T,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims, const enum outputMode &out)
+    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims)
         {
             if (d == rdims)
             {
-                return setModel<Q,d,d,T>(s, so, out);
+                return setModel<Q,d,d,T,C>(s, so);
             }
 
             return false;
         }
     };
 
-    template<typename Q, unsigned int d>
-    class model<Q,d,d,efgy::geometry::sphere>
+    template<typename Q, unsigned int d,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,d,efgy::geometry::sphere,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q, unsigned int d>
-    class model<Q,d,d,efgy::geometry::moebiusStrip>
+    template<typename Q, unsigned int d,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,d,efgy::geometry::moebiusStrip,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q, unsigned int d>
-    class model<Q,d,d,efgy::geometry::kleinBagel>
+    template<typename Q, unsigned int d,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,d,efgy::geometry::kleinBagel,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T>
-    class model<Q,d,2,T>
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,2,T,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,2> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,d> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q>
-    class model<Q,2,2,efgy::geometry::sphere>
+    template<typename Q,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,2,2,efgy::geometry::sphere,C>
     {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q>
-    class model<Q,2,2,efgy::geometry::moebiusStrip>
+    template<typename Q,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,2,2,efgy::geometry::moebiusStrip,C>
     {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q>
-    class model<Q,2,2,efgy::geometry::kleinBagel>
+    template<typename Q,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,2,2,efgy::geometry::kleinBagel,C>
     {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q, template <class,unsigned int,class,unsigned int> class T>
-    class model<Q,2,2,T>
+    template<typename Q, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,2,2,T,C>
     {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims, const enum outputMode &) { return false; }
+    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
-    template<typename Q, unsigned int d, unsigned int e>
-    static bool setModelWithTypeString (const state<Q,d> &s, const std::string &type, state<Q,e> &so, const unsigned int &rdims = e, const enum outputMode &out = outGL)
+    template<typename Q, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool setModelWithTypeString (const state<Q,d> &s, const std::string &type, state<Q,e> &so, const unsigned int &rdims = e)
     {
              if (type == "axe-graph")
-                 return model<Q,d,e,efgy::geometry::axeGraph>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(s, so, rdims);
         else if (type == "simplex")
-                 return model<Q,d,e,efgy::geometry::simplex>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::simplex,C>::set(s, so, rdims);
         else if (type == "cube")
-                 return model<Q,d,e,efgy::geometry::cube>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::cube,C>::set(s, so, rdims);
         else if (type == "sphere")
-                 return model<Q,d,e,efgy::geometry::sphere>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::sphere,C>::set(s, so, rdims);
         else if (type == "moebius-strip")
-                 return model<Q,d,e,efgy::geometry::moebiusStrip>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(s, so, rdims);
         else if (type == "klein-bagel")
-                 return model<Q,d,e,efgy::geometry::kleinBagel>::set(s, so, rdims, out);
+                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(s, so, rdims);
 
         return false;
     }
 
-    template<typename Q, unsigned int d, unsigned int e>
-    static bool setModelWithTypeStringParameters (const state<Q,d> &s, state<Q,e> &so, const std::string &type, const unsigned int &dims, const unsigned int &rdims, const enum outputMode &out)
+    template<typename Q, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool setModelWithTypeStringParameters (const state<Q,d> &s, state<Q,e> &so, const std::string &type, const unsigned int &dims, const unsigned int &rdims)
     {
         if (dims == d)
         {
-            return setModelWithTypeString<Q,d,e> (s, type, so, rdims, out);
+            return setModelWithTypeString<Q,d,e,C> (s, type, so, rdims);
         }
 
-        return setModelWithTypeStringParameters <Q,d-1,e>(s, so, type, dims, rdims, out);
+        return setModelWithTypeStringParameters <Q,d-1,e,C>(s, so, type, dims, rdims);
     }
 
-    template<typename Q, unsigned int d, unsigned int e>
-    static bool setModelWithTypeStringParameters (const state<Q,2> &s, state<Q,e> &so, const std::string &type, const unsigned int &dims, const unsigned int &rdims, const enum outputMode &out)
+    template<typename Q, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool setModelWithTypeStringParameters (const state<Q,2> &s, state<Q,e> &so, const std::string &type, const unsigned int &dims, const unsigned int &rdims)
     {
         if (dims == 2)
         {
-            return setModelWithTypeString<Q,2,e> (s, type, so, rdims, out);
+            return setModelWithTypeString<Q,2,e,C> (s, type, so, rdims);
         }
 
         return false;
     }
 
-    template<typename Q, unsigned int d>
-    static bool parseModelWithTypeStringParameters (state<Q,d> &s, const std::string &type, const unsigned int &dims, const unsigned int &rdims, const enum outputMode &out)
+    template<typename Q, unsigned int d,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool parseModelWithTypeStringParameters (state<Q,d> &s, const std::string &type, const unsigned int &dims, const unsigned int &rdims)
     {
-        return setModelWithTypeStringParameters (s, s, type, dims, rdims, out);
+        return setModelWithTypeStringParameters<Q,d,d,C> (s, s, type, dims, rdims);
     }
 
 #if !defined (NOLIBRARIES)
-    template<typename Q, unsigned int d>
-    static bool parseModel (state<Q,d> &s, xml::parser &parser, const enum outputMode &out)
+    template<typename Q, unsigned int d,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
         if (parser.updateContext("//topologic:model[@depth][@type][1]"))
         {
@@ -519,7 +526,7 @@ namespace topologic
                     || (type == "klein-bagle")) rdepth++;
             }
 
-            return parseModelWithTypeStringParameters (s, type, depth, rdepth, out);
+            return parseModelWithTypeStringParameters<Q,d,C> (s, type, depth, rdepth);
         }
 
         return false;

@@ -329,83 +329,14 @@ namespace topologic
     };
 
     template<typename Q>
-    class state<Q,3> : public state<Q,2>
-    {
-    public:
-        typedef state<Q,2> base;
-
-        state()
-            : projection(typename efgy::geometry::euclidian::space<Q,3>::vector(),
-                         typename efgy::geometry::euclidian::space<Q,3>::vector(),
-                         Q(M_PI_4),
-                         false),
-              from(projection.from),
-              to(projection.to),
-#if !defined(NO_OPENGL)
-              opengl(transformation),
-#endif
-              svg(transformation, projection, base::svg)
-            {
-                fromp.data[0] = 3;
-                fromp.data[1] = 1;
-                fromp.data[2] = 1;
-            }
-
-        typename efgy::geometry::polar::space<Q,3>::vector fromp;
-        typename efgy::geometry::euclidian::space<Q,3>::vector &from, &to;
-
-        typename efgy::geometry::perspectiveProjection<Q,3> projection;
-        typename efgy::geometry::transformation<Q,3> transformation;
-#if !defined(NO_OPENGL)
-        typename efgy::render::opengl<Q,3> opengl;
-#endif
-        typename efgy::render::svg<Q,3> svg;
-
-        void updateMatrix (void)
-        {
-            if (base::polarCoordinates)
-            {
-                from = fromp;
-            }
-            projection.updateMatrix();
-        }
-
-        const std::string metadata(void) const
-        {
-            std::stringstream rv;
-            rv << "<t:camera";
-            if (base::polarCoordinates)
-            {
-                rv << " radius='" << double(fromp.data[0]) << "'";
-                for (int i = 1; i < 3; i++)
-                {
-                    rv << " theta-" << i << "='" << double(fromp.data[i]) << "'";
-                }
-            }
-            else
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    rv << " " << cartesianDimensions[i] << "='" << double(from.data[i]) << "'";
-                }
-            }
-            rv << "/>";
-            return rv.str() + base::metadata();
-        }
-
-        template<unsigned int md, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = md>
-        renderer * getModel (void)
-        {
-            return new renderSVG<Q,md,T,rd,true>(*this);
-        }
-    };
-
-    template<typename Q>
     class state<Q,2>
     {
     public:
         state()
             : polarCoordinates(true),
+#if !defined(NO_OPENGL)
+              opengl(transformation),
+#endif
               svg(transformation),
               exportMultiplier(Q(2)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
@@ -417,6 +348,8 @@ namespace topologic
                 parameter.polarRadius    = Q(1);
                 parameter.polarPrecision = Q(10);
             }
+
+        void updateMatrix (void) const {}
 
         const std::string metadata(void) const
         {
@@ -439,6 +372,9 @@ namespace topologic
         renderer *model;
 
         typename efgy::geometry::transformation<Q,2> transformation;
+#if !defined(NO_OPENGL)
+        typename efgy::render::opengl<Q,2> opengl;
+#endif
         typename efgy::render::svg<Q,2> svg;
 
         bool polarCoordinates;
