@@ -23,13 +23,10 @@ var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
 var updateModel = Module.cwrap('updateModel', 'number', ['string', 'number', 'number']);
 var updateProjection = Module.cwrap('updateProjection', 'number', []);
 var getProjection = Module.cwrap('getProjection', 'string', []);
-var addOrigin3 = Module.cwrap ('addOrigin3', 'number', ['number', 'number']);
-var setOrigin3 = Module.cwrap ('setOrigin3', 'number', ['number', 'number']);
-var addOrigin4 = Module.cwrap ('addOrigin4', 'number', ['number', 'number', 'number']);
-var setOrigin4 = Module.cwrap ('setOrigin4', 'number', ['number', 'number', 'number']);
+var mouseDrag = Module.cwrap ('mouseDrag', 'number', ['number', 'number']);
 
 setPrecision(4);
-updateModel('cube', 3, 4);
+updateModel('cube', 4, 4);
 
 function initialise()
 {
@@ -108,21 +105,7 @@ function initialise()
 
         if (leftDown)
         {
-            if (e.altKey)
-            {
-                addOrigin4(0, -x, y);
-            }
-            else
-            {
-                addOrigin4(-x, 0, y);
-            }
-
-            render();
-        }
-
-        if (otherDown)
-        {
-            addOrigin3(-x, -y);
+            mouseDrag (x, y);
 
             render();
         }

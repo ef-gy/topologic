@@ -31,13 +31,6 @@ typedef efgy::math::primitive<double> FP;
 
 topologic::state<FP,5> topologicState;
 
-static double origin4i = M_PI_2;
-static double origin4j = M_PI_2;
-static double origin4k = M_PI_2;
-
-static double origin3i = -1;
-static double origin3j = 1;
-
 extern "C"
 {
     int setRadius(double precision);
@@ -45,10 +38,7 @@ extern "C"
     int updateModel(char *smodel, int dim, int rdim);
     int updateProjection(void);
     const char *getProjection(void);
-    int addOrigin3 (int, int);
-    int setOrigin3 (int, int);
-    int addOrigin4 (int, int, int);
-    int setOrigin4 (int, int, int);
+    int mouseDrag (double, double);
 }
 
 int setRadius(double radius)
@@ -72,17 +62,6 @@ int updateModel(char *smodel, int dim, int rdim)
 
 int updateProjection()
 {
-    topologicState.topologic::state<FP,2>::polarCoordinates = false;
-
-    topologicState.topologic::state<FP,4>::from.data[0] = 2.5 * cos(origin4i);
-    topologicState.topologic::state<FP,4>::from.data[1] = 2.5 * sin(origin4i) * cos (origin4j);
-    topologicState.topologic::state<FP,4>::from.data[2] = 2.5 * sin(origin4i) * sin (origin4j) * cos (origin4k);
-    topologicState.topologic::state<FP,4>::from.data[3] = 2.5 * sin(origin4i) * sin (origin4j) * sin (origin4k);
-
-    topologicState.topologic::state<FP,3>::from.data[0] = 2 * cos(origin3i);
-    topologicState.topologic::state<FP,3>::from.data[1] = 2 * sin(origin3i) * cos (origin3j);
-    topologicState.topologic::state<FP,3>::from.data[2] = 2 * sin(origin3i) * sin (origin3j);
-
     topologicState.topologic::state<FP,5>::updateMatrix();
 
     return 0;
@@ -100,37 +79,13 @@ const char *getProjection()
     return currentJSON.c_str();
 }
 
-int addOrigin3 (int i, int j)
+int mouseDrag (double x, double y)
 {
-    origin3i += (double)i / 1000.f;
-    origin3j += (double)j / 1000.f;
+    x /= 1000.;
+    y /= 1000.;
+
+    topologicState.topologic::state<FP,3>::fromp.data[1] += x;
+    topologicState.topologic::state<FP,3>::fromp.data[2] += y;
 
     return 0;
 }
-
-int setOrigin3 (int i, int j)
-{
-    origin3i = (double)i / 1000.f;
-    origin3j = (double)j / 1000.f;
-
-    return 0;
-}
-
-int addOrigin4 (int i, int j, int k)
-{
-    origin4i += (double)i / 1000.f;
-    origin4j += (double)j / 1000.f;
-    origin4k += (double)k / 1000.f;
-
-    return 0;
-}
-
-int setOrigin4 (int i, int j, int k)
-{
-    origin4i = (double)i / 1000.f;
-    origin4j = (double)j / 1000.f;
-    origin4k = (double)k / 1000.f;
-
-    return 0;
-}
-
