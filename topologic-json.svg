@@ -25,6 +25,8 @@ svg
 <script type="application/ecmascript" xlink:href="topologic-json.js" />
 
 <script type="application/ecmascript"><![CDATA[
+var setRadius = Module.cwrap('setRadius', 'number', ['number']);
+var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
 var updateModel = Module.cwrap('updateModel', 'number', ['string', 'number', 'number']);
 var updateProjection = Module.cwrap('updateProjection', 'number', []);
 var getProjection = Module.cwrap('getProjection', 'string', []);
@@ -33,6 +35,7 @@ var setOrigin3 = Module.cwrap ('setOrigin3', 'number', ['number', 'number']);
 var addOrigin4 = Module.cwrap ('addOrigin4', 'number', ['number', 'number', 'number']);
 var setOrigin4 = Module.cwrap ('setOrigin4', 'number', ['number', 'number', 'number']);
 
+setPrecision(4);
 updateModel('cube', 3, 4);
 
 function initialise()

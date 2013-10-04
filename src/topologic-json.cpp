@@ -29,7 +29,7 @@
 
 typedef efgy::math::primitive<double> FP;
 
-topologic::state<FP,4> topologicState;
+topologic::state<FP,5> topologicState;
 
 static double origin4i = M_PI_2;
 static double origin4j = M_PI_2;
@@ -40,6 +40,8 @@ static double origin3j = 1;
 
 extern "C"
 {
+    int setRadius(double precision);
+    int setPrecision(double precision);
     int updateModel(char *smodel, int dim, int rdim);
     int updateProjection(void);
     const char *getProjection(void);
@@ -49,9 +51,21 @@ extern "C"
     int setOrigin4 (int, int, int);
 }
 
+int setRadius(double radius)
+{
+    topologicState.topologic::state<FP,2>::parameter.polarRadius = FP(radius);
+    return 0;
+}
+
+int setPrecision(double precision)
+{
+    topologicState.topologic::state<FP,2>::parameter.polarPrecision = FP(precision);
+    return 0;
+}
+
 int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::parseModelWithTypeStringParameters<FP,4,topologic::renderJSON> (topologicState, std::string(smodel), dim, rdim);
+    topologic::parseModelWithTypeStringParameters<FP,5,topologic::renderJSON> (topologicState, std::string(smodel), dim, rdim);
 
     return 0;
 }
@@ -69,19 +83,21 @@ int updateProjection()
     topologicState.topologic::state<FP,3>::from.data[1] = 2 * sin(origin3i) * cos (origin3j);
     topologicState.topologic::state<FP,3>::from.data[2] = 2 * sin(origin3i) * sin (origin3j);
 
-    topologicState.topologic::state<FP,4>::updateMatrix();
+    topologicState.topologic::state<FP,5>::updateMatrix();
 
     return 0;
 }
+
+static std::string currentJSON("[ 'wireframe' ]");
 
 const char *getProjection()
 {
     if (topologicState.model)
     {
-        return (*topologicState.model)().str().c_str();
+        currentJSON = (*topologicState.model)().str();
     }
 
-    return "[ 'wireframe' ];";
+    return currentJSON.c_str();
 }
 
 int addOrigin3 (int i, int j)

@@ -34,11 +34,11 @@ GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
-EMCFLAGS:=-O2 --llvm-lto 3
+EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_updateModel','_updateProjection','_getProjection','_addOrigin3','_setOrigin3','_addOrigin4','_setOrigin4','cwrap']
+JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_addOrigin3','_setOrigin3','_addOrigin4','_setOrigin4','cwrap']
 
 DATABASE:=
 BINARIES:=$(filter-out %-gl %-json,$(basename $(notdir $(wildcard src/*.cpp))))
