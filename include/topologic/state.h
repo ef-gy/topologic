@@ -105,7 +105,7 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
-            gState.S2::svg.output.str("");
+            gState.S2::svg.reset();
 
             gState.S2::svg.output
               << "<?xml version='1.0' encoding='utf-8'?>"
@@ -284,11 +284,11 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
-            gState.S2::json.output.str("");
+            gState.S2::json.reset();
 
-            gState.S2::json.output << "[ 'wireframe'";
+            gState.S2::json.output << "[ 'data', '";
             object.renderWireframe();
-            gState.S2::json.output << " ]";
+            gState.S2::json.output << "']";
             return gState.S2::json.output;
         }
 

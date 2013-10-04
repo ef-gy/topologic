@@ -12,13 +12,13 @@ svg
     background: white;
 }
 
-#output line
+#output path
 {
     stroke: black;
     stroke-width: 0.01;
 }]]></style>
 
-<svg x="1" y="1" width="100%" height="100%" viewBox="-2 -2 4 4">
+<svg x="0" y="0" width="100%" height="100%" viewBox="-1.2 -1.2 2.4 2.4">
 <g id="output" />
 </svg>
 
@@ -46,12 +46,9 @@ function initialise()
 
         for (i = 1; i < data.length; i++)
         {
-            var newNode = document.createElementNS ('http://www.w3.org/2000/svg', 'line');
+            var newNode = document.createElementNS ('http://www.w3.org/2000/svg', 'path');
 
-            newNode.setAttributeNS (null, 'x1', data[i]['x1']);
-            newNode.setAttributeNS (null, 'x2', data[i]['x2']);
-            newNode.setAttributeNS (null, 'y1', data[i]['y1']);
-            newNode.setAttributeNS (null, 'y2', data[i]['y2']);
+            newNode.setAttributeNS (null, 'd', data[i]);
 
             output.appendChild (newNode);
         }
