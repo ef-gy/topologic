@@ -6,17 +6,10 @@
 {
     font-family: sans-serif;
 }
-
-svg
-{
-    background: white;
-}
-
-#output path
-{
-    stroke: black;
-    stroke-width: 0.01;
-}]]></style>
+svg { background: rgba(45%,45%,65%,1); }
+path.wireframe { stroke-width: 0.002; fill: none; stroke: rgba(100%,100%,100%,1); }
+path { stroke: none; fill: rgba(100%,100%,100%,0.1); }
+]]></style>
 
 <svg x="0" y="0" width="100%" height="100%" viewBox="-1.2 -1.2 2.4 2.4">
 <g id="output" />
@@ -49,6 +42,16 @@ function initialise()
             var newNode = document.createElementNS ('http://www.w3.org/2000/svg', 'path');
 
             newNode.setAttributeNS (null, 'd', data[i]);
+
+            output.appendChild (newNode);
+        }
+
+        if (data.length > 1)
+        {
+            var newNode = document.createElementNS ('http://www.w3.org/2000/svg', 'path');
+
+            newNode.setAttributeNS (null, 'class', 'wireframe');
+            newNode.setAttributeNS (null, 'd', data[0]);
 
             output.appendChild (newNode);
         }

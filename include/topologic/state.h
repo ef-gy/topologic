@@ -286,9 +286,11 @@ namespace topologic
 
             gState.S2::json.reset();
 
-            gState.S2::json.output << "[ 'data', '";
+            gState.S2::json.output << "['";
             object.renderWireframe();
-            gState.S2::json.output << "']";
+            gState.S2::json.output << "'";
+            object.renderSolid();
+            gState.S2::json.output << "]";
             return gState.S2::json.output;
         }
 
