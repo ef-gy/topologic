@@ -38,8 +38,10 @@ EMCFLAGS:=-O2 --llvm-lto 3
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
+JSFUNCTIONS:=['_main','_updateModel','_updateProjection','_getProjection','_addOrigin3','_setOrigin3','_addOrigin4','_setOrigin4','cwrap']
+
 DATABASE:=
-BINARIES:=$(filter-out %-gl,$(basename $(notdir $(wildcard src/*.cpp))))
+BINARIES:=$(filter-out %-gl %-json,$(basename $(notdir $(wildcard src/*.cpp))))
 GLBINARIES:=$(filter %-gl,$(basename $(notdir $(wildcard src/*.cpp))))
 JSBINARIES:=$(addsuffix .js,$(BINARIES))
 TESTBINARIES:=$(filter test-%,$(BINARIES))
@@ -103,4 +105,4 @@ $(MANDIR)/man1/%.1: src/%.1
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $(GLCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) $(GLLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
 %.js: src/%.cpp include/*/*.h
-	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@
+	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) -s EXPORTED_FUNCTIONS="$(JSFUNCTIONS)" $< $(LDFLAGS) -o $@

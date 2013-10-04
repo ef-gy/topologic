@@ -31,10 +31,11 @@
 #include <ef.gy/polar.h>
 #include <ef.gy/projection.h>
 #include <ef.gy/colour-space-rgb.h>
+#include <ef.gy/render-svg.h>
 #if !defined(NO_OPENGL)
 #include <ef.gy/render-opengl.h>
 #endif
-#include <ef.gy/render-svg.h>
+#include <ef.gy/render-json.h>
 #include <sstream>
 
 namespace topologic
@@ -45,8 +46,9 @@ namespace topologic
 
     enum outputMode
     {
-        outSVG = 1,
-        outGL  = 2
+        outSVG  = 1,
+        outGL   = 2,
+        outJSON = 3
     };
 
     class renderer
@@ -246,6 +248,65 @@ namespace topologic
     };
 #endif
 
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
+    class renderJSON : public conditional<isVirtual, renderer, empty>::type
+    {
+    public:
+        typedef T<Q,d,efgy::render::json<Q,rd>,rd > P;
+        typedef state<Q,rd> S;
+        typedef state<Q,2> S2;
+
+        renderJSON(S &pState)
+            : gState(pState),
+              object(gState.S::json,
+                     gState.S2::parameter,
+                     gState.S2::exportMultiplier)
+            {}
+
+        renderJSON(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+            : gState(pState),
+              object(gState.S::json,
+                     pParameter,
+                     Q(1))
+            {}
+
+        renderJSON(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+            : gState(pState),
+              object(gState.S::json,
+                     pParameter,
+                     pMultiplier)
+            {}
+
+        std::stringstream &operator () (bool updateMatrix = false)
+        {
+            if (updateMatrix)
+            {
+                gState.S::updateMatrix();
+            }
+
+            gState.S2::json.output.str("");
+
+            gState.S2::json.output << "[ 'wireframe'";
+            object.renderWireframe();
+            gState.S2::json.output << " ];";
+            return gState.S2::json.output;
+        }
+
+        unsigned int depth (void) const { return P::depth(); };
+        unsigned int renderDepth (void) const { return P::renderDepth(); };
+        const char *id (void) const { return P::id(); };
+        std::string name (void) const
+        {
+            std::stringstream rv;
+            rv << depth() << "-" << id();
+            return rv.str();
+        }
+
+    protected:
+        S &gState;
+        P object;
+    };
+
     template<typename Q, unsigned int d>
     class state : public state<Q,d-1>
     {
@@ -262,7 +323,8 @@ namespace topologic
 #if !defined(NO_OPENGL)
               opengl(transformation, projection, state<Q,d-1>::opengl),
 #endif
-              svg(transformation, projection, state<Q,d-1>::svg)
+              svg(transformation, projection, state<Q,d-1>::svg),
+              json(transformation, projection, state<Q,d-1>::json)
             {
                 fromp.data[0] = 2;
                 for (int i = 1; i < d; i++)
@@ -276,10 +338,11 @@ namespace topologic
 
         typename efgy::geometry::perspectiveProjection<Q,d> projection;
         typename efgy::geometry::transformation<Q,d> transformation;
+        typename efgy::render::svg<Q,d> svg;
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,d> opengl;
 #endif
-        typename efgy::render::svg<Q,d> svg;
+        typename efgy::render::json<Q,d> json;
 
         void updateMatrix (void)
         {
@@ -334,10 +397,11 @@ namespace topologic
     public:
         state()
             : polarCoordinates(true),
+              svg(transformation),
 #if !defined(NO_OPENGL)
               opengl(transformation),
 #endif
-              svg(transformation),
+              json(transformation),
               exportMultiplier(Q(2)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
@@ -372,10 +436,11 @@ namespace topologic
         renderer *model;
 
         typename efgy::geometry::transformation<Q,2> transformation;
+        typename efgy::render::svg<Q,2> svg;
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,2> opengl;
 #endif
-        typename efgy::render::svg<Q,2> svg;
+        typename efgy::render::json<Q,2> json;
 
         bool polarCoordinates;
         efgy::geometry::parameters<Q> parameter;

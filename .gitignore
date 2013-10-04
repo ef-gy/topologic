@@ -7,3 +7,4 @@ include/ef.gy
 topologic.js
 topologic-gl
 !src/topologic*
+topologic-json.js
