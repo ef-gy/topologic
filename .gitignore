@@ -8,3 +8,4 @@ topologic.js
 topologic-gl
 !src/topologic*
 topologic-json.js
+!topologic-json.svg

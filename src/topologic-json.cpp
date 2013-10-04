@@ -40,7 +40,7 @@ static double origin3j = 1;
 
 extern "C"
 {
-    int updateModel(void);
+    int updateModel(char *smodel, int dim, int rdim);
     int updateProjection(void);
     const char *getProjection(void);
     int addOrigin3 (int, int);
@@ -49,9 +49,9 @@ extern "C"
     int setOrigin4 (int, int, int);
 }
 
-int updateModel()
+int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::parseModelWithTypeStringParameters<FP,4,topologic::renderJSON> (topologicState, "cube", 3, 4);
+    topologic::parseModelWithTypeStringParameters<FP,4,topologic::renderJSON> (topologicState, std::string(smodel), dim, rdim);
 
     return 0;
 }
