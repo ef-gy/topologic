@@ -24,6 +24,7 @@ var updateModel = Module.cwrap('updateModel', 'number', ['string', 'number', 'nu
 var updateProjection = Module.cwrap('updateProjection', 'number', []);
 var getProjection = Module.cwrap('getProjection', 'string', []);
 var mouseDrag = Module.cwrap ('mouseDrag', 'number', ['number', 'number']);
+var mouseScroll = Module.cwrap ('mouseScroll', 'number', ['number']);
 
 setPrecision(4);
 updateModel('cube', 4, 4);
@@ -114,9 +115,19 @@ function initialise()
         lastMouseY = e.clientY;
     }
 
+    function processScroll(e)
+    {
+        var z = e.detail? e.detail*(-120) : e.wheelDelta;
+
+        mouseScroll (z);
+
+        render();
+    }
+
     document.onmousedown = processMouseDown;
     document.onmouseup = processMouseUp;
     document.onmousemove = processMove;
+    document.onmousewheel = processScroll;
 
     render();
 }

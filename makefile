@@ -38,7 +38,7 @@ EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_mouseDrag','cwrap']
+JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_mouseDrag','_mouseScroll','cwrap']
 
 DATABASE:=
 BINARIES:=$(filter-out %-gl %-json,$(basename $(notdir $(wildcard src/*.cpp))))

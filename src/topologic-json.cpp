@@ -39,6 +39,7 @@ extern "C"
     int updateProjection(void);
     const char *getProjection(void);
     int mouseDrag (double, double);
+    int mouseScroll (double);
 }
 
 int setRadius(double radius)
@@ -81,13 +82,6 @@ const char *getProjection()
 
 int mouseDrag (double x, double y)
 {
-#if 0
-    x /= 1000.;
-    y /= 1000.;
-
-    topologicState.topologic::state<FP,3>::fromp.data[1] += x;
-    topologicState.topologic::state<FP,3>::fromp.data[2] += y;
-#else
     efgy::geometry::transformation<FP,3> rotationX;
     FP t = x / (M_PI * 50.);
 
@@ -111,6 +105,24 @@ int mouseDrag (double x, double y)
     topologicState.topologic::state<FP,3>::transformation.transformationMatrix
         = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
         * rotationY.transformationMatrix;
-#endif
+
+    return 0;
+}
+
+int mouseScroll (double z)
+{
+    efgy::geometry::transformation<FP,3> zoomZ;
+    FP t = 1. + (z / 50.);
+    t = t > FP(1.2) ? FP(1.2) : t;
+    t = t < FP(0.8) ? FP(0.8) : t;
+
+    zoomZ.transformationMatrix.data[0][0] *= t;
+    zoomZ.transformationMatrix.data[1][1] *= t;
+    zoomZ.transformationMatrix.data[2][2] *= t;
+
+    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
+        * zoomZ.transformationMatrix;
+
     return 0;
 }
