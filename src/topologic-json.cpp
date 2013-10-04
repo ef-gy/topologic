@@ -82,47 +82,12 @@ const char *getProjection()
 
 int mouseDrag (double x, double y)
 {
-    efgy::geometry::transformation<FP,3> rotationX;
-    FP t = x / (M_PI * 50.);
-
-    rotationX.transformationMatrix.data[0][0] =  cos(t);
-    rotationX.transformationMatrix.data[0][2] = -sin(t);
-    rotationX.transformationMatrix.data[2][2] =  cos(t);
-    rotationX.transformationMatrix.data[2][0] =  sin(t);
-
-    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        * rotationX.transformationMatrix;
-
-    efgy::geometry::transformation<FP,3> rotationY;
-    t = y / (M_PI * -50.);
-
-    rotationY.transformationMatrix.data[1][1] =  cos(t);
-    rotationY.transformationMatrix.data[1][2] = -sin(t);
-    rotationY.transformationMatrix.data[2][2] =  cos(t);
-    rotationY.transformationMatrix.data[2][1] =  sin(t);
-
-    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        * rotationY.transformationMatrix;
-
+    topologicState.interpretDrag(FP(x),FP(y),FP(0));
     return 0;
 }
 
 int mouseScroll (double z)
 {
-    efgy::geometry::transformation<FP,3> zoomZ;
-    FP t = 1. + (z / 50.);
-    t = t > FP(1.2) ? FP(1.2) : t;
-    t = t < FP(0.8) ? FP(0.8) : t;
-
-    zoomZ.transformationMatrix.data[0][0] *= t;
-    zoomZ.transformationMatrix.data[1][1] *= t;
-    zoomZ.transformationMatrix.data[2][2] *= t;
-
-    topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        = topologicState.topologic::state<FP,3>::transformation.transformationMatrix
-        * zoomZ.transformationMatrix;
-
+    topologicState.interpretDrag(FP(0),FP(0),FP(z));
     return 0;
 }

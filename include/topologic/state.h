@@ -391,6 +391,53 @@ namespace topologic
         {
             return new renderSVG<Q,md,T,rd,true>(*this);
         }
+
+        bool interpretDrag (const Q &x, const Q &y, const Q &z)
+        {
+            if (d > 3)
+            {
+                return state<Q,d-1>::interpretDrag(x,y,z);
+            }
+
+            efgy::geometry::transformation<Q,d> rotationX;
+            Q t = x / (Q(M_PI) * Q(50.));
+
+            rotationX.transformationMatrix.data[0][0] =  cos(t);
+            rotationX.transformationMatrix.data[0][2] = -sin(t);
+            rotationX.transformationMatrix.data[2][2] =  cos(t);
+            rotationX.transformationMatrix.data[2][0] =  sin(t);
+
+            transformation.transformationMatrix
+                = transformation.transformationMatrix
+                * rotationX.transformationMatrix;
+
+            efgy::geometry::transformation<Q,d> rotationY;
+            t = y / (Q(M_PI) * Q(-50.));
+
+            rotationY.transformationMatrix.data[1][1] =  cos(t);
+            rotationY.transformationMatrix.data[1][2] = -sin(t);
+            rotationY.transformationMatrix.data[2][2] =  cos(t);
+            rotationY.transformationMatrix.data[2][1] =  sin(t);
+
+            transformation.transformationMatrix
+                = transformation.transformationMatrix
+                * rotationY.transformationMatrix;
+
+            efgy::geometry::transformation<Q,d> zoomZ;
+            t = Q(1.) + (z / Q(50.));
+            t = t > Q(1.2) ? Q(1.2) : t;
+            t = t < Q(0.8) ? Q(0.8) : t;
+
+            zoomZ.transformationMatrix.data[0][0] *= t;
+            zoomZ.transformationMatrix.data[1][1] *= t;
+            zoomZ.transformationMatrix.data[2][2] *= t;
+
+            transformation.transformationMatrix
+                = transformation.transformationMatrix
+                * zoomZ.transformationMatrix;
+
+            return true;
+        }
     };
 
     template<typename Q>
@@ -433,6 +480,11 @@ namespace topologic
                << "<t:colour-surface red='" << double(surface.red) << "' green='" << double(surface.green) << "' blue='" << double(surface.blue) << "' alpha='" << double(surface.alpha) << "'/>";
 
             return rv.str();
+        }
+
+        bool interpretDrag (const Q &x, const Q &y, const Q &z)
+        {
+            return true;
         }
 
         renderer *model;

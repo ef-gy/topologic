@@ -1,5 +1,5 @@
 /*
- * This file is part of the Topologic CLI project.
+ * This file is part of the Topologic/GL project.
 */
 
 /*
@@ -111,14 +111,36 @@ void idle(void)
     }
 }
 
+bool shiftActive;
+
 void processMouse(int x, int y)
 {
     mouseX = x;
     mouseY = y;
+
+    if (mouseLeft || mouseRight)
+    {
+        double xd = (mouseX - lastMouseX);
+        double yd = (mouseY - lastMouseY);
+
+        if (shiftActive)
+        {
+            topologicState.interpretDrag(0,0,xd+-yd);
+        }
+        else
+        {
+            topologicState.interpretDrag(xd,yd,0);
+        }
+
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+    }
 }
 
 void processMouseButton(int button, int state, int x, int y)
 {
+    shiftActive = (glutGetModifiers() & GLUT_ACTIVE_SHIFT);
+
     processMouse(x,y);
 
     switch (button)
@@ -128,6 +150,18 @@ void processMouseButton(int button, int state, int x, int y)
             break;
         case 2:
             mouseRight = (state == 0);
+            break;
+        case 3:
+            if (state == 0)
+            {
+                topologicState.interpretDrag(0,0,30);
+            }
+            break;
+        case 4:
+            if (state == 0)
+            {
+                topologicState.interpretDrag(0,0,-30);
+            }
             break;
     }
 
