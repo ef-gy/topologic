@@ -27,7 +27,7 @@ text[onclick]:hover, a text:hover
 </g>
 </svg>
 
-<rect x="0" y="0" height="100%" width="20em" fill="rgba(255,255,255,0.6)"/>
+<rect x="0" y="0" height="100%" width="22em" fill="rgba(255,255,255,0.6)"/>
 <text x="2em" y="2em">Model:</text>
 <text x="3em" y="4em"
       onclick="topologicModel='simplex'; topologicUpdateCurrentModel();">Simplex</text>
