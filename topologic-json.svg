@@ -22,8 +22,72 @@ text[onclick]:hover, a text:hover
 ]]></style>
 
 <svg x="0" y="0" width="100%" height="100%" viewBox="-1.2 -1.2 2.4 2.4">
-<g id="output" />
+<g id="output">
+<text x="0" y="0" text-anchor="middle" style="font-size: 0.25; font-weight: bold; fill: white;">Loading Topologic/V6...</text>
+</g>
 </svg>
+
+<rect x="0" y="0" height="100%" width="20em" fill="rgba(255,255,255,0.6)"/>
+<text x="2em" y="2em">Model:</text>
+<text x="3em" y="4em"
+      onclick="topologicModel='simplex'; topologicUpdateCurrentModel();">Simplex</text>
+<text x="3em" y="5.25em"
+      onclick="topologicModel='cube'; topologicUpdateCurrentModel();">Cube</text>
+<text x="3em" y="6.5em"
+      onclick="topologicModel='sphere'; topologicUpdateCurrentModel();">Sphere</text>
+<text x="3em" y="7.75em"
+      onclick="topologicModel='moebius-strip'; topologicUpdateCurrentModel();">Moebius Strip</text>
+<text x="3em" y="9em"
+      onclick="topologicModel='klein-bagel'; topologicUpdateCurrentModel();">Klein Bagel</text>
+
+<text x="2em" y="15em">Model Depth:</text>
+<text x="12.5em" y="15em"
+      onclick="topologicModelDepth--; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="15em" text-anchor="middle" id="modelDepth"/>
+<text x="16.5em" y="15em"
+      onclick="topologicModelDepth++; topologicUpdateCurrentModel();">&gt;</text>
+
+<text x="2em" y="16.25em">Render Depth:</text>
+<text x="12.5em" y="16.25em"
+      onclick="topologicModelRenderDepth--; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="16.25em" text-anchor="middle" id="modelRenderDepth"/>
+<text x="16.5em" y="16.25em"
+      onclick="topologicModelRenderDepth++; topologicUpdateCurrentModel();">&gt;</text>
+ 
+<text x="2em" y="17.5em">Radius:</text>
+<text x="12.5em" y="17.5em"
+      onclick="topologicModelRadius-=0.25; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="17.5em" text-anchor="middle" id="modelRadius"/>
+<text x="16.5em" y="17.5em"
+      onclick="topologicModelRadius+=0.25; topologicUpdateCurrentModel();">&gt;</text>
+
+<text x="2em" y="18.75em">Precision:</text>
+<text x="12.5em" y="18.75em"
+      onclick="topologicModelPrecision-=0.25; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="18.75em" text-anchor="middle" id="modelPrecision"/>
+<text x="16.5em" y="18.75em"
+      onclick="topologicModelPrecision+=0.25; topologicUpdateCurrentModel();">&gt;</text>
+ 
+<text x="2em" y="22em">Active Dimension:</text>
+<text x="12.5em" y="22em"
+      onclick="topologicActiveDimension--; topologicUpdateDimension();">&lt;</text>
+<text x="14.75em" y="22em" text-anchor="middle" id="activeDimension">3</text>
+<text x="16.5em" y="22em"
+      onclick="topologicActiveDimension++; topologicUpdateDimension();">&gt;</text>
+ 
+<text x="2em" y="25em">Drag mouse to rotate active dimension.</text>
+<text x="2em" y="26.25em">Scroll to zoom.</text>
+
+<text x="2em" y="30em">This is a preview of Topologic/V6's</text>
+<text x="2em" y="31.25em">JSON/SVG renderer. For more info,</text>
+<a xlink:href="http://ef.gy/topologic">
+<text x="2em" y="32.5em">see http://ef.gy/topologic</text>
+</a>
+
+<text x="2em" y="35em">Get the source code at:</text>
+<a xlink:href="http://git.becquerel.org/?p=jyujin/topologic.git">
+<text x="2em" y="36.25em">http://git.becquerel.org</text>
+</a>
 
 <script type="application/ecmascript" xlink:href="topologic-json.js" />
 
@@ -234,71 +298,6 @@ function initialise()
     document.onmousemove = processMove;
     document.onmousewheel = processScroll;
 }
-]]></script>
-
-<rect x="0" y="0" height="100%" width="20em" fill="rgba(255,255,255,0.6)"/>
-<text x="2em" y="2em">Model:</text>
-<text x="3em" y="4em"
-      onclick="topologicModel='simplex'; topologicUpdateCurrentModel();">Simplex</text>
-<text x="3em" y="5.25em"
-      onclick="topologicModel='cube'; topologicUpdateCurrentModel();">Cube</text>
-<text x="3em" y="6.5em"
-      onclick="topologicModel='sphere'; topologicUpdateCurrentModel();">Sphere</text>
-<text x="3em" y="7.75em"
-      onclick="topologicModel='moebius-strip'; topologicUpdateCurrentModel();">Moebius Strip</text>
-<text x="3em" y="9em"
-      onclick="topologicModel='klein-bagel'; topologicUpdateCurrentModel();">Klein Bagel</text>
-
-<text x="2em" y="15em">Model Depth:</text>
-<text x="12.5em" y="15em"
-      onclick="topologicModelDepth--; topologicUpdateCurrentModel();">&lt;</text>
-<text x="14.75em" y="15em" text-anchor="middle" id="modelDepth"/>
-<text x="16.5em" y="15em" text-anchor="right"
-      onclick="topologicModelDepth++; topologicUpdateCurrentModel();">&gt;</text>
-
-<text x="2em" y="16.25em">Render Depth:</text>
-<text x="12.5em" y="16.25em"
-      onclick="topologicModelRenderDepth--; topologicUpdateCurrentModel();">&lt;</text>
-<text x="14.75em" y="16.25em" text-anchor="middle" id="modelRenderDepth"/>
-<text x="16.5em" y="16.25em" text-anchor="right"
-      onclick="topologicModelRenderDepth++; topologicUpdateCurrentModel();">&gt;</text>
- 
-<text x="2em" y="17.5em">Radius:</text>
-<text x="12.5em" y="17.5em"
-      onclick="topologicModelRadius-=0.25; topologicUpdateCurrentModel();">&lt;</text>
-<text x="14.75em" y="17.5em" text-anchor="middle" id="modelRadius"/>
-<text x="16.5em" y="17.5em"
-      onclick="topologicModelRadius+=0.25; topologicUpdateCurrentModel();">&gt;</text>
-
-<text x="2em" y="18.75em">Precision:</text>
-<text x="12.5em" y="18.75em"
-      onclick="topologicModelPrecision-=0.25; topologicUpdateCurrentModel();">&lt;</text>
-<text x="14.75em" y="18.75em" text-anchor="middle" id="modelPrecision"/>
-<text x="16.5em" y="18.75em"
-      onclick="topologicModelPrecision+=0.25; topologicUpdateCurrentModel();">&gt;</text>
- 
-<text x="2em" y="22em">Active Dimension:</text>
-<text x="12.5em" y="22em"
-      onclick="topologicActiveDimension--; topologicUpdateDimension();">&lt;</text>
-<text x="14.75em" y="22em" text-anchor="middle" id="activeDimension">3</text>
-<text x="16.5em" y="22em"
-      onclick="topologicActiveDimension++; topologicUpdateDimension();">&gt;</text>
- 
-<text x="2em" y="25em">Drag mouse to rotate active dimension.</text>
-<text x="2em" y="26.25em">Scroll to zoom.</text>
-
-<text x="2em" y="30em">This is a preview of Topologic/V6's</text>
-<text x="2em" y="31.25em">JSON/SVG renderer. For more info,</text>
-<a xlink:href="http://ef.gy/topologic">
-<text x="2em" y="32.5em">see http://ef.gy/topologic</text>
-</a>
-
-<text x="2em" y="35em">Get the source code at:</text>
-<a xlink:href="http://git.becquerel.org/?p=jyujin/topologic.git">
-<text x="2em" y="36.25em">http://git.becquerel.org</text>
-</a>
-
-<script type="application/ecmascript"><![CDATA[
 initialise();
 ]]></script>
 </svg>
