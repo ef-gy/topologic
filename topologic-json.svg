@@ -25,7 +25,7 @@ text[onclick]:hover, a text:hover
 <g id="output" />
 </svg>
 
-<script type="application/ecmascript" xlink:href="topologic-json.js" />
+<script type="application/ecmascript" xlink:href="/js/topologic" />
 
 <script type="application/ecmascript"><![CDATA[
 var setRadius = Module.cwrap('setRadius', 'number', ['number']);
