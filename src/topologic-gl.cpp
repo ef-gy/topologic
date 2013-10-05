@@ -186,6 +186,10 @@ void processKeyboard(unsigned char key, int x, int y)
         case '8': topologicState.setActive (10); break;
         case '9': topologicState.setActive (11); break;
         case '0': topologicState.setActive (12); break;
+        case 'r':
+            topologicState.realign();
+            glutPostRedisplay();
+            break;
     }
 }
 

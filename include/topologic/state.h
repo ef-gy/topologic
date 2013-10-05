@@ -448,6 +448,41 @@ namespace topologic
 
             return state<Q,d-1>::setActive(dim);
         }
+
+        bool realign (void)
+        {
+            if (base::polarCoordinates)
+            {
+                from = fromp;
+            }
+
+            if (active)
+            {
+                Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
+
+                efgy::geometry::transformation<Q,d> mirror;
+                for (int i = 0; i <= d; i++)
+                {
+                    mirror.transformationMatrix.data[i][i] = Q(-1);
+                }
+
+                transformation.transformationMatrix
+                    = mirror.transformationMatrix
+                    * transformation.transformationMatrix
+                    * mirror.transformationMatrix;
+
+                to   = transformation * to;
+                from = transformation * from;
+
+                transformation = efgy::geometry::transformation<Q,d>();
+                
+                Q la = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
+
+                from = from * lb / la;
+            }
+
+            return state<Q,d-1>::realign();
+        }
     };
 
     template<typename Q>
@@ -499,6 +534,12 @@ namespace topologic
 
         bool setActive (const unsigned int &dim)
         {
+            return true;
+        }
+
+        bool realign (void)
+        {
+            polarCoordinates = false;
             return true;
         }
 
