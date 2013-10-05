@@ -10,12 +10,12 @@ svg { background: rgba(45%,45%,65%,1); }
 path.wireframe { stroke-width: 0.002; fill: none; stroke: rgba(100%,100%,100%,1); }
 path { stroke: none; fill: rgba(100%,100%,100%,0.1); }
 
-text[onclick]
+text[onclick], a text
 {
     fill: #449;
     cursor: pointer;
 }
-text[onclick]:hover
+text[onclick]:hover, a text:hover
 {
     text-decoration: underline;
 }
@@ -284,6 +284,20 @@ function initialise()
 <text x="16.5em" y="22em"
       onclick="topologicActiveDimension++; topologicUpdateDimension();">&gt;</text>
  
+<text x="2em" y="25em">Drag mouse to rotate active dimension.</text>
+<text x="2em" y="26.25em">Scroll to zoom.</text>
+
+<text x="2em" y="30em">This is a preview of Topologic/V6's</text>
+<text x="2em" y="31.25em">JSON/SVG renderer. For more info,</text>
+<a xlink:href="http://ef.gy/topologic">
+<text x="2em" y="32.5em">see http://ef.gy/topologic</text>
+</a>
+
+<text x="2em" y="35em">Get the source code at:</text>
+<a xlink:href="http://git.becquerel.org/?p=jyujin/topologic.git">
+<text x="2em" y="36.25em">http://git.becquerel.org</text>
+</a>
+
 <script type="application/ecmascript"><![CDATA[
 initialise();
 ]]></script>
