@@ -9,6 +9,16 @@
 svg { background: rgba(45%,45%,65%,1); }
 path.wireframe { stroke-width: 0.002; fill: none; stroke: rgba(100%,100%,100%,1); }
 path { stroke: none; fill: rgba(100%,100%,100%,0.1); }
+
+text[onclick]
+{
+    fill: #449;
+    cursor: pointer;
+}
+text[onclick]:hover
+{
+    text-decoration: underline;
+}
 ]]></style>
 
 <svg x="0" y="0" width="100%" height="100%" viewBox="-1.2 -1.2 2.4 2.4">
@@ -26,8 +36,96 @@ var getProjection = Module.cwrap('getProjection', 'string', []);
 var interpretDrag = Module.cwrap ('interpretDrag', 'number', ['number', 'number', 'number']);
 var setActiveDimension = Module.cwrap ('setActiveDimension', 'number', ['number']);
 
-setPrecision(4);
-updateModel('cube', 4, 4);
+var topologicMaxDepth = 5;
+var topologicModel='cube';
+var topologicModelDepth=4;
+var topologicModelRenderDepth=4;
+var topologicModelPrecision=3;
+var topologicModelRadius=1;
+var topologicActiveDimension=3;
+var redraw;
+
+function topologicUpdateDimension()
+{
+    if (topologicActiveDimension < 3)
+    {
+        topologicActiveDimension = 3;
+    }
+    if (topologicActiveDimension > topologicModelRenderDepth)
+    {
+        topologicActiveDimension = topologicModelRenderDepth;
+    }
+    var output = document.getElementById('activeDimension');
+    if (output)
+    {
+        output.textContent=topologicActiveDimension;
+    }
+    setActiveDimension(topologicActiveDimension);
+}
+
+function topologicUpdateCurrentModel()
+{
+    if (topologicModel == 'sphere')
+    {
+        if (topologicModelDepth == topologicModelRenderDepth)
+        {
+            topologicModelDepth--;
+        }
+    }
+    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel'))
+    {
+        if (topologicModelDepth != 2)
+        {
+            topologicModelDepth = 2;
+        }
+    }
+    if (topologicModelDepth > topologicMaxDepth)
+    {
+        topologicModelDepth = topologicMaxDepth;
+    }
+    if (topologicModelDepth < 2)
+    {
+        topologicModelDepth = 2;
+    }
+    if (topologicModelRenderDepth > topologicMaxDepth)
+    {
+        topologicModelRenderDepth = topologicMaxDepth;
+    }
+    if (topologicModelRenderDepth < topologicModelDepth)
+    {
+        topologicModelRenderDepth = topologicModelDepth;
+    }
+    if (topologicActiveDimension > topologicModelRenderDepth)
+    {
+        topologicUpdateDimension();
+    }
+
+    var output = document.getElementById('modelDepth');
+    if (output)
+    {
+        output.textContent=topologicModelDepth;
+    }
+    output = document.getElementById('modelRenderDepth');
+    if (output)
+    {
+        output.textContent=topologicModelRenderDepth;
+    }
+    output = document.getElementById('modelPrecision');
+    if (output)
+    {
+        output.textContent=topologicModelPrecision;
+    }
+    output = document.getElementById('modelRadius');
+    if (output)
+    {
+        output.textContent=topologicModelRadius;
+    }
+
+    setRadius(topologicModelRadius);
+    setPrecision(topologicModelPrecision);
+    updateModel(topologicModel, topologicModelDepth, topologicModelRenderDepth);
+    redraw();
+}
 
 function initialise()
 {
@@ -69,6 +167,8 @@ function initialise()
         renderWireframe (output, getProjection());
     }
 
+    redraw = render;
+
     var output = document.getElementById('output');
     var leftDown = false;
     var otherDown = false;
@@ -77,6 +177,8 @@ function initialise()
 
     function processMouseDown(e)
     {
+        e.preventDefault();
+
         if (e.button == 0)
         {
             leftDown = true;
@@ -124,15 +226,65 @@ function initialise()
         render();
     }
 
+    interpretDrag (150,80,-50);
+    topologicUpdateCurrentModel();
+
     document.onmousedown = processMouseDown;
     document.onmouseup = processMouseUp;
     document.onmousemove = processMove;
     document.onmousewheel = processScroll;
-
-    render();
 }
-
-initialise();
 ]]></script>
 
+<rect x="0" y="0" height="100%" width="20em" fill="rgba(255,255,255,0.6)"/>
+<text x="2em" y="2em">Model:</text>
+<text x="3em" y="4em"
+      onclick="topologicModel='simplex'; topologicUpdateCurrentModel();">Simplex</text>
+<text x="3em" y="5.25em"
+      onclick="topologicModel='cube'; topologicUpdateCurrentModel();">Cube</text>
+<text x="3em" y="6.5em"
+      onclick="topologicModel='sphere'; topologicUpdateCurrentModel();">Sphere</text>
+<text x="3em" y="7.75em"
+      onclick="topologicModel='moebius-strip'; topologicUpdateCurrentModel();">Moebius Strip</text>
+<text x="3em" y="9em"
+      onclick="topologicModel='klein-bagel'; topologicUpdateCurrentModel();">Klein Bagel</text>
+
+<text x="2em" y="15em">Model Depth:</text>
+<text x="12.5em" y="15em"
+      onclick="topologicModelDepth--; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="15em" text-anchor="middle" id="modelDepth"/>
+<text x="16.5em" y="15em" text-anchor="right"
+      onclick="topologicModelDepth++; topologicUpdateCurrentModel();">&gt;</text>
+
+<text x="2em" y="16.25em">Render Depth:</text>
+<text x="12.5em" y="16.25em"
+      onclick="topologicModelRenderDepth--; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="16.25em" text-anchor="middle" id="modelRenderDepth"/>
+<text x="16.5em" y="16.25em" text-anchor="right"
+      onclick="topologicModelRenderDepth++; topologicUpdateCurrentModel();">&gt;</text>
+ 
+<text x="2em" y="17.5em">Radius:</text>
+<text x="12.5em" y="17.5em"
+      onclick="topologicModelRadius-=0.25; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="17.5em" text-anchor="middle" id="modelRadius"/>
+<text x="16.5em" y="17.5em"
+      onclick="topologicModelRadius+=0.25; topologicUpdateCurrentModel();">&gt;</text>
+
+<text x="2em" y="18.75em">Precision:</text>
+<text x="12.5em" y="18.75em"
+      onclick="topologicModelPrecision-=0.25; topologicUpdateCurrentModel();">&lt;</text>
+<text x="14.75em" y="18.75em" text-anchor="middle" id="modelPrecision"/>
+<text x="16.5em" y="18.75em"
+      onclick="topologicModelPrecision+=0.25; topologicUpdateCurrentModel();">&gt;</text>
+ 
+<text x="2em" y="22em">Active Dimension:</text>
+<text x="12.5em" y="22em"
+      onclick="topologicActiveDimension--; topologicUpdateDimension();">&lt;</text>
+<text x="14.75em" y="22em" text-anchor="middle" id="activeDimension">3</text>
+<text x="16.5em" y="22em"
+      onclick="topologicActiveDimension++; topologicUpdateDimension();">&gt;</text>
+ 
+<script type="application/ecmascript"><![CDATA[
+initialise();
+]]></script>
 </svg>
