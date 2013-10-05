@@ -33,13 +33,13 @@ topologic::state<FP,5> topologicState;
 
 extern "C"
 {
-    int setRadius(double precision);
-    int setPrecision(double precision);
-    int updateModel(char *smodel, int dim, int rdim);
+    int setRadius(double);
+    int setPrecision(double);
+    int updateModel(char *, int, int);
     int updateProjection(void);
     const char *getProjection(void);
-    int mouseDrag (double, double);
-    int mouseScroll (double);
+    int interpretDrag(double, double, double);
+    int setActiveDimension(int);
 }
 
 int setRadius(double radius)
@@ -80,14 +80,14 @@ const char *getProjection()
     return currentJSON.c_str();
 }
 
-int mouseDrag (double x, double y)
+int interpretDrag (double x, double y, double z)
 {
-    topologicState.interpretDrag(FP(x),FP(y),FP(0));
+    topologicState.interpretDrag(FP(x),FP(y),FP(z));
     return 0;
 }
 
-int mouseScroll (double z)
+int setActiveDimension(int dim)
 {
-    topologicState.interpretDrag(FP(0),FP(0),FP(z));
+    topologicState.setActive(dim);
     return 0;
 }
