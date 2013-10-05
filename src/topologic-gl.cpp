@@ -172,6 +172,23 @@ void processMouseButton(int button, int state, int x, int y)
     }
 }
 
+void processKeyboard(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+        case '1': topologicState.setActive ( 3); break;
+        case '2': topologicState.setActive ( 4); break;
+        case '3': topologicState.setActive ( 5); break;
+        case '4': topologicState.setActive ( 6); break;
+        case '5': topologicState.setActive ( 7); break;
+        case '6': topologicState.setActive ( 8); break;
+        case '7': topologicState.setActive ( 9); break;
+        case '8': topologicState.setActive (10); break;
+        case '9': topologicState.setActive (11); break;
+        case '0': topologicState.setActive (12); break;
+    }
+}
+
 int main (int argc, char* argv[])
 {
     try
@@ -197,6 +214,7 @@ int main (int argc, char* argv[])
             glutMouseFunc(processMouseButton);
             glutMotionFunc(processMouse);
             glutPassiveMotionFunc(processMouse);
+            glutKeyboardFunc(processKeyboard);
             glutFullScreen();
             glutMainLoop();
             //std::cout << (*topologicState.model)(true).str();

@@ -326,7 +326,8 @@ namespace topologic
               opengl(transformation, projection, state<Q,d-1>::opengl),
 #endif
               svg(transformation, projection, state<Q,d-1>::svg),
-              json(transformation, projection, state<Q,d-1>::json)
+              json(transformation, projection, state<Q,d-1>::json),
+              active(d == 3)
             {
                 fromp.data[0] = 2;
                 for (int i = 1; i < d; i++)
@@ -345,6 +346,7 @@ namespace topologic
         typename efgy::render::opengl<Q,d> opengl;
 #endif
         typename efgy::render::json<Q,d> json;
+        bool active;
 
         void updateMatrix (void)
         {
@@ -394,7 +396,7 @@ namespace topologic
 
         bool interpretDrag (const Q &x, const Q &y, const Q &z)
         {
-            if (d > 3)
+            if (!active)
             {
                 return state<Q,d-1>::interpretDrag(x,y,z);
             }
@@ -403,9 +405,9 @@ namespace topologic
             Q t = x / (Q(M_PI) * Q(50.));
 
             rotationX.transformationMatrix.data[0][0] =  cos(t);
-            rotationX.transformationMatrix.data[0][2] = -sin(t);
-            rotationX.transformationMatrix.data[2][2] =  cos(t);
-            rotationX.transformationMatrix.data[2][0] =  sin(t);
+            rotationX.transformationMatrix.data[0][(d-1)] = -sin(t);
+            rotationX.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
+            rotationX.transformationMatrix.data[(d-1)][0] =  sin(t);
 
             transformation.transformationMatrix
                 = transformation.transformationMatrix
@@ -415,9 +417,9 @@ namespace topologic
             t = y / (Q(M_PI) * Q(-50.));
 
             rotationY.transformationMatrix.data[1][1] =  cos(t);
-            rotationY.transformationMatrix.data[1][2] = -sin(t);
-            rotationY.transformationMatrix.data[2][2] =  cos(t);
-            rotationY.transformationMatrix.data[2][1] =  sin(t);
+            rotationY.transformationMatrix.data[1][(d-1)] = -sin(t);
+            rotationY.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
+            rotationY.transformationMatrix.data[(d-1)][1] =  sin(t);
 
             transformation.transformationMatrix
                 = transformation.transformationMatrix
@@ -428,15 +430,23 @@ namespace topologic
             t = t > Q(1.2) ? Q(1.2) : t;
             t = t < Q(0.8) ? Q(0.8) : t;
 
-            zoomZ.transformationMatrix.data[0][0] *= t;
-            zoomZ.transformationMatrix.data[1][1] *= t;
-            zoomZ.transformationMatrix.data[2][2] *= t;
+            for (unsigned int i = 0; i < d; i++)
+            {
+                zoomZ.transformationMatrix.data[i][i] *= t;
+            }
 
             transformation.transformationMatrix
                 = transformation.transformationMatrix
                 * zoomZ.transformationMatrix;
 
             return true;
+        }
+
+        bool setActive (const unsigned int &dim)
+        {
+            active = (d == dim);
+
+            return state<Q,d-1>::setActive(dim);
         }
     };
 
@@ -483,6 +493,11 @@ namespace topologic
         }
 
         bool interpretDrag (const Q &x, const Q &y, const Q &z)
+        {
+            return true;
+        }
+
+        bool setActive (const unsigned int &dim)
         {
             return true;
         }
