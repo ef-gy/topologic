@@ -67,6 +67,7 @@ namespace topologic
                                      "\n"
                                      "  --depth N            Set model depth to N\n"
                                      "  --render-depth N     Set render depth to N\n"
+                                     "  --iterations N       Set IFS iterations to N\n"
                                      "  --model M            Set model to M (cube, sphere, ...)\n"
                                      "  --precision F        Set model precision to F\n"
                                      "  --multiplier F       Set model export precision multiplier to F\n"
@@ -117,6 +118,15 @@ namespace topologic
                         {
                             std::stringstream st (argv[i]);
                             st >> rdepth;
+                        }
+                    }
+                    else if (arg == "--iterations")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            st >> topologicState.state<Q,2>::parameter.iterations;
                         }
                     }
                     else if (arg == "--precision")

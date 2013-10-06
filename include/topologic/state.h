@@ -119,10 +119,17 @@ namespace topologic
                  "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
                  " path#" << gState.S2::idPrefix << "wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
                  " path { stroke: none; fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-            object.renderSolid();
-            gState.S2::svg.output << "<path id='" << gState.S2::idPrefix << "wireframe' d='";
-            object.renderWireframe();
-            gState.S2::svg.output << "'/></svg>\n";
+            if (gState.S2::surface.alpha > 0.)
+            {
+                object.renderSolid();
+            }
+            if (gState.S2::wireframe.alpha > 0.)
+            {
+                gState.S2::svg.output << "<path id='" << gState.S2::idPrefix << "wireframe' d='";
+                object.renderWireframe();
+                gState.S2::svg.output << "'/>";
+            }
+            gState.S2::svg.output << "</svg>\n";
             return gState.S2::svg.output;
         }
 
@@ -201,30 +208,34 @@ namespace topologic
 
             glDepthMask(GL_TRUE);
 
-            glColor4d(gState.S2::wireframe.red,
-                      gState.S2::wireframe.green,
-                      gState.S2::wireframe.blue,
-                      gState.S2::wireframe.alpha);
+            if (gState.S2::wireframe.alpha > 0.)
+            {
+                glColor4d(gState.S2::wireframe.red,
+                          gState.S2::wireframe.green,
+                          gState.S2::wireframe.blue,
+                          gState.S2::wireframe.alpha);
 
-            object.renderWireframe();
+                object.renderWireframe();
+            }
 
-            glDepthMask (gState.S2::surface.alpha < 1. ? GL_TRUE : GL_FALSE);
+            if (gState.S2::surface.alpha > 0.)
+            {
+                static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+                static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
+                static const GLfloat mat_shininess[] = { 50.0 };
 
-            static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-            static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
-            static const GLfloat mat_shininess[] = { 50.0 };
+                glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+                glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-            glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+                glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
 
-            glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-
-            glColor4d(gState.S2::surface.red,
-                      gState.S2::surface.green,
-                      gState.S2::surface.blue,
-                      gState.S2::surface.alpha);
-
-            object.renderSolid();
+                glColor4d(gState.S2::surface.red,
+                          gState.S2::surface.green,
+                          gState.S2::surface.blue,
+                          gState.S2::surface.alpha);
+    
+                object.renderSolid();
+            }
 
             glPopMatrix();
             glFlush();
@@ -286,10 +297,17 @@ namespace topologic
 
             gState.S2::json.reset();
 
-            gState.S2::json.output << "['";
-            object.renderWireframe();
-            gState.S2::json.output << "'";
-            object.renderSolid();
+            gState.S2::json.output << "[";
+            if (gState.S2::wireframe.alpha > 0.)
+            {
+                gState.S2::json.output << "'";
+                object.renderWireframe();
+                gState.S2::json.output << "'";
+            }
+            if (gState.S2::surface.alpha > 0.)
+            {
+                object.renderSolid();
+            }
             gState.S2::json.output << "]";
             return gState.S2::json.output;
         }
@@ -505,6 +523,7 @@ namespace topologic
             {
                 parameter.polarRadius    = Q(1);
                 parameter.polarPrecision = Q(10);
+                parameter.iterations     = 4;
             }
 
         void updateMatrix (void) const {}

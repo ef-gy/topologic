@@ -28,6 +28,9 @@
 #define TOPOLOGIC_PARSE_H
 
 #include <topologic/state.h>
+#include <ef.gy/polytope.h>
+#include <ef.gy/parametric.h>
+#include <ef.gy/ifs.h>
 #if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -467,6 +470,8 @@ namespace topologic
                  return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(s, so, rdims);
         else if (type == "klein-bagel")
                  return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(s, so, rdims);
+        else if (type == "sierpinski")
+                 return model<Q,d,e,efgy::geometry::sierpinski,C>::set(s, so, rdims);
 
         return false;
     }
