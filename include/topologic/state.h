@@ -192,6 +192,8 @@ namespace topologic
                          gState.S2::background.blue,
                          gState.S2::background.alpha);
 
+            glDepthMask(GL_TRUE);
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glPushMatrix();
@@ -206,10 +208,10 @@ namespace topologic
                       0.0, 1.0, 0.0);
 #endif
 
-            glDepthMask(GL_TRUE);
-
             if (gState.S2::wireframe.alpha > 0.)
             {
+                glDepthMask(GL_TRUE);
+
                 glColor4d(gState.S2::wireframe.red,
                           gState.S2::wireframe.green,
                           gState.S2::wireframe.blue,
@@ -220,6 +222,8 @@ namespace topologic
 
             if (gState.S2::surface.alpha > 0.)
             {
+                glDepthMask(gState.S2::surface.alpha < 1. ? GL_FALSE : GL_TRUE);
+
                 static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
                 static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
                 static const GLfloat mat_shininess[] = { 50.0 };
