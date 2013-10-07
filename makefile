@@ -41,7 +41,7 @@ LDFLAGS:=
 JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap']
 
 DATABASE:=
-BINARIES:=$(filter-out %-glut %-json,$(basename $(notdir $(wildcard src/*.cpp))))
+BINARIES:=$(filter-out %-glut %-gles %-json,$(basename $(notdir $(wildcard src/*.cpp))))
 GLBINARIES:=$(filter %-glut,$(basename $(notdir $(wildcard src/*.cpp))))
 JSBINARIES:=$(addsuffix .js,$(BINARIES))
 TESTBINARIES:=$(filter test-%,$(BINARIES))
