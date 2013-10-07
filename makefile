@@ -15,7 +15,7 @@ INSTALL:=install
 
 UNAME:=$(shell uname)
 LIBRARIES:=libxml-2.0
-LIBRARIES_GL:=
+LIBRARIES_GL:=libxml-2.0
 FRAMEWORKS:=
 FRAMEWORKS_GL:=GLUT OpenGL Cocoa
 
@@ -25,7 +25,7 @@ ifneq ($(UNAME),Darwin)
 PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
 PCLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES) 2>/dev/null)
 GLCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES_GL) 2>/dev/null)
-GLLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES_GL) 2>/dev/null)
+GLLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES_GL) 2>/dev/null) -lglut -lGL -lGLU
 else
 PCCFLAGS:=-I/usr/include/libxml2
 PCLDFLAGS:=-lxml2 $(addprefix -framework ,$(FRAMEWORKS))
