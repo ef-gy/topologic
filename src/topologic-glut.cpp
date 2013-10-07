@@ -82,8 +82,6 @@ void reshape(GLint width, GLint height)
     glClearDepth(1.0f);
 
     glEnable (GL_BLEND);
-    glColorMaterial (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-    glEnable (GL_COLOR_MATERIAL) ;
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_LIGHT0);
@@ -221,6 +219,7 @@ int main (int argc, char* argv[])
             glutKeyboardFunc(processKeyboard);
             glutFullScreen();
 
+            glEnable(GL_COLOR_MATERIAL);
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
 
