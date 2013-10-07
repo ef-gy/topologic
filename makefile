@@ -41,8 +41,8 @@ LDFLAGS:=
 JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap']
 
 DATABASE:=
-BINARIES:=$(filter-out %-gl %-json,$(basename $(notdir $(wildcard src/*.cpp))))
-GLBINARIES:=$(filter %-gl,$(basename $(notdir $(wildcard src/*.cpp))))
+BINARIES:=$(filter-out %-glut %-json,$(basename $(notdir $(wildcard src/*.cpp))))
+GLBINARIES:=$(filter %-glut,$(basename $(notdir $(wildcard src/*.cpp))))
 JSBINARIES:=$(addsuffix .js,$(BINARIES))
 TESTBINARIES:=$(filter test-%,$(BINARIES))
 
@@ -75,8 +75,8 @@ js: $(JSBINARIES)
 
 # meta rules for OpenGL
 gl: $(GLBINARIES)
-install-gl: $(IGLBINARIES)
-uninstall-gl:
+install-glut: $(IGLBINARIES)
+uninstall-glut:
 	rm -f $(IGLBINARIES)
 
 # run unit tests
@@ -101,7 +101,7 @@ $(MANDIR)/man1/%.1: src/%.1
 %: src/%.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
-%-gl: src/%-gl.cpp include/*/*.h
+%-glut: src/%-gl.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $(GLCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) $(GLLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
 %.js: src/%.cpp include/*/*.h
