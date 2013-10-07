@@ -64,7 +64,7 @@ namespace topologic
                    const std::string &data,
                    const std::string &filename)
                 : xml (pXml),
-                  document (xmlReadMemory (data.data(), data.size(), filename.c_str(), 0,
+                  document (xmlReadMemory (data.data(), int(data.size()), filename.c_str(), 0,
                             XML_PARSE_NOERROR | XML_PARSE_NOWARNING))
             {
                 if (document == 0)
