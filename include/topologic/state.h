@@ -212,7 +212,7 @@ namespace topologic
             {
                 glDepthMask(GL_TRUE);
 
-                glColor4d(gState.S2::wireframe.red,
+                glColor4f(gState.S2::wireframe.red,
                           gState.S2::wireframe.green,
                           gState.S2::wireframe.blue,
                           gState.S2::wireframe.alpha);
@@ -233,7 +233,7 @@ namespace topologic
 
                 glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
 
-                glColor4d(gState.S2::surface.red,
+                glColor4f(gState.S2::surface.red,
                           gState.S2::surface.green,
                           gState.S2::surface.blue,
                           gState.S2::surface.alpha);

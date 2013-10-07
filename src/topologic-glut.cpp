@@ -29,6 +29,7 @@
 #else
 #include <GL/glut.h>            /* Open GL Util    OpenGL*/
 #endif
+#include <OpenGL/OpenGL.h>
 
 #include <topologic/gl.h>
 
@@ -38,8 +39,8 @@
 
 GLint windowWidth, windowHeight;
 
-GLdouble mouseX, mouseY;
-GLdouble lastMouseX, lastMouseY;
+GLfloat mouseX, mouseY;
+GLfloat lastMouseX, lastMouseY;
 
 bool mouseLeft, mouseRight;
 

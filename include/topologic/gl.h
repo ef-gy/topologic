@@ -31,7 +31,7 @@
 
 namespace topologic
 {
-    typedef efgy::math::primitive<GLdouble> GLFP;
+    typedef efgy::math::primitive<GLfloat> GLFP;
 };
 
 #endif
