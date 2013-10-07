@@ -222,6 +222,7 @@ int main (int argc, char* argv[])
             glutFullScreen();
 
             glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_NORMAL_ARRAY);
 
             glutMainLoop();
             //std::cout << (*topologicState.model)(true).str();
