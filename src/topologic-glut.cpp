@@ -30,7 +30,7 @@
 #include <GL/glut.h>            /* Open GL Util    OpenGL*/
 #endif
 
-#include <topologic/glut.h>
+#include <topologic/gl.h>
 
 #if !defined(MAXDEPTH)
 #define MAXDEPTH 7

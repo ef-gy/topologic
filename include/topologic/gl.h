@@ -24,8 +24,8 @@
  * THE SOFTWARE.
 */
 
-#if !defined(TOPOLOGIC_GLUT_H)
-#define TOPOLOGIC_GLUT_H
+#if !defined(TOPOLOGIC_GL_H)
+#define TOPOLOGIC_GL_H
 
 #include <topologic/arguments.h>
 
