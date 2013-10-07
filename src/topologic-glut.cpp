@@ -74,7 +74,6 @@ void displayCall(void)
 void reshape(GLint width, GLint height)
 {
     glViewport(0, 0, width, height);
-    glShadeModel (GL_SMOOTH);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
