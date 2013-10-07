@@ -101,7 +101,7 @@ $(MANDIR)/man1/%.1: src/%.1
 %: src/%.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
-%-glut: src/%-gl.cpp include/*/*.h
+%-glut: src/%-glut.cpp include/*/*.h
 	$(CXX) -std=c++0x -Iinclude/ $(CXXFLAGS) $(PCCFLAGS) $(GLCFLAGS) $< $(LDFLAGS) $(PCLDFLAGS) $(GLLDFLAGS) -o $@ && ($(DEBUG) || strip -x $@)
 
 %.js: src/%.cpp include/*/*.h
