@@ -119,11 +119,11 @@ namespace topologic
                  "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
                  " path#" << gState.S2::idPrefix << "wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
                  " path { stroke: none; fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-            if (gState.S2::surface.alpha > 0.)
+            if (gState.S2::surface.alpha > Q(0.))
             {
                 object.renderSolid();
             }
-            if (gState.S2::wireframe.alpha > 0.)
+            if (gState.S2::wireframe.alpha > Q(0.))
             {
                 gState.S2::svg.output << "<path id='" << gState.S2::idPrefix << "wireframe' d='";
                 object.renderWireframe();
@@ -208,7 +208,7 @@ namespace topologic
                       0.0, 1.0, 0.0);
 #endif
 
-            if (gState.S2::wireframe.alpha > 0.)
+            if (gState.S2::wireframe.alpha > Q(0.))
             {
                 glDepthMask(GL_TRUE);
 
@@ -220,9 +220,9 @@ namespace topologic
                 object.renderWireframe();
             }
 
-            if (gState.S2::surface.alpha > 0.)
+            if (gState.S2::surface.alpha > Q(0.))
             {
-                glDepthMask(gState.S2::surface.alpha < 1. ? GL_FALSE : GL_TRUE);
+                glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
 
                 static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
                 static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
@@ -302,13 +302,13 @@ namespace topologic
             gState.S2::json.reset();
 
             gState.S2::json.output << "[";
-            if (gState.S2::wireframe.alpha > 0.)
+            if (gState.S2::wireframe.alpha > Q(0.))
             {
                 gState.S2::json.output << "'";
                 object.renderWireframe();
                 gState.S2::json.output << "'";
             }
-            if (gState.S2::surface.alpha > 0.)
+            if (gState.S2::surface.alpha > Q(0.))
             {
                 object.renderSolid();
             }

@@ -29,7 +29,6 @@
 #else
 #include <GL/glut.h>            /* Open GL Util    OpenGL*/
 #endif
-#include <OpenGL/OpenGL.h>
 
 #include <topologic/gl.h>
 

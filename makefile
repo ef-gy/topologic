@@ -34,7 +34,7 @@ GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
-EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432
+EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432 -s LEGACY_GL_EMULATION=1
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
@@ -106,3 +106,6 @@ $(MANDIR)/man1/%.1: src/%.1
 
 %.js: src/%.cpp include/*/*.h
 	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) -s EXPORTED_FUNCTIONS="$(JSFUNCTIONS)" $< $(LDFLAGS) -o $@
+
+%.html: src/%.cpp include/*/*.h
+	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@
