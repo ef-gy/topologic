@@ -483,10 +483,13 @@ namespace topologic
                 Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
 
                 efgy::geometry::transformation<Q,d> mirror;
+                /*
                 for (int i = 0; i <= d; i++)
                 {
                     mirror.transformationMatrix.data[i][i] = Q(-1);
                 }
+                */
+                mirror.transformationMatrix.data[2][2] = Q(-1);
 
                 transformation.transformationMatrix
                     = mirror.transformationMatrix
