@@ -220,6 +220,9 @@ int main (int argc, char* argv[])
             glutPassiveMotionFunc(processMouse);
             glutKeyboardFunc(processKeyboard);
             glutFullScreen();
+
+            glEnableClientState(GL_VERTEX_ARRAY);
+
             glutMainLoop();
             //std::cout << (*topologicState.model)(true).str();
         }
