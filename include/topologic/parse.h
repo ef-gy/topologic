@@ -216,7 +216,7 @@ namespace topologic
     };
 #endif
 
-    static double stringToDouble (const std::string &s)
+    static inline double stringToDouble (const std::string &s)
     {
         std::istringstream in(s);
         double d = 0;

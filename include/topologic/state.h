@@ -105,6 +105,8 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
+            gState.S::svg.frameStart();
+
             gState.S2::svg.reset();
 
             gState.S2::svg.output
@@ -130,6 +132,9 @@ namespace topologic
                 gState.S2::svg.output << "'/>";
             }
             gState.S2::svg.output << "</svg>\n";
+
+            gState.S::svg.frameEnd();
+
             return gState.S2::svg.output;
         }
 
@@ -184,6 +189,8 @@ namespace topologic
             {
                 gState.S::updateMatrix();
             }
+
+            gState.S::opengl.frameStart();
 
             gState.S2::output.str("");
 
@@ -244,6 +251,8 @@ namespace topologic
             glPopMatrix();
             glFlush();
 
+            gState.S::opengl.frameEnd();
+
             return gState.S2::output;
         }
 
@@ -299,6 +308,8 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
+            gState.S::json.frameStart();
+
             gState.S2::json.reset();
 
             gState.S2::json.output << "[";
@@ -313,6 +324,9 @@ namespace topologic
                 object.renderSolid();
             }
             gState.S2::json.output << "]";
+
+            gState.S::json.frameEnd();
+
             return gState.S2::json.output;
         }
 
@@ -361,7 +375,7 @@ namespace topologic
         typename efgy::geometry::polar::space<Q,d>::vector fromp;
         typename efgy::geometry::euclidian::space<Q,d>::vector &from, &to;
 
-        typename efgy::geometry::perspectiveProjection<Q,d> projection;
+        typename efgy::geometry::projection<Q,d> projection;
         typename efgy::geometry::transformation<Q,d> transformation;
         typename efgy::render::svg<Q,d> svg;
 #if !defined(NO_OPENGL)
