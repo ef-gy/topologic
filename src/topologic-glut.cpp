@@ -65,7 +65,7 @@ void displayCall(void)
 
     if (topologicState.model)
     {
-        (*topologicState.model)(true);
+        topologicState.model->render(true);
     }
 
     glutSwapBuffers();

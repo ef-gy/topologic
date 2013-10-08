@@ -56,7 +56,7 @@ namespace topologic
             }
             else
             {
-                std::cout << (*topologicState.model)(true).str();
+                std::cout << topologicState.model->render(true).str();
             }
         }
         catch (std::exception &e)

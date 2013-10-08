@@ -361,6 +361,10 @@ namespace topologic
                     parseModelWithTypeStringParameters<Q,dim,renderGL> (topologicState, model, depth, rdepth);
                 }
 #endif
+                else if (out == outJSON)
+                {
+                    parseModelWithTypeStringParameters<Q,dim,renderJSON> (topologicState, model, depth, rdepth);
+                }
             }
         }
         catch (std::exception &e)

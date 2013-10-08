@@ -55,7 +55,7 @@ namespace topologic
     {
     public:
         virtual ~renderer(void) {}
-        virtual std::stringstream &operator () (bool updateMatrix = false) = 0;
+        virtual std::stringstream &render (bool updateMatrix = false) = 0;
         virtual unsigned int depth (void) const = 0;
         virtual unsigned int renderDepth (void) const = 0;
         virtual const char *id (void) const = 0;
@@ -98,7 +98,7 @@ namespace topologic
                      pMultiplier)
             {}
 
-        std::stringstream &operator () (bool updateMatrix = false)
+        std::stringstream &render (bool updateMatrix = false)
         {
             if (updateMatrix)
             {
@@ -178,7 +178,7 @@ namespace topologic
                      pMultiplier)
             {}
 
-        std::stringstream &operator () (bool updateMatrix = false)
+        std::stringstream &render (bool updateMatrix = false)
         {
             if (updateMatrix)
             {
@@ -292,7 +292,7 @@ namespace topologic
                      pMultiplier)
             {}
 
-        std::stringstream &operator () (bool updateMatrix = false)
+        std::stringstream &render (bool updateMatrix = false)
         {
             if (updateMatrix)
             {
