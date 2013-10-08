@@ -72,9 +72,9 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 >$@
 
 # meta rules for documentation
-documentation.xml: doxyfile include/*/*
+documentation.xml: doxyfile include/*/* xslt/doxy*
 	doxygen $^
-	cd documentation/xml && $(XSLTPROC) combine.xslt index.xml > ../../$@
+	cd documentation/xml && $(XSLTPROC) combine.xslt index.xml | $(XSLTPROC) ../../xslt/doxygen-post-process.xslt - > ../../$@
 
 # meta rules for javascript
 js: $(JSBINARIES)
