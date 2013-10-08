@@ -508,6 +508,52 @@ namespace topologic
 
             return state<Q,d-1>::realign();
         }
+
+        bool setActiveFromCoordinate (const unsigned int &coord, const Q &value)
+        {
+            if (!active)
+            {
+                return state<Q,d-1>::setActiveFromCoordinate(coord, value);
+            }
+
+            if (coord >= d)
+            {
+                return false;
+            }
+
+            if (base::polarCoordinates)
+            {
+                fromp.data[coord] = value;
+            }
+            else
+            {
+                from.data[coord] = value;
+            }
+
+            return true;
+        }
+        
+        const Q getActiveFromCoordinate (const unsigned int &coord) const
+        {
+            if (!active)
+            {
+                return state<Q,d-1>::getActiveFromCoordinate(coord);
+            }
+
+            if (coord >= d)
+            {
+                return Q();
+            }
+
+            if (base::polarCoordinates)
+            {
+                return fromp.data[coord];
+            }
+            else
+            {
+                return from.data[coord];
+            }
+        }
     };
 
     template<typename Q>
@@ -567,6 +613,16 @@ namespace topologic
         {
             polarCoordinates = false;
             return true;
+        }
+
+        bool setActiveFromCoordinate (const unsigned int &coord, const Q &value)
+        {
+            return false;
+        }
+
+        const Q getActiveFromCoordinate (const unsigned int &coord) const
+        {
+            return Q();
         }
 
         renderer *model;
