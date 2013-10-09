@@ -121,7 +121,7 @@ namespace topologic
                  "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
                  " path#" << gState.S2::idPrefix << "wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
                  " path { stroke: none; fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-            if (gState.S2::surface.alpha > Q(0.))
+            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
                 object.renderSolid();
             }
@@ -213,6 +213,15 @@ namespace topologic
                       gState.state<Q,3>::to.data[2],
                       0.0, 1.0, 0.0);
 #endif
+            if (gState.S2::lightingEnabled)
+            {
+                glEnable (GL_LIGHTING);
+            }
+            else
+            {
+                glDisable (GL_LIGHTING);
+            }
+
             if (gState.S2::wireframe.alpha > Q(0.))
             {
                 glColor4f(gState.S2::wireframe.red,
@@ -223,7 +232,7 @@ namespace topologic
                 object.renderWireframe();
             }
 
-            if (gState.S2::surface.alpha > Q(0.))
+            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
                 glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
 
@@ -313,7 +322,7 @@ namespace topologic
                 object.renderWireframe();
                 gState.S2::json.output << "'";
             }
-            if (gState.S2::surface.alpha > Q(0.))
+            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
                 object.renderSolid();
             }
@@ -623,7 +632,9 @@ namespace topologic
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
               model(0),
-              idPrefix("")
+              idPrefix(""),
+              lightingEnabled(true),
+              surfacesEnabled(true)
             {
                 parameter.polarRadius    = Q(1);
                 parameter.polarPrecision = Q(10);
@@ -680,6 +691,8 @@ namespace topologic
         std::stringstream output;
         Q width;
         Q height;
+        bool lightingEnabled;
+        bool surfacesEnabled;
     };
 };
 
