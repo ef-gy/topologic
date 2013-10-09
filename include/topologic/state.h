@@ -202,10 +202,9 @@ namespace topologic
             glDepthMask(GL_TRUE);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            glPushMatrix();
 #if defined(GL3D)
-            glEnable(GL_DEPTH_TEST);
+            gluPerspective(45.0f, gState.S2::width / gState.S2::height, 0.5f, 500.0f);
+            
             gluLookAt(gState.state<Q,3>::from.data[0],
                       gState.state<Q,3>::from.data[1],
                       gState.state<Q,3>::from.data[2],
@@ -214,11 +213,8 @@ namespace topologic
                       gState.state<Q,3>::to.data[2],
                       0.0, 1.0, 0.0);
 #endif
-
             if (gState.S2::wireframe.alpha > Q(0.))
             {
-                glDepthMask(GL_TRUE);
-
                 glColor4f(gState.S2::wireframe.red,
                           gState.S2::wireframe.green,
                           gState.S2::wireframe.blue,
@@ -247,8 +243,6 @@ namespace topologic
     
                 object.renderSolid();
             }
-
-            glPopMatrix();
             glFlush();
 
             gState.S::opengl.frameEnd();
@@ -656,6 +650,8 @@ namespace topologic
         typename efgy::colour::RGBA<Q>::value surface;
         std::string idPrefix;
         std::stringstream output;
+        Q width;
+        Q height;
     };
 };
 

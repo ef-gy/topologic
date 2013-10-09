@@ -36,8 +36,6 @@
 #define MAXDEPTH 7
 #endif
 
-GLint windowWidth, windowHeight;
-
 GLfloat mouseX, mouseY;
 GLfloat lastMouseX, lastMouseY;
 
@@ -85,19 +83,8 @@ void reshape(GLint width, GLint height)
 
     glEnable(GL_LIGHT0);
 
-    windowWidth  = width;
-    windowHeight = height;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-#if defined(GL3D)
-    gluPerspective(45.0f, (double)windowWidth / (double)windowHeight, 0.5f, 500.0f);
-#else
-    glOrtho (1.8, -1.8, -1, 1, 0, 200);
-    glDisable(GL_DEPTH_TEST);
-#endif
-
-    glMatrixMode(GL_MODULATE);
+    topologicState.width  = width;
+    topologicState.height = height;
 }
 
 void idle(void)
