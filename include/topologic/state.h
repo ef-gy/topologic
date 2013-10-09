@@ -432,6 +432,26 @@ namespace topologic
         {
             return new renderSVG<Q,md,T,rd,true>(*this);
         }
+        
+        bool scale (const Q &scale)
+        {
+            if (!active)
+            {
+                return state<Q,d-1>::scale(scale);
+            }
+
+            efgy::geometry::transformation<Q,d> zoomZ;
+            Q t = Q(1.) + scale;
+            
+            for (unsigned int i = 0; i < d; i++)
+            {
+                zoomZ.transformationMatrix.data[i][i] *= t;
+            }
+            
+            transformation = transformation * zoomZ;
+
+            return true;
+        }
 
         bool interpretDrag (const Q &x, const Q &y, const Q &z)
         {
@@ -440,6 +460,32 @@ namespace topologic
                 return state<Q,d-1>::interpretDrag(x,y,z);
             }
 
+            typename efgy::geometry::euclidian::space<Q,d>::vector fn;
+
+            if (base::polarCoordinates)
+            {
+                fn = fromp;
+            }
+            else
+            {
+                fn = from;
+            }
+
+            efgy::geometry::transformation<Q,d> mn;
+
+            efgy::geometry::lookAt<Q,d> lookAt(fn, to);
+            efgy::geometry::transformation<Q,d> reverseLookAt;
+            for (unsigned int i = 0; i < d; i++)
+            {
+                for (unsigned int j = 0; j < d; j++)
+                {
+                    reverseLookAt.transformationMatrix.data[i][j]
+                        = lookAt.transformationMatrix.data[j][i];
+                }
+            }
+
+            mn = mn * lookAt;
+            
             efgy::geometry::transformation<Q,d> rotationX;
             Q t = x / (Q(M_PI) * Q(50.));
 
@@ -448,36 +494,24 @@ namespace topologic
             rotationX.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
             rotationX.transformationMatrix.data[(d-1)][0] =  sin(t);
 
-            transformation.transformationMatrix
-                = transformation.transformationMatrix
-                * rotationX.transformationMatrix;
+            mn = mn * rotationX;
 
             efgy::geometry::transformation<Q,d> rotationY;
-            t = y / (Q(M_PI) * Q(-50.));
+            t = y / (Q(M_PI) * Q(50.));
 
             rotationY.transformationMatrix.data[1][1] =  cos(t);
             rotationY.transformationMatrix.data[1][(d-1)] = -sin(t);
             rotationY.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
             rotationY.transformationMatrix.data[(d-1)][1] =  sin(t);
 
-            transformation.transformationMatrix
-                = transformation.transformationMatrix
-                * rotationY.transformationMatrix;
+            mn = mn * rotationY;
 
-            efgy::geometry::transformation<Q,d> zoomZ;
-            t = Q(1.) + (z / Q(50.));
-            t = t > Q(1.2) ? Q(1.2) : t;
-            t = t < Q(0.8) ? Q(0.8) : t;
+            mn = mn * reverseLookAt;
+            
+            transformation = transformation * mn;
 
-            for (unsigned int i = 0; i < d; i++)
-            {
-                zoomZ.transformationMatrix.data[i][i] *= t;
-            }
-
-            transformation.transformationMatrix
-                = transformation.transformationMatrix
-                * zoomZ.transformationMatrix;
-
+            scale (z / Q(50.));
+            
             return true;
         }
 
@@ -616,31 +650,16 @@ namespace topologic
             return rv.str();
         }
 
-        bool interpretDrag (const Q &x, const Q &y, const Q &z)
-        {
-            return true;
-        }
-
-        bool setActive (const unsigned int &dim)
-        {
-            return true;
-        }
-
+        bool scale (const Q &) const { return false; }
+        bool interpretDrag (const Q &, const Q &, const Q &) const { return true; }
+        bool setActive (const unsigned int &) const { return true; }
         bool realign (void)
         {
             polarCoordinates = false;
             return true;
         }
-
-        bool setActiveFromCoordinate (const unsigned int &coord, const Q &value)
-        {
-            return false;
-        }
-
-        const Q getActiveFromCoordinate (const unsigned int &coord) const
-        {
-            return Q();
-        }
+        bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
+        const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
 
         renderer *model;
 
