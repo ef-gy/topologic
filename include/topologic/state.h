@@ -359,10 +359,19 @@ namespace topologic
               json(transformation, projection, state<Q,d-1>::json),
               active(d == 3)
             {
-                fromp.data[0] = 2;
-                for (int i = 1; i < d; i++)
+                if (d == 3)
                 {
-                    fromp.data[i] = 1.57;
+                    fromp.data[0] = 3;
+                    fromp.data[1] = 1;
+                    fromp.data[2] = 1;
+                }
+                else
+                {
+                    fromp.data[0] = 2;
+                    for (int i = 1; i < d; i++)
+                    {
+                        fromp.data[i] = 1.57;
+                    }
                 }
             }
 
