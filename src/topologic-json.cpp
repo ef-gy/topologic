@@ -74,7 +74,7 @@ const char *getProjection()
 {
     if (topologicState.model)
     {
-        currentJSON = (*topologicState.model)().str();
+        currentJSON = topologicState.model->render().str();
     }
 
     return currentJSON.c_str();
