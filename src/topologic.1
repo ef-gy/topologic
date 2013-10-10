@@ -21,21 +21,8 @@ primitives are rendered in. For example, it is possible to render a 3-cube in
 All output is sent to stdout. To save data to a file, use your shell's output
 redirection features.
 
-.SH EXAMPLES
-.IP "$ topologic"
-Render the default model (a 4-cube in 4-space) with the default viewpoint to
-stdout.
-.IP "$ topologic --model sphere --depth 2 --render-depth 3"
-Render a 2-sphere - i.e. the 'normal' sphere - in 3-space.
-.IP "$ topologic --model cube --depth 3 --render-depth 4 --from 4 1 1 1 1"
-Render a 3-cube in 4-space but set the (polar) coordinates for the 4th
-dimension as (radius, theta-1, theta-2, theta-3) = (1, 1, 1, 1).
-.IP "$ topologic frob.svg"
-Load the settings stored in frob.svg and then try to render a new image based
-on those settings.
-.IP "$ topologic frob.svg --model moebius-strip"
-Load the settings stored in frob.svg, but then render a moebius-strip instead
-of the model information in frob.svg.
+For an OpenGL/GLUT-based frontend, see
+.BR topologic-glut (1)
 
 .SH OPTIONS
 .IP "--help"
@@ -123,6 +110,11 @@ Set the prefix for generated XML IDs to
 .I S
 in order to prevent ID clashes when reusing the SVGs in other XMLs.
 
+.SH ENVIRONMENT
+.B topologic
+does not heed any environment variables, but it does use libxml2 which might
+use environment variables.
+
 .SH FILES
 The SVG files produced by
 .B topologic
@@ -141,11 +133,6 @@ kind of metadata as the SVGs, thus making the programme scriptable. The format
 of this metadata will be described separately at a later date, although it is
 quite straightforward if you look at the <svg:metadata/> element in the
 generated SVGs.
-
-.SH ENVIRONMENT
-.B topologic
-does not heed any environment variables, but it does use libxml2 which might
-use environment variables.
 
 .SH "SOURCE CODE"
 Almost all of the code for
@@ -188,5 +175,24 @@ With high precision settings, the resulting SVGs may end up being extremely
 large, which may in turn crash or lock up some SVG renderers. Try to be
 reasonable with your precision settings.
 
+.SH EXAMPLE
+.IP "$ topologic"
+Render the default model (a 4-cube in 4-space) with the default viewpoint to
+stdout.
+.IP "$ topologic --model sphere --depth 2 --render-depth 3"
+Render a 2-sphere - i.e. the 'normal' sphere - in 3-space.
+.IP "$ topologic --model cube --depth 3 --render-depth 4 --from 4 1 1 1 1"
+Render a 3-cube in 4-space but set the (polar) coordinates for the 4th
+dimension as (radius, theta-1, theta-2, theta-3) = (1, 1, 1, 1).
+.IP "$ topologic frob.svg"
+Load the settings stored in frob.svg and then try to render a new image based
+on those settings.
+.IP "$ topologic frob.svg --model moebius-strip"
+Load the settings stored in frob.svg, but then render a moebius-strip instead
+of the model information in frob.svg.
+
 .SH AUTHOR
 Magnus Deininger <magnus@ef.gy>
+
+.SH "SEE ALSO"
+.BR topologic-glut (1)
