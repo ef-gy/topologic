@@ -229,9 +229,13 @@ namespace topologic
     static bool parse (state<Q,d> &s, xml::parser &parser)
     {
         std::stringstream st;
-        std::string value, dims;
+        std::string value, dims, dimssq;
         st << d;
         st >> dims;
+        st.clear();
+        st.str("");
+        st << ((d+1) * (d+1));
+        st >> dimssq;
         st.clear();
 
         if (parser.updateContext ("//topologic:camera[count(@*) = " + dims + "][1]"))
@@ -276,6 +280,38 @@ namespace topologic
                 }
             }
             while (parser.updateContext ("following-sibling::topologic:camera[count(@*) = " + dims + "][1]"));
+        }
+
+        if (parser.updateContext ("//topologic:transformation[@depth = " + dims + "][1]"))
+        {
+            do
+            {
+                if ((value = parser.evaluate("@matrix")) == "identity")
+                {
+                    s.transformation = efgy::geometry::transformation<Q,d>();
+                }
+            }
+            while (parser.updateContext ("following-sibling::topologic:transformation[@depth = " + dims + "][1]"));
+        }
+
+        if (parser.updateContext ("//topologic:transformation[count(@*) = " + dimssq + "][1]"))
+        {
+            do
+            {
+                for (unsigned int i = 0; i <= d; i++)
+                {
+                    for (unsigned int j = 0; j <= d; j++)
+                    {
+                        st.str("");
+                        st << "@e" << i << "-" << j;
+                        if ((value = parser.evaluate(st.str())) != "")
+                        {
+                            s.transformation.transformationMatrix.data[i][j] = Q(stringToDouble(value));
+                        }
+                    }
+                }
+            }
+            while (parser.updateContext ("following-sibling::topologic:transformation[count(@*) = " + dimssq + "][1]"));
         }
 
         return parse<Q,d-1>(s, parser);

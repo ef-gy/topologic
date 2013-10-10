@@ -436,7 +436,7 @@ namespace topologic
             rv << "<t:transformation";
             if (isIdentity (transformation.transformationMatrix))
             {
-                rv << " matrix='identity'";
+                rv << " matrix='identity' depth='" << d << "'";
             }
             else
             {
