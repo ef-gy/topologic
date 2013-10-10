@@ -60,6 +60,7 @@ namespace topologic
         virtual unsigned int renderDepth (void) const = 0;
         virtual const char *id (void) const = 0;
         virtual std::string name (void) const = 0;
+        virtual void update (void) = 0;
     };
 
     class empty
@@ -147,6 +148,7 @@ namespace topologic
             rv << depth() << "-" << id();
             return rv.str();
         }
+        void update (void) { object.calculateObject(); }
 
     protected:
         S &gState;
@@ -268,6 +270,7 @@ namespace topologic
             rv << depth() << "-" << id();
             return rv.str();
         }
+        void update (void) { object.calculateObject(); }
 
     protected:
         S &gState;
@@ -342,6 +345,7 @@ namespace topologic
             rv << depth() << "-" << id();
             return rv.str();
         }
+        void update (void) { object.calculateObject(); }
 
     protected:
         S &gState;
@@ -630,6 +634,19 @@ namespace topologic
                 return from.data[coord];
             }
         }
+
+        bool translatePolarToCartesian (void)
+        {
+            from = fromp;
+            return state<Q,d-1>::translatePolarToCartesian();
+        }
+
+        bool translateCartesianToPolar (void)
+        {
+            // TODO: implement this transformation
+            // fromp = from;
+            return state<Q,d-1>::translateCartesianToPolar();
+        }
     };
 
     template<typename Q>
@@ -644,6 +661,7 @@ namespace topologic
 #endif
               json(transformation),
               exportMultiplier(Q(2)),
+              lighting(Q(1), Q(1), Q(1), Q(1)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
@@ -670,6 +688,7 @@ namespace topologic
             }
             rv << "<t:options radius='" << double(parameter.polarRadius) << "' id-prefix='" << idPrefix << "'/>"
                << "<t:precision polar='" << double(parameter.polarPrecision) << "' export-multiplier='" << double(exportMultiplier) << "'/>"
+               << "<t:colour-lighting red='" << double(lighting.red) << "' green='" << double(lighting.green) << "' blue='" << double(lighting.blue) << "' alpha='" << double(lighting.alpha) << "'/>"
                << "<t:colour-background red='" << double(background.red) << "' green='" << double(background.green) << "' blue='" << double(background.blue) << "' alpha='" << double(background.alpha) << "'/>"
                << "<t:colour-wireframe red='" << double(wireframe.red) << "' green='" << double(wireframe.green) << "' blue='" << double(wireframe.blue) << "' alpha='" << double(wireframe.alpha) << "'/>"
                << "<t:colour-surface red='" << double(surface.red) << "' green='" << double(surface.green) << "' blue='" << double(surface.blue) << "' alpha='" << double(surface.alpha) << "'/>";
@@ -687,6 +706,8 @@ namespace topologic
         }
         bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
         const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
+        bool translatePolarToCartesian (void) const { return true; }
+        bool translateCartesianToPolar (void) const { return true; }
 
         renderer *model;
 
@@ -700,6 +721,7 @@ namespace topologic
         bool polarCoordinates;
         efgy::geometry::parameters<Q> parameter;
         Q exportMultiplier;
+        typename efgy::colour::RGBA<Q>::value lighting;
         typename efgy::colour::RGBA<Q>::value background;
         typename efgy::colour::RGBA<Q>::value wireframe;
         typename efgy::colour::RGBA<Q>::value surface;
