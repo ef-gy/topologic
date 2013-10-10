@@ -413,14 +413,14 @@ namespace topologic
             if (base::polarCoordinates)
             {
                 rv << " radius='" << double(fromp.data[0]) << "'";
-                for (int i = 1; i < d; i++)
+                for (unsigned int i = 1; i < d; i++)
                 {
                     rv << " theta-" << i << "='" << double(fromp.data[i]) << "'";
                 }
             }
             else
             {
-                for (int i = 0; i < d; i++)
+                for (unsigned int i = 0; i < d; i++)
                 {
                     if (i < sizeof(cartesianDimensions))
                     {
@@ -429,6 +429,22 @@ namespace topologic
                     else
                     {
                         rv << " d-" << i << "='" << double(from.data[i]) << "'";
+                    }
+                }
+            }
+            rv << "/>";
+            rv << "<t:transformation";
+            if (isIdentity (transformation.transformationMatrix))
+            {
+                rv << " matrix='identity'";
+            }
+            else
+            {
+                for (unsigned int i = 0; i <= d; i++)
+                {
+                    for (unsigned int j = 0; j <= d; j++)
+                    {
+                        rv << " e" << i << "-" << j << "='" << double(transformation.transformationMatrix.data[i][j]) << "'";
                     }
                 }
             }
