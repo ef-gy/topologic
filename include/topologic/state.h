@@ -252,15 +252,6 @@ namespace topologic
 
                 glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
 
-                static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-                static const GLfloat mat_emission[] = { 0, 0, 0, 1.0 };
-                static const GLfloat mat_shininess[] = { 50.0 };
-
-                glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-                glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
-                glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-
                 glColor4f(gState.S2::surface.red,
                           gState.S2::surface.green,
                           gState.S2::surface.blue,
