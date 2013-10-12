@@ -169,21 +169,27 @@ namespace topologic
               object(gState.S::opengl,
                      gState.S2::parameter,
                      gState.S2::exportMultiplier)
-            {}
+            {
+                gState.S::opengl.reset();
+            }
 
         renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
             : gState(pState),
               object(gState.S::opengl,
                      pParameter,
                      Q(1))
-            {}
+            {
+                gState.S::opengl.reset();
+            }
 
         renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
             : gState(pState),
               object(gState.S::opengl,
                      pParameter,
                      pMultiplier)
-            {}
+            {
+                gState.S::opengl.reset();
+            }
 
         std::stringstream &render (bool updateMatrix = false)
         {
@@ -224,6 +230,16 @@ namespace topologic
                 glDisable (GL_LIGHTING);
             }
 
+            if (!gState.S::opengl.isPrepared())
+            {
+                //std::cerr << "crunching numbers...\n";
+
+                object.renderWireframe();
+                object.renderSolid();
+
+                gState.S::opengl.frameEnd();
+            }
+
             if (gState.S2::wireframe.alpha > Q(0.))
             {
                 glColor4f(gState.S2::wireframe.red,
@@ -231,7 +247,7 @@ namespace topologic
                           gState.S2::wireframe.blue,
                           gState.S2::wireframe.alpha);
 
-                object.renderWireframe();
+                gState.S::opengl.pushLines();
             }
 
             if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
@@ -251,12 +267,11 @@ namespace topologic
                           gState.S2::surface.green,
                           gState.S2::surface.blue,
                           gState.S2::surface.alpha);
-    
-                object.renderSolid();
-            }
-            glFlush();
 
-            gState.S::opengl.frameEnd();
+                gState.S::opengl.pushFaces();
+            }
+
+            glFlush();
 
             return gState.S2::output;
         }
@@ -270,7 +285,11 @@ namespace topologic
             rv << depth() << "-" << id();
             return rv.str();
         }
-        void update (void) { object.calculateObject(); }
+        void update (void)
+        {
+            gState.S::opengl.reset();
+            object.calculateObject();
+        }
 
     protected:
         S &gState;
@@ -469,6 +488,13 @@ namespace topologic
                 return state<Q,d-1>::scale(scale);
             }
 
+#if !defined(NO_OPENGL)
+            if (d > 3)
+            {
+                opengl.reset();
+            }
+#endif
+
             efgy::geometry::transformation<Q,d> zoomZ;
             Q t = Q(1.) + scale;
             
@@ -488,6 +514,13 @@ namespace topologic
             {
                 return state<Q,d-1>::interpretDrag(x,y,z);
             }
+
+#if !defined(NO_OPENGL)
+            if (d > 3)
+            {
+                opengl.reset();
+            }
+#endif
 
             typename efgy::geometry::euclidian::space<Q,d>::vector fn;
 
@@ -560,6 +593,12 @@ namespace topologic
 
             if (active)
             {
+#if !defined(NO_OPENGL)
+                if (d > 3)
+                {
+                    opengl.reset();
+                }
+#endif
                 Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
 
                 efgy::geometry::transformation<Q,d> mirror;
@@ -600,6 +639,13 @@ namespace topologic
             {
                 return false;
             }
+
+#if !defined(NO_OPENGL)
+            if (d > 3)
+            {
+                opengl.reset();
+            }
+#endif
 
             if (base::polarCoordinates)
             {
