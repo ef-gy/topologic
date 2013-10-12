@@ -221,14 +221,7 @@ namespace topologic
                       gState.state<Q,3>::to.data[2],
                       0.0, 1.0, 0.0);
 #endif
-            if (gState.S2::lightingEnabled)
-            {
-                glEnable (GL_LIGHTING);
-            }
-            else
-            {
-                glDisable (GL_LIGHTING);
-            }
+            glDisable (GL_LIGHTING);
 
             if (!gState.S::opengl.isPrepared())
             {
@@ -252,6 +245,11 @@ namespace topologic
 
             if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
+                if (gState.S2::lightingEnabled)
+                {
+                    glEnable (GL_LIGHTING);
+                }
+
                 glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
 
                 static const GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
