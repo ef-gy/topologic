@@ -211,6 +211,8 @@ namespace topologic
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 #if defined(GL3D)
+#if defined(GLK)
+#else
             gluPerspective(45.0f, gState.S2::width / gState.S2::height, 0.5f, 500.0f);
             
             gluLookAt(gState.state<Q,3>::from.data[0],
@@ -221,13 +223,27 @@ namespace topologic
                       gState.state<Q,3>::to.data[2],
                       0.0, 1.0, 0.0);
 #endif
+#endif
             glDisable (GL_LIGHTING);
 
             if (!gState.S::opengl.isPrepared())
             {
                 //std::cerr << "crunching numbers...\n";
 
+                gState.opengl.setColour
+                    (gState.S2::wireframe.red,
+                     gState.S2::wireframe.green,
+                     gState.S2::wireframe.blue,
+                     gState.S2::wireframe.alpha);
+                
                 object.renderWireframe();
+
+                gState.opengl.setColour
+                    (gState.S2::surface.red,
+                     gState.S2::surface.green,
+                     gState.S2::surface.blue,
+                     gState.S2::surface.alpha);
+
                 object.renderSolid();
 
                 gState.S::opengl.frameEnd();
@@ -235,10 +251,11 @@ namespace topologic
 
             if (gState.S2::wireframe.alpha > Q(0.))
             {
-                glColor4f(gState.S2::wireframe.red,
-                          gState.S2::wireframe.green,
-                          gState.S2::wireframe.blue,
-                          gState.S2::wireframe.alpha);
+                gState.opengl.setColour
+                    (gState.S2::wireframe.red,
+                     gState.S2::wireframe.green,
+                     gState.S2::wireframe.blue,
+                     gState.S2::wireframe.alpha);
 
                 gState.S::opengl.pushLines();
             }
@@ -252,10 +269,11 @@ namespace topologic
 
                 glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
 
-                glColor4f(gState.S2::surface.red,
-                          gState.S2::surface.green,
-                          gState.S2::surface.blue,
-                          gState.S2::surface.alpha);
+                gState.opengl.setColour
+                    (gState.S2::surface.red,
+                     gState.S2::surface.green,
+                     gState.S2::surface.blue,
+                     gState.S2::surface.alpha);
 
                 gState.S::opengl.pushFaces();
             }
