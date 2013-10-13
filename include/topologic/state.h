@@ -211,7 +211,7 @@ namespace topologic
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 #if defined(GL3D)
-#if defined(GLK)
+#if defined(GLVA)
 #else
             gluPerspective(45.0f, gState.S2::width / gState.S2::height, 0.5f, 500.0f);
             
