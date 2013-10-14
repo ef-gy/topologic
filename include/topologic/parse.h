@@ -408,7 +408,7 @@ namespace topologic
 
     template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    static bool setModel (const state<Q,d> &s, state<Q,e> &so)
+    static bool setModel (state<Q,e> &so)
     {
         if (so.state<Q,2>::model)
         {
@@ -425,7 +425,7 @@ namespace topologic
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model
     {
-    public: static bool set (const state<Q,d> &s, state<Q,e> &so, const unsigned int &rdims)
+    public: static bool set (state<Q,e> &so, const unsigned int &rdims)
         {
             if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
             {
@@ -446,15 +446,15 @@ namespace topologic
             if (   (T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum > 0)
                 && (e > T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum))
             {
-                return model<Q,d,e-1,T,C>::set (s, so, rdims);
+                return model<Q,d,e-1,T,C>::set (so, rdims);
             }
 
             if (e == rdims)
             {
-                return setModel<Q,d,e,T,C>(s, so);
+                return setModel<Q,d,e,T,C>(so);
             }
 
-            return model<Q,d,e-1,T,C>::set (s, so, rdims);
+            return model<Q,d,e-1,T,C>::set (so, rdims);
         }
     };
 
@@ -462,7 +462,7 @@ namespace topologic
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,d,2,T,C>
     {
-    public: static bool set (const state<Q,d> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
+    public: static bool set (state<Q,2> &, const unsigned int &) { return false; }
     };
 
     template<typename Q, unsigned int d, unsigned int e,
@@ -470,21 +470,21 @@ namespace topologic
     static bool setModelWithTypeString (const state<Q,d> &s, const std::string &type, state<Q,e> &so, const unsigned int &rdims = e)
     {
              if (type == "axe-graph")
-                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(so, rdims);
         else if (type == "simplex")
-                 return model<Q,d,e,efgy::geometry::simplex,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::simplex,C>::set(so, rdims);
         else if (type == "cube")
-                 return model<Q,d,e,efgy::geometry::cube,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::cube,C>::set(so, rdims);
         else if (type == "sphere")
-                 return model<Q,d,e,efgy::geometry::sphere,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::sphere,C>::set(so, rdims);
         else if (type == "moebius-strip")
-                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(so, rdims);
         else if (type == "klein-bagel")
-                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(so, rdims);
         else if (type == "sierpinski-gasket")
-                 return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(so, rdims);
         else if (type == "sierpinski-carpet")
-                 return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(s, so, rdims);
+                 return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, rdims);
 
         return false;
     }
