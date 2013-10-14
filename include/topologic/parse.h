@@ -408,24 +408,23 @@ namespace topologic
 
     template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    static bool setModel (state<Q,e> &so)
-    {
-        if (so.state<Q,2>::model)
-        {
-            delete so.state<Q,2>::model;
-            so.state<Q,2>::model = 0;
-        }
-
-        so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
-
-        return so.state<Q,2>::model != 0;
-    }
-
-    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model
     {
-    public: static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
+    public:
+        static bool set (state<Q,e> &so)
+        {
+            if (so.state<Q,2>::model)
+            {
+                delete so.state<Q,2>::model;
+                so.state<Q,2>::model = 0;
+            }
+
+            so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
+
+            return so.state<Q,2>::model != 0;
+        }
+
+        static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
         {
             if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
             {
@@ -453,7 +452,7 @@ namespace topologic
             {
                 if (d == dims)
                 {
-                    return setModel<Q,d,e,T,C>(so);
+                    return set(so);
                 }
                 else if (d < dims)
                 {
