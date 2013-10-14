@@ -460,73 +460,9 @@ namespace topologic
 
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,d,T,C>
-    {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims)
-        {
-            if (d == rdims)
-            {
-                return setModel<Q,d,d,T,C>(s, so);
-            }
-
-            return false;
-        }
-    };
-
-    template<typename Q, unsigned int d,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,d,efgy::geometry::sphere,C>
-    {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q, unsigned int d,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,d,efgy::geometry::moebiusStrip,C>
-    {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q, unsigned int d,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,d,efgy::geometry::kleinBagel,C>
-    {
-    public: static bool set (const state<Q,d> &s, state<Q,d> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,d,2,T,C>
     {
     public: static bool set (const state<Q,d> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,2,2,efgy::geometry::sphere,C>
-    {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,2,2,efgy::geometry::moebiusStrip,C>
-    {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,2,2,efgy::geometry::kleinBagel,C>
-    {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
-    };
-
-    template<typename Q, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,2,2,T,C>
-    {
-    public: static bool set (const state<Q,2> &s, state<Q,2> &so, const unsigned int &rdims) { return false; }
     };
 
     template<typename Q, unsigned int d, unsigned int e,
