@@ -56,7 +56,7 @@ int setPrecision(double precision)
 
 int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::parseModelWithTypeStringParameters<FP,5,topologic::renderJSON> (topologicState, std::string(smodel), dim, rdim);
+    topologic::setModelWithTypeString<FP,5,5,topologic::renderJSON> (std::string(smodel), topologicState, dim, rdim);
 
     return 0;
 }

@@ -353,17 +353,17 @@ namespace topologic
             {
                 if (out == outSVG)
                 {
-                    parseModelWithTypeStringParameters<Q,dim,renderSVG> (topologicState, model, depth, rdepth);
+                    setModelWithTypeString<Q,dim,dim,renderSVG> (model, topologicState, depth, rdepth);
                 }
 #if !defined(NO_OPENGL)
                 else if (out == outGL)
                 {
-                    parseModelWithTypeStringParameters<Q,dim,renderGL> (topologicState, model, depth, rdepth);
+                    setModelWithTypeString<Q,dim,dim,renderGL> (model, topologicState, depth, rdepth);
                 }
 #endif
                 else if (out == outJSON)
                 {
-                    parseModelWithTypeStringParameters<Q,dim,renderJSON> (topologicState, model, depth, rdepth);
+                    setModelWithTypeString<Q,dim,dim,renderJSON> (model, topologicState, depth, rdepth);
                 }
             }
         }
