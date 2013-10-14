@@ -44,6 +44,156 @@
 
 namespace topologic
 {
+    static inline double stringToDouble (const std::string &s)
+    {
+        std::istringstream in(s);
+        double d = 0;
+        in >> d;
+        return d;
+    }
+
+    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model
+    {
+    public:
+        static bool set (state<Q,e> &so)
+        {
+            if (so.state<Q,2>::model)
+            {
+                delete so.state<Q,2>::model;
+                so.state<Q,2>::model = 0;
+            }
+
+            so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
+
+            return so.state<Q,2>::model != 0;
+        }
+
+        static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
+        {
+            if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
+            {
+                return false;
+            }
+
+            if (   (T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum > 0)
+                && (d > T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum))
+            {
+                return model<Q,d-1,e,T,C>::set (so, dims, rdims);
+            }
+
+            if (e < T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMinimum)
+            {
+                return false;
+            }
+
+            if (   (T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum > 0)
+                && (e > T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum))
+            {
+                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
+            }
+
+            if (e == rdims)
+            {
+                if (d == dims)
+                {
+                    return set(so);
+                }
+                else if (d < dims)
+                {
+                    return false;
+                }
+                else
+                {
+                    return model<Q,d-1,e,T,C>::set (so, dims, rdims);
+                }
+            }
+            else if (e < rdims)
+            {
+                return false;
+            }
+            else
+            {
+                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
+            }
+        }
+    };
+
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,d,2,T,C>
+    {
+    public: static bool set (state<Q,2> &, const unsigned int &, const unsigned int &) { return false; }
+    };
+
+    template<typename Q, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    class model<Q,1,e,T,C>
+    {
+    public: static bool set (state<Q,e> &, const unsigned int &, const unsigned int &) { return false; }
+    };
+
+    template<typename Q, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    static bool setModelWithTypeString (const std::string &type, state<Q,e> &so, const unsigned int &dims = d, const unsigned int &rdims = e)
+    {
+             if (type == "axe-graph")
+                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(so, dims, rdims);
+        else if (type == "simplex")
+                 return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
+        else if (type == "cube")
+                 return model<Q,d,e,efgy::geometry::cube,C>::set(so, dims, rdims);
+        else if (type == "sphere")
+                 return model<Q,d,e,efgy::geometry::sphere,C>::set(so, dims, rdims);
+        else if (type == "moebius-strip")
+                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(so, dims, rdims);
+        else if (type == "klein-bagel")
+                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(so, dims, rdims);
+        else if (type == "sierpinski-gasket")
+                 return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(so, dims, rdims);
+        else if (type == "sierpinski-carpet")
+                 return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, dims, rdims);
+
+        return false;
+    }
+
+    template<typename Q, unsigned int d>
+    static bool setPolar (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
+    {
+        if (d == sd)
+        {
+            s.fromp.data[vn] = vv;
+            return true;
+        }
+
+        return setPolar<Q,d-1>(s, sd, vn, vv);
+    }
+
+    template<typename Q, unsigned int d>
+    static bool setPolar (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
+    {
+        return false;
+    }
+
+    template<typename Q, unsigned int d>
+    static bool setCartesian (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
+    {
+        if (d == sd)
+        {
+            s.fromp.data[vn] = vv;
+            return true;
+        }
+
+        return setCartesian<Q,d-1>(s, sd, vn, vv);
+    }
+
+    template<typename Q, unsigned int d>
+    static bool setCartesian (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
+    {
+        return false;
+    }
+
 #if !defined (NOLIBRARIES)
     class xml
     {
@@ -215,17 +365,7 @@ namespace topologic
     protected:
         std::set<parser*> parsers;
     };
-#endif
 
-    static inline double stringToDouble (const std::string &s)
-    {
-        std::istringstream in(s);
-        double d = 0;
-        in >> d;
-        return d;
-    }
-
-#if !defined (NOLIBRARIES)
     template<typename Q, unsigned int d>
     static bool parse (state<Q,d> &s, xml::parser &parser)
     {
@@ -404,115 +544,7 @@ namespace topologic
         }
         return true;
     }
-#endif
 
-    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model
-    {
-    public:
-        static bool set (state<Q,e> &so)
-        {
-            if (so.state<Q,2>::model)
-            {
-                delete so.state<Q,2>::model;
-                so.state<Q,2>::model = 0;
-            }
-
-            so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
-
-            return so.state<Q,2>::model != 0;
-        }
-
-        static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
-        {
-            if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
-            {
-                return false;
-            }
-
-            if (   (T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum > 0)
-                && (d > T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum))
-            {
-                return model<Q,d-1,e,T,C>::set (so, dims, rdims);
-            }
-
-            if (e < T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMinimum)
-            {
-                return false;
-            }
-
-            if (   (T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum > 0)
-                && (e > T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum))
-            {
-                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
-            }
-
-            if (e == rdims)
-            {
-                if (d == dims)
-                {
-                    return set(so);
-                }
-                else if (d < dims)
-                {
-                    return false;
-                }
-                else
-                {
-                    return model<Q,d-1,e,T,C>::set (so, dims, rdims);
-                }
-            }
-            else if (e < rdims)
-            {
-                return false;
-            }
-            else
-            {
-                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
-            }
-        }
-    };
-
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,2,T,C>
-    {
-    public: static bool set (state<Q,2> &, const unsigned int &, const unsigned int &) { return false; }
-    };
-
-    template<typename Q, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,1,e,T,C>
-    {
-    public: static bool set (state<Q,e> &, const unsigned int &, const unsigned int &) { return false; }
-    };
-
-    template<typename Q, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    static bool setModelWithTypeString (const std::string &type, state<Q,e> &so, const unsigned int &dims = d, const unsigned int &rdims = e)
-    {
-             if (type == "axe-graph")
-                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(so, dims, rdims);
-        else if (type == "simplex")
-                 return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
-        else if (type == "cube")
-                 return model<Q,d,e,efgy::geometry::cube,C>::set(so, dims, rdims);
-        else if (type == "sphere")
-                 return model<Q,d,e,efgy::geometry::sphere,C>::set(so, dims, rdims);
-        else if (type == "moebius-strip")
-                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(so, dims, rdims);
-        else if (type == "klein-bagel")
-                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(so, dims, rdims);
-        else if (type == "sierpinski-gasket")
-                 return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(so, dims, rdims);
-        else if (type == "sierpinski-carpet")
-                 return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, dims, rdims);
-
-        return false;
-    }
-
-#if !defined (NOLIBRARIES)
     template<typename Q, unsigned int d,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
@@ -542,42 +574,6 @@ namespace topologic
         return false;
     }
 #endif
-
-    template<typename Q, unsigned int d>
-    static bool setPolar (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
-    {
-        if (d == sd)
-        {
-            s.fromp.data[vn] = vv;
-            return true;
-        }
-
-        return setPolar<Q,d-1>(s, sd, vn, vv);
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setPolar (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
-    {
-        return false;
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setCartesian (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
-    {
-        if (d == sd)
-        {
-            s.fromp.data[vn] = vv;
-            return true;
-        }
-
-        return setCartesian<Q,d-1>(s, sd, vn, vv);
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setCartesian (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
-    {
-        return false;
-    }
 };
 
 #endif
