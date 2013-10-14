@@ -31,6 +31,7 @@
 #include <ef.gy/polytope.h>
 #include <ef.gy/parametric.h>
 #include <ef.gy/ifs.h>
+#include <ef.gy/render-null.h>
 #if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -426,6 +427,28 @@ namespace topologic
     {
     public: static bool set (const state<Q,d> &s, state<Q,e> &so, const unsigned int &rdims)
         {
+            if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
+            {
+                return false;
+            }
+
+            if (   (T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum > 0)
+                && (d > T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum))
+            {
+                return false;
+            }
+
+            if (e < T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMinimum)
+            {
+                return false;
+            }
+
+            if (   (T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum > 0)
+                && (e > T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum))
+            {
+                return model<Q,d,e-1,T,C>::set (s, so, rdims);
+            }
+
             if (e == rdims)
             {
                 return setModel<Q,d,e,T,C>(s, so);
