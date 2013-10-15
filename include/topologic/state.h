@@ -210,9 +210,7 @@ namespace topologic
             glDepthMask(GL_TRUE);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-#if defined(GL3D)
-#if defined(GLVA)
-#else
+#if !defined(GLVA)
             gluPerspective(45.0f, gState.S2::width / gState.S2::height, 0.5f, 500.0f);
             
             gluLookAt(gState.state<Q,3>::from.data[0],
@@ -222,7 +220,6 @@ namespace topologic
                       gState.state<Q,3>::to.data[1],
                       gState.state<Q,3>::to.data[2],
                       0.0, 1.0, 0.0);
-#endif
 #endif
             glDisable (GL_LIGHTING);
 
