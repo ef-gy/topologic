@@ -231,7 +231,8 @@ namespace topologic
                     (gState.S2::wireframe.red,
                      gState.S2::wireframe.green,
                      gState.S2::wireframe.blue,
-                     gState.S2::wireframe.alpha);
+                     gState.S2::wireframe.alpha,
+                     true);
                 
                 object.renderWireframe();
 
@@ -239,7 +240,8 @@ namespace topologic
                     (gState.S2::surface.red,
                      gState.S2::surface.green,
                      gState.S2::surface.blue,
-                     gState.S2::surface.alpha);
+                     gState.S2::surface.alpha,
+                     false);
 
                 object.renderSolid();
 
@@ -252,7 +254,8 @@ namespace topologic
                     (gState.S2::wireframe.red,
                      gState.S2::wireframe.green,
                      gState.S2::wireframe.blue,
-                     gState.S2::wireframe.alpha);
+                     gState.S2::wireframe.alpha,
+                     true);
 
                 gState.S::opengl.pushLines();
             }
@@ -270,7 +273,8 @@ namespace topologic
                     (gState.S2::surface.red,
                      gState.S2::surface.green,
                      gState.S2::surface.blue,
-                     gState.S2::surface.alpha);
+                     gState.S2::surface.alpha,
+                     false);
 
                 gState.S::opengl.pushFaces();
             }
