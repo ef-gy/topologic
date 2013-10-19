@@ -24,7 +24,10 @@
  * THE SOFTWARE.
 */
 
+#define GLVA
+
 #ifdef __APPLE__
+#include <OpenGL/gl3.h>
 #include <GLUT/glut.h>          /* Open GL Util    APPLE */
 #else
 #include <GL/glut.h>            /* Open GL Util    OpenGL*/
@@ -45,45 +48,26 @@ topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 
 void displayCall(void)
 {
-    static int lastFrameTime = 0;
-
-    if (lastFrameTime == 0)
-    {
-        lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
-    }
-
-    int now = glutGet(GLUT_ELAPSED_TIME);
-    int elapsedMilliseconds = now - lastFrameTime;
-    float elapsedTime = elapsedMilliseconds / 1000.0f;
-    lastFrameTime = now;
-
-    static double position = 0;
-
-    position += elapsedTime;
-
     if (topologicState.model)
     {
         topologicState.model->render(true);
     }
 
+    glFinish();
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 void reshape(GLint width, GLint height)
 {
     glViewport(0, 0, width, height);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    glDepthFunc(GL_LEQUAL);
     glClearDepth(1.0f);
 
-    glEnable (GL_BLEND);
-    glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    glEnable (GL_COLOR_MATERIAL) ;
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
 
-    glEnable(GL_LIGHT0);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_CULL_FACE);
 
@@ -197,9 +181,18 @@ int main (int argc, char* argv[])
         else
         {
             glutInit(&argc, argv);
-            glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
             glutInitWindowSize(1280, 720);
+
+#ifdef __APPLE__
+	        glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	        //glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+#else
+	        glutInitContextVersion(3, 2);
+	        glutInitContextProfile(GLUT_CORE_PROFILE);
+	        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+#endif
             glutCreateWindow("Topologic/GLUT");
+
             glutDisplayFunc (displayCall);
             glutIdleFunc(idle);
             glutReshapeFunc (reshape);
@@ -209,7 +202,6 @@ int main (int argc, char* argv[])
             glutKeyboardFunc(processKeyboard);
             glutFullScreen();
 
-            glEnable(GL_COLOR_MATERIAL);
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
 
