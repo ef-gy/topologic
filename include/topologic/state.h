@@ -103,6 +103,8 @@ namespace topologic
         {
             if (updateMatrix)
             {
+                gState.S2::width  = 3;
+                gState.S2::height = 3;
                 gState.S::updateMatrix();
             }
 
@@ -338,6 +340,8 @@ namespace topologic
         {
             if (updateMatrix)
             {
+                gState.S2::width  = 3;
+                gState.S2::height = 3;
                 gState.S::updateMatrix();
             }
 
@@ -429,6 +433,7 @@ namespace topologic
 
         void updateMatrix (void)
         {
+            projection.aspect = (d == 3) ? Q(state<Q,d-1>::width) / Q(state<Q,d-1>::height) : Q(1);
             if (state<Q,d-1>::polarCoordinates)
             {
                 from = fromp;
