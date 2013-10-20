@@ -463,13 +463,8 @@ namespace topologic
             }
 #endif
 
-            efgy::geometry::transformation<Q,d> zoomZ;
+            efgy::geometry::scale<Q,d> zoomZ(scale);
 
-            for (unsigned int i = 0; i < d; i++)
-            {
-                zoomZ.transformationMatrix.data[i][i] *= scale;
-            }
-            
             transformation = transformation * zoomZ;
 
             return true;
@@ -489,14 +484,8 @@ namespace topologic
             }
 #endif
             
-            efgy::geometry::transformation<Q,d> zoomZ;
-            Q t = Q(1.) + magnification;
-            
-            for (unsigned int i = 0; i < d; i++)
-            {
-                zoomZ.transformationMatrix.data[i][i] *= t;
-            }
-            
+            efgy::geometry::scale<Q,d> zoomZ(Q(1.) + magnification);
+
             transformation = transformation * zoomZ;
             
             return true;
@@ -531,39 +520,14 @@ namespace topologic
 
             efgy::geometry::lookAt<Q,d> lookAt(fn, to);
             efgy::geometry::transformation<Q,d> reverseLookAt;
-            for (unsigned int i = 0; i < d; i++)
-            {
-                for (unsigned int j = 0; j < d; j++)
-                {
-                    reverseLookAt.transformationMatrix.data[i][j]
-                        = lookAt.transformationMatrix.data[j][i];
-                }
-            }
+            reverseLookAt.transformationMatrix = transpose(lookAt.transformationMatrix);
 
-            mn = mn * lookAt;
-            
-            efgy::geometry::transformation<Q,d> rotationX;
-            Q t = x / (Q(M_PI) * Q(50.));
+            mn = mn
+               * lookAt
+               * efgy::geometry::rotation<Q,d> (x / (Q(M_PI) * Q( 50.)), 0, d-1)
+               * efgy::geometry::rotation<Q,d> (y / (Q(M_PI) * Q(-50.)), 1, d-1)
+               * reverseLookAt;
 
-            rotationX.transformationMatrix.data[0][0] =  cos(t);
-            rotationX.transformationMatrix.data[0][(d-1)] = -sin(t);
-            rotationX.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
-            rotationX.transformationMatrix.data[(d-1)][0] =  sin(t);
-
-            mn = mn * rotationX;
-
-            efgy::geometry::transformation<Q,d> rotationY;
-            t = y / (Q(M_PI) * Q(50.));
-
-            rotationY.transformationMatrix.data[1][1] =  cos(t);
-            rotationY.transformationMatrix.data[1][(d-1)] = -sin(t);
-            rotationY.transformationMatrix.data[(d-1)][(d-1)] =  cos(t);
-            rotationY.transformationMatrix.data[(d-1)][1] =  sin(t);
-
-            mn = mn * rotationY;
-
-            mn = mn * reverseLookAt;
-            
             transformation = transformation * mn;
 
             magnify (z / Q(50.));
