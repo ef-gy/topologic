@@ -232,26 +232,9 @@ namespace topologic
 
                 object.renderWireframe();
                 object.renderSolid();
-
-                gState.S::opengl.frameEnd();
             }
 
-            if (gState.S2::wireframe.alpha > Q(0.))
-            {
-                gState.S::opengl.pushLines();
-            }
-
-            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
-            {
-                if (gState.S2::lightingEnabled)
-                {
-                    glEnable (GL_LIGHTING);
-                }
-
-                glDepthMask(gState.S2::surface.alpha < Q(1.) ? GL_FALSE : GL_TRUE);
-
-                gState.S::opengl.pushFaces();
-            }
+            gState.S::opengl.frameEnd();
 
             glFlush();
 
