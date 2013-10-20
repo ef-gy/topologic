@@ -185,7 +185,6 @@ int main (int argc, char* argv[])
 
 #ifdef __APPLE__
 	        glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	        //glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #else
 	        glutInitContextVersion(3, 2);
 	        glutInitContextProfile(GLUT_CORE_PROFILE);
@@ -206,7 +205,6 @@ int main (int argc, char* argv[])
             glEnableClientState(GL_NORMAL_ARRAY);
 
             glutMainLoop();
-            //std::cout << (*topologicState.model)(true).str();
         }
     }
     catch (std::exception &e)
