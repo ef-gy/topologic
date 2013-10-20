@@ -674,9 +674,14 @@ namespace topologic
               lightingEnabled(true),
               surfacesEnabled(true)
             {
-                parameter.polarRadius    = Q(1);
-                parameter.polarPrecision = Q(10);
-                parameter.iterations     = 4;
+                parameter.polarRadius      = Q(1);
+                parameter.polarPrecision   = Q(10);
+                parameter.iterations       = 4;
+                parameter.functions        = 3;
+                parameter.seed             = 0;
+                parameter.preRotate        = true;
+                parameter.postRotate       = false;
+                parameter.extendedRotation = true;
             }
 
         void updateMatrix (void) const {}

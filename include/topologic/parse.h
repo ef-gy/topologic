@@ -154,6 +154,8 @@ namespace topologic
                  return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(so, dims, rdims);
         else if (type == "sierpinski-carpet")
                  return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, dims, rdims);
+        else if (type == "random-affine-ifs")
+                 return model<Q,d,e,efgy::geometry::randomAffineIFS,C>::set(so, dims, rdims);
 
         return false;
     }
