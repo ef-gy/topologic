@@ -481,7 +481,33 @@ namespace topologic
 #endif
 
             efgy::geometry::transformation<Q,d> zoomZ;
-            Q t = Q(1.) + scale;
+
+            for (unsigned int i = 0; i < d; i++)
+            {
+                zoomZ.transformationMatrix.data[i][i] *= scale;
+            }
+            
+            transformation = transformation * zoomZ;
+
+            return true;
+        }
+
+        bool magnify (const Q &magnification)
+        {
+            if (!active)
+            {
+                return state<Q,d-1>::magnify(magnification);
+            }
+            
+#if !defined(NO_OPENGL)
+            if (d > 3)
+            {
+                opengl.reset();
+            }
+#endif
+            
+            efgy::geometry::transformation<Q,d> zoomZ;
+            Q t = Q(1.) + magnification;
             
             for (unsigned int i = 0; i < d; i++)
             {
@@ -489,7 +515,7 @@ namespace topologic
             }
             
             transformation = transformation * zoomZ;
-
+            
             return true;
         }
 
@@ -557,7 +583,7 @@ namespace topologic
             
             transformation = transformation * mn;
 
-            scale (z / Q(50.));
+            magnify (z / Q(50.));
             
             return true;
         }
@@ -728,6 +754,7 @@ namespace topologic
         }
 
         bool scale (const Q &) const { return false; }
+        bool magnify (const Q &) const { return false; }
         bool interpretDrag (const Q &, const Q &, const Q &) const { return true; }
         bool setActive (const unsigned int &) const { return true; }
         bool realign (void)
