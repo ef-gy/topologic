@@ -122,17 +122,11 @@ namespace topologic
               << gState.metadata()
               << "</metadata>"
                  "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
-                 " path#" << gState.S2::idPrefix << "wireframe { stroke-width: 0.002; fill: none; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << "); }"
-                 " path { stroke: none; fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
+                 " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
+                 " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
             if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
                 object.renderSolid();
-            }
-            if (gState.S2::wireframe.alpha > Q(0.))
-            {
-                gState.S2::svg.output << "<path id='" << gState.S2::idPrefix << "wireframe' d='";
-                object.renderWireframe();
-                gState.S2::svg.output << "'/>";
             }
             gState.S2::svg.output << "</svg>\n";
 
@@ -228,9 +222,6 @@ namespace topologic
 
             if (!gState.S::opengl.isPrepared())
             {
-                //std::cerr << "crunching numbers...\n";
-
-                object.renderWireframe();
                 object.renderSolid();
             }
 
