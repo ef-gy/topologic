@@ -216,7 +216,7 @@ namespace topologic
             parser(xml &pXml,
                    const std::string &data,
                    const std::string &filename)
-                : xml (pXml),
+                : XML (pXml),
                   document (xmlReadMemory (data.data(), int(data.size()), filename.c_str(), 0,
                             XML_PARSE_NOERROR | XML_PARSE_NOWARNING))
             {
@@ -252,12 +252,12 @@ namespace topologic
                     throw std::runtime_error("failed to register namespace: topologic");
                 }
 
-                xml.parsers.insert (this);
+                XML.parsers.insert (this);
             }
 
             ~parser(void)
             {
-                xml.parsers.erase (this);
+                XML.parsers.erase (this);
 
                 xmlXPathFreeContext(xpathContext);
                 xmlFreeDoc(document);
@@ -341,7 +341,7 @@ namespace topologic
             xmlXPathContextPtr xpathContext;
 
         protected:
-            xml &xml;
+            xml &XML;
 
             xmlXPathObjectPtr lookup (const std::string &expression)
             {

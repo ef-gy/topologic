@@ -46,7 +46,7 @@ namespace topologic
         try
         {
 #if !defined (NOLIBRARIES)
-            topologic::xml xml;
+            topologic::xml XML;
 #endif
             unsigned int depth = 4, rdepth = 4;
             std::string model = "cube";
@@ -374,7 +374,7 @@ namespace topologic
                         std::istreambuf_iterator<char> eos;
                         std::string s(std::istreambuf_iterator<char>(in), eos);
     
-                        xml::parser p = xml.parse(s, arg);
+                        xml::parser p = XML.parse(s, arg);
                         parse (topologicState, p);
                         if (out == outSVG)
                         {
