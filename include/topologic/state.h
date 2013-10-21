@@ -463,9 +463,8 @@ namespace topologic
             }
 #endif
 
-            efgy::geometry::transformation::scale<Q,d> zoomZ(scale);
-
-            transformation = transformation * zoomZ;
+            transformation = transformation
+                           * efgy::geometry::transformation::scale<Q,d>(scale);
 
             return true;
         }
@@ -483,11 +482,10 @@ namespace topologic
                 opengl.reset();
             }
 #endif
-            
-            efgy::geometry::transformation::scale<Q,d> zoomZ(Q(1.) + magnification);
 
-            transformation = transformation * zoomZ;
-            
+            transformation = transformation
+                           * efgy::geometry::transformation::scale<Q,d>(Q(1.) + magnification);
+
             return true;
         }
 
@@ -516,22 +514,18 @@ namespace topologic
                 fn = from;
             }
 
-            efgy::geometry::transformation::affine<Q,d> mn;
-
             efgy::geometry::lookAt<Q,d> lookAt(fn, to);
             efgy::geometry::transformation::affine<Q,d> reverseLookAt;
             reverseLookAt.transformationMatrix = transpose(lookAt.transformationMatrix);
 
-            mn = mn
-               * lookAt
-               * efgy::geometry::transformation::rotation<Q,d> (x / (Q(M_PI) * Q( 50.)), 0, d-1)
-               * efgy::geometry::transformation::rotation<Q,d> (y / (Q(M_PI) * Q(-50.)), 1, d-1)
-               * reverseLookAt;
-
-            transformation = transformation * mn;
+            transformation = transformation
+                           * lookAt
+                           * efgy::geometry::transformation::rotation<Q,d> (x / (Q(M_PI) * Q( 50.)), 0, d-1)
+                           * efgy::geometry::transformation::rotation<Q,d> (y / (Q(M_PI) * Q(-50.)), 1, d-1)
+                           * reverseLookAt;
 
             magnify (z / Q(50.));
-            
+
             return true;
         }
 
