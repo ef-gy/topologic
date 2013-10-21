@@ -76,8 +76,6 @@ namespace topologic
                                      "  --no-pre-rotation       Suggest that random IFSs should not add a pre-translation rotation\n"
                                      "  --post-rotation         Suggest that random IFSs should add a post-translation rotation\n"
                                      "  --no-post-rotation      Suggest that random IFSs should not add a post-translation rotation\n"
-                                     "  --extended-rotations    Allow random IFS rotations in all possible render depth dimensions\n"
-                                     "  --no-extended-rotations Allow random IFS rotations in all possible render depth dimensions\n"
                                      "\n"
                                      "  --precision F           Set model precision to F\n"
                                      "  --multiplier F          Set model export precision multiplier to F\n"
@@ -318,14 +316,6 @@ namespace topologic
                     else if (arg == "--no-post-rotation")
                     {
                         topologicState.state<Q,2>::parameter.postRotate = false;
-                    }
-                    else if (arg == "--extended-rotations")
-                    {
-                        topologicState.state<Q,2>::parameter.extendedRotation = true;
-                    }
-                    else if (arg == "--no-extended-rotations")
-                    {
-                        topologicState.state<Q,2>::parameter.extendedRotation = false;
                     }
                     else if (arg == "--from")
                     {

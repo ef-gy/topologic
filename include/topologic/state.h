@@ -675,7 +675,6 @@ namespace topologic
                 parameter.seed             = 0;
                 parameter.preRotate        = true;
                 parameter.postRotate       = false;
-                parameter.extendedRotation = true;
             }
 
         void updateMatrix (void) const {}
