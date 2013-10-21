@@ -139,9 +139,7 @@ namespace topologic
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     static bool setModelWithTypeString (const std::string &type, state<Q,e> &so, const unsigned int &dims = d, const unsigned int &rdims = e)
     {
-             if (type == "axe-graph")
-                 return model<Q,d,e,efgy::geometry::axeGraph,C>::set(so, dims, rdims);
-        else if (type == "simplex")
+             if (type == "simplex")
                  return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
         else if (type == "cube")
                  return model<Q,d,e,efgy::geometry::cube,C>::set(so, dims, rdims);

@@ -99,7 +99,7 @@ namespace topologic
                     {
                         std::cout << "Topologic CLI; Version " << version << "\n"
                                      "Maximum render depth of this binary is " << dim << " dimensions.\n"
-                                     "Supported models: axe-graph, simplex, cube, sphere, moebius-strip, klein-bagel, sierpinski-gasket, sierpinski-carpet, random-affine-ifs.\n";
+                                     "Supported models: simplex, cube, sphere, moebius-strip, klein-bagel, sierpinski-gasket, sierpinski-carpet, random-affine-ifs.\n";
                         return 0;
                     }
                     else if (arg == "--model")
