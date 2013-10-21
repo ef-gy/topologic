@@ -295,13 +295,7 @@ namespace topologic
 
             gState.S2::json.reset();
 
-            gState.S2::json.output << "[";
-            if (gState.S2::wireframe.alpha > Q(0.))
-            {
-                gState.S2::json.output << "'";
-                object.renderWireframe();
-                gState.S2::json.output << "'";
-            }
+            gState.S2::json.output << "['surfaces'";
             if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
             {
                 object.renderSolid();
