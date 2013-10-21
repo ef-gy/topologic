@@ -31,6 +31,7 @@
 #include <ef.gy/polytope.h>
 #include <ef.gy/parametric.h>
 #include <ef.gy/ifs.h>
+#include <ef.gy/flame.h>
 #include <ef.gy/render-null.h>
 #if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
@@ -156,6 +157,8 @@ namespace topologic
                  return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, dims, rdims);
         else if (type == "random-affine-ifs")
                  return model<Q,d,e,efgy::geometry::randomAffineIFS,C>::set(so, dims, rdims);
+        else if (type == "random-flame")
+                 return model<Q,d,e,efgy::geometry::flame::random,C>::set(so, dims, rdims);
 
         return false;
     }
