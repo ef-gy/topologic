@@ -378,7 +378,7 @@ namespace topologic
         typename efgy::geometry::euclidian::space<Q,d>::vector &from, &to;
 
         typename efgy::geometry::projection<Q,d> projection;
-        typename efgy::geometry::transformation<Q,d> transformation;
+        typename efgy::geometry::transformation::affine<Q,d> transformation;
         typename efgy::render::svg<Q,d> svg;
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,d> opengl;
@@ -463,7 +463,7 @@ namespace topologic
             }
 #endif
 
-            efgy::geometry::scale<Q,d> zoomZ(scale);
+            efgy::geometry::transformation::scale<Q,d> zoomZ(scale);
 
             transformation = transformation * zoomZ;
 
@@ -484,7 +484,7 @@ namespace topologic
             }
 #endif
             
-            efgy::geometry::scale<Q,d> zoomZ(Q(1.) + magnification);
+            efgy::geometry::transformation::scale<Q,d> zoomZ(Q(1.) + magnification);
 
             transformation = transformation * zoomZ;
             
@@ -516,16 +516,16 @@ namespace topologic
                 fn = from;
             }
 
-            efgy::geometry::transformation<Q,d> mn;
+            efgy::geometry::transformation::affine<Q,d> mn;
 
             efgy::geometry::lookAt<Q,d> lookAt(fn, to);
-            efgy::geometry::transformation<Q,d> reverseLookAt;
+            efgy::geometry::transformation::affine<Q,d> reverseLookAt;
             reverseLookAt.transformationMatrix = transpose(lookAt.transformationMatrix);
 
             mn = mn
                * lookAt
-               * efgy::geometry::rotation<Q,d> (x / (Q(M_PI) * Q( 50.)), 0, d-1)
-               * efgy::geometry::rotation<Q,d> (y / (Q(M_PI) * Q(-50.)), 1, d-1)
+               * efgy::geometry::transformation::rotation<Q,d> (x / (Q(M_PI) * Q( 50.)), 0, d-1)
+               * efgy::geometry::transformation::rotation<Q,d> (y / (Q(M_PI) * Q(-50.)), 1, d-1)
                * reverseLookAt;
 
             transformation = transformation * mn;
@@ -559,7 +559,7 @@ namespace topologic
 #endif
                 Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
 
-                efgy::geometry::transformation<Q,d> mirror;
+                efgy::geometry::transformation::affine<Q,d> mirror;
                 /*
                 for (int i = 0; i <= d; i++)
                 {
@@ -576,7 +576,7 @@ namespace topologic
                 to   = transformation * to;
                 from = transformation * from;
 
-                transformation = efgy::geometry::transformation<Q,d>();
+                transformation = efgy::geometry::transformation::affine<Q,d>();
                 
                 Q la = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
 
@@ -721,7 +721,7 @@ namespace topologic
 
         renderer *model;
 
-        typename efgy::geometry::transformation<Q,2> transformation;
+        typename efgy::geometry::transformation::affine<Q,2> transformation;
         typename efgy::render::svg<Q,2> svg;
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,2> opengl;

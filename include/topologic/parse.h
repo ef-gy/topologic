@@ -431,7 +431,7 @@ namespace topologic
             {
                 if ((value = parser.evaluate("@matrix")) == "identity")
                 {
-                    s.transformation = efgy::geometry::transformation<Q,d>();
+                    s.transformation = efgy::geometry::transformation::affine<Q,d>();
                 }
             }
             while (parser.updateContext ("following-sibling::topologic:transformation[@depth = " + dims + "][1]"));
