@@ -62,26 +62,36 @@ namespace topologic
                         std::cout << "Usage:\n" << argv[0] << " [ options ] [ files ]\n\n"
                                   << argv[0] << " will render an SVG of a specified geometric primitive to stdout.\n\n"
                                      "Options\n"
-                                     "  --help               Show this help text, then exit.\n"
-                                     "  --version            Show version information, then exit.\n"
+                                     "  --help                  Show this help text, then exit.\n"
+                                     "  --version               Show version information, then exit.\n"
                                      "\n"
-                                     "  --depth N            Set model depth to N\n"
-                                     "  --render-depth N     Set render depth to N\n"
-                                     "  --iterations N       Set IFS iterations to N\n"
-                                     "  --model M            Set model to M (cube, sphere, ...)\n"
-                                     "  --precision F        Set model precision to F\n"
-                                     "  --multiplier F       Set model export precision multiplier to F\n"
-                                     "  --radius F           Set model radius parameter to F\n"
+                                     "  --depth N               Set model depth to N\n"
+                                     "  --render-depth N        Set render depth to N\n"
+                                     "  --model M               Set model to M (cube, sphere, ...)\n"
                                      "\n"
-                                     "  --background R G B A Set background colour to R G B A (use values between 0 and 1)\n"
-                                     "  --wireframe R G B A  Set wireframe colour to R G B A (use values between 0 and 1)\n"
-                                     "  --surface R G B A    Set surface colour to R G B A (use values between 0 and 1)\n"
+                                     "  --iterations N          Set IFS iterations to N\n"
+                                     "  --seed N                Set the RNG seed to N (e.g. for the random-affine-ifs model)\n"
+                                     "  --functions N           Suggest that random IFSs should use N functions\n"
+                                     "  --pre-rotation          Suggest that random IFSs should add a pre-translation rotation\n"
+                                     "  --no-pre-rotation       Suggest that random IFSs should not add a pre-translation rotation\n"
+                                     "  --post-rotation         Suggest that random IFSs should add a post-translation rotation\n"
+                                     "  --no-post-rotation      Suggest that random IFSs should not add a post-translation rotation\n"
+                                     "  --extended-rotations    Allow random IFS rotations in all possible render depth dimensions\n"
+                                     "  --no-extended-rotations Allow random IFS rotations in all possible render depth dimensions\n"
                                      "\n"
-                                     "  --polar              Use/manipulate polar coordinates (default)\n"
-                                     "  --cartesian          Use/manipulate cartesian coordinates\n"
-                                     "  --from D X Y ...     Set the from-point of the D-to-D-1 projection to X Y ...\n"
+                                     "  --precision F           Set model precision to F\n"
+                                     "  --multiplier F          Set model export precision multiplier to F\n"
+                                     "  --radius F              Set model radius parameter to F\n"
                                      "\n"
-                                     "  --id-prefix S        Use the prefix S for any IDs defined in the SVG\n"
+                                     "  --background R G B A    Set background colour to R G B A (use values between 0 and 1)\n"
+                                     "  --wireframe R G B A     Set wireframe colour to R G B A (use values between 0 and 1)\n"
+                                     "  --surface R G B A       Set surface colour to R G B A (use values between 0 and 1)\n"
+                                     "\n"
+                                     "  --polar                 Use/manipulate polar coordinates (default)\n"
+                                     "  --cartesian             Use/manipulate cartesian coordinates\n"
+                                     "  --from D X Y ...        Set the from-point of the D-to-D-1 projection to X Y ...\n"
+                                     "\n"
+                                     "  --id-prefix S           Use the prefix S for any IDs defined in the SVG\n"
                                      "\n"
                                      "See the man page of this programme for further details; e.g. run:\n"
                                      "man topologic\n\n";
@@ -127,6 +137,24 @@ namespace topologic
                         {
                             std::stringstream st (argv[i]);
                             st >> topologicState.state<Q,2>::parameter.iterations;
+                        }
+                    }
+                    else if (arg == "--seed")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            st >> topologicState.state<Q,2>::parameter.seed;
+                        }
+                    }
+                    else if (arg == "--functions")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            st >> topologicState.state<Q,2>::parameter.functions;
                         }
                     }
                     else if (arg == "--precision")
@@ -274,6 +302,30 @@ namespace topologic
                     else if (arg == "--cartesian")
                     {
                         topologicState.state<Q,2>::polarCoordinates = false;
+                    }
+                    else if (arg == "--pre-rotation")
+                    {
+                        topologicState.state<Q,2>::parameter.preRotate = true;
+                    }
+                    else if (arg == "--no-pre-rotation")
+                    {
+                        topologicState.state<Q,2>::parameter.preRotate = false;
+                    }
+                    else if (arg == "--post-rotation")
+                    {
+                        topologicState.state<Q,2>::parameter.postRotate = true;
+                    }
+                    else if (arg == "--no-post-rotation")
+                    {
+                        topologicState.state<Q,2>::parameter.postRotate = false;
+                    }
+                    else if (arg == "--extended-rotations")
+                    {
+                        topologicState.state<Q,2>::parameter.extendedRotation = true;
+                    }
+                    else if (arg == "--no-extended-rotations")
+                    {
+                        topologicState.state<Q,2>::parameter.extendedRotation = false;
                     }
                     else if (arg == "--from")
                     {
