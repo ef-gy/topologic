@@ -16,7 +16,7 @@ XSLTPROC:=xsltproc
 
 UNAME:=$(shell uname)
 LIBRARIES:=libxml-2.0
-LIBRARIES_GL:=libxml-2.0
+LIBRARIES_GL:=libxml-2.0 glew
 FRAMEWORKS:=
 FRAMEWORKS_GL:=GLUT OpenGL Cocoa
 
