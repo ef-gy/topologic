@@ -28,6 +28,7 @@
 #include <OpenGL/gl3.h>
 #include <GLUT/glut.h>          /* Open GL Util APPLE */
 #else
+#include <GL/glew.h>
 #include <GL/freeglut.h>        /* FreeGLUT */
 #endif
 
@@ -189,6 +190,7 @@ int main (int argc, char* argv[])
 	        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #endif
             glutCreateWindow("Topologic/GLUT");
+            glewInit();
 
             glutDisplayFunc (displayCall);
             glutIdleFunc(idle);
