@@ -90,6 +90,9 @@ namespace topologic
                                      "  --cartesian             Use/manipulate cartesian coordinates\n"
                                      "  --from D X Y ...        Set the from-point of the D-to-D-1 projection to X Y ...\n"
                                      "\n"
+                                     "  --regular-colours       Use regular colouring algorithm\n"
+                                     "  --fractal-flame-colours Use fractal flame colouring algorithm (OpenGL only)\n"
+                                     "\n"
                                      "  --id-prefix S           Use the prefix S for any IDs defined in the SVG\n"
                                      "\n"
                                      "See the man page of this programme for further details; e.g. run:\n"
@@ -326,6 +329,14 @@ namespace topologic
                     else if (arg == "--no-post-rotation")
                     {
                         topologicState.state<Q,2>::parameter.postRotate = false;
+                    }
+                    else if (arg == "--regular-colours")
+                    {
+                        topologicState.state<Q,2>::fractalFlameColouring = false;
+                    }
+                    else if (arg == "--fractal-flame-colours")
+                    {
+                        topologicState.state<Q,2>::fractalFlameColouring = true;
                     }
                     else if (arg == "--from")
                     {
