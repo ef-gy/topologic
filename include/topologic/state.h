@@ -195,6 +195,8 @@ namespace topologic
             }
 
             gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
+            gState.S::opengl.width  = gState.width;
+            gState.S::opengl.height = gState.height;
 
             if (gState.fractalFlameColouring)
             {
