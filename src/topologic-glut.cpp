@@ -26,9 +26,9 @@
 
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
-#include <GLUT/glut.h>          /* Open GL Util    APPLE */
+#include <GLUT/glut.h>          /* Open GL Util APPLE */
 #else
-#include <GL/glut.h>            /* Open GL Util    OpenGL*/
+#include <GL/freeglut.h>        /* FreeGLUT */
 #endif
 
 #include <topologic/gl.h>
