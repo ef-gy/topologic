@@ -76,6 +76,7 @@ namespace topologic
                                      "  --no-pre-rotation       Suggest that random IFSs should not add a pre-translation rotation\n"
                                      "  --post-rotation         Suggest that random IFSs should add a post-translation rotation\n"
                                      "  --no-post-rotation      Suggest that random IFSs should not add a post-translation rotation\n"
+                                     "  --flame-variants N      Suggest that random fractal flames should use N variants\n"
                                      "\n"
                                      "  --precision F           Set model precision to F\n"
                                      "  --multiplier F          Set model export precision multiplier to F\n"
@@ -153,6 +154,15 @@ namespace topologic
                         {
                             std::stringstream st (argv[i]);
                             st >> topologicState.state<Q,2>::parameter.functions;
+                        }
+                    }
+                    else if (arg == "--flame-variants")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            st >> topologicState.state<Q,2>::parameter.flameCoefficients;
                         }
                     }
                     else if (arg == "--precision")
