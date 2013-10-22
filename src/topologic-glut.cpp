@@ -62,11 +62,7 @@ void reshape(GLint width, GLint height)
     glViewport(0, 0, width, height);
     glClearDepth(1.0f);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-
     glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_CULL_FACE);
 
@@ -190,7 +186,9 @@ int main (int argc, char* argv[])
 	        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #endif
             glutCreateWindow("Topologic/GLUT");
+#ifndef __APPLE__
             glewInit();
+#endif
 
             glutDisplayFunc (displayCall);
             glutIdleFunc(idle);

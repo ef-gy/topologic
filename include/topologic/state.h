@@ -194,31 +194,39 @@ namespace topologic
                 gState.S::updateMatrix();
             }
 
-            gState.S::opengl.frameStart();
+            gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
 
+            if (gState.fractalFlameColouring)
+            {
+                glClearColor(1,1,1,1);
+            }
+            else
+            {
+                glClearColor
+                    (gState.S2::background.red, gState.S2::background.green,
+                     gState.S2::background.blue, gState.S2::background.alpha);
+            }
+            
+            gState.S::opengl.frameStart();
+            
             gState.S2::output.str("");
 
-            glClearColor(gState.S2::background.red,
-                         gState.S2::background.green,
-                         gState.S2::background.blue,
-                         gState.S2::background.alpha);
-
-            glDepthMask(GL_TRUE);
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            gState.opengl.setColour
-                (gState.S2::wireframe.red,
-                 gState.S2::wireframe.green,
-                 gState.S2::wireframe.blue,
-                 gState.S2::wireframe.alpha,
-                 true);
-            gState.opengl.setColour
-                (gState.S2::surface.red,
-                 gState.S2::surface.green,
-                 gState.S2::surface.blue,
-                 gState.S2::surface.alpha,
-                 false);
+            if (gState.fractalFlameColouring)
+            {
+                gState.opengl.setColour(0,0,0,0.5,true);
+                gState.opengl.setColour(0,0,0,0.8,false);
+            }
+            else
+            {
+                gState.opengl.setColour
+                    (gState.S2::wireframe.red, gState.S2::wireframe.green,
+                     gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
+                     true);
+                gState.opengl.setColour
+                    (gState.S2::surface.red, gState.S2::surface.green,
+                     gState.S2::surface.blue, gState.S2::surface.alpha,
+                     false);
+            }
 
             if (!gState.S::opengl.isPrepared())
             {
@@ -651,7 +659,8 @@ namespace topologic
               model(0),
               idPrefix(""),
               lightingEnabled(true),
-              surfacesEnabled(true)
+              surfacesEnabled(true),
+              fractalFlameColouring(false)
             {
                 parameter.polarRadius       = Q(1);
                 parameter.polarPrecision    = Q(10);
@@ -720,6 +729,8 @@ namespace topologic
         Q height;
         bool lightingEnabled;
         bool surfacesEnabled;
+
+        bool fractalFlameColouring;
     };
 };
 
