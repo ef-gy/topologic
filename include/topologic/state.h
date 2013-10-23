@@ -237,8 +237,6 @@ namespace topologic
 
             gState.S::opengl.frameEnd();
 
-            glFlush();
-
             return gState.S2::output;
         }
 
