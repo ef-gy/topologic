@@ -69,14 +69,6 @@ void reshape(GLint width, GLint height)
     topologicState.height = height;
 }
 
-void idle(void)
-{
-    if (mouseLeft || mouseRight)
-    {
-        glutPostRedisplay();
-    }
-}
-
 bool shiftActive;
 
 void processMouse(int x, int y)
@@ -100,6 +92,8 @@ void processMouse(int x, int y)
 
         lastMouseX = mouseX;
         lastMouseY = mouseY;
+
+        glutPostRedisplay();
     }
 }
 
@@ -135,6 +129,8 @@ void processMouseButton(int button, int state, int x, int y)
     {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
+
+        glutPostRedisplay();
     }
 }
 
@@ -157,6 +153,8 @@ void processKeyboard(unsigned char key, int x, int y)
             glutPostRedisplay();
             break;
     }
+
+    glutPostRedisplay();
 }
 
 int main (int argc, char* argv[])
@@ -192,7 +190,6 @@ int main (int argc, char* argv[])
 #endif
 
             glutDisplayFunc (displayCall);
-            glutIdleFunc(idle);
             glutReshapeFunc (reshape);
             glutMouseFunc(processMouseButton);
             glutMotionFunc(processMouse);
