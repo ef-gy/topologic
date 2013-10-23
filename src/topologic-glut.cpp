@@ -181,8 +181,10 @@ int main (int argc, char* argv[])
 #ifdef __APPLE__
 	        glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #else
+#if defined(GLUT_CORE_PROFILE)
 	        glutInitContextVersion(3, 2);
 	        glutInitContextProfile(GLUT_CORE_PROFILE);
+#endif
 	        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #endif
             glutCreateWindow("Topologic/GLUT");
