@@ -29,7 +29,7 @@
 #include <GLUT/glut.h>          /* Open GL Util APPLE */
 #else
 #include <GL/glew.h>
-#include <GL/freeglut.h>        /* FreeGLUT */
+#include <GL/glut.h>            /* FreeGLUT (hopefully) */
 #endif
 
 #include <topologic/gl.h>
