@@ -35,7 +35,7 @@ GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
-EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432
+EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432 -s LEGACY_GL_EMULATION=1 -DDEBUG
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
