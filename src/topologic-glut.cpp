@@ -201,9 +201,6 @@ int main (int argc, char* argv[])
             glutKeyboardFunc(processKeyboard);
             glutFullScreen();
 
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glEnableClientState(GL_NORMAL_ARRAY);
-
             glutMainLoop();
         }
     }
