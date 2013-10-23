@@ -52,7 +52,6 @@ void displayCall(void)
         topologicState.model->render(true);
     }
 
-    glFinish();
     glutSwapBuffers();
     glutPostRedisplay();
 }
