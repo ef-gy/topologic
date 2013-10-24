@@ -140,7 +140,9 @@ namespace topologic
     static bool setModelWithTypeString (const std::string &type, state<Q,e> &so, const unsigned int &dims = d, const unsigned int &rdims = e)
     {
              if (type == "simplex")
-                 return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
+                return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
+        else if (type == "plane")
+                return model<Q,d,e,efgy::geometry::plane,C>::set(so, dims, rdims);
         else if (type == "cube")
                  return model<Q,d,e,efgy::geometry::cube,C>::set(so, dims, rdims);
         else if (type == "sphere")
