@@ -29,7 +29,7 @@
 
 namespace topologic
 {
-    static const unsigned int version = 6;
+    static const unsigned int version = 7;
 };
 
 #endif
