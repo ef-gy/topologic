@@ -1,24 +1,24 @@
-###- INSTALLATION -###########################################################
+## INSTALLATION ##############################################################
 
 You'll need to have libxml2 with development files and a recent version of
 clang++ available on your system.
 
-Furhermore, you'll need a recent version of libefgy - a header-only C++
+Furthermore, you'll need a recent version of libefgy - a header-only C++
 template library for maths. If you don't want to install the library
 system-wide, you could instead just create a symlink at include/ef.gy that
 would point to the directory of the same name in libefgy's sources.
 
 To compile the binary, run:
 
-$ make
+    $ make
 
 To install the programme, run:
 
-# make PREFIX=/usr install
+    # make PREFIX=/usr install
 
 Adjust PREFIX as appropriate.
 
-###- COMPILE-TIME OPTIONS -###################################################
+## COMPILE-TIME OPTIONS ######################################################
 
 The rather unusual design of this programme allows you to set an arbitrary
 limit to the number of dimensions supported by the projection code. This is
@@ -34,12 +34,12 @@ would have to be rendered in 8-space - but a 6-sphere in 7-space will work.
 
 To set a compile-time constant, use the -D flag in your CFLAGS, like so:
 
-$ make "CFLAGS=-g -D MAXDEPTH=8"
+    $ make "CFLAGS=-g -D MAXDEPTH=8"
 
-To confirm the number of dimensions that a topologic binary suppors, use the
+To confirm the number of dimensions that a topologic binary supports, use the
 --version flag:
 
-$ ./topologic --version
+   $ ./topologic --version
 Topologic CLI; Version 5
 Maximum render depth of this binary is 8 dimensions.
 
