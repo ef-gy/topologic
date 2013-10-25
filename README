@@ -40,6 +40,7 @@ To confirm the number of dimensions that a topologic binary supports, use the
 --version flag:
 
    $ ./topologic --version
-Topologic CLI; Version 5
-Maximum render depth of this binary is 8 dimensions.
+   Topologic CLI; Version 5
+   Maximum render depth of this binary is 8 dimensions.
+
 
