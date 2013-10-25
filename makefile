@@ -80,8 +80,8 @@ js: $(JSBINARIES)
 
 # meta rules for OpenGL
 gl: $(GLBINARIES)
-install-glut: $(IGLBINARIES)
-uninstall-glut:
+install-gl: $(IGLBINARIES)
+uninstall-gl:
 	rm -f $(IGLBINARIES)
 
 # run unit tests

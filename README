@@ -1,5 +1,39 @@
 # Topologic-7 ################################################################
 
+Topologic is a programme that visualises basic primitives and fractals in
+arbitrary dimensional spaces. Primitives include simplices, cubes and spheres,
+and fractals include basic affine IFSs as well as fractal flames.
+
+Supported output methods include simple SVGs and OpenGL 3.2 and up. The actual
+calculations as well as most of the render tasks are performed by libefgy, a
+header-only C++ template library for maths.
+
+## OBTAINING TOPOLOGIC #######################################################
+
+The Free/Open Source Software version of this programme is available free of
+charge via git at http://git.becquerel.org/jyujin/topologic.git - to check
+out a local copy of that repository, use the git command line tool like this:
+
+    $ git clone git://git.becquerel.org/jyujin/topologic.git
+
+Additionally there's a paid version available on the Mac App Store at
+http://itunes.apple.com/us/app/topologic/id558300160 - this version is
+functionally more or less identical to the F/OSS version, but it provides a
+proper Cocoa GUI instead of the CLI/GLUT frontends. This App is rather cheap,
+however, so if you happen to have a Mac and you do like the programme then I'd
+really appreciate it if you got a copy ;).
+
+Topologic is designed so that almost all of the code is template-y C++ in
+header files, much like libefgy. The API documentation for this is available
+at: http://ef.gy/documentation/topologic - the documentation may not always
+be quite up to date, so, if push comes to shove just read the sources.
+
+## OBTAINING LIBEFGY #########################################################
+
+The library is distributed free of charge under a very permissive licence. The
+public GIT repository is at http://git.becquerel.org/jyujin/libefgy.git - see
+the documentation at http://ef.gy/documentation/libefgy for more details.
+
 ## INSTALLATION ##############################################################
 
 You'll need to have libxml2 with development files and a recent version of
@@ -19,6 +53,23 @@ To install the programme, run:
     # make PREFIX=/usr install
 
 Adjust PREFIX as appropriate.
+
+### THE GLUT FRONTEND  #######################################################
+
+If all you wanted were pretty SVGs, then the regular CLI programme is all you
+needed; but if - instead - you'd want to play with things a bit, then you'll
+want to compile the GLUT version as well. To do so, you'll also need GLEW,
+FreeGLUT, OpenGL headers and a graphics card that supports OpenGL 3.2. Once
+you've verified that you meet all of these prerequisites, run:
+
+    $ make gl
+
+... to compile the GL binaries, then to install them:
+
+    # make PREFIX=/usr install-gl
+
+To install the 'topologic-glut' binary. Again, adjust PREFIX as appropriate
+for your system.
 
 ## COMPILE-TIME OPTIONS ######################################################
 
@@ -45,4 +96,11 @@ To confirm the number of dimensions that a topologic binary supports, use the
     Topologic CLI; Version 5
     Maximum render depth of this binary is 8 dimensions.
 
+## LICENCE ###################################################################
 
+The F/OSS part of Topologic is distributed under an MIT/X style licence. For
+all practical intents and purposes that means that you can do pretty much
+whatever you want with the code, except claim that you wrote it yourself, as
+long as you point out somewhere in your documentation that you used Topologic.
+
+See the file COPYING in the repository for the exact licence terms.
