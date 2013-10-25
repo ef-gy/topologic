@@ -30,9 +30,9 @@ be quite up to date, so, if push comes to shove just read the sources.
 
 ## OBTAINING LIBEFGY #########################################################
 
-The library is distributed free of charge under a very permissive licence. The
-public GIT repository is at http://git.becquerel.org/jyujin/libefgy.git - see
-the documentation at http://ef.gy/documentation/libefgy for more details.
+This library is distributed free of charge under a very permissive licence.
+The public GIT repository is at http://git.becquerel.org/jyujin/libefgy.git -
+see the documentation at http://ef.gy/documentation/libefgy for more details.
 
 ## INSTALLATION ##############################################################
 
