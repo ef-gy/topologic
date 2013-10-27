@@ -26,7 +26,7 @@ ifneq ($(UNAME),Darwin)
 PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
 PCLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES) 2>/dev/null)
 GLCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES_GL) 2>/dev/null)
-GLLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES_GL) 2>/dev/null) -lglut
+GLLDFLAGS:=$(shell $(PKGCONFIG) --libs $(LIBRARIES_GL) 2>/dev/null) -lglut -lGL
 else
 PCCFLAGS:=-I/usr/include/libxml2
 PCLDFLAGS:=-lxml2 $(addprefix -framework ,$(FRAMEWORKS))
