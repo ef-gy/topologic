@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en-gb">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Topologic/V7</title>
+    <style>
+      * { font-family: sans-serif; }
+      html, body { margin: 0; padding: 0; }
+      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      textarea.emscripten { font-family: monospace; width: 80%; }
+      div.emscripten { text-align: center; }
+      canvas.emscripten { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+      #status { position: absolute; text-align: left; top: 1em; left: 1em; }
+      #progress { position: absolute; text-align: left; bottom: 1em; left: 1em; }
+      textarea#output { display: none; }
+      #options { position: absolute; left: 0; top: 0; height: 100%; width: 20em; background: rgba(255,255,255,0.7); padding: 0 1em; }
+      #options td { text-align: center; padding: 0.5em; }
+      #options th { padding: 0.5em; }
+      #options tbody th { text-align: right; }
+      #options td[onclick] { cursor: pointer; background: rgba(255,255,255,0.6); width: 2em; }
+      #options td[onclick]:hover { background: rgba(255,255,255,0.9); }
+    </style>
+  </head>
+  <body>
+    <canvas class="emscripten" id="canvas"></canvas>
+    <progress value="0" max="100" id="progress" hidden=1></progress>  
+    <div id="status">Downloading Topologic/V7...</div>
+    
+    <textarea id="output"></textarea>
+    <script type='text/javascript'>
+      // connect to canvas
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          element.value = ''; // clear browser cache
+          return function(text) {
+            text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            element.value += text + "\n";
+            element.scrollTop = 99999; // focus on bottom
+          };
+        })(),
+        printErr: function(text) {
+          text = Array.prototype.slice.call(arguments).join(' ');
+          if (0) { // XXX disabled for safety typeof dump == 'function') {
+            dump(text + '\n'); // fast, straight to the real console
+          } else {
+            console.log(text);
+          }
+        },
+        canvas: document.getElementById('canvas'),
+        setStatus: function(text) {
+          if (Module.setStatus.interval) clearInterval(Module.setStatus.interval);
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var statusElement = document.getElementById('status');
+          var progressElement = document.getElementById('progress');
+          if (m) {
+            text = m[1];
+            progressElement.value = parseInt(m[2])*100;
+            progressElement.max = parseInt(m[4])*100;
+            progressElement.hidden = false;
+          } else {
+            progressElement.value = null;
+            progressElement.max = null;
+            progressElement.hidden = true;
+          }
+          statusElement.innerHTML = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading...');
+    </script>
+    <script type='text/javascript' src="topologic-sdl.js"></script>
+    <script type='text/javascript'>
+var setRadius = Module.cwrap('setRadius', 'number', ['number']);
+var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
+var updateModel = Module.cwrap('updateModel', 'number', ['string', 'number', 'number']);
+var setActiveDimension = Module.cwrap ('setActiveDimension', 'number', ['number']);
+var forceRedraw = Module.cwrap('forceRedraw', null, []);
+var setFlameColouring = Module.cwrap('setFlameColouring', null, ['number']);
+var setIFSParameters = Module.cwrap('setIFSParameters', null, ['number', 'number', 'number', 'number', 'number']);
+var setColour = Module.cwrap('setColour', null, ['number', 'number', 'number', 'number', 'number']);
+
+var topologicMaxDepth = 7;
+var topologicModel='cube';
+var topologicModelDepth=4;
+var topologicModelRenderDepth=4;
+var topologicModelPrecision=3;
+var topologicModelRadius=1;
+var topologicActiveDimension=3;
+
+var topologicIFSIterations=4;
+var topologicIFSFunctions=3;
+var topologicIFSSeed=0;
+var topologicIFSPreRotate=true;
+var topologicIFSPostRotate=false;
+
+var topologicFlameColouring=false;
+
+var topologicColour =
+    [[0.45, 0.45, 0.65, 1],
+     [1, 1, 1, 1],
+     [1, 1, 1, 0.1]];
+
+function topologicUpdateDimension()
+{
+    if (topologicActiveDimension < 3)
+    {
+        topologicActiveDimension = 3;
+    }
+    if (topologicActiveDimension > topologicModelRenderDepth)
+    {
+        topologicActiveDimension = topologicModelRenderDepth;
+    }
+    var output = document.getElementById('activeDimension');
+    if (output)
+    {
+        output.textContent=topologicActiveDimension;
+    }
+    setActiveDimension(topologicActiveDimension);
+}
+
+function topologicUpdateCurrentModel()
+{
+    if (topologicModel == 'sphere')
+    {
+        if (topologicModelDepth == topologicModelRenderDepth)
+        {
+            topologicModelDepth--;
+        }
+    }
+    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel'))
+    {
+        if (topologicModelDepth != 2)
+        {
+            topologicModelDepth = 2;
+        }
+    }
+    if (topologicModelDepth > topologicMaxDepth)
+    {
+        topologicModelDepth = topologicMaxDepth;
+    }
+    if (topologicModelDepth < 2)
+    {
+        topologicModelDepth = 2;
+    }
+    if (topologicModelRenderDepth < 3)
+    {
+        topologicModelRenderDepth = 3;
+    }
+    if (topologicModelRenderDepth > topologicMaxDepth)
+    {
+        topologicModelRenderDepth = topologicMaxDepth;
+    }
+    if (topologicModelRenderDepth < topologicModelDepth)
+    {
+        topologicModelRenderDepth = topologicModelDepth;
+    }
+    if (topologicActiveDimension > topologicModelRenderDepth)
+    {
+        topologicUpdateDimension();
+    }
+
+    var output = document.getElementById('modelDepth');
+    if (output)
+    {
+        output.textContent=topologicModelDepth;
+    }
+    output = document.getElementById('modelRenderDepth');
+    if (output)
+    {
+        output.textContent=topologicModelRenderDepth;
+    }
+    output = document.getElementById('modelPrecision');
+    if (output)
+    {
+        output.textContent=topologicModelPrecision;
+    }
+    output = document.getElementById('modelRadius');
+    if (output)
+    {
+        output.textContent=topologicModelRadius;
+    }
+    if (topologicIFSIterations < 2)
+    {
+        topologicIFSIterations = 2;
+    }
+    if (topologicIFSFunctions < 2)
+    {
+        topologicIFSFunctions = 2;
+    }
+    output = document.getElementById('IFSIterations');
+    if (output)
+    {
+        output.textContent=topologicIFSIterations;
+    }
+    output = document.getElementById('IFSSeed');
+    if (output)
+    {
+        output.textContent=topologicIFSSeed;
+    }
+    output = document.getElementById('IFSFunctions');
+    if (output)
+    {
+        output.textContent=topologicIFSFunctions;
+    }
+
+    setRadius(topologicModelRadius);
+    setPrecision(topologicModelPrecision);
+
+    setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate, topologicIFSPostRotate);
+    setFlameColouring(topologicFlameColouring);
+
+    setColour(0, topologicColour[0][0], topologicColour[0][1], topologicColour[0][2], topologicColour[0][3]);
+    setColour(1, topologicColour[1][0], topologicColour[1][1], topologicColour[1][2], topologicColour[1][3]);
+    setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
+
+    forceRedraw();
+    updateModel(topologicModel, topologicModelDepth, topologicModelRenderDepth);
+}
+</script>
+    <table id="options">
+      <tbody>
+        <tr><th>Model</th>
+          <td colspan="3"><select onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
+            <option>simplex</option>
+            <option selected="selected">cube</option>
+            <option>plane</option>
+            <option>sphere</option>
+            <option>moebius-strip</option>
+            <option>klein-bagel</option>
+            <option>sierpinski-gasket</option>
+            <option>sierpinski-carpet</option>
+            <option>random-affine-ifs</option>
+            <option>random-flame</option>
+          </ul></select></td>
+        </tr>
+        <tr><th>Model Depth</th>
+          <td onclick="topologicModelDepth--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelDepth">4</td>
+          <td onclick="topologicModelDepth++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Render Depth</th>
+          <td onclick="topologicModelRenderDepth--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelRenderDepth">4</td>
+          <td onclick="topologicModelRenderDepth++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Radius</th>
+          <td onclick="topologicModelRadius-=0.25; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelRadius">1</td>
+          <td onclick="topologicModelRadius+=0.25; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Precision</th>
+          <td onclick="topologicModelPrecision-=0.25; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelPrecision">3</td>
+          <td onclick="topologicModelPrecision+=0.25; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Active Dimension</th>
+          <td onclick="topologicActiveDimension--; topologicUpdateDimension();">&lt;</td>
+          <td id="activeDimension">3</td>
+          <td onclick="topologicActiveDimension++; topologicUpdateDimension();">&gt;</td>
+        </tr>
+        <tr><th>IFS Iterations</th>
+          <td onclick="topologicIFSIterations--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="IFSIterations">4</td>
+          <td onclick="topologicIFSIterations++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>IFS Seed</th>
+          <td onclick="topologicIFSSeed--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="IFSSeed">0</td>
+          <td onclick="topologicIFSSeed++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>IFS Functions</th>
+          <td onclick="topologicIFSFunctions--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="IFSFunctions">3</td>
+          <td onclick="topologicIFSFunctions++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr>
+          <th colspan="3">Pre-translation rotations</th>
+          <td><input type="checkbox" id="preRotate" checked="checked"
+                     onclick="topologicIFSPreRotate=this.checked; topologicUpdateCurrentModel();"/></td>
+        </tr>
+        <tr>
+          <th colspan="3">Post-translation rotations</th>
+          <td><input type="checkbox" id="postRotate"
+                     onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/></td>
+        </tr>
+        <!--
+        <tr>
+          <th colspan="3">Fractal Flame Colouring</th>
+          <td><input type="checkbox" id="flameColouring"
+                     onclick="topologicFlameColouring=this.checked; topologicUpdateCurrentModel();"/></td>
+        </tr>
+        -->
+        <tr>
+          <th>Colours</th>
+          <td colspan="3">
+            <input type="button" value="White/Black" onclick="topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.5]]; topologicUpdateCurrentModel();"/>
+            <input type="button" value="Default" onclick="topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            Drag the mouse to rotate in the currently active dimension.
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(false, true);"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

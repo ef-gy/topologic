@@ -11,3 +11,5 @@ topologic-json.js
 !topologic-json.svg
 documentation
 topologic-glut.html
+topologic-sdl.js
+topologic-sdl.html

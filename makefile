@@ -35,11 +35,11 @@ GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS)
-EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432 -s OUTLINING_LIMIT=20480 -DNOVAO
+EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=33554432 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -DDEBUG
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap']
+JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour']
 
 DATABASE:=
 BINARIES:=$(filter-out %-glut %-gles %-json,$(basename $(notdir $(wildcard src/*.cpp))))

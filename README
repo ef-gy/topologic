@@ -8,6 +8,17 @@ Supported output methods include simple SVGs and OpenGL 3.2 and up. The actual
 calculations as well as most of the render tasks are performed by libefgy, a
 header-only C++ template library for maths.
 
+## WEBGL CLIENT ##############################################################
+
+Since compiling tends to be a pain in the neck, you might want to consider
+using the WebGL client instead. A ready-to-run version that'll run straight
+in your browser without any need to install anything whatsoever - that is, if
+you happen to have a WebGL-enabled browser - is available at:
+
+http://ef.gy/webgl/topologic.html
+
+Just type that in your browser's address bar and enjoy :3.
+
 ## OBTAINING TOPOLOGIC #######################################################
 
 The Free/Open Source Software version of this programme is available free of
@@ -54,7 +65,7 @@ To install the programme, run:
 
 Adjust PREFIX as appropriate.
 
-### THE GLUT FRONTEND  #######################################################
+### THE GLUT FRONTEND ########################################################
 
 If all you wanted were pretty SVGs, then the regular CLI programme is all you
 needed; but if - instead - you'd want to play with things a bit, then you'll
@@ -70,6 +81,18 @@ you've verified that you meet all of these prerequisites, run:
 
 To install the 'topologic-glut' binary. Again, adjust PREFIX as appropriate
 for your system.
+
+### THE WEBGL FRONTEND #######################################################
+
+If you'd like to compile the WebGL frontend yourself instead of using the
+publicly available one at http://ef.gy/webgl/topologic.html you'll need to
+install emscripten instead of GLUT and run the following on a command line:
+
+    $ make topologic-sdl.js
+
+As the name suggests, the WebGL client is based on a simple SDL client. Once
+emscripten has finished compiling you can run the client by opening the file
+topologic.html in your favourite WebGL-enabled browser.
 
 ## COMPILE-TIME OPTIONS ######################################################
 
