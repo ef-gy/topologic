@@ -5,7 +5,7 @@
  * emscripten targeted at WebGL.
  *
  * \copyright
- * Copyright (c) 2012-2013, ef.gy Project Members
+ * Copyright (c) 2012-2013, Topologic Project Members
  * \copyright
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,9 +37,7 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_opengl.h"
 
-#include <stdio.h>
-#include <string.h>
-
+#include <iostream>
 #include <topologic/gl.h>
 
 #if !defined(MAXDEPTH)
@@ -145,7 +143,7 @@ int main(int argc, char *argv[])
 
     // Slightly different SDL initialization
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
-        printf("Unable to initialize SDL: %s\n", SDL_GetError());
+        std::cerr << "Unable to initialize SDL: " << SDL_GetError() << "\n";
         return 1;
     }
 
@@ -153,7 +151,7 @@ int main(int argc, char *argv[])
 
     screen = SDL_SetVideoMode( 1280, 720, 16, SDL_OPENGL | SDL_RESIZABLE ); // *changed*
     if ( !screen ) {
-        printf("Unable to set video mode: %s\n", SDL_GetError());
+        std::cerr << "Unable to set video mode: " << SDL_GetError() << "\n";
         return 1;
     }
 
