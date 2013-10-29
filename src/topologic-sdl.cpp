@@ -87,10 +87,29 @@ void process(void)
         switch (event.type)
         {
             case SDL_MOUSEBUTTONDOWN:
-                buttonDown = true;
+                switch (event.button.button)
+                {
+                    case 4:
+                        topologicState.interpretDrag(0, 0, 30);
+                        doRender = true;
+                        break;
+                    case 5:
+                        topologicState.interpretDrag(0, 0, -30);
+                        doRender = true;
+                        break;
+                    default:
+                        buttonDown = true;
+                }
                 break;
             case SDL_MOUSEBUTTONUP:
-                buttonDown = false;
+                switch (event.button.button)
+                {
+                    case 4:
+                    case 5:
+                        break;
+                    default:
+                        buttonDown = false;
+                }
                 break;
             case SDL_MOUSEMOTION:
                 if (buttonDown)

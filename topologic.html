@@ -79,9 +79,10 @@
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
           Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        }
+        },
+        TOTAL_MEMORY: 268435456
       };
-      Module.setStatus('Downloading...');
+      Module.setStatus('Downloading Topologic/V7...');
     </script>
     <script type='text/javascript' src="topologic-sdl.js"></script>
     <script type='text/javascript'>
@@ -142,7 +143,7 @@ function topologicUpdateCurrentModel()
             topologicModelDepth--;
         }
     }
-    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel'))
+    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel') || (topologicModel == 'plane'))
     {
         if (topologicModelDepth != 2)
         {
