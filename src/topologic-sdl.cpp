@@ -59,6 +59,9 @@ extern "C"
     void setIFSParameters(int, int, int, bool, bool);
     void setFlameColouring(bool);
     void setColour(int, double, double, double, double);
+    void setFlameParameters(int);
+    void resetColourMap(void);
+    void setViewportSize(int, int);
 }
 
 static bool buttonDown = false;
@@ -66,6 +69,24 @@ static bool doRender = true;
 
 void forceRedraw(void)
 {
+    doRender = true;
+}
+
+void setFlameParameters(int variants)
+{
+    topologicState.parameter.flameCoefficients = variants;
+}
+
+void resetColourMap(void)
+{
+    topologicState.opengl.setColourMap();
+    doRender = true;
+}
+
+void setViewportSize(int width, int height)
+{
+    topologicState.width = width;
+    topologicState.height = height;
     doRender = true;
 }
 
