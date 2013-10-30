@@ -34,7 +34,8 @@ dimensions, then exit.
 Render the given
 .I model
 instead of a cube. The available models include "cube", "sphere", "simplex",
-"moebius-strip" and "klein-bagel".
+"plane", "random-affine-ifs", "random-flame", "moebius-strip" and
+"klein-bagel".
 .IP "--depth N"
 Render an
 .I N
@@ -45,6 +46,24 @@ Render the model in
 -space.
 .IP "--iterations N"
 Set the number of iterations when computing iterative function systems to
+.I N
+.IP "--seed N"
+Set the seed of any random factors to
+.I N
+.IP "--functions N"
+Set the number of functions for randomly generated IFSs to
+.I N
+.IP "--pre-rotate"
+Enable pre-translation rotations in randomly generated IFSs
+.IP "--no-pre-rotate"
+Disable pre-translation rotations in randomly generated IFSs
+.IP "--post-rotate"
+Enable post-translation rotations in randomly generated IFSs
+.IP "--no-post-rotate"
+Disable post-translation rotations in randomly generated IFSs
+.IP "--flame-variants N"
+Set the number of nonzero variant coefficients in randomly generated flames
+to
 .I N
 .IP "--precision F"
 Set the precision parameter for certain models to
