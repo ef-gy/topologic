@@ -124,6 +124,13 @@ d-n).
 Set the camera position for the Dth dimension to the tuple (X, Y, ...). These
 coordinates are specified in the currently active coordinate scheme - i.e.
 polar or cartesian.
+.IP "--transform D A B ..."
+Set the model transformation matrix in dimension D to the list of values A
+B ..., and so on. You need to provide (D+1)*(D+1) values as the transformation
+matrix in dimension D transforms D-dimensional homogeneous coordinates. The
+individual cells for this matrix are specified left-to-right, then
+top-to-bottom, i.e. A is the matrix cell at (0,0), B is the matrix cell at
+(0,1) and so on.
 .IP "--id-prefix S"
 Set the prefix for generated XML IDs to
 .I S

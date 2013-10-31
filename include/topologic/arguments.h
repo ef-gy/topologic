@@ -90,6 +90,7 @@ namespace topologic
                                      "  --polar                 Use/manipulate polar coordinates (default)\n"
                                      "  --cartesian             Use/manipulate cartesian coordinates\n"
                                      "  --from D X Y ...        Set the from-point of the D-to-D-1 projection to X Y ...\n"
+                                     "  --transform D A B ...   Set the transformation matrix in D to A B ...\n"
                                      "\n"
                                      "  --regular-colours       Use regular colouring algorithm\n"
                                      "  --fractal-flame-colours Use fractal flame colouring algorithm (OpenGL only)\n"
@@ -367,6 +368,38 @@ namespace topologic
                                 else
                                 {
                                     setCartesian(topologicState, d, j, Q(value));
+                                }
+                            }
+                        }
+                    }
+                    else if (arg == "--transform")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            int d = 0;
+                            std::stringstream st (argv[i]);
+                            st >> d;
+                            st.clear();
+                            
+                            for (unsigned int x = 0; x <= d; x++)
+                            {
+                                for (unsigned int y = 0; y <= d; y++)
+                                {
+                                    double value;
+                                    i++;
+                                    if (i >= argc)
+                                    {
+                                        break;
+                                    }
+                                    st.str(argv[i]);
+                                    st >> value;
+                                    st.clear();
+                                    setMatrixCell(topologicState, d, x, y, Q(value));
+                                }
+                                if (i >= argc)
+                                {
+                                    break;
                                 }
                             }
                         }

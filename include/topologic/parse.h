@@ -200,6 +200,24 @@ namespace topologic
         return false;
     }
 
+    template<typename Q, unsigned int d>
+    static bool setMatrixCell (state<Q,d> &s, const unsigned int &sd, const unsigned int &x, const unsigned int &y, const Q &vv)
+    {
+        if (d == sd)
+        {
+            s.transformation.data[x][y] = vv;
+            return true;
+        }
+        
+        return setMatrixCell<Q,d-1>(s, sd, x, y, vv);
+    }
+    
+    template<typename Q, unsigned int d>
+    static bool setMatrixCell (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
+    {
+        return false;
+    }
+
 #if !defined (NOLIBRARIES)
     class xml
     {
