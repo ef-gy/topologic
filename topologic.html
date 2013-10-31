@@ -41,22 +41,13 @@
           element.value = ''; // clear browser cache
           return function(text) {
             text = Array.prototype.slice.call(arguments).join(' ');
-            // These replacements are necessary if you render to raw HTML
-            //text = text.replace(/&/g, "&amp;");
-            //text = text.replace(/</g, "&lt;");
-            //text = text.replace(/>/g, "&gt;");
-            //text = text.replace('\n', '<br>', 'g');
             element.value += text + "\n";
             element.scrollTop = 99999; // focus on bottom
           };
         })(),
         printErr: function(text) {
           text = Array.prototype.slice.call(arguments).join(' ');
-          if (0) { // XXX disabled for safety typeof dump == 'function') {
-            dump(text + '\n'); // fast, straight to the real console
-          } else {
-            console.log(text);
-          }
+          console.log(text);
         },
         canvas: document.getElementById('canvas'),
         setStatus: function(text) {
@@ -95,6 +86,9 @@ var forceRedraw = Module.cwrap('forceRedraw', null, []);
 var setFlameColouring = Module.cwrap('setFlameColouring', null, ['number']);
 var setIFSParameters = Module.cwrap('setIFSParameters', null, ['number', 'number', 'number', 'number', 'number']);
 var setColour = Module.cwrap('setColour', null, ['number', 'number', 'number', 'number', 'number']);
+var setFlameParameters = Module.cwrap('setFlameParameters', null, ['number']);
+var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number']);
+var resetColourMap = Module.cwrap('resetColourMap', null, []);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
@@ -111,6 +105,7 @@ var topologicIFSPreRotate=true;
 var topologicIFSPostRotate=false;
 
 var topologicFlameColouring=false;
+var topologicFlameVariants=3;
 
 var topologicColour =
     [[0.45, 0.45, 0.65, 1],
@@ -204,6 +199,10 @@ function topologicUpdateCurrentModel()
     {
         topologicIFSFunctions = 2;
     }
+    if (topologicFlameVariants < 1)
+    {
+        topologicFlameVariants = 1;
+    }
     output = document.getElementById('IFSIterations');
     if (output)
     {
@@ -219,12 +218,18 @@ function topologicUpdateCurrentModel()
     {
         output.textContent=topologicIFSFunctions;
     }
+    output = document.getElementById('FlameVariants');
+    if (output)
+    {
+        output.textContent=topologicFlameVariants;
+    }
 
     setRadius(topologicModelRadius);
     setPrecision(topologicModelPrecision);
 
     setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate, topologicIFSPostRotate);
     setFlameColouring(topologicFlameColouring);
+    setFlameParameters(topologicFlameVariants);
 
     setColour(0, topologicColour[0][0], topologicColour[0][1], topologicColour[0][2], topologicColour[0][3]);
     setColour(1, topologicColour[1][0], topologicColour[1][1], topologicColour[1][2], topologicColour[1][3]);
@@ -300,6 +305,11 @@ function topologicUpdateCurrentModel()
           <td><input type="checkbox" id="postRotate"
                      onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/></td>
         </tr>
+        <tr><th>Flame Variants</th>
+          <td onclick="topologicFlameVariants--; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="FlameVariants">3</td>
+          <td onclick="topologicFlameVariants++; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
         <tr>
           <th colspan="3">Fractal Flame Colouring</th>
           <td><input type="checkbox" id="flameColouring"
@@ -310,6 +320,11 @@ function topologicUpdateCurrentModel()
           <td colspan="3">
             <input type="button" value="White/Black" onclick="topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.5]]; topologicUpdateCurrentModel();"/>
             <input type="button" value="Default" onclick="topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <input type="button" value="Randomise Flame Colours" onclick="resetColourMap();"/>
           </td>
         </tr>
         <tr>

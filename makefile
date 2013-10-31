@@ -39,7 +39,7 @@ EMCFLAGS:=-O2 --llvm-lto 3 -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DN
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour']
+JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize']
 
 DATABASE:=
 BINARIES:=$(filter-out %-glut %-gles %-json,$(basename $(notdir $(wildcard src/*.cpp))))
