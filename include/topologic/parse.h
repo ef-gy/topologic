@@ -205,7 +205,7 @@ namespace topologic
     {
         if (d == sd)
         {
-            s.transformation.data[x][y] = vv;
+            s.transformation.transformationMatrix.data[x][y] = vv;
             return true;
         }
         
@@ -213,7 +213,7 @@ namespace topologic
     }
     
     template<typename Q, unsigned int d>
-    static bool setMatrixCell (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
+    static bool setMatrixCell (state<Q,2> &, const unsigned int &, const unsigned int &, const unsigned int &, const Q &)
     {
         return false;
     }
