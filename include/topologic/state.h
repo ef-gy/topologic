@@ -199,11 +199,7 @@ namespace topologic
             gState.S::opengl.width  = gState.width;
             gState.S::opengl.height = gState.height;
 
-            if (gState.fractalFlameColouring)
-            {
-                glClearColor(1,1,1,1);
-            }
-            else
+            if (!gState.fractalFlameColouring)
             {
                 glClearColor
                     (gState.S2::background.red, gState.S2::background.green,
