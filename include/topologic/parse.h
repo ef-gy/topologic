@@ -169,7 +169,7 @@ namespace topologic
     {
         if (d == sd)
         {
-            s.fromp.data[vn] = vv;
+            s.fromp[vn] = vv;
             return true;
         }
 
@@ -187,7 +187,7 @@ namespace topologic
     {
         if (d == sd)
         {
-            s.fromp.data[vn] = vv;
+            s.fromp[vn] = vv;
             return true;
         }
 
@@ -411,7 +411,7 @@ namespace topologic
                 {
                     if ((i == 0) && ((value = parser.evaluate("@radius")) != ""))
                     {
-                        s.fromp.data[0] = Q(stringToDouble(value));
+                        s.fromp[0] = Q(stringToDouble(value));
                         continue;
                     }
                     else
@@ -420,7 +420,7 @@ namespace topologic
                         st << "@theta-" << i;
                         if ((value = parser.evaluate(st.str())) != "")
                         {
-                            s.fromp.data[i] = Q(stringToDouble(value));
+                            s.fromp[i] = Q(stringToDouble(value));
                             continue;
                         }
                     }
@@ -430,7 +430,7 @@ namespace topologic
                         char r[] = {'@', cartesianDimensions[i], 0};
                         if ((value = parser.evaluate(r)) != "")
                         {
-                            s.from.data[i] = Q(stringToDouble(value));
+                            s.from[i] = Q(stringToDouble(value));
                         }
                     }
                     else
@@ -439,7 +439,7 @@ namespace topologic
                         st << "@d-" << i;
                         if ((value = parser.evaluate(st.str())) != "")
                         {
-                            s.from.data[i] = Q(stringToDouble(value));
+                            s.from[i] = Q(stringToDouble(value));
                         }
                     }
                 }

@@ -277,16 +277,16 @@ namespace topologic
             {
                 if (d == 3)
                 {
-                    fromp.data[0] = 3;
-                    fromp.data[1] = 1;
-                    fromp.data[2] = 1;
+                    fromp[0] = 3;
+                    fromp[1] = 1;
+                    fromp[2] = 1;
                 }
                 else
                 {
-                    fromp.data[0] = 2;
+                    fromp[0] = 2;
                     for (int i = 1; i < d; i++)
                     {
-                        fromp.data[i] = 1.57;
+                        fromp[i] = 1.57;
                     }
                 }
             }
@@ -319,10 +319,10 @@ namespace topologic
             rv << "<t:camera";
             if (base::polarCoordinates)
             {
-                rv << " radius='" << double(fromp.data[0]) << "'";
+                rv << " radius='" << double(fromp[0]) << "'";
                 for (unsigned int i = 1; i < d; i++)
                 {
-                    rv << " theta-" << i << "='" << double(fromp.data[i]) << "'";
+                    rv << " theta-" << i << "='" << double(fromp[i]) << "'";
                 }
             }
             else
@@ -331,11 +331,11 @@ namespace topologic
                 {
                     if (i < sizeof(cartesianDimensions))
                     {
-                        rv << " " << cartesianDimensions[i] << "='" << double(from.data[i]) << "'";
+                        rv << " " << cartesianDimensions[i] << "='" << double(from[i]) << "'";
                     }
                     else
                     {
-                        rv << " d-" << i << "='" << double(from.data[i]) << "'";
+                        rv << " d-" << i << "='" << double(from[i]) << "'";
                     }
                 }
             }
