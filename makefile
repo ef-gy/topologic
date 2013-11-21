@@ -5,7 +5,7 @@ INCLUDEDIR:=$(DESTDIR)$(PREFIX)/include
 MANDIR:=$(DESTDIR)$(PREFIX)/share/man
 
 NAME:=topologic
-VERSION:=7
+VERSION:=8
 
 CC:=clang
 CXX:=clang++
@@ -42,13 +42,13 @@ LDFLAGS:=
 JSFUNCTIONS:=['_main','_setRadius','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize']
 
 DATABASE:=
-BINARIES:=$(filter-out %-glut %-gles %-json %-sdl,$(basename $(notdir $(wildcard src/*.cpp))))
+BINARIES:=$(filter-out %-glut %-gles %-sdl,$(basename $(notdir $(wildcard src/*.cpp)))) $(addprefix test-case-,$(notdir $(wildcard src/test-case/*.cpp)))
 GLBINARIES:=$(filter %-glut,$(basename $(notdir $(wildcard src/*.cpp))))
 JSBINARIES:=$(addsuffix .js,$(BINARIES))
-TESTBINARIES:=$(filter test-%,$(BINARIES))
+TESTBINARIES:=$(filter test-case-%,$(BINARIES))
 
 IGNOREBINARIES:=
-IBINARIES:=$(addprefix $(BINDIR)/,$(BINARIES))
+IBINARIES:=$(addprefix $(BINDIR)/,$(filter-out $(IGNOREBINARIES) test-case-%,$(BINARIES)))
 IGLBINARIES:=$(addprefix $(BINDIR)/,$(GLBINARIES))
 IINCLUDES:=$(addprefix $(INCLUDEDIR)/topologic/,$(notdir $(wildcard include/topologic/*.h)))
 IMANPAGES:=$(addprefix $(MANDIR)/man1/,$(notdir $(wildcard src/*.1)))
@@ -85,8 +85,12 @@ uninstall-gl:
 	rm -f $(IGLBINARIES)
 
 # run unit tests
-test: $(TESTBINARIES)
-	for i in $^; do echo TEST: $$i; ./$$i; done
+test: $(addprefix run-,$(TESTBINARIES))
+
+run-test-case-%: test-case-%
+	@echo TEST BATCH: $*
+	@./$^
+	@echo PASSED
 
 # pattern rules to install things
 $(BINDIR)/%: %

@@ -36,7 +36,6 @@
 #if !defined(NO_OPENGL)
 #include <ef.gy/render-opengl.h>
 #endif
-#include <ef.gy/render-json.h>
 #include <sstream>
 
 namespace topologic
@@ -48,8 +47,7 @@ namespace topologic
     enum outputMode
     {
         outSVG  = 1,
-        outGL   = 2,
-        outJSON = 3
+        outGL   = 2
     };
 
     class renderer
@@ -258,76 +256,6 @@ namespace topologic
     };
 #endif
 
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderJSON : public conditional<isVirtual, renderer, empty>::type
-    {
-    public:
-        typedef T<Q,d,efgy::render::json<Q,rd>,rd > P;
-        typedef state<Q,rd> S;
-        typedef state<Q,2> S2;
-
-        renderJSON(S &pState)
-            : gState(pState),
-              object(gState.S::json,
-                     gState.S2::parameter,
-                     gState.S2::exportMultiplier)
-            {}
-
-        renderJSON(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-            : gState(pState),
-              object(gState.S::json,
-                     pParameter,
-                     Q(1))
-            {}
-
-        renderJSON(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-            : gState(pState),
-              object(gState.S::json,
-                     pParameter,
-                     pMultiplier)
-            {}
-
-        std::stringstream &render (bool updateMatrix = false)
-        {
-            if (updateMatrix)
-            {
-                gState.S2::width  = 3;
-                gState.S2::height = 3;
-                gState.S::updateMatrix();
-            }
-
-            gState.S::json.frameStart();
-
-            gState.S2::json.reset();
-
-            gState.S2::json.output << "['surfaces'";
-            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
-            {
-                object.renderSolid();
-            }
-            gState.S2::json.output << "]";
-
-            gState.S::json.frameEnd();
-
-            return gState.S2::json.output;
-        }
-
-        unsigned int depth (void) const { return P::depth(); };
-        unsigned int renderDepth (void) const { return P::renderDepth(); };
-        const char *id (void) const { return P::id(); };
-        std::string name (void) const
-        {
-            std::stringstream rv;
-            rv << depth() << "-" << id();
-            return rv.str();
-        }
-        void update (void) { object.calculateObject(); }
-
-    protected:
-        S &gState;
-        P object;
-    };
-
     template<typename Q, unsigned int d>
     class state : public state<Q,d-1>
     {
@@ -345,7 +273,6 @@ namespace topologic
               opengl(transformation, projection, state<Q,d-1>::opengl),
 #endif
               svg(transformation, projection, state<Q,d-1>::svg),
-              json(transformation, projection, state<Q,d-1>::json),
               active(d == 3)
             {
                 if (d == 3)
@@ -373,7 +300,6 @@ namespace topologic
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,d> opengl;
 #endif
-        typename efgy::render::json<Q,d> json;
         bool active;
 
         void updateMatrix (void)
@@ -647,7 +573,6 @@ namespace topologic
 #if !defined(NO_OPENGL)
               opengl(transformation),
 #endif
-              json(transformation),
               exportMultiplier(Q(2)),
               lighting(Q(1), Q(1), Q(1), Q(1)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
@@ -713,7 +638,6 @@ namespace topologic
 #if !defined(NO_OPENGL)
         typename efgy::render::opengl<Q,2> opengl;
 #endif
-        typename efgy::render::json<Q,2> json;
 
         bool polarCoordinates;
         efgy::geometry::parameters<Q> parameter;

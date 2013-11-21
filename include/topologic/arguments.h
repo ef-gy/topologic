@@ -458,10 +458,6 @@ namespace topologic
                     setModelWithTypeString<Q,dim,dim,renderGL> (model, topologicState, depth, rdepth);
                 }
 #endif
-                else if (out == outJSON)
-                {
-                    setModelWithTypeString<Q,dim,dim,renderJSON> (model, topologicState, depth, rdepth);
-                }
             }
         }
         catch (std::exception &e)
