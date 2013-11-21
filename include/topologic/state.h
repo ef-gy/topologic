@@ -517,11 +517,11 @@ namespace topologic
 
             if (base::polarCoordinates)
             {
-                fromp.data[coord] = value;
+                fromp[coord] = value;
             }
             else
             {
-                from.data[coord] = value;
+                from[coord] = value;
             }
 
             return true;
@@ -541,11 +541,11 @@ namespace topologic
 
             if (base::polarCoordinates)
             {
-                return fromp.data[coord];
+                return fromp[coord];
             }
             else
             {
-                return from.data[coord];
+                return from[coord];
             }
         }
 
