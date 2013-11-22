@@ -205,7 +205,7 @@ namespace topologic
     {
         if (d == sd)
         {
-            s.transformation.transformationMatrix.data[x][y] = vv;
+            s.transformation.transformationMatrix[x][y] = vv;
             return true;
         }
         
@@ -471,7 +471,7 @@ namespace topologic
                         st << "@e" << i << "-" << j;
                         if ((value = parser.evaluate(st.str())) != "")
                         {
-                            s.transformation.transformationMatrix.data[i][j] = Q(stringToDouble(value));
+                            s.transformation.transformationMatrix[i][j] = Q(stringToDouble(value));
                         }
                     }
                 }
