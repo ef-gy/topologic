@@ -225,7 +225,7 @@ namespace topologic
                      false);
             }
 
-            if (!gState.S::opengl.isPrepared())
+            if (!gState.S::opengl.prepared)
             {
                 object.renderSolid();
             }
