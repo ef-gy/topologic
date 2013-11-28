@@ -165,7 +165,7 @@ namespace topologic
                      gState.S2::parameter,
                      gState.S2::exportMultiplier)
             {
-                gState.S::opengl.reset();
+                gState.opengl.prepared = false;
             }
 
         renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
@@ -174,7 +174,7 @@ namespace topologic
                      pParameter,
                      Q(1))
             {
-                gState.S::opengl.reset();
+                gState.opengl.prepared = false;
             }
 
         renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
@@ -183,7 +183,7 @@ namespace topologic
                      pParameter,
                      pMultiplier)
             {
-                gState.S::opengl.reset();
+                gState.opengl.prepared = false;
             }
 
         std::stringstream &render (bool updateMatrix = false)
@@ -246,7 +246,7 @@ namespace topologic
         }
         void update (void)
         {
-            gState.S::opengl.reset();
+            gState.opengl.prepared = false;
             object.calculateObject();
         }
 
@@ -375,7 +375,7 @@ namespace topologic
 #if !defined(NO_OPENGL)
             if (d > 3)
             {
-                opengl.reset();
+                opengl.prepared = false;
             }
 #endif
 
@@ -395,7 +395,7 @@ namespace topologic
 #if !defined(NO_OPENGL)
             if (d > 3)
             {
-                opengl.reset();
+                opengl.prepared = false;
             }
 #endif
 
@@ -415,7 +415,7 @@ namespace topologic
 #if !defined(NO_OPENGL)
             if (d > 3)
             {
-                opengl.reset();
+                opengl.prepared = false;
             }
 #endif
 
@@ -464,7 +464,7 @@ namespace topologic
 #if !defined(NO_OPENGL)
                 if (d > 3)
                 {
-                    opengl.reset();
+                    opengl.prepared = false;
                 }
 #endif
                 Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
@@ -511,8 +511,8 @@ namespace topologic
 #if !defined(NO_OPENGL)
             if (d > 3)
             {
-                opengl.reset();
-            }
+                opengl.prepared = false;
+            }g
 #endif
 
             if (base::polarCoordinates)
