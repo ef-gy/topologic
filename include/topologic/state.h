@@ -496,6 +496,25 @@ namespace topologic
             return state<Q,d-1>::realign();
         }
 
+        /**\brief Set coordinate of currently active dimension
+         *
+         * This sets the specified coordinate of the currently 'active'
+         * dimension's 'from' point in the currently active source coordinate
+         * system to the given value.
+         *
+         * For example, if transformations are currently being applied to the 4D
+         * position, and the from point is currently specified in polar
+         * coordinates, and you call this function with coord set to 2 and value
+         * set to pi/2, then this will set the 4D from point's theta-2 to pi/2.
+         *
+         * \param[in] coord The index of the coordinate to set. Bad things
+         *                  happen if this is greater than or equal to the
+         *                  currently active dimension.
+         * \param[in] value What to set this coordinate to.
+         *
+         * \returns True if the from point was updated successfully, false
+         *          otherwise.
+         */
         bool setActiveFromCoordinate (const unsigned int &coord, const Q &value)
         {
             if (!active)
@@ -512,7 +531,7 @@ namespace topologic
             if (d > 3)
             {
                 opengl.prepared = false;
-            }g
+            }
 #endif
 
             if (base::polarCoordinates)
@@ -549,20 +568,47 @@ namespace topologic
             }
         }
 
+        /**\brief Translate from points from polar to cartesian coordinates
+         *
+         * Sets all the 'from' points' cartesian coordinates to the equivalent
+         * point currently specified in polar coordinates.
+         *
+         * \returns True if the conversions were performed successfully, false
+         *          otherwise. Should always be 'true'.
+         */
         bool translatePolarToCartesian (void)
         {
             from = fromp;
             return state<Q,d-1>::translatePolarToCartesian();
         }
 
+        /**\brief Translate from points from cartesian to polar coordinates
+         *
+         * Sets all the 'from' points' polar coordinates to the equivalent point
+         * currently specified in cartesian coordinates, i.e. the inverse of
+         * translatePolarToCartesian().
+         *
+         * \todo This function is currently not implemented in libefgy.
+         *
+         * \returns True if the conversions were performed successfully, false
+         *          otherwise.
+         */
         bool translateCartesianToPolar (void)
         {
-            // TODO: implement this transformation
             // fromp = from;
             return state<Q,d-1>::translateCartesianToPolar();
         }
     };
 
+    /**\param Topologic programme state (2D fix point)
+     *
+     * Part of the global Topologic state class, this is the 2D fix point and
+     * as such contains most of the flags and other state that apply to all 
+     * dimensions: output sizes, colours, model parameters, etc.
+     *
+     * \tparam Q Base data type; should be a class that acts like a rational
+     *           base arithmetic type.
+     */
     template<typename Q>
     class state<Q,2>
     {
@@ -629,7 +675,7 @@ namespace topologic
         bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
         const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
         bool translatePolarToCartesian (void) const { return true; }
-        bool translateCartesianToPolar (void) const { return true; }
+        bool translateCartesianToPolar (void) const { return false; }
 
         renderer *model;
 
