@@ -8,7 +8,7 @@ NAME:=topologic
 VERSION:=8
 
 CC:=clang
-CXX:=clang++
+CXX:=clang++ -stdlib=libc++
 EMXX:=em++
 PKGCONFIG:=pkg-config
 INSTALL:=install
