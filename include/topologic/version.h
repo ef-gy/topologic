@@ -1,4 +1,8 @@
 /**\file
+ * \brief Version information
+ *
+ * Contains Topologic's version number and assorted pieces of documentation
+ * that didn't quite fit in anywhere else.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -28,8 +32,20 @@
 #if !defined(TOPOLOGIC_VERSION_H)
 #define TOPOLOGIC_VERSION_H
 
+/**\brief Library namespace for the Topologic project
+ *
+ * This namespace contains all of the classes and functions that make up the
+ * actual backend code of Topologic. The frontends then only really need to set
+ * up an OpenGL context (if they do render to OpenGL) and handle user I/O.
+ */
 namespace topologic
 {
+    /**\brief Library Version
+     *
+     * This is the library's version number. Topologic uses a very simple,
+     * single-integer versioning scheme: whenever a new version is released,
+     * this number is increased by one and used until the next release.
+     */
     static const unsigned int version = 8;
 };
 
