@@ -56,7 +56,7 @@ two paths to your .gitignore file:
     ~/projects/topologic-xcode$ echo include/ef.gy >> .gitignore
     ~/projects/topologic-xcode$ echo include/topologic >> .gitignore
 
-## STEP 4: Configuring your Xcode target ######################################
+## STEP 4: Configure your Xcode target ########################################
 
 There's a few things you'll have to tell Xcode before it'll be able to compile
 any of Topologic's code. You'll find these settings in the target
