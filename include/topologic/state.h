@@ -1,4 +1,10 @@
 /**\file
+ * \brief Programme context
+ *
+ * All of the context that a generic Topologic frontend should need to keep
+ * track of is encapsulated in the state class template; this files defines
+ * this template and a few others which are closely related to this programme
+ * state.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -41,34 +47,95 @@
 
 namespace topologic
 {
+    /**\brief Cartesian dimension shorthands
+     *
+     * As you'll probably remember form high school, it's customary to label
+     * first three dimensions in a euclidian coordinate space "x", "y" and "z".
+     * If you've had a poke at OpenGL or two, you'll also remember that the
+     * fourth coordinate is often called "w". But what about the remaining "n"
+     * dimensions? Well, we could just use "dimension-N", but that's kind of
+     * dull, and since Topologic could, in theory, use a lot more dimensions
+     * than 4, this array here defines how these dimensions are labelled - e.g.
+     * in XML metadata fragments.
+     */
     static const char cartesianDimensions[] = "xyzwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
 
     template<typename Q, unsigned int d> class state;
 
+    /**\brief Output mode
+     *
+     * Defines enums for the individual renderers supported by Topologic. These
+     * enums are used when creating a renderer at runtime to choose the right
+     * renderer type - e.g. SVG or OpenGL.
+     */
     enum outputMode
     {
+        /**\brief SVG renderer label
+         *
+         * libefgy's SVG renderer is able to render any given model to simple
+         * SVG files, annotated with the settings used to create the model.
+         */
         outSVG  = 1,
+
+        /**\brief OpenGL renderer label
+         *
+         * libefgy's OpenGL renderer has gotten a lot of love lately, and it
+         * currently renders directly to any OpenGL 3.2 or higher context,
+         * which is expected to be prepared by the frontend. Unlike the SVG
+         * render, this one also supports 3D lighting and a Fractal Flame
+         * colouring mode.
+         */
         outGL   = 2
     };
 
+    /**\brief Base class for a model renderer
+     *
+     * The primary purpose of this class is to force certain parts of a model
+     * renderer's interface to be virtual.
+     *
+     * \tparam isVirtual Whether the derived class should contain virtual
+     *                   methods.
+     */
+    template<bool isVirtual = false>
     class renderer
     {
-    public:
-        virtual ~renderer(void) {}
-        virtual std::stringstream &render (bool updateMatrix = false) = 0;
-        virtual unsigned int depth (void) const = 0;
-        virtual unsigned int renderDepth (void) const = 0;
-        virtual const char *id (void) const = 0;
-        virtual std::string name (void) const = 0;
-        virtual void update (void) = 0;
+        public:
+            virtual ~renderer(void) {}
+            virtual std::stringstream &render (bool updateMatrix = false) = 0;
+            virtual unsigned int depth (void) const = 0;
+            virtual unsigned int renderDepth (void) const = 0;
+            virtual const char *id (void) const = 0;
+            virtual std::string name (void) const = 0;
+            virtual void update (void) = 0;
     };
 
-    class empty
-    {
-    };
+    /**\brief Non-virtual model renderer base class
+     *
+     * This is simply an empty class, which allows a model renderer to be
+     * non-virtual, which in turn would probably be handy in certain situations
+     * where only a very select few models will be used and it would be a good
+     * idea to highly optimise the renderers for these models; by cutting down
+     * on the number of virtual functions, the compiler should be able to
+     * provide slightly better code.
+     */
+    template<>
+    class renderer<false> {};
 
+    /**\brief SVG model renderer
+     *
+     * This is a wrapper for libefgy's SVG renderer, augmented with some code
+     * to write out model parameters and use Topologic's state object to handle
+     * these parameters.
+     *
+     * \tparam Q  Base data type for calculations
+     * \tparam d  Model depth; typically has to be <= the render depth
+     * \tparam T  Model template; use things like efgy::geometry::cube
+     * \tparam rd Model render depth; this is the maximum depth for your models
+     *            and also specifies the maximum depth of any transformations
+     *            you can apply.
+     */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderSVG : public std::conditional<isVirtual, renderer, empty>::type
+    class renderSVG : public renderer<isVirtual>
     {
     public:
         typedef T<Q,d,efgy::render::svg<Q,rd>,rd > P;
@@ -150,7 +217,7 @@ namespace topologic
 
 #if !defined (NO_OPENGL)
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderGL : public std::conditional<isVirtual, renderer, empty>::type
+    class renderGL : public renderer<isVirtual>
     {
     public:
         typedef T<Q,d,efgy::render::opengl<Q,rd>,rd > P;
@@ -358,7 +425,7 @@ namespace topologic
         }
 
         template<unsigned int md, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = md>
-        renderer * getModel (void)
+        renderer<true> * getModel (void)
         {
             return new renderSVG<Q,md,T,rd,true>(*this);
         }
@@ -675,7 +742,7 @@ namespace topologic
         bool translatePolarToCartesian (void) const { return true; }
         bool translateCartesianToPolar (void) const { return false; }
 
-        renderer *model;
+        renderer<true> *model;
 
         typename efgy::geometry::transformation::affine<Q,2> transformation;
         typename efgy::render::svg<Q,2> svg;

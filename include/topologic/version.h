@@ -32,6 +32,15 @@
 #if !defined(TOPOLOGIC_VERSION_H)
 #define TOPOLOGIC_VERSION_H
 
+/**\dir include/topologic
+ *
+ * Like libefgy, Topologic is mostly just a set of C++ template headers; as
+ * such, most of the code is contained within the headers themselves, and these
+ * headers are located in the include/topologic directory. And just like
+ * libefgy, if you intend to create your own frontend then all you need to do
+ * is copy or symlink this directory in your own source code repository.
+ */
+
 /**\brief Library namespace for the Topologic project
  *
  * This namespace contains all of the classes and functions that make up the
