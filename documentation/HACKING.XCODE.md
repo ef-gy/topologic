@@ -63,7 +63,7 @@ any of Topologic's code. You'll find these settings in the target
 "Build Settings" tab.
 
 First of all, you'll have to add the "include" directory you created to the
-list of "Useri Header Search Paths". Make sure to add this directory
+list of "User Header Search Paths". Make sure to add this directory
 non-recursively - adding it recursively will result in a lot of very weird
 errors. This screenshot should illustrate what the section ought to look like:
 
