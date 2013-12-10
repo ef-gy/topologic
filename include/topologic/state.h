@@ -100,12 +100,71 @@ namespace topologic
     class renderer
     {
         public:
+            /**\brief Virtual destructor
+             *
+             * Generally necessary for virtual classes; stubbed to be a trivial
+             * destructor.
+             */
             virtual ~renderer(void) {}
+
+            /**\brief Render model
+             *
+             * Processes the model with the renderer. Depending on the output,
+             * this may or may not produce output directly on screen or
+             * fill a provided stringstream.
+             *
+             * \param[in] updateMatrix Whether to update the projection
+             *                         matrices.
+             *
+             * \returns A stringstream which will either be empty or contain
+             *          the generated data.
+             */
             virtual std::stringstream &render (bool updateMatrix = false) = 0;
+
+            /**\brief Query model depth
+             *
+             * Used to access the model depth; this is typically a template
+             * parameter.
+             *
+             * \returns The model depth; expect values like "2" for a square,
+             *          "3" for a cube, etc.
+             */
             virtual unsigned int depth (void) const = 0;
+
+            /**\brief Query render depth
+             *
+             * Used to access the depth that the renderer has been initialised
+             * to.
+             *
+             * \returns The model renderer's depth; expect this value to be
+             *          greater than or equal to the model's depth.
+             */
             virtual unsigned int renderDepth (void) const = 0;
+
+            /**\brief Query model name
+             *
+             * Used to obtain a short, descriptive name of a model. This name
+             * is also used when instantiating the model with a factory.
+             *
+             * \returns A C-style, 0-terminated string containing the name of
+             *          the model. This should never return a 0-pointer.
+             */
             virtual const char *id (void) const = 0;
+
+            /**\brief Query extended model name
+             *
+             * This returns a string of the form "depth()-id()", e.g. "4-cube"
+             * for a 4D model with the id "cube".
+             *
+             * \returns A C++ std::string containing the model's name.
+             */
             virtual std::string name (void) const = 0;
+
+            /**\brief Force internal update
+             *
+             * This tells a renderer that it should do a full redraw, because
+             * you changed some parameters that it may have cached.
+             */
             virtual void update (void) = 0;
     };
 
@@ -321,6 +380,28 @@ namespace topologic
     };
 #endif
 
+    /**\brief Topologic global programme state object
+     *
+     * This is the global programme state object, which contains generic data
+     * common to all the frontends. Could very well be a singleton, but it's OK
+     * to have more than one.
+     *
+     * The 'Q' parameter should either be topologic::GLFP or topologic::FP, but
+     * you do have quite a bit of flexibility here if you intend to use
+     * something fancy for your calculations. The 'd' parameter defines a limit
+     * on how 'deep' any renders can end up being, in terms of spatial
+     * dimensions.
+     *
+     * For example, if you primarily intend to render to OpenGL and you know
+     * you won't need more than 4 spatial dimensions, you'd use a state<GLFP,4>
+     * instance.
+     *
+     * \note This is a recursive template. Doxygen doesn't like this and will
+     *       throw a warning about this, but sod them :P.
+     *
+     * \tparam Q Base data type for calculations
+     * \tparam d Maximum render depth
+     */
     template<typename Q, unsigned int d>
     class state : public state<Q,d-1>
     {
@@ -665,7 +746,7 @@ namespace topologic
         }
     };
 
-    /**\param Topologic programme state (2D fix point)
+    /**\brief Topologic programme state (2D fix point)
      *
      * Part of the global Topologic state class, this is the 2D fix point and
      * as such contains most of the flags and other state that apply to all 
