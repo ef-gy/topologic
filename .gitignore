@@ -9,7 +9,8 @@ topologic-glut
 !src/topologic*
 topologic-json.js
 !topologic-json.svg
-documentation
+documentation/html
+documentation/xml
 topologic-glut.html
 topologic-sdl.js
 topologic-sdl.html
