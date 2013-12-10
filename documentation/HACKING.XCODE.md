@@ -69,8 +69,8 @@ errors. This screenshot should illustrate what the section ought to look like:
 
 ![Screenshot of Xcode 5; notice the search path settings](xcode-1.png)
 
-Next, make sure that th C++ files are actually compiled in C++11 mode, and that
-Xcode uses clang's/LLVM's own standard C++ library (i.e. libc++ instead of
+Next, make sure that the C++ files are actually compiled in C++11 mode, and
+that Xcode uses clang's/LLVM's own standard C++ library (i.e. libc++ instead of
 libstdc++); this is probably the default by now, but the relevant settings
 should look like this:
 
