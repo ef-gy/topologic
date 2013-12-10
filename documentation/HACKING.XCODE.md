@@ -90,9 +90,9 @@ really.
 Finally, you need to enable optimisations - even for your Debug target. Somehow
 the code won't work properly when optimisations are completely disabled - I'm
 not entirely sure why that is, but that's the way it is. Make sure that under
-"Code Generation" the "Optimization Level" settings is set to "Fast" or higher.
-If it's set to "none", then the code WILL crash. Here's another screenshot so
-you know where to find this setting:
+"Code Generation" the "Optimization Level" settings are set to "Fast" or
+higher. If it's set to "none", then the code WILL crash. Here's another
+screenshot so you know where to find this setting:
 
 ![Screenshot of Xcode 5; notice the Optimization Level setting](xcode-4.png)
 
