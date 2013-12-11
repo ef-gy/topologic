@@ -313,6 +313,23 @@ namespace topologic
             return state<Q,d-1>::setActive(dim);
         }
 
+        /**\brief Update 'from' point with transformation
+         *
+         * This method updates the 'from' point of the currently active
+         * dimension so that it coincides with the current viewport's angle,
+         * then discards any further rotations of the affine transformation
+         * matrix.
+         *
+         * The result is that the affine transformation matrix is reset to an
+         * identity matrix and the 'from' point will have been updated to
+         * reflect the actual previous 'from' point; While the eye position will
+         * stay the same, the orientation of the image will be reset so that the
+         * top of the screen will point to the coordinate system's 'up' vector.
+         *
+         * \returns 'true' if realigning the currently active dimension's
+         *          viewport succeeded, 'false' otherwise. Currently this method
+         *          cannot fail, so the result is always 'true'.
+         */
         bool realign (void)
         {
             if (base::polarCoordinates)
@@ -410,12 +427,28 @@ namespace topologic
 
             return true;
         }
-        
-        const Q getActiveFromCoordinate (const unsigned int &coord) const
+
+        /**\brief Query 'from' coordinate
+         *
+         * Queries the specified dimension's 'from' coordinate with the index
+         * specified in 'coord'.
+         *
+         * \param[in] coord     The index of the coordinate to get. Bad things
+         *                      happen if this is greater than or equal to the
+         *                      target dimension.
+         * \param[in] dimension Target render dimension; uses the active
+         *                      dimension if the maybe contains 'nothing'.
+         *
+         * \returns The specified coordinate; bad things happen if you query a
+         *          value that is out of range.
+         */
+        const Q getFromCoordinate
+            (const unsigned int &coord,
+             const efgy::maybe<unsigned int> &dimension = efgy::maybe<unsigned int>()) const
         {
-            if (!active)
+            if (!active && (!dimension || ((unsigned int)dimension != d)))
             {
-                return state<Q,d-1>::getActiveFromCoordinate(coord);
+                return state<Q,d-1>::getFromCoordinate(coord);
             }
 
             if (coord >= d)
@@ -561,15 +594,64 @@ namespace topologic
             return true;
         }
 
+        /**\brief Update 'from' point with transformation
+         *
+         * This method updates the 'from' point of the currently active
+         * dimension so that it coincides with the current viewport's angle,
+         * then discards any further rotations of the affine transformation
+         * matrix.
+         *
+         * The result is that the affine transformation matrix is reset to an
+         * identity matrix and the 'from' point will have been updated to
+         * reflect the actual previous 'from' point; While the eye position will
+         * stay the same, the orientation of the image will be reset so that the
+         * top of the screen will point to the coordinate system's 'up' vector.
+         *
+         * Since the 2D state object does not have a 'from' point, this method
+         * doesn't have anything to do but to reset the used coordinate system
+         * back to cartesian coordinates by clearing the polarCoordinates flag.
+         *
+         * \returns 'true' if realigning the currently active dimension's
+         *          viewport succeeded, 'false' otherwise. Currently this method
+         *          cannot fail, so the result is always 'true'.
+         */
         bool realign (void)
         {
             polarCoordinates = false;
             return true;
         }
 
-        bool setFromCoordinate (const unsigned int &, const Q &, const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const { return false; }
+        /**\brief Set 'from' coordinate
+         *
+         * This is the 2D fix point of the setFromCoordinate() method - this
+         * instance in particular cannot set anything, as there is no 'from'
+         * point in 2D. The arguments are ignored.
+         *
+         * \returns 'false' because the 2D fix point does not have a 'from'
+         *          point, so the function cannot succeed.
+         */
+        constexpr bool setFromCoordinate
+            (const unsigned int &, const Q &,
+             const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const
+        {
+            return false;
+        }
 
-        const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
+        /**\brief Query 'from' coordinate
+         *
+         * This is the 2D fix point of the getFromCoordinate() method - this
+         * instance in particular cannot query anything, as there is no 'from'
+         * point in 2D. The arguments are ignored.
+         *
+         * \returns The default-constructed value of Q, as the 2D fix point does
+         *          not have a 'from' point to query.
+         */
+        constexpr const Q getFromCoordinate
+            (const unsigned int &,
+             const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const
+        {
+            return Q();
+        }
 
         /**\brief Translate 'from' points from polar to cartesian coordinates
          *

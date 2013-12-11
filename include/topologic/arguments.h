@@ -36,6 +36,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <ef.gy/version.h>
 #include <ef.gy/primitive.h>
 #include <ef.gy/polytope.h>
 #include <ef.gy/parametric.h>
@@ -128,7 +129,8 @@ namespace topologic
                     }
                     else if (arg == "--version")
                     {
-                        std::cout << "Topologic CLI; Version " << version << "\n"
+                        std::cout << "Topologic/V" << version << "\n"
+                                     "libefgy version " << efgy::version << "\n"
                                      "Maximum render depth of this binary is " << dim << " dimensions.\n"
                                      "Supported models: simplex, plane, cube, sphere, moebius-strip, klein-bagel, sierpinski-gasket, sierpinski-carpet, random-affine-ifs.\n";
                         return 0;
