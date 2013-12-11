@@ -485,7 +485,7 @@ namespace topologic
                  * \param[in,out] pState Global topologic state object to use
                  */
                 wrapper(stateType &pState)
-                    : parent(pState, pState.opengl)
+                    : parent(pState, pState.opengl, pState.parameter, Q(1))
                     {
                         gState.opengl.prepared = false;
                     }
@@ -503,7 +503,7 @@ namespace topologic
                  *                           for the ones in the global state
                  */
                 wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : parent(pState, pState.opengl, pParameter)
+                    : parent(pState, pState.opengl, pParameter, Q(1))
                     {
                         gState.opengl.prepared = false;
                     }

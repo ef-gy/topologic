@@ -95,8 +95,6 @@ namespace topologic
                                      "  --regular-colours       Use regular colouring algorithm\n"
                                      "  --fractal-flame-colours Use fractal flame colouring algorithm (OpenGL only)\n"
                                      "\n"
-                                     "  --id-prefix S           Use the prefix S for any IDs defined in the SVG\n"
-                                     "\n"
                                      "See the man page of this programme for further details; e.g. run:\n"
                                      "man topologic\n\n";
                         return 0;
@@ -402,14 +400,6 @@ namespace topologic
                                     break;
                                 }
                             }
-                        }
-                    }
-                    else if (arg == "--id-prefix")
-                    {
-                        i++;
-                        if (i < argc)
-                        {
-                            topologicState.state<Q,2>::idPrefix = std::string(argv[i]);
                         }
                     }
 #if !defined (NOLIBRARIES)

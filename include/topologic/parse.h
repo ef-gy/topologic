@@ -576,22 +576,6 @@ namespace topologic
         {
             s.polarCoordinates = (value == "polar");
         }
-        if ((value = parser.evaluate("//topologic:colour-lighting/@red")) != "")
-        {
-            s.lighting.red = Q(stringToDouble(value));
-        }
-        if ((value = parser.evaluate("//topologic:colour-lighting/@green")) != "")
-        {
-            s.lighting.green = Q(stringToDouble(value));
-        }
-        if ((value = parser.evaluate("//topologic:colour-lighting/@blue")) != "")
-        {
-            s.lighting.blue = Q(stringToDouble(value));
-        }
-        if ((value = parser.evaluate("//topologic:colour-lighting/@alpha")) != "")
-        {
-            s.lighting.alpha = Q(stringToDouble(value));
-        }
         if ((value = parser.evaluate("//topologic:colour-background/@red")) != "")
         {
             s.background.red = Q(stringToDouble(value));

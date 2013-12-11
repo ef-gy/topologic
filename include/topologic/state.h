@@ -135,11 +135,22 @@ namespace topologic
 
         typename efgy::geometry::projection<Q,d> projection;
         typename efgy::geometry::transformation::affine<Q,d> transformation;
+
+        /**\brief libefgy SVG renderer instance
+         *
+         * This is an instance of libefgy's SVG renderer for this template's
+         * render depth.
+         */
         typename efgy::render::svg<Q,d> svg;
+
 #if !defined(NO_OPENGL)
+        /**\brief libefgy OpenGL renderer instance
+         *
+         * This is an instance of libefgy's OpenGL renderer for this template's
+         * render depth.
+         */
         typename efgy::render::opengl<Q,d> opengl;
 #endif
-        bool active;
 
         void updateMatrix (void)
         {
@@ -278,6 +289,22 @@ namespace topologic
             return true;
         }
 
+        /**\brief Set active dimension
+         *
+         * Some of the functions that modify the global state rely on a
+         * currently 'active' dimension; this method is used to set this
+         * dimension.
+         *
+         * This method is applied recursively to all of the lower-dimensional
+         * state objects, updating each of the instances' 'active' flag.
+         *
+         * \returns 'true' if updating all of the 'active' flags of the global
+         *          state object succeeded. Since there is no way for this
+         *          method to fail it will always return 'true'.
+         *
+         * \note The 2D state object does not have an 'active' flag, so this
+         *       particular instance of the method never does anything.
+         */
         bool setActive (const unsigned int &dim)
         {
             active = (d == dim);
@@ -401,7 +428,7 @@ namespace topologic
             }
         }
 
-        /**\brief Translate from points from polar to cartesian coordinates
+        /**\brief Translate 'from' points from polar to cartesian coordinates
          *
          * Sets all the 'from' points' cartesian coordinates to the equivalent
          * point currently specified in polar coordinates.
@@ -415,7 +442,7 @@ namespace topologic
             return state<Q,d-1>::translatePolarToCartesian();
         }
 
-        /**\brief Translate from points from cartesian to polar coordinates
+        /**\brief Translate 'from' points from cartesian to polar coordinates
          *
          * Sets all the 'from' points' polar coordinates to the equivalent point
          * currently specified in cartesian coordinates, i.e. the inverse of
@@ -429,8 +456,21 @@ namespace topologic
         bool translateCartesianToPolar (void)
         {
             // fromp = from;
-            return state<Q,d-1>::translateCartesianToPolar();
+            // return state<Q,d-1>::translateCartesianToPolar();
+            return false;
         }
+
+    protected:
+        /**\brief Is this the currently active dimension?
+         *
+         * Certain state-modifying methods need to know which dimension is
+         * currently 'active', i.e. which dimensions' parameters should be
+         * modified. For that reason each instance of a state object has a
+         * separate 'active' flag for each of the dimensions.
+         *
+         * You should only set this flag with the setActive() method.
+         */
+        bool active;
     };
 
     /**\brief Topologic programme state (2D fix point)
@@ -438,6 +478,9 @@ namespace topologic
      * Part of the global Topologic state class, this is the 2D fix point and
      * as such contains most of the flags and other state that apply to all 
      * dimensions: output sizes, colours, model parameters, etc.
+     *
+     * Additionally, this class provides fix points for some of the recursive
+     * functions in the higher level variants of the programme state object.
      *
      * \tparam Q Base data type; should be a class that acts like a rational
      *           base arithmetic type.
@@ -453,12 +496,10 @@ namespace topologic
               opengl(transformation),
 #endif
               exportMultiplier(Q(2)),
-              lighting(Q(1), Q(1), Q(1), Q(1)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
               model(0),
-              idPrefix(""),
               fractalFlameColouring(false)
             {
                 parameter.polarRadius       = Q(1);
@@ -482,11 +523,10 @@ namespace topologic
             {
                 rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>";
             }
-            rv << "<t:options radius='" << double(parameter.polarRadius) << "' id-prefix='" << idPrefix << "'/>"
+            rv << "<t:options radius='" << double(parameter.polarRadius) << "'/>"
                << "<t:precision polar='" << double(parameter.polarPrecision) << "' export-multiplier='" << double(exportMultiplier) << "'/>"
                << "<t:ifs iterations='" << parameter.iterations << "' seed='" << parameter.seed << "' functions='" << parameter.functions << "' pre-rotate='" << (parameter.preRotate ? "yes" : "no") << "' post-rotate='" << (parameter.postRotate ? "yes" : "no") << "'/>"
                << "<t:flame coefficients='" << parameter.flameCoefficients << "'/>"
-               << "<t:colour-lighting red='" << double(lighting.red) << "' green='" << double(lighting.green) << "' blue='" << double(lighting.blue) << "' alpha='" << double(lighting.alpha) << "'/>"
                << "<t:colour-background red='" << double(background.red) << "' green='" << double(background.green) << "' blue='" << double(background.blue) << "' alpha='" << double(background.alpha) << "'/>"
                << "<t:colour-wireframe red='" << double(wireframe.red) << "' green='" << double(wireframe.green) << "' blue='" << double(wireframe.blue) << "' alpha='" << double(wireframe.alpha) << "'/>"
                << "<t:colour-surface red='" << double(surface.red) << "' green='" << double(surface.green) << "' blue='" << double(surface.blue) << "' alpha='" << double(surface.alpha) << "'/>";
@@ -497,37 +537,174 @@ namespace topologic
         bool scale (const Q &) const { return false; }
         bool magnify (const Q &) const { return false; }
         bool interpretDrag (const Q &, const Q &, const Q &) const { return true; }
-        bool setActive (const unsigned int &) const { return true; }
+
+        /**\brief Set active dimension
+         *
+         * Some of the functions that modify the global state rely on a
+         * currently 'active' dimension; this method is used to set this
+         * dimension.
+         *
+         * This method is applied recursively to all of the lower-dimensional
+         * state objects, updating each of the instances' 'active' flag.
+         *
+         * \returns 'true' if updating all of the 'active' flags of the global
+         *          state object succeeded. Since there is no way for this
+         *          method to fail it will always return 'true'.
+         */
+        bool setActive (const unsigned int &) const
+        {
+            return true;
+        }
+
         bool realign (void)
         {
             polarCoordinates = false;
             return true;
         }
-        bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
-        const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
-        bool translatePolarToCartesian (void) const { return true; }
-        bool translateCartesianToPolar (void) const { return false; }
 
+        bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
+
+        const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
+
+        /**\brief Translate 'from' points from polar to cartesian coordinates
+         *
+         * Sets all the 'from' points' cartesian coordinates to the equivalent
+         * point currently specified in polar coordinates.
+         *
+         * \returns True if the conversions were performed successfully, false
+         *          otherwise. Should always be 'true'.
+         *
+         * \note This is the 2D fix point; as there are no 2d 'from' points,
+         *       this method does nothing.
+         */
+        bool translatePolarToCartesian (void) const { return true; }
+
+        /**\brief Translate 'from' points from cartesian to polar coordinates
+         *
+         * Sets all the 'from' points' polar coordinates to the equivalent point
+         * currently specified in cartesian coordinates, i.e. the inverse of
+         * translatePolarToCartesian().
+         *
+         * \returns True if the conversions were performed successfully, false
+         *          otherwise.
+         *
+         * \note This is the 2D fix point; as there are no 2d 'from' points,
+         *       this method does nothing.
+         */
+        bool translateCartesianToPolar (void) const { return true; }
+
+        /**\brief Model renderer instance
+         *
+         * Points to an instance of a model renderer, e.g.
+         * topologic::render::svg with all parameters - including the model -
+         * applied and properly initialised.
+         */
         render::base<true> *model;
 
+        /**\brief 2D viewport transformation matrix
+         *
+         * An affine transformation which should be applied to the 2D viewport
+         * as part of the rendering process.
+         *
+         * \note Currently ignored by the SVG and the OpenGL renderer.
+         */
         typename efgy::geometry::transformation::affine<Q,2> transformation;
+
+        /**\brief libefgy SVG renderer instance; 2D fix point
+         *
+         * This is an instance of the 2D fix point of libefgy's SVG renderer.
+         */
         typename efgy::render::svg<Q,2> svg;
+
 #if !defined(NO_OPENGL)
+        /**\brief libefgy OpenGL renderer instance; 2D fix point
+         *
+         * This is an instance of the 2D fix point of libefgy's OpenGL
+         * renderer.
+         */
         typename efgy::render::opengl<Q,2> opengl;
 #endif
 
+        /**\brief Use polar coordinates?
+         *
+         * Set to 'true' if the cameras are supposed to use the 'fromp' member
+         * as opposed to the 'from' member when calculating a look-at matrix.
+         */
         bool polarCoordinates;
+
+        /**\brief Model parameters
+         *
+         * An instance of the model parameter class that liebfgy uses to keep
+         * track of all the parameters used by libefgy primitives.
+         */
         efgy::geometry::parameters<Q> parameter;
+
+        /**\brief Output export multiplier
+         *
+         * A factor that is applied to any applicable quality setting for the
+         * purpose of rendering stills of a scene, as opposed to live renders
+         * with OpenGL.
+         */
         Q exportMultiplier;
-        typename efgy::colour::RGBA<Q>::value lighting;
+
+        /**\brief Background colour
+         *
+         * The colour that is used as a rendered image's background.
+         */
         typename efgy::colour::RGBA<Q>::value background;
+
+        /**\brief Wireframe colour
+         *
+         * The colour to use when rendering the wireframe of a model.
+         */
         typename efgy::colour::RGBA<Q>::value wireframe;
+
+        /**\brief Surface colour
+         *
+         * The colour to use when rendering surfaces, i.e. the parts of an
+         * image that aren't part of the wirefrome of a model.
+         */
         typename efgy::colour::RGBA<Q>::value surface;
-        std::string idPrefix;
+
+        /**\brief Output buffer
+         *
+         * \todo This buffer should not be necessary, so it ought to be
+         *       removed.
+         */
         std::stringstream output;
+
+        /**\brief Viewport width
+         *
+         * The width, most likely in pixels, of the output viewport that models
+         * should be rendered to. Also used to determine the applicable aspect
+         * ratio of the output image.
+         *
+         * \note The SVG renderer ignores this setting and simply sets the
+         *       target SVG to have a size of (100%,100%).
+         */
         Q width;
+
+        /**\brief Viewport height
+         *
+         * The height, most likely in pixels, of the output viewport that
+         * models should be rendered to. Also used to determine the applicable
+         * aspect ratio of the output image.
+         *
+         * \note The SVG renderer ignores this setting and simply sets the
+         *       target SVG to have a size of (100%,100%).
+         */
         Q height;
 
+        /**\brief Use fractal frame colouring?
+         *
+         * 'true' if renderers should render images using the fractal flame
+         * colouring algorithm.
+         *
+         * \note Only applies to the OpenGL renderer.
+         *
+         * \see http://flam3.com/flame_draves.pdf for the original paper
+         *      describing this colouring algorithm.
+         */
         bool fractalFlameColouring;
     };
 };
