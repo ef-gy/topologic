@@ -65,9 +65,30 @@ extern "C"
     void setViewportSize(int, int);
 }
 
+/**\brief Is a mouse button currently being?
+ *
+ * Set to 'true' whenever a mouse button has been pressed; reset to 'false'
+ * when a button is no longer being pressed. Used to implement mouse 'drag'
+ * input, which rotates the model in the currently active dimension.
+ */
 static bool buttonDown = false;
+
+/**\brief Should the scene be rendered?
+ *
+ * Set to 'true' with the forceRedraw() function. The main loop will only draw
+ * a new frame if this variable is true, so whenever you change any output
+ * parameters you should call the forceRedraw() function to set this flag.
+ *
+ * The next time the main loop has completed drawing the scene it will reset
+ * this flag to 'false'.
+ */
 static bool doRender = true;
 
+/**\brief Render the scene
+ *
+ * Sets the 'doRender' variable to 'true' to make the main loop draw the
+ * current scene.
+ */
 void forceRedraw(void)
 {
     doRender = true;
