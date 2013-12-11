@@ -192,191 +192,217 @@ namespace topologic
      * \tparam rd Model render depth; this is the maximum depth for your models
      *            and also specifies the maximum depth of any transformations
      *            you can apply.
+     * \tparam isVirtual Whether the class should contain the virtual functions
+     *                   defined in renderer<true>. It'll contain the actual
+     *                   functions in there either way, this just determines if
+     *                   they should make the class a virtual class.
      */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
     class renderSVG : public renderer<isVirtual>
     {
-    public:
-        typedef T<Q,d,efgy::render::svg<Q,rd>,rd > P;
-        typedef state<Q,rd> S;
-        typedef state<Q,2> S2;
+        public:
+            typedef T<Q,d,efgy::render::svg<Q,rd>,rd > P;
+            typedef state<Q,rd> S;
+            typedef state<Q,2> S2;
 
-        renderSVG(S &pState)
-            : gState(pState),
-              object(gState.S::svg,
-                     gState.S2::parameter,
-                     gState.S2::exportMultiplier)
-            {}
+            renderSVG(S &pState)
+                : gState(pState),
+                  object(gState.S::svg,
+                         gState.S2::parameter,
+                         gState.S2::exportMultiplier)
+                {}
 
-        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-            : gState(pState),
-              object(gState.S::svg,
-                     pParameter,
-                     gState.S2::exportMultiplier)
-            {}
+            renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                : gState(pState),
+                  object(gState.S::svg,
+                         pParameter,
+                         gState.S2::exportMultiplier)
+                {}
 
-        renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-            : gState(pState),
-              object(gState.S::svg,
-                     pParameter,
-                     pMultiplier)
-            {}
+            renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                : gState(pState),
+                  object(gState.S::svg,
+                         pParameter,
+                         pMultiplier)
+                {}
 
-        std::stringstream &render (bool updateMatrix = false)
-        {
-            if (updateMatrix)
+            std::stringstream &render (bool updateMatrix = false)
             {
-                gState.S2::width  = 3;
-                gState.S2::height = 3;
-                gState.S::updateMatrix();
+                if (updateMatrix)
+                {
+                    gState.S2::width  = 3;
+                    gState.S2::height = 3;
+                    gState.S::updateMatrix();
+                }
+
+                gState.S::svg.frameStart();
+
+                gState.S2::svg.reset();
+
+                gState.S2::svg.output
+                  << "<?xml version='1.0' encoding='utf-8'?>"
+                     "<svg xmlns='http://www.w3.org/2000/svg'"
+                     " xmlns:xlink='http://www.w3.org/1999/xlink'"
+                     " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
+                     "<title>" + name() + "</title>"
+                     "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
+                  << gState.metadata()
+                  << "</metadata>"
+                     "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
+                     " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
+                     " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
+                if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
+                {
+                    object.renderSolid();
+                }
+                gState.S2::svg.output << "</svg>\n";
+
+                gState.S::svg.frameEnd();
+
+                return gState.S2::svg.output;
             }
 
-            gState.S::svg.frameStart();
-
-            gState.S2::svg.reset();
-
-            gState.S2::svg.output
-              << "<?xml version='1.0' encoding='utf-8'?>"
-                 "<svg xmlns='http://www.w3.org/2000/svg'"
-                 " xmlns:xlink='http://www.w3.org/1999/xlink'"
-                 " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
-                 "<title>" + name() + "</title>"
-                 "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
-              << gState.metadata()
-              << "</metadata>"
-                 "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
-                 " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
-                 " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-            if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
+            unsigned int depth (void) const { return P::depth(); };
+            unsigned int renderDepth (void) const { return P::renderDepth(); };
+            const char *id (void) const { return P::id(); };
+            std::string name (void) const
             {
-                object.renderSolid();
+                std::stringstream rv;
+                rv << depth() << "-" << id();
+                return rv.str();
             }
-            gState.S2::svg.output << "</svg>\n";
 
-            gState.S::svg.frameEnd();
+            void update (void)
+            {
+                object.calculateObject();
+            }
 
-            return gState.S2::svg.output;
-        }
-
-        unsigned int depth (void) const { return P::depth(); };
-        unsigned int renderDepth (void) const { return P::renderDepth(); };
-        const char *id (void) const { return P::id(); };
-        std::string name (void) const
-        {
-            std::stringstream rv;
-            rv << depth() << "-" << id();
-            return rv.str();
-        }
-        void update (void) { object.calculateObject(); }
-
-    protected:
-        S &gState;
-        P object;
+        protected:
+            S &gState;
+            P object;
     };
 
 #if !defined (NO_OPENGL)
+    /**\brief OpenGL model renderer
+     *
+     * This is a wrapper for libefgy's OpenGL renderer, augmented with some
+     * code to write out model parameters and use Topologic's state object to
+     * handle these parameters.
+     *
+     * \tparam Q  Base data type for calculations
+     * \tparam d  Model depth; typically has to be <= the render depth
+     * \tparam T  Model template; use things like efgy::geometry::cube
+     * \tparam rd Model render depth; this is the maximum depth for your models
+     *            and also specifies the maximum depth of any transformations
+     *            you can apply.
+     * \tparam isVirtual Whether the class should contain the virtual functions
+     *                   defined in renderer<true>. It'll contain the actual
+     *                   functions in there either way, this just determines if
+     *                   they should make the class a virtual class.
+     */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
     class renderGL : public renderer<isVirtual>
     {
-    public:
-        typedef T<Q,d,efgy::render::opengl<Q,rd>,rd > P;
-        typedef state<Q,rd> S;
-        typedef state<Q,2> S2;
+        public:
+            typedef T<Q,d,efgy::render::opengl<Q,rd>,rd > P;
+            typedef state<Q,rd> S;
+            typedef state<Q,2> S2;
 
-        renderGL(S &pState)
-            : gState(pState),
-              object(gState.S::opengl,
-                     gState.S2::parameter,
-                     gState.S2::exportMultiplier)
+            renderGL(S &pState)
+                : gState(pState),
+                  object(gState.S::opengl,
+                         gState.S2::parameter,
+                         gState.S2::exportMultiplier)
+                {
+                    gState.opengl.prepared = false;
+                }
+
+            renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                : gState(pState),
+                  object(gState.S::opengl,
+                         pParameter,
+                         Q(1))
+                {
+                    gState.opengl.prepared = false;
+                }
+
+            renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                : gState(pState),
+                  object(gState.S::opengl,
+                         pParameter,
+                         pMultiplier)
+                {
+                    gState.opengl.prepared = false;
+                }
+
+            std::stringstream &render (bool updateMatrix = false)
+            {
+                if (updateMatrix)
+                {
+                    gState.S::updateMatrix();
+                }
+
+                gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
+                gState.S::opengl.width  = gState.width;
+                gState.S::opengl.height = gState.height;
+
+                if (!gState.fractalFlameColouring)
+                {
+                    glClearColor
+                        (gState.S2::background.red, gState.S2::background.green,
+                         gState.S2::background.blue, gState.S2::background.alpha);
+                }
+                
+                gState.S::opengl.frameStart();
+                
+                gState.S2::output.str("");
+
+                if (gState.fractalFlameColouring)
+                {
+                    gState.opengl.setColour(0,0,0,0.5,true);
+                    gState.opengl.setColour(0,0,0,0.8,false);
+                }
+                else
+                {
+                    gState.opengl.setColour
+                        (gState.S2::wireframe.red, gState.S2::wireframe.green,
+                         gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
+                         true);
+                    gState.opengl.setColour
+                        (gState.S2::surface.red, gState.S2::surface.green,
+                         gState.S2::surface.blue, gState.S2::surface.alpha,
+                         false);
+                }
+
+                if (!gState.S::opengl.prepared)
+                {
+                    object.renderSolid();
+                }
+
+                gState.S::opengl.frameEnd();
+
+                return gState.S2::output;
+            }
+
+            unsigned int depth (void) const { return P::depth(); };
+            unsigned int renderDepth (void) const { return P::renderDepth(); };
+            const char *id (void) const { return P::id(); };
+            std::string name (void) const
+            {
+                std::stringstream rv;
+                rv << depth() << "-" << id();
+                return rv.str();
+            }
+
+            void update (void)
             {
                 gState.opengl.prepared = false;
+                object.calculateObject();
             }
 
-        renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-            : gState(pState),
-              object(gState.S::opengl,
-                     pParameter,
-                     Q(1))
-            {
-                gState.opengl.prepared = false;
-            }
-
-        renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-            : gState(pState),
-              object(gState.S::opengl,
-                     pParameter,
-                     pMultiplier)
-            {
-                gState.opengl.prepared = false;
-            }
-
-        std::stringstream &render (bool updateMatrix = false)
-        {
-            if (updateMatrix)
-            {
-                gState.S::updateMatrix();
-            }
-
-            gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
-            gState.S::opengl.width  = gState.width;
-            gState.S::opengl.height = gState.height;
-
-            if (!gState.fractalFlameColouring)
-            {
-                glClearColor
-                    (gState.S2::background.red, gState.S2::background.green,
-                     gState.S2::background.blue, gState.S2::background.alpha);
-            }
-            
-            gState.S::opengl.frameStart();
-            
-            gState.S2::output.str("");
-
-            if (gState.fractalFlameColouring)
-            {
-                gState.opengl.setColour(0,0,0,0.5,true);
-                gState.opengl.setColour(0,0,0,0.8,false);
-            }
-            else
-            {
-                gState.opengl.setColour
-                    (gState.S2::wireframe.red, gState.S2::wireframe.green,
-                     gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
-                     true);
-                gState.opengl.setColour
-                    (gState.S2::surface.red, gState.S2::surface.green,
-                     gState.S2::surface.blue, gState.S2::surface.alpha,
-                     false);
-            }
-
-            if (!gState.S::opengl.prepared)
-            {
-                object.renderSolid();
-            }
-
-            gState.S::opengl.frameEnd();
-
-            return gState.S2::output;
-        }
-
-        unsigned int depth (void) const { return P::depth(); };
-        unsigned int renderDepth (void) const { return P::renderDepth(); };
-        const char *id (void) const { return P::id(); };
-        std::string name (void) const
-        {
-            std::stringstream rv;
-            rv << depth() << "-" << id();
-            return rv.str();
-        }
-        void update (void)
-        {
-            gState.opengl.prepared = false;
-            object.calculateObject();
-        }
-
-    protected:
-        S &gState;
-        P object;
+        protected:
+            S &gState;
+            P object;
     };
 #endif
 
