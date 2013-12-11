@@ -45,8 +45,17 @@
 #define MAXDEPTH 7
 #endif
 
+/**\brief Global state object
+ *
+ * Topologic programme state instance for this programme. Has to be global,
+ * because we need to provide C-like accessors for emscripten/JavaScript
+ * callers.
+ */
 static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 
+// these functions are defined as 'extern "C"' to disable output name mangling;
+// when compiling with emscripten these functions are exported so that they can
+// be used in foreign JS code.
 extern "C"
 {
     void process(void);
@@ -94,6 +103,13 @@ void forceRedraw(void)
     doRender = true;
 }
 
+/**\brief Update fractal flame parameter
+ *
+ * Modifies parameters of the global state object related to fractal flames.
+ *
+ * \param[in] variants The number of distinct, non-zero variant factors to use
+ *                     when generating fractal flames.
+ */
 void setFlameParameters(int variants)
 {
     topologicState.parameter.flameCoefficients = variants;

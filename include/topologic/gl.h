@@ -1,4 +1,9 @@
 /**\file
+ * \brief OpenGL helpers
+ *
+ * This is the OpenGL version of the topologic/cli.h header; you probably
+ * shouldn't include both of them - it's not that they'll clash, it's more like
+ * there's no real use in doing so.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -32,6 +37,13 @@
 
 namespace topologic
 {
+    /**\brief Floating point type for use with OpenGL
+     *
+     * This is an alias for a default floating point type that is compatible
+     * with the OpenGL renderer. Note the use of efgy::math::primitive: this is
+     * necessary, as some parts of libefgy's code expect to get a proper class
+     * to work with.
+     */
     typedef efgy::math::primitive<GLfloat> GLFP;
 };
 

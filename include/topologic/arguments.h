@@ -1,4 +1,9 @@
 /**\file
+ * \brief Command line argument parsing
+ *
+ * The different frontends tend to receive command line arguments and this
+ * header provides the topologic::parseArguments function to parse said command
+ * line arguments in a common way.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -41,6 +46,28 @@
 
 namespace topologic
 {
+    /**\brief Parse command line arguments
+     *
+     * A function template to parse C-style command line arguments, apply the
+     * settings in those arguments to a topologic::state instance. This
+     * function will also parse XML files that have been passed in as command
+     * line arguments and set the model in the state object to match that
+     * specified as command line arguments or in XML files.
+     *
+     * As usual, later options override earlier ones - that also applies to
+     * settings in XML files. If the NOLIBRARIES macro is set then XML files
+     * will not be processed.
+     *
+     * \tparam Q   Base data type as used in the topologic::state instance
+     * \tparam dim Maximum render depth of the topologic::state instance
+     *
+     * \param[out] topologicState The topologic::state instance to populate
+     * \param[in]  argc           Number of arguments in the argv array
+     * \param[in]  argv           Command line argument array (c.f. main())
+     * \param[in]  out            Output mode, e.g. topologic::outGL
+     *
+     * \returns 'true' if things went smoothly, 'false' otherwise.
+     */
     template<typename Q, unsigned int dim>
     bool parseArguments (state<Q, dim> &topologicState, int argc, char* argv[], enum outputMode out)
     {
