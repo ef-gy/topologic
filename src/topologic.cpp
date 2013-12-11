@@ -1,4 +1,9 @@
 /**\file
+ * \ingroup topologic-frontend
+ * \brief Topologic/CLI frontend
+ *
+ * This is the simplest possible Topologic frontend: a command line application
+ * that renders SVG files to stdout.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members

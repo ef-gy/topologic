@@ -1,4 +1,5 @@
 /**\file
+ * \ingroup topologic-frontend
  * \brief Topologic/SDL frontend
  *
  * This is a basic SDL+OpenGL frontend for Topologic, designed for use with
@@ -44,7 +45,7 @@
 #define MAXDEPTH 7
 #endif
 
-topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 
 extern "C"
 {

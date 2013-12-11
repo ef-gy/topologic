@@ -1,4 +1,8 @@
 /**\file
+ * \ingroup topologic-frontend
+ * \brief Topologic/GLUT frontend
+ *
+ * Implements a simple Topologic frontend using GLUT and an OpenGL 3.2 context.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -39,12 +43,12 @@
 #define MAXDEPTH 7
 #endif
 
-GLfloat mouseX, mouseY;
-GLfloat lastMouseX, lastMouseY;
+static GLfloat mouseX, mouseY;
+static GLfloat lastMouseX, lastMouseY;
 
-bool mouseLeft, mouseRight;
+static bool mouseLeft, mouseRight;
 
-topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 
 void displayCall(void)
 {

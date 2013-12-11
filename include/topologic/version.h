@@ -41,6 +41,15 @@
  * is copy or symlink this directory in your own source code repository.
  */
 
+/**\defgroup topologic-frontend Topologic Frontends
+ * \brief Programmes that produce actual output
+ *
+ * At its core, Topologic is more of a library than a single programme. The
+ * distribution archives do, however, contain several "frontends" to this
+ * library, each with unique capabilities, ranging from very simple command
+ * line frontends to fairly complex WebGL clients.
+ */
+
 /**\brief Library namespace for the Topologic project
  *
  * This namespace contains all of the classes and functions that make up the
