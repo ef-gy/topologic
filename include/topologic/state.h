@@ -38,6 +38,7 @@
 #include <ef.gy/polar.h>
 #include <ef.gy/projection.h>
 #include <ef.gy/colour-space-rgb.h>
+#include <ef.gy/maybe.h>
 #include <sstream>
 #include <type_traits>
 
@@ -356,30 +357,34 @@ namespace topologic
             return state<Q,d-1>::realign();
         }
 
-        /**\brief Set coordinate of currently active dimension
+        /**\brief Set 'from' coordinate
          *
-         * This sets the specified coordinate of the currently 'active'
-         * dimension's 'from' point in the currently active source coordinate
-         * system to the given value.
+         * This sets the specified coordinate of the specified dimension's
+         * 'from' point in the currently active source coordinate system to the
+         * given value.
          *
          * For example, if transformations are currently being applied to the 4D
          * position, and the from point is currently specified in polar
          * coordinates, and you call this function with coord set to 2 and value
          * set to pi/2, then this will set the 4D from point's theta-2 to pi/2.
          *
-         * \param[in] coord The index of the coordinate to set. Bad things
-         *                  happen if this is greater than or equal to the
-         *                  currently active dimension.
-         * \param[in] value What to set this coordinate to.
+         * \param[in] coord     The index of the coordinate to set. Bad things
+         *                      happen if this is greater than or equal to the
+         *                      target dimension.
+         * \param[in] value     What to set this coordinate to.
+         * \param[in] dimension Target render dimension; uses the active
+         *                      dimension if the maybe contains 'nothing'.
          *
          * \returns True if the from point was updated successfully, false
          *          otherwise.
          */
-        bool setActiveFromCoordinate (const unsigned int &coord, const Q &value)
+        bool setFromCoordinate
+            (const unsigned int &coord, const Q &value,
+             const efgy::maybe<unsigned int> &dimension = efgy::maybe<unsigned int>())
         {
-            if (!active)
+            if (!active && (!dimension || ((unsigned int)dimension != d)))
             {
-                return state<Q,d-1>::setActiveFromCoordinate(coord, value);
+                return state<Q,d-1>::setFromCoordinate(coord, value, dimension);
             }
 
             if (coord >= d)
@@ -562,7 +567,7 @@ namespace topologic
             return true;
         }
 
-        bool setActiveFromCoordinate (const unsigned int &, const Q &) const { return false; }
+        bool setFromCoordinate (const unsigned int &, const Q &, const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const { return false; }
 
         const Q getActiveFromCoordinate (const unsigned int &) const { return Q(); }
 

@@ -265,42 +265,6 @@ namespace topologic
     }
 
     template<typename Q, unsigned int d>
-    static bool setPolar (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
-    {
-        if (d == sd)
-        {
-            s.fromp[vn] = vv;
-            return true;
-        }
-
-        return setPolar<Q,d-1>(s, sd, vn, vv);
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setPolar (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
-    {
-        return false;
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setCartesian (state<Q,d> &s, const unsigned int &sd, const unsigned int &vn, const Q &vv)
-    {
-        if (d == sd)
-        {
-            s.fromp[vn] = vv;
-            return true;
-        }
-
-        return setCartesian<Q,d-1>(s, sd, vn, vv);
-    }
-
-    template<typename Q, unsigned int d>
-    static bool setCartesian (state<Q,2> &, const unsigned int &, const unsigned int &, const Q &)
-    {
-        return false;
-    }
-
-    template<typename Q, unsigned int d>
     static bool setMatrixCell (state<Q,d> &s, const unsigned int &sd, const unsigned int &x, const unsigned int &y, const Q &vv)
     {
         if (d == sd)
@@ -328,11 +292,20 @@ namespace topologic
     class xml
     {
     public:
-        xml()
+        /**\brief Default constructor
+         *
+         * The sole purpose of this destructor is to do whatever the
+         * LIBXML_TEST_VERSION macro does, in order to initialise libxml2.
+         */
+        xml(void)
         {
             LIBXML_TEST_VERSION
         }
 
+        /**\brief Destructor
+         *
+         * Calls xmlCleanupParser() to deinitialize libxml2.
+         */
         ~xml(void)
         {
             xmlCleanupParser();

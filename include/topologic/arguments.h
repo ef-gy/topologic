@@ -386,14 +386,7 @@ namespace topologic
                                 st.str(argv[i]);
                                 st >> value;
                                 st.clear();
-                                if (topologicState.state<Q,2>::polarCoordinates)
-                                {
-                                    setPolar(topologicState, d, j, Q(value));
-                                }
-                                else
-                                {
-                                    setCartesian(topologicState, d, j, Q(value));
-                                }
+                                topologicState.setFromCoordinate(j, Q(value), d);
                             }
                         }
                     }
