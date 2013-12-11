@@ -180,6 +180,54 @@ namespace topologic
     template<>
     class renderer<false> {};
 
+    /**\brief Renderer base class with default methods
+     *
+     * This template provides some of the basic functionality shared between
+     * distinct model renderers which aren't being provided by the renderers in
+     * libefgy, or which only need to be passed along.
+     *
+     * \tparam Q  Base data type for calculations
+     * \tparam d  Model depth; typically has to be <= the render depth
+     * \tparam T  Model template; use things like efgy::geometry::cube
+     * \tparam R  Model renderer template; use things like efgy::render::svg
+     * \tparam rd Model render depth; this is the maximum depth for your models
+     *            and also specifies the maximum depth of any transformations
+     *            you can apply.
+     * \tparam isVirtual Whether the class should contain the virtual functions
+     *                   defined in renderer<true>. It'll contain the actual
+     *                   functions in there either way, this just determines if
+     *                   they should make the class a virtual class.
+     */
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual>
+    class render : public renderer<isVirtual>
+    {
+        public:
+            typedef T<Q,d,R<Q,rd>,rd > modelType;
+            typedef R<Q,rd> renderType;
+
+            unsigned int depth (void) const
+            {
+                return modelType::depth();
+            };
+
+            unsigned int renderDepth (void) const
+            {
+                return modelType::renderDepth();
+            };
+
+            const char *id (void) const
+            {
+                return modelType::id();
+            };
+
+            std::string name (void) const
+            {
+                std::stringstream rv;
+                rv << depth() << "-" << id();
+                return rv.str();
+            }
+    };
+
     /**\brief SVG model renderer
      *
      * This is a wrapper for libefgy's SVG renderer, augmented with some code
@@ -198,10 +246,13 @@ namespace topologic
      *                   they should make the class a virtual class.
      */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderSVG : public renderer<isVirtual>
+    class renderSVG : public render<Q,d,T,efgy::render::svg,rd,isVirtual>
     {
         public:
-            typedef T<Q,d,efgy::render::svg<Q,rd>,rd > P;
+            typedef render<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
+
+            using parent::name;
+
             typedef state<Q,rd> S;
             typedef state<Q,2> S2;
 
@@ -262,16 +313,6 @@ namespace topologic
                 return gState.S2::svg.output;
             }
 
-            unsigned int depth (void) const { return P::depth(); };
-            unsigned int renderDepth (void) const { return P::renderDepth(); };
-            const char *id (void) const { return P::id(); };
-            std::string name (void) const
-            {
-                std::stringstream rv;
-                rv << depth() << "-" << id();
-                return rv.str();
-            }
-
             void update (void)
             {
                 object.calculateObject();
@@ -279,7 +320,7 @@ namespace topologic
 
         protected:
             S &gState;
-            P object;
+            typename parent::modelType object;
     };
 
 #if !defined (NO_OPENGL)
@@ -301,10 +342,11 @@ namespace topologic
      *                   they should make the class a virtual class.
      */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderGL : public renderer<isVirtual>
+    class renderGL : public render<Q,d,T,efgy::render::opengl,rd,isVirtual>
     {
         public:
-            typedef T<Q,d,efgy::render::opengl<Q,rd>,rd > P;
+            typedef render<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
+
             typedef state<Q,rd> S;
             typedef state<Q,2> S2;
 
@@ -384,16 +426,6 @@ namespace topologic
                 return gState.S2::output;
             }
 
-            unsigned int depth (void) const { return P::depth(); };
-            unsigned int renderDepth (void) const { return P::renderDepth(); };
-            const char *id (void) const { return P::id(); };
-            std::string name (void) const
-            {
-                std::stringstream rv;
-                rv << depth() << "-" << id();
-                return rv.str();
-            }
-
             void update (void)
             {
                 gState.opengl.prepared = false;
@@ -402,7 +434,7 @@ namespace topologic
 
         protected:
             S &gState;
-            P object;
+            typename parent::modelType object;
     };
 #endif
 
