@@ -384,8 +384,6 @@ namespace topologic
                 }
             }
 
-            parser(const parser&) = delete;
-
             ~parser(void)
             {
                 xmlXPathFreeContext(xpathContext);
@@ -488,7 +486,7 @@ namespace topologic
             (const std::string &data,
              const std::string &filename)
         {
-            return parser(*this, data, filename);
+            return parser(data, filename);
         }
     };
 
