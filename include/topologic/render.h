@@ -57,6 +57,11 @@ namespace topologic
 
     template<typename Q, unsigned int d> class state;
 
+    /**\brief Templates related to Topologic's rendering process
+     *
+     * This namespace encompasses all of the templates related to topologic's
+     * actual rendering process, as opposed to state management or setup tasks.
+     */
     namespace render
     {
         /**\brief Base class for a model renderer
@@ -436,15 +441,15 @@ namespace topologic
                 }
         };
 #endif
-    };
 
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
-    using renderSVG = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual>;
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+        using svg = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual>;
 
 #if !defined (NO_OPENGL)
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
-    using renderGL = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual>;
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+        using opengl = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual>;
 #endif
+    };
 };
 
 #endif

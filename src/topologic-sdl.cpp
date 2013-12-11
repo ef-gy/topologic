@@ -213,7 +213,7 @@ int setPrecision(double precision)
 
 int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::setModelWithTypeString<topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::renderGL> (std::string(smodel), topologicState, dim, rdim);
+    topologic::setModelWithTypeString<topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::opengl> (std::string(smodel), topologicState, dim, rdim);
 
     return 0;
 }

@@ -198,12 +198,6 @@ namespace topologic
             return rv.str() + state<Q,d-1>::metadata();
         }
 
-        template<unsigned int md, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = md>
-        render::base<true> *getModel (void)
-        {
-            return new renderSVG<Q,md,T,rd,true>(*this);
-        }
-        
         bool scale (const Q &scale)
         {
             if (!active)
