@@ -154,6 +154,23 @@ void process(void)
     }
 }
 
+/**\brief Topologic/SDL main function
+ *
+ * Parses the command line arguments with topologic::parseArguments, then
+ * initialises an OpenGL 3.2 context with SDL and commences rendering the
+ * model described on the command line in a loop.
+ *
+ * This function will actually return rather swiftly if the code was compiled
+ * with emscripten after setting the process() function as the main loop.
+ *
+ * \todo This function really needs some love and testing in environments other
+ *       than emscripten/WebGL.
+ *
+ * \param[in] argc The number of arguments in the argv array.
+ * \param[in] argv The actual command line arguments passed to the programme.
+ *
+ * \returns 0 on success, nonzero otherwise.
+ */
 int main(int argc, char *argv[])
 {
     if (!topologic::parseArguments (topologicState, argc, argv, topologic::outGL))

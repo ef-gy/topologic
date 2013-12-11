@@ -32,6 +32,16 @@
 
 #include <topologic/cli.h>
 
+/**\brief Topologic/CLI main function
+ *
+ * This is really just a stub that calls the topologic::cli function, which
+ * contains the actual logic for the Topologic/CLI frontend.
+ *
+ * \param[in] argc The number of arguments in the argv array.
+ * \param[in] argv The actual command line arguments passed to the programme.
+ *
+ * \returns 0 on success, nonzero otherwise.
+ */
 int main (int argc, char* argv[])
 {
     return topologic::cli<topologic::FP> (argc, argv);

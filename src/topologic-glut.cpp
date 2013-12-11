@@ -161,6 +161,17 @@ void processKeyboard(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+/**\brief Topologic/GLUT main function
+ *
+ * Parses the command line arguments with topologic::parseArguments, then
+ * initialises an OpenGL 3.2 context with GLUT and commences rendering the
+ * model described on the command line in a loop.
+ *
+ * \param[in] argc The number of arguments in the argv array.
+ * \param[in] argv The actual command line arguments passed to the programme.
+ *
+ * \returns 0 on success, nonzero otherwise.
+ */
 int main (int argc, char* argv[])
 {
     try
