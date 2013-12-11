@@ -180,8 +180,26 @@ namespace topologic
         class common : public base<isVirtual>
         {
             public:
+                /**\brief Model type
+                 *
+                 * Alias of the model type that this class represents with all
+                 * the template parameters filled in.
+                 */
                 typedef T<Q,d,R<Q,rd>,rd > modelType;
+
+                /**\brief Renderer type
+                 *
+                 * Alias of the model renderer type that this class represents
+                 * with all the template parameters filled in.
+                 */
                 typedef R<Q,rd> renderType;
+
+                /**\brief Global state type
+                 *
+                 * Alias of the global state type that this class uses to
+                 * gather information to render a model with all the template
+                 * parameters filled in.
+                 */
                 typedef state<Q,rd> stateType;
 
                 /**\brief Construct with global state and renderer
@@ -324,6 +342,11 @@ namespace topologic
         class wrapper<Q,d,T,efgy::render::svg,rd,isVirtual> : public common<Q,d,T,efgy::render::svg,rd,isVirtual>
         {
             public:
+                /**\brief Base type alias
+                 *
+                 * The base type for this class is rather unwieldy; this
+                 * typedef should help a bit with that.
+                 */
                 typedef common<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
                 using typename parent::stateType;
 
@@ -331,12 +354,49 @@ namespace topologic
                 using parent::gState;
                 using parent::object;
 
+                /**\brief Construct with global state
+                 *
+                 * Initialises an SVG renderer with a global topologic::state
+                 * instance. The other parameters are gathered from this state
+                 * object.
+                 *
+                 * \param[in,out] pState Global topologic state object to use
+                 */
                 wrapper(stateType &pState)
                     : parent(pState, pState.svg) {}
 
+                /**\brief Construct with global state and custom parameters
+                 *
+                 * Initialises an SVG renderer with a global topologic::state
+                 * instance. Additionally, instead of using the global state's
+                 * parameter instance, this constructor substitutes the given
+                 * 'pParameter'.
+                 *
+                 * \param[in,out] pState     Global topologic state object to
+                 *                           use
+                 * \param[in]     pParameter The model parameters to substitute
+                 *                           for the ones in the global state
+                 */
                 wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : parent(pState, pState.svg, pParameter) {}
 
+                /**\brief Construct with global state and custom parameters and
+                 *        quality multiplier.
+                 *
+                 * Initialises an SVG renderer with a global topologic::state
+                 * instance. Additionally, instead of using the global state's
+                 * parameter instance, this constructor substitutes the given
+                 * 'pParameter'. The quality multiplier provided by the global
+                 * state is also ignored in favour of the one provided as the
+                 * third argument to this constructor.
+                 *
+                 * \param[in,out] pState      Global topologic state object to
+                 *                            use
+                 * \param[in]     pParameter  The model parameters to
+                 *                            substitute for the ones in the
+                 *                            global state
+                 * \param[in]     pMultiplier The quality multiplier to use
+                 */
                 wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : parent(pState, pState.svg, pParameter, pMultiplier) {}
 
@@ -365,7 +425,7 @@ namespace topologic
                          "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
                          " path { stroke-width: 0.002; stroke: rgba(" << double(gState.wireframe.red)*100. << "%," << double(gState.wireframe.green)*100. << "%," << double(gState.wireframe.blue)*100. << "%," << double(gState.wireframe.alpha) << ");"
                          " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
-                    if (gState.surfacesEnabled && (gState.surface.alpha > Q(0.)))
+                    if (gState.surface.alpha > Q(0.))
                     {
                         object.renderSolid();
                     }
@@ -405,27 +465,67 @@ namespace topologic
         class wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual> : public common<Q,d,T,efgy::render::opengl,rd,isVirtual>
         {
             public:
+                /**\brief Base type alias
+                 *
+                 * The base type for this class is rather unwieldy; this
+                 * typedef should help a bit with that.
+                 */
                 typedef common<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
+                using typename parent::stateType;
 
                 using parent::gState;
                 using parent::object;
 
-                typedef state<Q,rd> S;
-                typedef state<Q,2> S2;
-
-                wrapper(S &pState)
+                /**\brief Construct with global state
+                 *
+                 * Initialises an OpenGL renderer with a global
+                 * topologic::state instance. The other parameters are gathered
+                 * from this state object.
+                 *
+                 * \param[in,out] pState Global topologic state object to use
+                 */
+                wrapper(stateType &pState)
                     : parent(pState, pState.opengl)
                     {
                         gState.opengl.prepared = false;
                     }
 
-                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                /**\brief Construct with global state and custom parameters
+                 *
+                 * Initialises an OpenGL renderer with a global
+                 * topologic::state instance. Additionally, instead of using
+                 * the global state's parameter instance, this constructor
+                 * substitutes the given 'pParameter'.
+                 *
+                 * \param[in,out] pState     Global topologic state object to
+                 *                           use
+                 * \param[in]     pParameter The model parameters to substitute
+                 *                           for the ones in the global state
+                 */
+                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : parent(pState, pState.opengl, pParameter)
                     {
                         gState.opengl.prepared = false;
                     }
 
-                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                /**\brief Construct with global state and custom parameters and
+                 *        quality multiplier.
+                 *
+                 * Initialises an OpenGL renderer with a global
+                 * topologic::state instance. Additionally, instead of using
+                 * the global state's parameter instance, this constructor
+                 * substitutes the give 'pParameter'. The quality multiplier
+                 * provided by the global state is also ignored in favour of
+                 * the one provided as the third argument to this constructor.
+                 *
+                 * \param[in,out] pState      Global topologic state object to
+                 *                            use
+                 * \param[in]     pParameter  The model parameters to
+                 *                            substitute for the ones in the
+                 *                            global state
+                 * \param[in]     pMultiplier The quality multiplier to use
+                 */
+                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : parent(pState, pState.opengl, pParameter, pMultiplier)
                     {
                         gState.opengl.prepared = false;
@@ -435,23 +535,23 @@ namespace topologic
                 {
                     if (updateMatrix)
                     {
-                        gState.S::updateMatrix();
+                        gState.updateMatrix();
                     }
 
-                    gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
-                    gState.S::opengl.width  = gState.width;
-                    gState.S::opengl.height = gState.height;
+                    gState.opengl.fractalFlameColouring = gState.fractalFlameColouring;
+                    gState.opengl.width  = gState.width;
+                    gState.opengl.height = gState.height;
 
                     if (!gState.fractalFlameColouring)
                     {
                         glClearColor
-                            (gState.S2::background.red, gState.S2::background.green,
-                             gState.S2::background.blue, gState.S2::background.alpha);
+                            (gState.background.red, gState.background.green,
+                             gState.background.blue, gState.background.alpha);
                     }
                     
-                    gState.S::opengl.frameStart();
+                    gState.opengl.frameStart();
                     
-                    gState.S2::output.str("");
+                    gState.output.str("");
 
                     if (gState.fractalFlameColouring)
                     {
@@ -461,23 +561,23 @@ namespace topologic
                     else
                     {
                         gState.opengl.setColour
-                            (gState.S2::wireframe.red, gState.S2::wireframe.green,
-                             gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
+                            (gState.wireframe.red, gState.wireframe.green,
+                             gState.wireframe.blue, gState.wireframe.alpha,
                              true);
                         gState.opengl.setColour
-                            (gState.S2::surface.red, gState.S2::surface.green,
-                             gState.S2::surface.blue, gState.S2::surface.alpha,
+                            (gState.surface.red, gState.surface.green,
+                             gState.surface.blue, gState.surface.alpha,
                              false);
                     }
 
-                    if (!gState.S::opengl.prepared)
+                    if (!gState.opengl.prepared)
                     {
                         object.renderSolid();
                     }
 
-                    gState.S::opengl.frameEnd();
+                    gState.opengl.frameEnd();
 
-                    return gState.S2::output;
+                    return gState.output;
                 }
 
                 void update (void)
@@ -488,10 +588,44 @@ namespace topologic
         };
 #endif
 
+        /**\brief Convenient alias for the SVG renderer
+         *
+         * This is a convenient alias for a wrapper using the efgy::render::svg
+         * base renderer.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
         template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
         using svg = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual>;
 
 #if !defined (NO_OPENGL)
+        /**\brief Convenient alias for the OpenGL renderer
+         *
+         * This is a convenient alias for a wrapper using the
+         * efgy::render::opengl base renderer.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
         template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
         using opengl = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual>;
 #endif

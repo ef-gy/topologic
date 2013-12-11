@@ -459,8 +459,6 @@ namespace topologic
               surface(Q(1), Q(1), Q(1), Q(0.1)),
               model(0),
               idPrefix(""),
-              lightingEnabled(true),
-              surfacesEnabled(true),
               fractalFlameColouring(false)
             {
                 parameter.polarRadius       = Q(1);
@@ -529,8 +527,6 @@ namespace topologic
         std::stringstream output;
         Q width;
         Q height;
-        bool lightingEnabled;
-        bool surfacesEnabled;
 
         bool fractalFlameColouring;
     };
