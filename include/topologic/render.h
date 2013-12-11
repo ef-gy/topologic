@@ -277,37 +277,35 @@ namespace topologic
         {
             public:
                 typedef common<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
+                using typename parent::stateType;
 
                 using parent::name;
                 using parent::gState;
                 using parent::object;
 
-                typedef state<Q,rd> S;
-                typedef state<Q,2> S2;
-
-                wrapper(S &pState)
+                wrapper(stateType &pState)
                     : parent(pState, pState.svg) {}
 
-                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : parent(pState, pState.svg, pParameter) {}
 
-                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : parent(pState, pState.svg, pParameter, pMultiplier) {}
 
                 std::stringstream &render (bool updateMatrix = false)
                 {
                     if (updateMatrix)
                     {
-                        gState.S2::width  = 3;
-                        gState.S2::height = 3;
-                        gState.S::updateMatrix();
+                        gState.width  = 3;
+                        gState.height = 3;
+                        gState.updateMatrix();
                     }
 
-                    gState.S::svg.frameStart();
+                    gState.svg.frameStart();
 
-                    gState.S2::svg.reset();
+                    gState.svg.reset();
 
-                    gState.S2::svg.output
+                    gState.svg.output
                       << "<?xml version='1.0' encoding='utf-8'?>"
                          "<svg xmlns='http://www.w3.org/2000/svg'"
                          " xmlns:xlink='http://www.w3.org/1999/xlink'"
@@ -316,18 +314,18 @@ namespace topologic
                          "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
                       << gState.metadata()
                       << "</metadata>"
-                         "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
-                         " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
-                         " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-                    if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
+                         "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
+                         " path { stroke-width: 0.002; stroke: rgba(" << double(gState.wireframe.red)*100. << "%," << double(gState.wireframe.green)*100. << "%," << double(gState.wireframe.blue)*100. << "%," << double(gState.wireframe.alpha) << ");"
+                         " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
+                    if (gState.surfacesEnabled && (gState.surface.alpha > Q(0.)))
                     {
                         object.renderSolid();
                     }
-                    gState.S2::svg.output << "</svg>\n";
+                    gState.svg.output << "</svg>\n";
 
-                    gState.S::svg.frameEnd();
+                    gState.svg.frameEnd();
 
-                    return gState.S2::svg.output;
+                    return gState.svg.output;
                 }
 
                 void update (void)
