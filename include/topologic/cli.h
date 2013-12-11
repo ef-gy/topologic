@@ -44,7 +44,7 @@
 #include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
-/**\!brief Maximum render depth
+/**\brief Maximum render depth
  *
  * This macro is used by some of the frontends to determine the maximum render
  * depth supported by a frontend. The default value is '7', which is plenty for
