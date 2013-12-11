@@ -57,354 +57,372 @@ namespace topologic
 
     template<typename Q, unsigned int d> class state;
 
-    /**\brief Base class for a model renderer
-     *
-     * The primary purpose of this class is to force certain parts of a model
-     * renderer's interface to be virtual.
-     *
-     * \tparam isVirtual Whether the derived class should contain virtual
-     *                   methods.
-     */
-    template<bool isVirtual = false>
-    class renderer
+    namespace render
     {
-        public:
-            /**\brief Virtual destructor
-             *
-             * Generally necessary for virtual classes; stubbed to be a trivial
-             * destructor.
-             */
-            virtual ~renderer(void) {}
+        /**\brief Base class for a model renderer
+         *
+         * The primary purpose of this class is to force certain parts of a
+         * model renderer's interface to be virtual.
+         *
+         * \tparam isVirtual Whether the derived class should contain virtual
+         *                   methods.
+         */
+        template<bool isVirtual = false>
+        class base
+        {
+            public:
+                /**\brief Virtual destructor
+                 *
+                 * Generally necessary for virtual classes; stubbed to be a
+                 * trivial destructor.
+                 */
+                virtual ~base(void) {}
 
-            /**\brief Render model
-             *
-             * Processes the model with the renderer. Depending on the output,
-             * this may or may not produce output directly on screen or
-             * fill a provided stringstream.
-             *
-             * \param[in] updateMatrix Whether to update the projection
-             *                         matrices.
-             *
-             * \returns A stringstream which will either be empty or contain
-             *          the generated data.
-             */
-            virtual std::stringstream &render (bool updateMatrix = false) = 0;
+                /**\brief Render model
+                 *
+                 * Processes the model with the renderer. Depending on the
+                 * output, this may or may not produce output directly on
+                 * screen or fill a provided stringstream.
+                 *
+                 * \param[in] updateMatrix Whether to update the projection
+                 *                         matrices.
+                 *
+                 * \returns A stringstream which will either be empty or
+                 *          contain the generated data.
+                 */
+                virtual std::stringstream &render (bool updateMatrix = false) = 0;
 
-            /**\brief Query model depth
-             *
-             * Used to access the model depth; this is typically a template
-             * parameter.
-             *
-             * \returns The model depth; expect values like "2" for a square,
-             *          "3" for a cube, etc.
-             */
-            virtual unsigned int depth (void) const = 0;
+                /**\brief Query model depth
+                 *
+                 * Used to access the model depth; this is typically a template
+                 * parameter.
+                 *
+                 * \returns The model depth; expect values like "2" for a
+                 *          square, "3" for a cube, etc.
+                 */
+                virtual unsigned int depth (void) const = 0;
 
-            /**\brief Query render depth
-             *
-             * Used to access the depth that the renderer has been initialised
-             * to.
-             *
-             * \returns The model renderer's depth; expect this value to be
-             *          greater than or equal to the model's depth.
-             */
-            virtual unsigned int renderDepth (void) const = 0;
+                /**\brief Query render depth
+                 *
+                 * Used to access the depth that the renderer has been
+                 * initialised to.
+                 *
+                 * \returns The model renderer's depth; expect this value to be
+                 *          greater than or equal to the model's depth.
+                 */
+                virtual unsigned int renderDepth (void) const = 0;
 
-            /**\brief Query model name
-             *
-             * Used to obtain a short, descriptive name of a model. This name
-             * is also used when instantiating the model with a factory.
-             *
-             * \returns A C-style, 0-terminated string containing the name of
-             *          the model. This should never return a 0-pointer.
-             */
-            virtual const char *id (void) const = 0;
+                /**\brief Query model name
+                 *
+                 * Used to obtain a short, descriptive name of a model. This
+                 * name is also used when instantiating the model with a
+                 * factory.
+                 *
+                 * \returns A C-style, 0-terminated string containing the name
+                 *          of the model. This should never return a 0-pointer.
+                 */
+                virtual const char *id (void) const = 0;
 
-            /**\brief Query extended model name
-             *
-             * This returns a string of the form "depth()-id()", e.g. "4-cube"
-             * for a 4D model with the id "cube".
-             *
-             * \returns A C++ std::string containing the model's name.
-             */
-            virtual std::string name (void) const = 0;
+                /**\brief Query extended model name
+                 *
+                 * This returns a string of the form "depth()-id()", e.g.
+                 * "4-cube" for a 4D model with the id "cube".
+                 *
+                 * \returns A C++ std::string containing the model's name.
+                 */
+                virtual std::string name (void) const = 0;
 
-            /**\brief Force internal update
-             *
-             * This tells a renderer that it should do a full redraw, because
-             * you changed some parameters that it may have cached.
-             */
-            virtual void update (void) = 0;
-    };
+                /**\brief Force internal update
+                 *
+                 * This tells a renderer that it should do a full redraw,
+                 * because you changed some parameters that it may have cached.
+                 */
+                virtual void update (void) = 0;
+        };
 
-    /**\brief Non-virtual model renderer base class
-     *
-     * This is simply an empty class, which allows a model renderer to be
-     * non-virtual, which in turn would probably be handy in certain situations
-     * where only a very select few models will be used and it would be a good
-     * idea to highly optimise the renderers for these models; by cutting down
-     * on the number of virtual functions, the compiler should be able to
-     * provide slightly better code.
-     */
-    template<>
-    class renderer<false> {};
+        /**\brief Non-virtual model renderer base class
+         *
+         * This is simply an empty class, which allows a model renderer to be
+         * non-virtual, which in turn would probably be handy in certain
+         * situations where only a very select few models will be used and it
+         * would be a good idea to highly optimise the renderers for these
+         * models; by cutting down on the number of virtual functions, the
+         * compiler should be able to provide slightly better code.
+         */
+        template<>
+        class base<false> {};
 
-    /**\brief Renderer base class with default methods
-     *
-     * This template provides some of the basic functionality shared between
-     * distinct model renderers which aren't being provided by the renderers in
-     * libefgy, or which only need to be passed along.
-     *
-     * \tparam Q  Base data type for calculations
-     * \tparam d  Model depth; typically has to be <= the render depth
-     * \tparam T  Model template; use things like efgy::geometry::cube
-     * \tparam R  Model renderer template; use things like efgy::render::svg
-     * \tparam rd Model render depth; this is the maximum depth for your models
-     *            and also specifies the maximum depth of any transformations
-     *            you can apply.
-     * \tparam isVirtual Whether the class should contain the virtual functions
-     *                   defined in renderer<true>. It'll contain the actual
-     *                   functions in there either way, this just determines if
-     *                   they should make the class a virtual class.
-     */
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual>
-    class render : public renderer<isVirtual>
-    {
-        public:
-            typedef T<Q,d,R<Q,rd>,rd > modelType;
-            typedef R<Q,rd> renderType;
+        /**\brief Renderer base class with default methods
+         *
+         * This template provides some of the basic functionality shared
+         * between distinct model renderers which aren't being provided by the
+         * renderers in libefgy, or which only need to be passed along.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam R  Model renderer template; use things like efgy::render::svg
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual>
+        class render : public base<isVirtual>
+        {
+            public:
+                typedef T<Q,d,R<Q,rd>,rd > modelType;
+                typedef R<Q,rd> renderType;
 
-            unsigned int depth (void) const
-            {
-                return modelType::depth();
-            };
-
-            unsigned int renderDepth (void) const
-            {
-                return modelType::renderDepth();
-            };
-
-            const char *id (void) const
-            {
-                return modelType::id();
-            };
-
-            std::string name (void) const
-            {
-                std::stringstream rv;
-                rv << depth() << "-" << id();
-                return rv.str();
-            }
-    };
-
-    /**\brief SVG model renderer
-     *
-     * This is a wrapper for libefgy's SVG renderer, augmented with some code
-     * to write out model parameters and use Topologic's state object to handle
-     * these parameters.
-     *
-     * \tparam Q  Base data type for calculations
-     * \tparam d  Model depth; typically has to be <= the render depth
-     * \tparam T  Model template; use things like efgy::geometry::cube
-     * \tparam rd Model render depth; this is the maximum depth for your models
-     *            and also specifies the maximum depth of any transformations
-     *            you can apply.
-     * \tparam isVirtual Whether the class should contain the virtual functions
-     *                   defined in renderer<true>. It'll contain the actual
-     *                   functions in there either way, this just determines if
-     *                   they should make the class a virtual class.
-     */
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderSVG : public render<Q,d,T,efgy::render::svg,rd,isVirtual>
-    {
-        public:
-            typedef render<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
-
-            using parent::name;
-
-            typedef state<Q,rd> S;
-            typedef state<Q,2> S2;
-
-            renderSVG(S &pState)
-                : gState(pState),
-                  object(gState.S::svg,
-                         gState.S2::parameter,
-                         gState.S2::exportMultiplier)
-                {}
-
-            renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-                : gState(pState),
-                  object(gState.S::svg,
-                         pParameter,
-                         gState.S2::exportMultiplier)
-                {}
-
-            renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                : gState(pState),
-                  object(gState.S::svg,
-                         pParameter,
-                         pMultiplier)
-                {}
-
-            std::stringstream &render (bool updateMatrix = false)
-            {
-                if (updateMatrix)
+                unsigned int depth (void) const
                 {
-                    gState.S2::width  = 3;
-                    gState.S2::height = 3;
-                    gState.S::updateMatrix();
+                    return modelType::depth();
+                };
+
+                unsigned int renderDepth (void) const
+                {
+                    return modelType::renderDepth();
+                };
+
+                const char *id (void) const
+                {
+                    return modelType::id();
+                };
+
+                std::string name (void) const
+                {
+                    std::stringstream rv;
+                    rv << depth() << "-" << id();
+                    return rv.str();
+                }
+        };
+
+        /**\brief SVG model renderer
+         *
+         * This is a wrapper for libefgy's SVG renderer, augmented with some
+         * code to write out model parameters and use Topologic's state object
+         * to handle these parameters.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
+        class renderSVG : public render<Q,d,T,efgy::render::svg,rd,isVirtual>
+        {
+            public:
+                typedef render<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
+
+                using parent::name;
+
+                typedef state<Q,rd> S;
+                typedef state<Q,2> S2;
+
+                renderSVG(S &pState)
+                    : gState(pState),
+                      object(gState.S::svg,
+                             gState.S2::parameter,
+                             gState.S2::exportMultiplier)
+                    {}
+
+                renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                    : gState(pState),
+                      object(gState.S::svg,
+                             pParameter,
+                             gState.S2::exportMultiplier)
+                    {}
+
+                renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                    : gState(pState),
+                      object(gState.S::svg,
+                             pParameter,
+                             pMultiplier)
+                    {}
+
+                std::stringstream &render (bool updateMatrix = false)
+                {
+                    if (updateMatrix)
+                    {
+                        gState.S2::width  = 3;
+                        gState.S2::height = 3;
+                        gState.S::updateMatrix();
+                    }
+
+                    gState.S::svg.frameStart();
+
+                    gState.S2::svg.reset();
+
+                    gState.S2::svg.output
+                      << "<?xml version='1.0' encoding='utf-8'?>"
+                         "<svg xmlns='http://www.w3.org/2000/svg'"
+                         " xmlns:xlink='http://www.w3.org/1999/xlink'"
+                         " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
+                         "<title>" + name() + "</title>"
+                         "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
+                      << gState.metadata()
+                      << "</metadata>"
+                         "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
+                         " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
+                         " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
+                    if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
+                    {
+                        object.renderSolid();
+                    }
+                    gState.S2::svg.output << "</svg>\n";
+
+                    gState.S::svg.frameEnd();
+
+                    return gState.S2::svg.output;
                 }
 
-                gState.S::svg.frameStart();
-
-                gState.S2::svg.reset();
-
-                gState.S2::svg.output
-                  << "<?xml version='1.0' encoding='utf-8'?>"
-                     "<svg xmlns='http://www.w3.org/2000/svg'"
-                     " xmlns:xlink='http://www.w3.org/1999/xlink'"
-                     " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
-                     "<title>" + name() + "</title>"
-                     "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
-                  << gState.metadata()
-                  << "</metadata>"
-                     "<style type='text/css'>svg { background: rgba(" << double(gState.S2::background.red)*100. << "%," <<double(gState.S2::background.green)*100. << "%," << double(gState.S2::background.blue)*100. << "%," << double(gState.S2::background.alpha) << "); }"
-                     " path { stroke-width: 0.002; stroke: rgba(" << double(gState.S2::wireframe.red)*100. << "%," << double(gState.S2::wireframe.green)*100. << "%," << double(gState.S2::wireframe.blue)*100. << "%," << double(gState.S2::wireframe.alpha) << ");"
-                     " fill: rgba(" << double(gState.S2::surface.red)*100. << "%," << double(gState.S2::surface.green)*100. << "%," << double(gState.S2::surface.blue)*100. << "%," << double(gState.S2::surface.alpha) << "); }</style>";
-                if (gState.S2::surfacesEnabled && (gState.S2::surface.alpha > Q(0.)))
+                void update (void)
                 {
-                    object.renderSolid();
+                    object.calculateObject();
                 }
-                gState.S2::svg.output << "</svg>\n";
 
-                gState.S::svg.frameEnd();
-
-                return gState.S2::svg.output;
-            }
-
-            void update (void)
-            {
-                object.calculateObject();
-            }
-
-        protected:
-            S &gState;
-            typename parent::modelType object;
-    };
+            protected:
+                S &gState;
+                typename parent::modelType object;
+        };
 
 #if !defined (NO_OPENGL)
-    /**\brief OpenGL model renderer
-     *
-     * This is a wrapper for libefgy's OpenGL renderer, augmented with some
-     * code to write out model parameters and use Topologic's state object to
-     * handle these parameters.
-     *
-     * \tparam Q  Base data type for calculations
-     * \tparam d  Model depth; typically has to be <= the render depth
-     * \tparam T  Model template; use things like efgy::geometry::cube
-     * \tparam rd Model render depth; this is the maximum depth for your models
-     *            and also specifies the maximum depth of any transformations
-     *            you can apply.
-     * \tparam isVirtual Whether the class should contain the virtual functions
-     *                   defined in renderer<true>. It'll contain the actual
-     *                   functions in there either way, this just determines if
-     *                   they should make the class a virtual class.
-     */
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-    class renderGL : public render<Q,d,T,efgy::render::opengl,rd,isVirtual>
-    {
-        public:
-            typedef render<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
+        /**\brief OpenGL model renderer
+         *
+         * This is a wrapper for libefgy's OpenGL renderer, augmented with some
+         * code to write out model parameters and use Topologic's state object
+         * to handle these parameters.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
+        class renderGL : public render<Q,d,T,efgy::render::opengl,rd,isVirtual>
+        {
+            public:
+                typedef render<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
 
-            typedef state<Q,rd> S;
-            typedef state<Q,2> S2;
+                typedef state<Q,rd> S;
+                typedef state<Q,2> S2;
 
-            renderGL(S &pState)
-                : gState(pState),
-                  object(gState.S::opengl,
-                         gState.S2::parameter,
-                         gState.S2::exportMultiplier)
+                renderGL(S &pState)
+                    : gState(pState),
+                      object(gState.S::opengl,
+                             gState.S2::parameter,
+                             gState.S2::exportMultiplier)
+                    {
+                        gState.opengl.prepared = false;
+                    }
+
+                renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                    : gState(pState),
+                      object(gState.S::opengl,
+                             pParameter,
+                             Q(1))
+                    {
+                        gState.opengl.prepared = false;
+                    }
+
+                renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                    : gState(pState),
+                      object(gState.S::opengl,
+                             pParameter,
+                             pMultiplier)
+                    {
+                        gState.opengl.prepared = false;
+                    }
+
+                std::stringstream &render (bool updateMatrix = false)
+                {
+                    if (updateMatrix)
+                    {
+                        gState.S::updateMatrix();
+                    }
+
+                    gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
+                    gState.S::opengl.width  = gState.width;
+                    gState.S::opengl.height = gState.height;
+
+                    if (!gState.fractalFlameColouring)
+                    {
+                        glClearColor
+                            (gState.S2::background.red, gState.S2::background.green,
+                             gState.S2::background.blue, gState.S2::background.alpha);
+                    }
+                    
+                    gState.S::opengl.frameStart();
+                    
+                    gState.S2::output.str("");
+
+                    if (gState.fractalFlameColouring)
+                    {
+                        gState.opengl.setColour(0,0,0,0.5,true);
+                        gState.opengl.setColour(0,0,0,0.8,false);
+                    }
+                    else
+                    {
+                        gState.opengl.setColour
+                            (gState.S2::wireframe.red, gState.S2::wireframe.green,
+                             gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
+                             true);
+                        gState.opengl.setColour
+                            (gState.S2::surface.red, gState.S2::surface.green,
+                             gState.S2::surface.blue, gState.S2::surface.alpha,
+                             false);
+                    }
+
+                    if (!gState.S::opengl.prepared)
+                    {
+                        object.renderSolid();
+                    }
+
+                    gState.S::opengl.frameEnd();
+
+                    return gState.S2::output;
+                }
+
+                void update (void)
                 {
                     gState.opengl.prepared = false;
+                    object.calculateObject();
                 }
 
-            renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-                : gState(pState),
-                  object(gState.S::opengl,
-                         pParameter,
-                         Q(1))
-                {
-                    gState.opengl.prepared = false;
-                }
-
-            renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                : gState(pState),
-                  object(gState.S::opengl,
-                         pParameter,
-                         pMultiplier)
-                {
-                    gState.opengl.prepared = false;
-                }
-
-            std::stringstream &render (bool updateMatrix = false)
-            {
-                if (updateMatrix)
-                {
-                    gState.S::updateMatrix();
-                }
-
-                gState.S::opengl.fractalFlameColouring = gState.fractalFlameColouring;
-                gState.S::opengl.width  = gState.width;
-                gState.S::opengl.height = gState.height;
-
-                if (!gState.fractalFlameColouring)
-                {
-                    glClearColor
-                        (gState.S2::background.red, gState.S2::background.green,
-                         gState.S2::background.blue, gState.S2::background.alpha);
-                }
-                
-                gState.S::opengl.frameStart();
-                
-                gState.S2::output.str("");
-
-                if (gState.fractalFlameColouring)
-                {
-                    gState.opengl.setColour(0,0,0,0.5,true);
-                    gState.opengl.setColour(0,0,0,0.8,false);
-                }
-                else
-                {
-                    gState.opengl.setColour
-                        (gState.S2::wireframe.red, gState.S2::wireframe.green,
-                         gState.S2::wireframe.blue, gState.S2::wireframe.alpha,
-                         true);
-                    gState.opengl.setColour
-                        (gState.S2::surface.red, gState.S2::surface.green,
-                         gState.S2::surface.blue, gState.S2::surface.alpha,
-                         false);
-                }
-
-                if (!gState.S::opengl.prepared)
-                {
-                    object.renderSolid();
-                }
-
-                gState.S::opengl.frameEnd();
-
-                return gState.S2::output;
-            }
-
-            void update (void)
-            {
-                gState.opengl.prepared = false;
-                object.calculateObject();
-            }
-
-        protected:
-            S &gState;
-            typename parent::modelType object;
+            protected:
+                S &gState;
+                typename parent::modelType object;
+        };
+#endif
     };
+
+    template<bool isVirtual>
+    using renderer = render::base<isVirtual>;
+
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+    using renderSVG = render::renderSVG<Q,d,T,rd,isVirtual>;
+
+#if !defined (NO_OPENGL)
+    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+    using renderGL = render::renderGL<Q,d,T,rd,isVirtual>;
 #endif
 };
 
