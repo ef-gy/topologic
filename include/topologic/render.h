@@ -177,6 +177,28 @@ namespace topologic
             public:
                 typedef T<Q,d,R<Q,rd>,rd > modelType;
                 typedef R<Q,rd> renderType;
+                typedef state<Q,rd> stateType;
+
+                common(stateType &pState, renderType &pRender)
+                    : gState(pState),
+                      object(pRender,
+                             gState.parameter,
+                             gState.exportMultiplier)
+                    {}
+
+                common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter)
+                    : gState(pState),
+                      object(pRender,
+                             pParameter,
+                             gState.exportMultiplier)
+                    {}
+
+                common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                    : gState(pState),
+                      object(pRender,
+                             pParameter,
+                             pMultiplier)
+                    {}
 
                 unsigned int depth (void) const
                 {
@@ -199,8 +221,31 @@ namespace topologic
                     rv << depth() << "-" << id();
                     return rv.str();
                 }
+
+            protected:
+                stateType &gState;
+                modelType object;
         };
 
+        /**\brief Model renderer wrapper
+         *
+         * Base definition for libefgy model renderers; there's no generic
+         * definition for this template, but rather only partial
+         * specialisations for the individual renderers.
+         *
+         * \tparam Q  Base data type for calculations
+         * \tparam d  Model depth; typically has to be <= the render depth
+         * \tparam T  Model template; use things like efgy::geometry::cube
+         * \tparam R  Model renderer template; use things like efgy::render::svg
+         * \tparam rd Model render depth; this is the maximum depth for your
+         *            models and also specifies the maximum depth of any
+         *            transformations you can apply.
+         * \tparam isVirtual Whether the class should contain the virtual
+         *                   functions defined in renderer<true>. It'll contain
+         *                   the actual functions in there either way, this
+         *                   just determines if they should make the class a
+         *                   virtual class.
+         */
         template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd = d, bool isVirtual = false>
         class wrapper;
 
@@ -229,30 +274,20 @@ namespace topologic
                 typedef common<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
 
                 using parent::name;
+                using parent::gState;
+                using parent::object;
 
                 typedef state<Q,rd> S;
                 typedef state<Q,2> S2;
 
                 wrapper(S &pState)
-                    : gState(pState),
-                      object(gState.S::svg,
-                             gState.S2::parameter,
-                             gState.S2::exportMultiplier)
-                    {}
+                    : parent(pState, pState.svg) {}
 
                 wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : gState(pState),
-                      object(gState.S::svg,
-                             pParameter,
-                             gState.S2::exportMultiplier)
-                    {}
+                    : parent(pState, pState.svg, pParameter) {}
 
                 wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                    : gState(pState),
-                      object(gState.S::svg,
-                             pParameter,
-                             pMultiplier)
-                    {}
+                    : parent(pState, pState.svg, pParameter, pMultiplier) {}
 
                 std::stringstream &render (bool updateMatrix = false)
                 {
@@ -294,10 +329,6 @@ namespace topologic
                 {
                     object.calculateObject();
                 }
-
-            protected:
-                S &gState;
-                typename parent::modelType object;
         };
 
 #if !defined (NO_OPENGL)
@@ -325,32 +356,26 @@ namespace topologic
             public:
                 typedef common<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
 
+                using parent::gState;
+                using parent::object;
+
                 typedef state<Q,rd> S;
                 typedef state<Q,2> S2;
 
                 wrapper(S &pState)
-                    : gState(pState),
-                      object(gState.S::opengl,
-                             gState.S2::parameter,
-                             gState.S2::exportMultiplier)
+                    : parent(pState, pState.opengl)
                     {
                         gState.opengl.prepared = false;
                     }
 
                 wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : gState(pState),
-                      object(gState.S::opengl,
-                             pParameter,
-                             Q(1))
+                    : parent(pState, pState.opengl, pParameter)
                     {
                         gState.opengl.prepared = false;
                     }
 
                 wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                    : gState(pState),
-                      object(gState.S::opengl,
-                             pParameter,
-                             pMultiplier)
+                    : parent(pState, pState.opengl, pParameter, pMultiplier)
                     {
                         gState.opengl.prepared = false;
                     }
@@ -409,16 +434,9 @@ namespace topologic
                     gState.opengl.prepared = false;
                     object.calculateObject();
                 }
-
-            protected:
-                S &gState;
-                typename parent::modelType object;
         };
 #endif
     };
-
-    template<bool isVirtual>
-    using renderer = render::base<isVirtual>;
 
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
     using renderSVG = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual>;

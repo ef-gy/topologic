@@ -199,7 +199,7 @@ namespace topologic
         }
 
         template<unsigned int md, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = md>
-        renderer<true> * getModel (void)
+        render::base<true> *getModel (void)
         {
             return new renderSVG<Q,md,T,rd,true>(*this);
         }
@@ -516,7 +516,7 @@ namespace topologic
         bool translatePolarToCartesian (void) const { return true; }
         bool translateCartesianToPolar (void) const { return false; }
 
-        renderer<true> *model;
+        render::base<true> *model;
 
         typename efgy::geometry::transformation::affine<Q,2> transformation;
         typename efgy::render::svg<Q,2> svg;
