@@ -184,6 +184,16 @@ namespace topologic
                 typedef R<Q,rd> renderType;
                 typedef state<Q,rd> stateType;
 
+                /**\brief Construct with global state and renderer
+                 *
+                 * Sets the object up with a global state object and an
+                 * appropriate renderer instance. The parameters and export
+                 * multipliers passed to the model are the default ones
+                 * provided by the global state object.
+                 *
+                 * \param[in,out] pState  The global topologic::state instance
+                 * \param[in,out] pRender An appropriate renderer instance
+                 */
                 common(stateType &pState, renderType &pRender)
                     : gState(pState),
                       object(pRender,
@@ -191,6 +201,16 @@ namespace topologic
                              gState.exportMultiplier)
                     {}
 
+                /**\brief Construct with global state, renderer and parameters
+                 *
+                 * Like the two-parameter constructor, but provides a custom
+                 * parameter object.
+                 *
+                 * \param[in,out] pState     The global topologic::state
+                 *                           instance
+                 * \param[in,out] pRender    An appropriate renderer instance
+                 * \param[in]     pParameter The parameter instance to use
+                 */
                 common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter)
                     : gState(pState),
                       object(pRender,
@@ -198,6 +218,22 @@ namespace topologic
                              gState.exportMultiplier)
                     {}
 
+                /**\brief Construct with global state, renderer, parameters and
+                 *        quality multiplier
+                 *
+                 * Like the three-parameter constructor, but additionally uses
+                 * a custom quality multiplier. Used, for example, when
+                 * providing different quality settings for the OpenGL and the
+                 * SVG renderers.
+                 *
+                 * \param[in,out] pState      The global topologic::state
+                 *                            instance
+                 * \param[in,out] pRender     An appropriate renderer instance
+                 * \param[in]     pParameter  The parameter instance to use
+                 * \param[in]     pMultiplier A multiplier which is applied to
+                 *                            the quality setting by some
+                 *                            models.
+                 */
                 common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : gState(pState),
                       object(pRender,
@@ -228,7 +264,19 @@ namespace topologic
                 }
 
             protected:
+                /**\brief Global state object
+                 *
+                 * A reference to the global state object, which was passed to
+                 * the constructor as 'pState'. This is necessary to keep track
+                 * of updated global settings.
+                 */
                 stateType &gState;
+
+                /**\brief Intrinsic object instance
+                 *
+                 * Contains the instance of the model that this renderer is
+                 * trying to create a representation of.
+                 */
                 modelType object;
         };
 

@@ -84,7 +84,7 @@ this:
 
 ![Screenshot of Xcode 5; notice the libxml2 header path](xcode-3.png)
 
-You could also disable the use of libxml2 with a #define - it's up to you,
+You could also disable the use of libxml2 with a \#define - it's up to you,
 really.
 
 Finally, you need to enable optimisations - even for your Debug target. Somehow
@@ -110,5 +110,5 @@ created with the contents of the src/topologic-glut.cpp file in this
 repository - that's also as good a starting point for your own projects as any.
 
 Now get cracking, and have fun! Oh, and do drop me a line if you come up with
-anything cool - as usual, send mails to <magnus@ef.gy> or join the #kyuba
+anything cool - as usual, send mails to <magnus@ef.gy> or join the \#kyuba
 channel on freenode.

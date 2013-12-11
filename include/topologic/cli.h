@@ -1,4 +1,9 @@
 /**\file
+ * \brief Basic CLI frontend
+ *
+ * Contains the basic Topologic CLI frontend, which is limited to processing
+ * SVG files. It does demonstrate rather succinctly how to use the library,
+ * however, and creating SVGs from the command line is always a neat feature.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -28,17 +33,53 @@
 #if !defined(TOPOLOGIC_CLI_H)
 #define TOPOLOGIC_CLI_H
 
+/**!\brief Disable OpenGL renderer
+ *
+ * OpenGL requires the created code to be linked to the system's OpenGL
+ * libraries; this macro disables OpenGL support, and in doing so it allows the
+ * resulting programme to be used in environments that do not support OpenGL.
+ */
 #define NO_OPENGL
+
 #include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
+/**\!brief Maximum render depth
+ *
+ * This macro is used by some of the frontends to determine the maximum render
+ * depth supported by a frontend. The default value is '7', which is plenty for
+ * most applications - increasing this value will increase the size of the
+ * generated code, so it may be desirable to decrease this value in
+ * environments with tighter constraints.
+ */
 #define MAXDEPTH 7
 #endif
 
 namespace topologic
 {
+    /**\brief Default floating point type
+     *
+     * This is an alias for a default floating point type that is compatible
+     * with the SVG renderer. Note the use of efgy::math::primitive: this is
+     * necessary, as some parts of libefgy's code expect to get a proper class
+     * to work with.
+     */
     typedef efgy::math::primitive<double> FP;
 
+    /**\brief Default CLI frontend main function
+     *
+     * Main function for a typical CLI-/SVG-only frontend. This is part of the
+     * library code so that it's easy to reuse where applicable.
+     *
+     * \tparam FP Floating point data type to use; something like topologic::FP
+     *
+     * \param[in] argc The number of arguments that are being passed in argv.
+     * \param[in] argv The actual argument vector. The first element must be
+     *                 the name the programme was called as, the remainder are
+     *                 command line flags.
+     *
+     * \returns 0 if the function ran correctly, nonzero otherwise.
+     */
     template<typename FP>
     int cli (int argc, char* argv[])
     {

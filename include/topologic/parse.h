@@ -1,4 +1,8 @@
 /**\file
+ * \brief Input parsing
+ *
+ * Provides functionality to read XML files as well as factories to create
+ * model renderer instances.
  *
  * \copyright
  * Copyright (c) 2012-2013, Topologic Project Members
@@ -46,6 +50,17 @@
 
 namespace topologic
 {
+    /**\brief Helper function to turn strings into doubles
+     *
+     * Fairly self-explanatory: use a std::stringstream to parse the value of a
+     * std::string and return the double it represents. Used by the XML
+     * interpreter.
+     *
+     * \param[in] s The string to parse.
+     *
+     * \returns The double represented by the string. 0 if the string could not
+     *          be parsed.
+     */
     static inline double stringToDouble (const std::string &s)
     {
         std::istringstream in(s);
@@ -54,11 +69,35 @@ namespace topologic
         return d;
     }
 
+    /**\brief Model factory helper
+     *
+     * Used to update the model of a topologic::state object with parameters
+     * are largely determined at run time. This approach allows the compiler to
+     * create optimised code instances of each model/renderer combination. In
+     * theory, anyway.
+     *
+     * \tparam Q Base data type for calculations
+     * \tparam d Model depth, e.g. 4 for a tesseract
+     * \tparam e Model render depth, e.g. >= 4 when rendering a tesseract
+     * \tparam T Model template, e.g. efgy::geometry::cube
+     * \tparam C Renderer template, e.g. topologic::render::opengl
+     */
     template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model
     {
     public:
+        /**\brief Set model with current parameters
+         *
+         * This method will delete the current model and replace it with one
+         * created by using the template parameters of this class.
+         *
+         * \param[out] so The topologic::state object to modify.
+         *
+         * \returns 'false' if the topologic::state object that was passed in
+         *          does not contain a model after this function returns.
+         *          'true' if things went smoothly instead.
+         */
         static bool set (state<Q,e> &so)
         {
             if (so.state<Q,2>::model)
@@ -72,6 +111,23 @@ namespace topologic
             return so.state<Q,2>::model != 0;
         }
 
+        /**\brief Set model with current parameters
+         *
+         * Like the set() method with just one parameter, this method will try
+         * to update the model of the state object passed in as the 'so'
+         * parameter; unlike this other overload of the method, this one is
+         * used to determine the proper template parameters to use. It will
+         * call itself recursively in order to do so.
+         *
+         * \param[out] so    The topologic::state object to modify.
+         * \param[in]  dims  Target model depth (e.g. 4 for a tesseract).
+         * \param[in]  rdims Target render depth (e.g. >= 4 for a tesseract).
+         *
+         * \returns 'true' if the model was updated successfully, 'false' when
+         *          either the parameters didn't make sense or the new model's
+         *          constructor failed to create a new model in the other set()
+         *          overload.
+         */
         static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
         {
             if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
@@ -122,6 +178,12 @@ namespace topologic
         }
     };
 
+    /**\brief Model factory helper; e=2 fix point
+     *
+     * The model factory helper, topologic::model, works by calling itself
+     * recursively with different template parameters. This is one of these
+     * parameters' fix points, which prevents an infinite template recursion.
+     */
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,d,2,T,C>
@@ -129,6 +191,12 @@ namespace topologic
     public: static bool set (state<Q,2> &, const unsigned int &, const unsigned int &) { return false; }
     };
 
+    /**\brief Model factory helper; d=1 fix point
+     *
+     * The model factory helper, topologic::model, works by calling itself
+     * recursively with different template parameters. This is one of these
+     * parameters' fix points, which prevents an infinite template recursion.
+     */
     template<typename Q, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,1,e,T,C>
@@ -219,6 +287,12 @@ namespace topologic
     }
 
 #if !defined (NOLIBRARIES)
+    /**\brief XML parser wrapper
+     *
+     * This class is a wrapper for the libxml2 XML parser. It is used when
+     * reading the model parameters saved to XML files, e.g. to SVGs by the SVG
+     * renderer.
+     */
     class xml
     {
     public:
