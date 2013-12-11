@@ -172,7 +172,7 @@ namespace topologic
          *                   virtual class.
          */
         template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual>
-        class render : public base<isVirtual>
+        class common : public base<isVirtual>
         {
             public:
                 typedef T<Q,d,R<Q,rd>,rd > modelType;
@@ -201,6 +201,9 @@ namespace topologic
                 }
         };
 
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, template <class,unsigned int> class R, unsigned int rd = d, bool isVirtual = false>
+        class wrapper;
+
         /**\brief SVG model renderer
          *
          * This is a wrapper for libefgy's SVG renderer, augmented with some
@@ -219,32 +222,32 @@ namespace topologic
          *                   just determines if they should make the class a
          *                   virtual class.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-        class renderSVG : public render<Q,d,T,efgy::render::svg,rd,isVirtual>
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+        class wrapper<Q,d,T,efgy::render::svg,rd,isVirtual> : public common<Q,d,T,efgy::render::svg,rd,isVirtual>
         {
             public:
-                typedef render<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
+                typedef common<Q,d,T,efgy::render::svg,rd,isVirtual> parent;
 
                 using parent::name;
 
                 typedef state<Q,rd> S;
                 typedef state<Q,2> S2;
 
-                renderSVG(S &pState)
+                wrapper(S &pState)
                     : gState(pState),
                       object(gState.S::svg,
                              gState.S2::parameter,
                              gState.S2::exportMultiplier)
                     {}
 
-                renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : gState(pState),
                       object(gState.S::svg,
                              pParameter,
                              gState.S2::exportMultiplier)
                     {}
 
-                renderSVG(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : gState(pState),
                       object(gState.S::svg,
                              pParameter,
@@ -316,16 +319,16 @@ namespace topologic
          *                   just determines if they should make the class a
          *                   virtual class.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd = d, bool isVirtual = false>
-        class renderGL : public render<Q,d,T,efgy::render::opengl,rd,isVirtual>
+        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
+        class wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual> : public common<Q,d,T,efgy::render::opengl,rd,isVirtual>
         {
             public:
-                typedef render<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
+                typedef common<Q,d,T,efgy::render::opengl,rd,isVirtual> parent;
 
                 typedef state<Q,rd> S;
                 typedef state<Q,2> S2;
 
-                renderGL(S &pState)
+                wrapper(S &pState)
                     : gState(pState),
                       object(gState.S::opengl,
                              gState.S2::parameter,
@@ -334,7 +337,7 @@ namespace topologic
                         gState.opengl.prepared = false;
                     }
 
-                renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter)
+                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : gState(pState),
                       object(gState.S::opengl,
                              pParameter,
@@ -343,7 +346,7 @@ namespace topologic
                         gState.opengl.prepared = false;
                     }
 
-                renderGL(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
+                wrapper(S &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
                     : gState(pState),
                       object(gState.S::opengl,
                              pParameter,
@@ -418,11 +421,11 @@ namespace topologic
     using renderer = render::base<isVirtual>;
 
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
-    using renderSVG = render::renderSVG<Q,d,T,rd,isVirtual>;
+    using renderSVG = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual>;
 
 #if !defined (NO_OPENGL)
     template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T, unsigned int rd, bool isVirtual>
-    using renderGL = render::renderGL<Q,d,T,rd,isVirtual>;
+    using renderGL = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual>;
 #endif
 };
 
