@@ -34,7 +34,6 @@
 #if !defined(TOPOLOGIC_RENDER_H)
 #define TOPOLOGIC_RENDER_H
 
-#include <topologic/state.h>
 #include <ef.gy/render-svg.h>
 #if !defined(NO_OPENGL)
 #include <ef.gy/render-opengl.h>
