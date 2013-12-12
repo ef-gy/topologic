@@ -38,10 +38,8 @@
 
 #include <ef.gy/version.h>
 #include <ef.gy/primitive.h>
-#include <ef.gy/polytope.h>
 #include <ef.gy/parametric.h>
 
-#include <topologic/state.h>
 #include <topologic/parse.h>
 #include <topologic/version.h>
 
