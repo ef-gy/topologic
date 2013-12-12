@@ -110,8 +110,8 @@ static bool buttonDown = false;
  */
 static bool doRender = true;
 
-/**\brief Render the scene
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Render the scene
  *
  * Sets the 'doRender' variable to 'true' to make the main loop draw the
  * current scene.
@@ -121,8 +121,8 @@ void forceRedraw(void)
     doRender = true;
 }
 
-/**\brief Update fractal flame parameter
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Update fractal flame parameter
  *
  * Modifies parameters of the global state object related to fractal flames.
  *
@@ -134,8 +134,8 @@ void setFlameParameters(int variants)
     topologicState.parameter.flameCoefficients = variants;
 }
 
-/**\brief Genere new colour map
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Genere new colour map
  *
  * Creates a new colour map for the fractal flame rendering algorithm. The
  * colours in that map are chosen at random.
@@ -146,8 +146,8 @@ void resetColourMap(void)
     doRender = true;
 }
 
-/**\brief Resize viewport
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Resize viewport
  *
  * Call this function after resizing the viewport in the frontend; this is most
  * useful for the WebGL client, where SDL is not exactly in control of the
@@ -167,8 +167,8 @@ void setViewportSize(int width, int height)
     doRender = true;
 }
 
-/**\brief Main loop iteration
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Main loop iteration
  *
  * Will try to process any pending SDL events in a loop and then return control
  * to the caller. This function is designed to be called directly in the
@@ -239,8 +239,8 @@ void process(void)
     }
 }
 
-/**\brief Topologic/SDL main function
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Topologic/SDL main function
  *
  * Parses the command line arguments with topologic::parseArguments, then
  * initialises an OpenGL 3.2 context with SDL and commences rendering the
@@ -303,8 +303,8 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/**\brief Set model radius
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Set model radius
  *
  * Sets the polarRadius parameter used in some models.
  *
@@ -319,8 +319,8 @@ int setRadius(double radius)
     return 0;
 }
 
-/**\brief Set model precision/quality
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Set model precision/quality
  *
  * Sets the polarPrecision parameter used in some models - this parameter
  * controls different aspects of different models, but in general higher values
@@ -337,8 +337,8 @@ int setPrecision(double precision)
     return 0;
 }
 
-/**\brief Update model settings
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Update model settings
  *
  * This function is a wrapper for the topologic::setModelWithTypeString()
  * function, which allows you to choose a new model to be rendered.
@@ -353,8 +353,8 @@ int updateModel(char *smodel, int dim, int rdim)
     return 0;
 }
 
-/**\brief Update projection matrices
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Update projection matrices
  *
  * Calls topologic::state::updateMatrix() on the global state object to update
  * the current projection matrices; use after updating any parameters that
@@ -371,8 +371,8 @@ int updateProjection(void)
     return 0;
 }
 
-/**\brief Interpret trackball/mouse drag events
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Interpret trackball/mouse drag events
  *
  * Call this functin after detecting mouse drag or scroll events. This is a
  * simple wrapper for topologic::state::interpretDrag(), so see that function's
@@ -387,8 +387,8 @@ int interpretDrag (double x, double y, double z)
     return 0;
 }
 
-/**\brief Set active dimension
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Set active dimension
  *
  * Sets the currently 'active' dimension. Each dimension of the global state
  * object has an 'active' flag, which determins whether certain operations,
@@ -404,8 +404,8 @@ int setActiveDimension(int dim)
     return 0;
 }
 
-/**\brief Set IFS parameters
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Set IFS parameters
  *
  * Allows you to modify the model parameters related to (random) IFS creation
  * and rendition. Keep in mind that the fractal flames are also IFSs, so these
@@ -430,8 +430,8 @@ void setIFSParameters(int iterations, int seed, int functions, bool preRotate, b
     topologicState.parameter.postRotate = postRotate;
 }
 
-/**\brief Enable or disable fractal flame colouring
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Enable or disable fractal flame colouring
  *
  * Set the 'fractal flame colouring algorithm' flag of the global topologic
  * state object.
@@ -444,8 +444,8 @@ void setFlameColouring(bool flameColouring)
     topologicState.fractalFlameColouring = flameColouring;
 }
 
-/**\brief Set output colour
- * \ingroup topologic-javascript-exports
+/**\ingroup topologic-javascript-exports
+ * \brief Set output colour
  *
  * Allows you to modify any of the global state's colour values. The 'colour'
  * parameter specifies which colour to set to (red, green, blue, alpha). Alpha
@@ -456,7 +456,7 @@ void setFlameColouring(bool flameColouring)
  * colour to 0 or less will disable rendering of wireframe lines or surfaces,
  * respectively.
  *
- * \param[in] colour Which colour to set. Possible options are:
+ * \param[in] colour Which colour to set. Accepted values are:
  *                     * 0: set the background colour
  *                     * 1: set the wireframe colour
  *                     * 2: set the surface colour
