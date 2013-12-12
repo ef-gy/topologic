@@ -431,7 +431,7 @@ namespace topologic
                         std::istreambuf_iterator<char> eos;
                         std::string s(std::istreambuf_iterator<char>(in), eos);
     
-                        xml::parser p = XML.parse(s, arg);
+                        xml::parser p(s, arg);
                         parse (topologicState, p);
                         if (out == outSVG)
                         {

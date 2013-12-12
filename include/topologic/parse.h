@@ -193,7 +193,18 @@ namespace topologic
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,d,2,T,C>
     {
-    public: static bool set (state<Q,2> &, const unsigned int &, const unsigned int &) { return false; }
+    public:
+        /**\brief Set model with current parameters; e=2 fix point
+         *
+         * This is a fix point stub of the model::set() method; all arguments
+         * are ignored and this function always fails.
+         *
+         * \returns Always 'false'
+         */
+        static bool set (state<Q,2> &, const unsigned int &, const unsigned int &)
+        {
+            return false;
+        }
     };
 
     /**\brief Model factory helper; d=1 fix point
@@ -211,7 +222,18 @@ namespace topologic
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class model<Q,1,e,T,C>
     {
-    public: static bool set (state<Q,e> &, const unsigned int &, const unsigned int &) { return false; }
+    public:
+        /**\brief Set model with current parameters; d=1 fix point
+         *
+         * This is a fix point stub of the model::set() method; all arguments
+         * are ignored and this function always fails.
+         *
+         * \returns Always 'false'
+         */
+        static bool set (state<Q,e> &, const unsigned int &, const unsigned int &)
+        {
+            return false;
+        }
     };
 
     /**\brief Set model in global state object
@@ -264,6 +286,23 @@ namespace topologic
         return false;
     }
 
+    /**\brief Update transformation matrix of state object instance
+     *
+     * This is a helper template to update a specific affine transformation
+     * matrix cell of a topologic::state instance.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \param[out] s  The state object instance to modify.
+     * \param[in]  sd Target dimension of the state object to modify.
+     * \param[in]  x  First coordinate of the matrix cell to modify.
+     * \param[in]  y  Second coordinate of the matrix cell to modify.
+     * \param[in]  vv The value to set the (x,y) cell to.
+     *
+     * \returns 'true' if the cell was updated, 'false' if not.
+     */
     template<typename Q, unsigned int d>
     static bool setMatrixCell (state<Q,d> &s, const unsigned int &sd, const unsigned int &x, const unsigned int &y, const Q &vv)
     {
@@ -275,7 +314,24 @@ namespace topologic
         
         return setMatrixCell<Q,d-1>(s, sd, x, y, vv);
     }
-    
+
+    /**\brief Update transformation matrix of state object instance; 2D fix
+     *        point
+     *
+     * This is a helper template to update a specific affine transformation
+     * matrix cell of a topologic::state instance. This 2D fix point doesn't
+     * do anything at all, because the 2D transformation matrix of the state
+     * object isn't being used right now.
+     *
+     * Any parameters passed to this function are currently being ignored.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \returns 'true' if the cell was updated, 'false' if not. Since this
+     *          function doesn't do anything by design it will always fail.
+     */
     template<typename Q, unsigned int d>
     static bool setMatrixCell (state<Q,2> &, const unsigned int &, const unsigned int &, const unsigned int &, const Q &)
     {
@@ -319,6 +375,15 @@ namespace topologic
         class parser
         {
         public:
+            /**\brief Construct with XML data and file name
+             *
+             * Uses libxml2 to parse the XML file data passed in as the first
+             * argument to this function, using the given file name as a basis
+             * for relative references.
+             *
+             * \param[in] data     A proper, well-formed XML document
+             * \param[in] filename The source location of the document
+             */
             parser(const std::string &data,
                    const std::string &filename)
                 : document (xmlReadMemory (data.data(), int(data.size()), filename.c_str(), 0,
@@ -357,12 +422,35 @@ namespace topologic
                 }
             }
 
+            /**\brief Copy constructor
+             *
+             * The copy constructor is explicitly deleted for memory management
+             * reasons.
+             *
+             * \todo Provide a move constructor.
+             */
+            parser(const parser &) = delete;
+
+            /**\brief Destructor
+             *
+             * Destroys the XPath and XML document contexts associated with
+             * this instance.
+             */
             ~parser(void)
             {
                 xmlXPathFreeContext(xpathContext);
                 xmlFreeDoc(document);
             }
 
+            /**\brief Evaluate XPath expression to string
+             *
+             * Evaluates the given XPath expression in the current context and
+             * returns the string result of an implicit XPath cast.
+             *
+             * \param[in] expression The XPath expression to evaluate.
+             *
+             * \returns The string value of the given expression.
+             */
             const std::string evaluate
                 (const std::string &expression)
             {
@@ -377,6 +465,17 @@ namespace topologic
                 return result;
             }
 
+            /**\brief Evaluate XPath expression to XML fragment
+             *
+             * This method works much like the evaluate() method, but instead
+             * of returning the result of an implicit XPath cast to string,
+             * this instead returns the XML fragment that the expression
+             * returned.
+             *
+             * \param[in] expression The XPath expression to evaluate.
+             *
+             * \returns An XML fragment of the given expression's result.
+             */
             const std::string evaluateToFragment
                 (const std::string &expression)
             {
@@ -407,6 +506,21 @@ namespace topologic
                 return rv;
             }
 
+            /**\brief Update XPath evaluation context
+             *
+             * Evaluates the provided XPath expression and sets the current
+             * XPath context to the result of this expression.
+             *
+             * The expression must return exactly one node, otherwise the
+             * context is not updated.
+             *
+             * \param[in] expression An XPath expression that is evaluated in
+             *                       the current context and which must return
+             *                       precisely one result node.
+             *
+             * \returns 'true' if the context was updated successfully, 'false'
+             *          otherwise.
+             */
             bool updateContext
                 (const std::string &expression)
             {
@@ -437,10 +551,34 @@ namespace topologic
                 return true;
             }
 
+        protected:
+            /**\brief libxml2 document context
+             *
+             * This is what libxml2 came up with by parsing the XML document
+             * provided to the constructor.
+             */
             xmlDocPtr document;
+
+            /**\brief XPath evaluation context
+             *
+             * The current context in which XPath expressions are evaluated.
+             * Defaults to the root node of the document, but can be changed
+             * with the updateContext() method.
+             */
             xmlXPathContextPtr xpathContext;
 
-        protected:
+            /**\brief Evaluate XPath expression
+             *
+             * This method will evaluate the given XPath expression in the
+             * current context and return the result. Errors are signaled by
+             * throwing a std::runtime_error.
+             *
+             * \throws std::runtime_error if the given expression is invalid.
+             *
+             * \param[in] expression The XPath expression to evaluate
+             *
+             * \returns The result of the XPath expression after evaluation.
+             */
             xmlXPathObjectPtr lookup (const std::string &expression)
             {
                 xmlXPathObjectPtr xpathObject = xmlXPathEvalExpression
@@ -454,15 +592,28 @@ namespace topologic
                 return xpathObject;
             }
         };
-
-        parser parse
-            (const std::string &data,
-             const std::string &filename)
-        {
-            return parser(data, filename);
-        }
     };
 
+    /**\brief Parse XML file contents and update global state object
+     *
+     * This function uses an xml::parser instance to update a topologic::state
+     * instance with the metadata contained in the XML document. The parser is
+     * fairly tolerant of the input XML's layout and will accept tags in
+     * topologic's namespace almost everywhere. You should probably still use a
+     * designated metadata element in your XML files, such as the svg:metadata
+     * element.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] parser An XML parser instance, hopefully containing
+     *                    Topologic metadata.
+     *
+     * \returns 'true' if the code didn't blow up trying to parse your XML,
+     *          'false' if it did. Probably.
+     */
     template<typename Q, unsigned int d>
     static bool parse (state<Q,d> &s, xml::parser &parser)
     {
@@ -555,6 +706,31 @@ namespace topologic
         return parse<Q,d-1>(s, parser);
     }
 
+    /**\brief Parse XML file contents and update global state object; 2D fix
+     *        point.
+     *
+     * This function uses an xml::parser instance to update a topologic::state
+     * instance with the metadata contained in the XML document. The parser is
+     * fairly tolerant of the input XML's layout and will accept tags in
+     * topologic's namespace almost everywhere. You should probably still use a
+     * designated metadata element in your XML files, such as the svg:metadata
+     * element.
+     *
+     * This process is applied recursively, and this is the 2D fix point, which
+     * makes certain that the compiler won't blow up due to infinite template
+     * recursion.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] parser An XML parser instance, hopefully containing
+     *                    Topologic metadata.
+     *
+     * \returns 'true' if the code didn't blow up trying to parse your XML,
+     *          'false' if it did. Probably.
+     */
     template<typename Q, unsigned int d>
     static bool parse (state<Q,2> &s, xml::parser &parser)
     {
@@ -650,6 +826,28 @@ namespace topologic
         return true;
     }
 
+    /**\brief Parse and update model data
+     *
+     * Like topologic::parse(), this function uses an XML parser object
+     * instance to update a topologic::state instance with the data contained
+     * in the XML file. topologic::parse() won't update the model in the state
+     * object, however, which is what this function is for.
+     *
+     * The reason this functionality was split into two functions, is that the
+     * other parser step shouldn't have to worry about which renderer template
+     * will be used for the model.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     * \tparam C Model renderer wrapper, e.g. topologic::render::svg
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] parser An XML parser instance, hopefully containing
+     *                    Topologic metadata.
+     *
+     * \returns 'true' if things worked out, 'false' otherwise.
+     */
     template<typename Q, unsigned int d,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
