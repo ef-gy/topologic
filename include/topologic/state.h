@@ -100,9 +100,30 @@ namespace topologic
     class state : public state<Q,d-1>
     {
     public:
+        /**\brief Parent class type
+         *
+         * A convenient type alias for this class's parent class. This class is
+         * doing a lot of evil recursive template magic, so aliasing the parent
+         * class tends to come in handy.
+         */
+        typedef state<Q,d-1> parent;
+
+        /**\brief Base (2D) class type
+         *
+         * Some data is only contained in the 2D version of this class, which
+         * this higher-dimensional variant is based on thanks to the power of
+         * recursive templates.
+         */
         typedef state<Q,2> base;
 
-        state()
+        /**\brief Default constructor
+         *
+         * Sets up default projection and transformation matrices, as well as
+         * an instance of libefgy's SVG renderer. If the NO_OPENGL macro has
+         * not been defined then this constructor will also set up an instance
+         * of libefgy's OpenGL renderer.
+         */
+        state(void)
             : projection(typename efgy::geometry::euclidian::space<Q,d>::vector(),
                          typename efgy::geometry::euclidian::space<Q,d>::vector(),
                          Q(M_PI_4),
@@ -131,10 +152,41 @@ namespace topologic
                 }
             }
 
+        /**\brief Polar 'from' point
+         *
+         * Contains the eye coordinates of the camera that is used when
+         * creating the projection matrix; This is the set of coordinates that
+         * is used when 'polarCoordinates' is set to 'true'.
+         */
         typename efgy::geometry::polar::space<Q,d>::vector fromp;
-        typename efgy::geometry::euclidian::space<Q,d>::vector &from, &to;
 
+        /**\brief Cartesian 'from' point
+         *
+         * Contains the eye coordinates of the camera that is used when
+         * creating the projection matrix; This is the set of coordinates that
+         * is used when 'polarCoordinates' is set to 'false'.
+         */
+        typename efgy::geometry::euclidian::space<Q,d>::vector &from;
+
+        /**\brief Cartesian 'to' point
+         *
+         * This is the point that the camera in this dimension is looking at.
+         * Right now this should always be the origin, i.e. (0, 0, ...).
+         */
+        typename efgy::geometry::euclidian::space<Q,d>::vector &to;
+
+        /**\brief Projective transformation
+         *
+         * The projective transformation to be applied to any vectors before
+         * they're rendered.
+         */
         typename efgy::geometry::projection<Q,d> projection;
+
+        /**\brief Viewport transformation matrix
+         *
+         * An affine transformation which is applied to any vectors being drawn
+         * right before applying the projection transformation.
+         */
         typename efgy::geometry::transformation::affine<Q,d> transformation;
 
         /**\brief libefgy SVG renderer instance
@@ -527,7 +579,12 @@ namespace topologic
     class state<Q,2>
     {
     public:
-        state()
+        /**\brief Default constructor
+         *
+         * Constructs an instance of a 2D state object with more-or-less sane
+         * defaults.
+         */
+        state(void)
             : polarCoordinates(true),
               svg(transformation),
 #if !defined(NO_OPENGL)
@@ -550,11 +607,27 @@ namespace topologic
                 parameter.flameCoefficients = 3;
             }
 
+        /**\brief Update projection matrices; 2D fix point
+         *
+         * This is the 2D fix point of the state::updateMatrix() method. Since
+         * there's not much point in projecting from a 2-space -- which would
+         * result in an image in 1-space -- this method is a stub that doesn't
+         * do anything.
+         */
         void updateMatrix (void) const {}
 
+        /**\brief Gather model metadata
+         *
+         * Creates an XML fragment string containing all of the settings in
+         * this instance of the global state object. This particular method
+         * will not recurse, much unlike the higher level equivalents.
+         *
+         * \returns A string containing an XML fragment with all the metadata
+         *          needed to recreate this instance of the state object.
+         */
         const std::string metadata(void) const
         {
-            std::stringstream rv;
+            std::stringstream rv("");
 
             rv << "<t:camera mode='" << (polarCoordinates ? "polar" : "cartesian") << "'/>";
             if (model)
@@ -572,9 +645,52 @@ namespace topologic
             return rv.str();
         }
 
-        bool scale (const Q &) const { return false; }
-        bool magnify (const Q &) const { return false; }
-        bool interpretDrag (const Q &, const Q &, const Q &) const { return true; }
+        /**\brief Apply scale; 2D fix point
+         *
+         * Applies a scale to the affine transformation matrix; since the 2D
+         * fix point's transformation matrix is currently being ignored, this
+         * particular instance of the method will not do anything at all.
+         *
+         * \returns 'true' if things went as expected. This 2D fix point should
+         *          only be called as a fallback of the higher-level magnify()
+         *          methods, so it is not actually expected to ever be called,
+         *          which means it'll always return 'false'.
+         */
+        bool scale (const Q &) const
+        {
+            return false;
+        }
+
+        /**\brief Apply magnification; 2D fix point
+         *
+         * Applies a scale to the affine transformation matrix; since the 2D
+         * fix point's transformation matrix is currently being ignored, this
+         * particular instance of the method will not do anything at all.
+         *
+         * \returns 'true' if things went as expected. This 2D fix point should
+         *          only be called as a fallback of the higher-level magnify()
+         *          methods, so it is not actually expected to ever be called,
+         *          which means it'll always return 'false'.
+         */
+        bool magnify (const Q &) const
+        {
+            return false;
+        }
+
+        /**\brief Apply mouse drag; 2D fix point
+         *
+         * Applies mouse drag events to the affine transformation matrix; this
+         * is the 2D fix point, which doesn't do anything at all as the 2D
+         * transformation matrix is currently being ignored.
+         *
+         * \returns 'true' if things went as expected. Since this function
+         *          doesn't do anything that could fail it will always return
+         *          'true'.
+         */
+        bool interpretDrag (const Q &, const Q &, const Q &) const
+        {
+            return true;
+        }
 
         /**\brief Set active dimension
          *
