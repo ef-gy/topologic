@@ -47,7 +47,7 @@ PROJECT_BRIEF          = "simple, higher-dimensional primitive and fractal visua
 # exceed 55 pixels and the maximum width should not exceed 200 pixels.
 # Doxygen will copy the logo to the output directory.
 
-PROJECT_LOGO           =
+PROJECT_LOGO           = topologic-icon.svg
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
