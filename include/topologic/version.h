@@ -33,6 +33,7 @@
 #define TOPOLOGIC_VERSION_H
 
 /**\dir include/topologic
+ * \brief Topologic template code
  *
  * Like libefgy, Topologic is mostly just a set of C++ template headers; as
  * such, most of the code is contained within the headers themselves, and these
