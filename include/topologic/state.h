@@ -205,6 +205,12 @@ namespace topologic
         typename efgy::render::opengl<Q,d> opengl;
 #endif
 
+        /**\brief Update projection matrices
+         *
+         * Resets the projection matrix' parameters and forces it to be updated
+         * with the new parameters, then keeps doing so recursively for all its
+         * parent classes.
+         */
         void updateMatrix (void)
         {
             projection.aspect = (d == 3) ? Q(state<Q,d-1>::width) / Q(state<Q,d-1>::height) : Q(1);
@@ -216,6 +222,16 @@ namespace topologic
             state<Q,d-1>::updateMatrix();
         }
 
+        /**\brief Gather model metadata
+         *
+         * Creates an XML fragment string containing all of the settings in
+         * this instance of the global state object. Will call its parent
+         * class's metadata method as well, which will do the same recursively
+         * until finally the 2D fix point method is called.
+         *
+         * \returns A string containing an XML fragment with all the metadata
+         *          needed to recreate this instance of the state object.
+         */
         const std::string metadata(void) const
         {
             std::stringstream rv;
@@ -262,6 +278,20 @@ namespace topologic
             return rv.str() + state<Q,d-1>::metadata();
         }
 
+        /**\brief Apply scale
+         *
+         * Applies a scale to the affine transformation matrix of the currently
+         * active dimension. If the scale is '1' then the transformation matrix
+         * will remain unmodified, if it's greater than '1' then the render
+         * output will appear larger and if it's less than '1' the output will
+         * appear smaller.
+         *
+         * \param[in] scale The scale to apply.
+         *
+         * \returns 'true' if the active matrix was modified, 'false' if there
+         *          wasn't any active dimension or if you called the 2D version
+         *          of this method.
+         */
         bool scale (const Q &scale)
         {
             if (!active)
@@ -282,6 +312,20 @@ namespace topologic
             return true;
         }
 
+        /**\brief Apply magnification
+         *
+         * Applies a scale to the affine transformation matrix of the currently
+         * active dimension, very much like the scale() method. Unlike the
+         * scale method, this one won't do anything if you pass in '0' instead,
+         * things get bigger if they magnification is positive and they get
+         * smaller if the magnification is negative.
+         *
+         * \param[in] magnification The magnification factor to apply.
+         *
+         * \returns 'true' if the active matrix was modified, 'false' if there
+         *          wasn't any active dimension or if you called the 2D version
+         *          of this method.
+         */
         bool magnify (const Q &magnification)
         {
             if (!active)
@@ -302,6 +346,22 @@ namespace topologic
             return true;
         }
 
+        /**\brief Interpret trackball/mouse drag and scroll operations
+         *
+         * This is a helper function that interprets pointer drag events and
+         * modifies the affine transformation matrix accordingly. The 'x' and
+         * 'y' parameters correspond to drag events on the 2 pointing device
+         * axes, and the 'z' parameter corresponds to scroll events.
+         *
+         * Dragging to the left and right applies a rotation to the model,
+         * whereas scrolling will zoom in and out.
+         *
+         * \param[in] x Horizontal movement, e.g. dragging from left to right
+         * \param[in] y Vertical movement, e.g. dragging from top to bottom
+         * \param[in] z Scroll wheel movement
+         *
+         * \brief 'true' if everything went as expected, 'false' otherwise.
+         */
         bool interpretDrag (const Q &x, const Q &y, const Q &z)
         {
             if (!active)
