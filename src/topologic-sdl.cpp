@@ -30,7 +30,7 @@
  * \see Project Source Code: http://git.becquerel.org/jyujin/topologic.git
  */
 
-/**\defgroup topologic-javascript-exports "emscripten/JS Exported Functions"
+/**\defgroup topologic-javascript-exports emscripten/JS Exported Functions
  * \brief Functions which emscripten will export when compiling to JavaScript
  *
  * Some functions are exported by emscripten so that they can be used by other
