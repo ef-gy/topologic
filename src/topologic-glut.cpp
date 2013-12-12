@@ -40,17 +40,79 @@
 #include <topologic/gl.h>
 
 #if !defined(MAXDEPTH)
+/**\brief Maximum render depth
+ *
+ * This macro is used by some of the frontends to determine the maximum render
+ * depth supported by a frontend. The default value is '7', which is plenty for
+ * most applications - increasing this value will increase the size of the
+ * generated code, so it may be desirable to decrease this value in
+ * environments with tighter constraints.
+ */
 #define MAXDEPTH 7
 #endif
 
-static GLfloat mouseX, mouseY;
-static GLfloat lastMouseX, lastMouseY;
+/**\brief Current X position of cursor
+ *
+ * Contains the current X position of the cursor in screen coordinates.
+ */
+static GLfloat mouseX;
 
-static bool mouseLeft, mouseRight;
+/**\brief Current Y position of cursor
+ *
+ * Contains the current Y position of the cursor in screen coordinates.
+ */
+static GLfloat mouseY;
 
+/**\brief X position of cursor at time of last processing
+ *
+ * Contains the X coordinate of the cursor, in screen coordinates, at the last
+ * point in time the programme tried to figure out if the cursor was dragged
+ * over the screen.
+ */
+static GLfloat lastMouseX;
+
+/**\brief Y position of cursor at time of last processing
+ *
+ * Contains the Y coordinate of the cursor, in screen coordinates, at the last
+ * point in time the programme tried to figure out if the cursor was dragged
+ * over the screen.
+ */
+static GLfloat lastMouseY;
+
+/**\brief Is the left mouse button currently down?
+ *
+ * Set to 'true' when the left mouse button is pressed and then reset once this
+ * button is released.
+ */
+static bool mouseLeft;
+
+/**\brief Is the right mouse button currently down?
+ *
+ * Set to 'true' when the right mouse button is pressed and then reset once
+ * this button is released.
+ */
+static bool mouseRight;
+
+/**\brief Is the 'shift' button currently down?
+ *
+ * Set to 'true' when the 'shift' modifier key on the keyboard is pressed;
+ * reset to 'false' when the 'shift' key is released.
+ */
+static bool shiftActive;
+
+/**\brief Global state object
+ *
+ * Topologic programme state instance for this programme. Has to be global,
+ * because we need to provide C-like accessors for emscripten/JavaScript
+ * callers.
+ */
 static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 
-void displayCall(void)
+/**\brief GLUT display callback
+ *
+ * Called by GLUT whenever it thinks the current scene should be drawn anew.
+ */
+static void displayCall(void)
 {
     if (topologicState.model)
     {
@@ -61,7 +123,16 @@ void displayCall(void)
     glutPostRedisplay();
 }
 
-void reshape(GLint width, GLint height)
+/**\brief GLUT reshape callback
+ *
+ * Called by GLUT whenever the output window is resized; since the GLUT
+ * frontend requests a full screen window this should only happen once at
+ * programme startup.
+ *
+ * \param[in] width  The width, in pixels, of the output viewport
+ * \param[in] height The height, in pixels, of the output viewport
+ */
+static void reshape(GLint width, GLint height)
 {
     glClearDepth(1.0f);
 
@@ -73,9 +144,15 @@ void reshape(GLint width, GLint height)
     topologicState.height = height;
 }
 
-bool shiftActive;
-
-void processMouse(int x, int y)
+/**\brief GLUT mouse processing callback
+ *
+ * Called by GLUT whenever the mouse moves; used to find out if the mouse has
+ * been dragged or if the mouse has been moved with the shift key down.
+ *
+ * \param[in] x Current X coordinate of mouse cursor
+ * \param[in] y Current Y coordinate of mouse cursor
+ */
+static void processMouse(int x, int y)
 {
     mouseX = x;
     mouseY = y;
@@ -101,7 +178,17 @@ void processMouse(int x, int y)
     }
 }
 
-void processMouseButton(int button, int state, int x, int y)
+/**\brief GLUT mouse button callback
+ *
+ * Called by GLUT whenever any of the mouse buttons' state changes, e.g. when
+ * the user clicks somewhere or releases a button after dragging the cursor.
+ *
+ * \param[in] button Which button changed state
+ * \param[in] state  The new state of the button
+ * \param[in] x      Current X coordinate of mouse cursor
+ * \param[in] y      Current Y coordinate of mouse cursor
+ */
+static void processMouseButton(int button, int state, int x, int y)
 {
     shiftActive = (glutGetModifiers() & GLUT_ACTIVE_SHIFT);
 
@@ -138,7 +225,16 @@ void processMouseButton(int button, int state, int x, int y)
     }
 }
 
-void processKeyboard(unsigned char key, int x, int y)
+/**\brief GLUT keyboard callback
+ *
+ * Called by GLUT whenever a key on the keyboard is pressed. Used to determine
+ * which dimension in the state object should currently be set to 'active'.
+ *
+ * \param[in] key The key that was pressed
+ * \param[in] x   Current X coordinate of mouse cursor
+ * \param[in] y   Current Y coordinate of mouse cursor
+ */
+static void processKeyboard(unsigned char key, int x, int y)
 {
     switch (key)
     {
