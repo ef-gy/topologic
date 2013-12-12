@@ -30,6 +30,15 @@
  * \see Project Source Code: http://git.becquerel.org/jyujin/topologic.git
  */
 
+/**\defgroup topologic-javascript-exports "emscripten/JS Exported Functions"
+ * \brief Functions which emscripten will export when compiling to JavaScript
+ *
+ * Some functions are exported by emscripten so that they can be used by other
+ * JavaScript code in the same JS context. These functions have an 'export "C"'
+ * tag so they can be looked up without any name mangling issues and they're
+ * grouped together in the documentation for convenience.
+ */
+
 #if defined(EMSCRIPTEN)
 #include <emscripten.h>
 #endif
@@ -42,6 +51,14 @@
 #include <topologic/gl.h>
 
 #if !defined(MAXDEPTH)
+/**\brief Maximum render depth
+ *
+ * This macro is used by some of the frontends to determine the maximum render
+ * depth supported by a frontend. The default value is '7', which is plenty for
+ * most applications - increasing this value will increase the size of the
+ * generated code, so it may be desirable to decrease this value in
+ * environments with tighter constraints.
+ */
 #define MAXDEPTH 7
 #endif
 
@@ -94,6 +111,7 @@ static bool buttonDown = false;
 static bool doRender = true;
 
 /**\brief Render the scene
+ * \ingroup topologic-javascript-exports
  *
  * Sets the 'doRender' variable to 'true' to make the main loop draw the
  * current scene.
@@ -104,6 +122,7 @@ void forceRedraw(void)
 }
 
 /**\brief Update fractal flame parameter
+ * \ingroup topologic-javascript-exports
  *
  * Modifies parameters of the global state object related to fractal flames.
  *
@@ -115,12 +134,32 @@ void setFlameParameters(int variants)
     topologicState.parameter.flameCoefficients = variants;
 }
 
+/**\brief Genere new colour map
+ * \ingroup topologic-javascript-exports
+ *
+ * Creates a new colour map for the fractal flame rendering algorithm. The
+ * colours in that map are chosen at random.
+ */
 void resetColourMap(void)
 {
     topologicState.opengl.setColourMap();
     doRender = true;
 }
 
+/**\brief Resize viewport
+ * \ingroup topologic-javascript-exports
+ *
+ * Call this function after resizing the viewport in the frontend; this is most
+ * useful for the WebGL client, where SDL is not exactly in control of the
+ * canvas size and the user might resize the browser window at any time.
+ *
+ * \param[in] width  The viewport's new width
+ * \param[in] height The viewport's new height
+ *
+ * \bug The current WebGL client is not calling this function when the window
+ *      is resized by the user. This results in pixelated output and/or an
+ *      incorrect aspect ratio for most users.
+ */
 void setViewportSize(int width, int height)
 {
     topologicState.width = width;
@@ -128,6 +167,15 @@ void setViewportSize(int width, int height)
     doRender = true;
 }
 
+/**\brief Main loop iteration
+ * \ingroup topologic-javascript-exports
+ *
+ * Will try to process any pending SDL events in a loop and then return control
+ * to the caller. This function is designed to be called directly in the
+ * programme's main loop - either in main() itself, or, in an emscripten/JS
+ * envionment, in whatever place emscripten_set_main_loop() saw fit to have it
+ * run in.
+ */
 void process(void)
 {
     const SDL_VideoInfo* info = SDL_GetVideoInfo();
@@ -192,6 +240,7 @@ void process(void)
 }
 
 /**\brief Topologic/SDL main function
+ * \ingroup topologic-javascript-exports
  *
  * Parses the command line arguments with topologic::parseArguments, then
  * initialises an OpenGL 3.2 context with SDL and commences rendering the
@@ -254,18 +303,49 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/**\brief Set model radius
+ * \ingroup topologic-javascript-exports
+ *
+ * Sets the polarRadius parameter used in some models.
+ *
+ * \param[in] radius The new value of the polarRadius parameter.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
 int setRadius(double radius)
 {
     topologicState.topologic::state<topologic::GLFP,2>::parameter.polarRadius = topologic::GLFP(radius);
     return 0;
 }
 
+/**\brief Set model precision/quality
+ * \ingroup topologic-javascript-exports
+ *
+ * Sets the polarPrecision parameter used in some models - this parameter
+ * controls different aspects of different models, but in general higher values
+ * result in better output quality.
+ *
+ * \param[in] precision The new value of the polarPrecision parameter.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
 int setPrecision(double precision)
 {
     topologicState.topologic::state<topologic::GLFP,2>::parameter.polarPrecision = topologic::GLFP(precision);
     return 0;
 }
 
+/**\brief Update model settings
+ * \ingroup topologic-javascript-exports
+ *
+ * This function is a wrapper for the topologic::setModelWithTypeString()
+ * function, which allows you to choose a new model to be rendered.
+ *
+ * \returns 0 if your new settings didn't blow up the code; won't return if
+ *          they did.
+ */
 int updateModel(char *smodel, int dim, int rdim)
 {
     topologic::setModelWithTypeString<topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::opengl> (std::string(smodel), topologicState, dim, rdim);
@@ -273,25 +353,74 @@ int updateModel(char *smodel, int dim, int rdim)
     return 0;
 }
 
-int updateProjection()
+/**\brief Update projection matrices
+ * \ingroup topologic-javascript-exports
+ *
+ * Calls topologic::state::updateMatrix() on the global state object to update
+ * the current projection matrices; use after updating any parameters that
+ * are used to form the projection matrix, such as the from/to point or the
+ * output window size.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
+int updateProjection(void)
 {
     topologicState.topologic::state<topologic::GLFP,MAXDEPTH>::updateMatrix();
 
     return 0;
 }
 
+/**\brief Interpret trackball/mouse drag events
+ * \ingroup topologic-javascript-exports
+ *
+ * Call this functin after detecting mouse drag or scroll events. This is a
+ * simple wrapper for topologic::state::interpretDrag(), so see that function's
+ * documentation for further details.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
 int interpretDrag (double x, double y, double z)
 {
     topologicState.interpretDrag(topologic::GLFP(x),topologic::GLFP(y),topologic::GLFP(z));
     return 0;
 }
 
+/**\brief Set active dimension
+ * \ingroup topologic-javascript-exports
+ *
+ * Sets the currently 'active' dimension. Each dimension of the global state
+ * object has an 'active' flag, which determins whether certain operations,
+ * such as interpreting a mouse drag event, apply to them; this function sets
+ * that flag.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
 int setActiveDimension(int dim)
 {
     topologicState.setActive(dim);
     return 0;
 }
 
+/**\brief Set IFS parameters
+ * \ingroup topologic-javascript-exports
+ *
+ * Allows you to modify the model parameters related to (random) IFS creation
+ * and rendition. Keep in mind that the fractal flames are also IFSs, so these
+ * parameters also apply to fractal flames.
+ *
+ * \param[in] iterations The number of iterations to run an IFS when creating
+ *                       the model.
+ * \param[in] seed       Seed value for the mersenne twister used to create
+ *                       random IFS functions.
+ * \param[in] functions  Target number of functions to use with IFSs.
+ * \param[in] preRotate  Whether to consider adding a pre-translation rotation
+ *                       to random affine IFSs.
+ * \param[in] postRotate Whether to consider adding a post-translation rotation
+ *                       to random affine IFSs.
+ */
 void setIFSParameters(int iterations, int seed, int functions, bool preRotate, bool postRotate)
 {
     topologicState.parameter.iterations = iterations;
@@ -299,15 +428,43 @@ void setIFSParameters(int iterations, int seed, int functions, bool preRotate, b
     topologicState.parameter.functions  = functions;
     topologicState.parameter.preRotate  = preRotate;
     topologicState.parameter.postRotate = postRotate;
-
-//    std::cerr << "(" << iterations << ", " << seed << ", " << functions << ", " << preRotate << ", " << postRotate << ")\n";
 }
 
+/**\brief Enable or disable fractal flame colouring
+ * \ingroup topologic-javascript-exports
+ *
+ * Set the 'fractal flame colouring algorithm' flag of the global topologic
+ * state object.
+ *
+ * \param[in] flameColouring Whether to enable the fractal flame colouring
+ *                           algorithm.
+ */
 void setFlameColouring(bool flameColouring)
 {
     topologicState.fractalFlameColouring = flameColouring;
 }
 
+/**\brief Set output colour
+ * \ingroup topologic-javascript-exports
+ *
+ * Allows you to modify any of the global state's colour values. The 'colour'
+ * parameter specifies which colour to set to (red, green, blue, alpha). Alpha
+ * is used to provide transparency.
+ *
+ * The colour vector (red, green, blue, alpha) should have each component in
+ * the range [0,1]. Setting the alpha component of the wireframe or surface
+ * colour to 0 or less will disable rendering of wireframe lines or surfaces,
+ * respectively.
+ *
+ * \param[in] colour Which colour to set. Possible options are:
+ *                     * 0: set the background colour
+ *                     * 1: set the wireframe colour
+ *                     * 2: set the surface colour
+ * \param[in] red    Red component of the colour vector
+ * \param[in] green  Green component of the colour vector
+ * \param[in] blue   Blue component of the colour vector
+ * \param[in] alpha  Alpha component of the colour vector
+ */
 void setColour(int colour, double red, double green, double blue, double alpha)
 {
     switch (colour)
