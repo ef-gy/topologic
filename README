@@ -34,6 +34,11 @@ proper Cocoa GUI instead of the CLI/GLUT frontends. This App is rather cheap,
 however, so if you happen to have a Mac and you do like the programme then I'd
 really appreciate it if you got a copy ;).
 
+Oh, and if you're not on a Mac but you happen to have an iPod/iPhone/iPad,
+there's an app for those, too:
+https://itunes.apple.com/us/app/topologic/id737310913 - I've really tried to
+make good use of the touch controls on those devices, promise :).
+
 Topologic is designed so that almost all of the code is template-y C++ in
 header files, much like libefgy. The API documentation for this is available
 at: http://ef.gy/documentation/topologic - the documentation may not always
