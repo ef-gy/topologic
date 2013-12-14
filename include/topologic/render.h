@@ -214,8 +214,7 @@ namespace topologic
                 common(stateType &pState, renderType &pRender)
                     : gState(pState),
                       object(pRender,
-                             gState.parameter,
-                             gState.exportMultiplier)
+                             gState.parameter)
                     {}
 
                 /**\brief Construct with global state, renderer and parameters
@@ -231,31 +230,7 @@ namespace topologic
                 common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter)
                     : gState(pState),
                       object(pRender,
-                             pParameter,
-                             gState.exportMultiplier)
-                    {}
-
-                /**\brief Construct with global state, renderer, parameters and
-                 *        quality multiplier
-                 *
-                 * Like the three-parameter constructor, but additionally uses
-                 * a custom quality multiplier. Used, for example, when
-                 * providing different quality settings for the OpenGL and the
-                 * SVG renderers.
-                 *
-                 * \param[in,out] pState      The global topologic::state
-                 *                            instance
-                 * \param[in,out] pRender     An appropriate renderer instance
-                 * \param[in]     pParameter  The parameter instance to use
-                 * \param[in]     pMultiplier A multiplier which is applied to
-                 *                            the quality setting by some
-                 *                            models.
-                 */
-                common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                    : gState(pState),
-                      object(pRender,
-                             pParameter,
-                             pMultiplier)
+                             pParameter)
                     {}
 
                 unsigned int depth (void) const
@@ -379,26 +354,6 @@ namespace topologic
                 wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
                     : parent(pState, pState.svg, pParameter) {}
 
-                /**\brief Construct with global state and custom parameters and
-                 *        quality multiplier.
-                 *
-                 * Initialises an SVG renderer with a global topologic::state
-                 * instance. Additionally, instead of using the global state's
-                 * parameter instance, this constructor substitutes the given
-                 * 'pParameter'. The quality multiplier provided by the global
-                 * state is also ignored in favour of the one provided as the
-                 * third argument to this constructor.
-                 *
-                 * \param[in,out] pState      Global topologic state object to
-                 *                            use
-                 * \param[in]     pParameter  The model parameters to
-                 *                            substitute for the ones in the
-                 *                            global state
-                 * \param[in]     pMultiplier The quality multiplier to use
-                 */
-                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                    : parent(pState, pState.svg, pParameter, pMultiplier) {}
-
                 std::stringstream &render (bool updateMatrix = false)
                 {
                     if (updateMatrix)
@@ -484,7 +439,7 @@ namespace topologic
                  * \param[in,out] pState Global topologic state object to use
                  */
                 wrapper(stateType &pState)
-                    : parent(pState, pState.opengl, pState.parameter, Q(1))
+                    : parent(pState, pState.opengl, pState.parameter)
                     {
                         gState.opengl.prepared = false;
                     }
@@ -502,30 +457,7 @@ namespace topologic
                  *                           for the ones in the global state
                  */
                 wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : parent(pState, pState.opengl, pParameter, Q(1))
-                    {
-                        gState.opengl.prepared = false;
-                    }
-
-                /**\brief Construct with global state and custom parameters and
-                 *        quality multiplier.
-                 *
-                 * Initialises an OpenGL renderer with a global
-                 * topologic::state instance. Additionally, instead of using
-                 * the global state's parameter instance, this constructor
-                 * substitutes the give 'pParameter'. The quality multiplier
-                 * provided by the global state is also ignored in favour of
-                 * the one provided as the third argument to this constructor.
-                 *
-                 * \param[in,out] pState      Global topologic state object to
-                 *                            use
-                 * \param[in]     pParameter  The model parameters to
-                 *                            substitute for the ones in the
-                 *                            global state
-                 * \param[in]     pMultiplier The quality multiplier to use
-                 */
-                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter, const Q &pMultiplier)
-                    : parent(pState, pState.opengl, pParameter, pMultiplier)
+                    : parent(pState, pState.opengl, pParameter)
                     {
                         gState.opengl.prepared = false;
                     }

@@ -106,7 +106,6 @@ namespace topologic
                                      "  --flame-variants N      Suggest that random fractal flames should use N variants\n"
                                      "\n"
                                      "  --precision F           Set model precision to F\n"
-                                     "  --multiplier F          Set model export precision multiplier to F\n"
                                      "  --radius F              Set model radius parameter to F\n"
                                      "\n"
                                      "  --background R G B A    Set background colour to R G B A (use values between 0 and 1)\n"
@@ -215,17 +214,6 @@ namespace topologic
                             double dv;
                             st >> dv;
                             topologicState.state<Q,2>::parameter.polarRadius = Q(dv);
-                        }
-                    }
-                    else if (arg == "--multiplier")
-                    {
-                        i++;
-                        if (i < argc)
-                        {
-                            std::stringstream st (argv[i]);
-                            double dv;
-                            st >> dv;
-                            topologicState.state<Q,2>::exportMultiplier = Q(dv);
                         }
                     }
                     else if (arg == "--background")

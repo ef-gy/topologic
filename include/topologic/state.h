@@ -650,7 +650,6 @@ namespace topologic
 #if !defined(NO_OPENGL)
               opengl(transformation),
 #endif
-              exportMultiplier(Q(2)),
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
@@ -695,7 +694,7 @@ namespace topologic
                 rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>";
             }
             rv << "<t:options radius='" << double(parameter.polarRadius) << "'/>"
-               << "<t:precision polar='" << double(parameter.polarPrecision) << "' export-multiplier='" << double(exportMultiplier) << "'/>"
+               << "<t:precision polar='" << double(parameter.polarPrecision) << "'/>"
                << "<t:ifs iterations='" << parameter.iterations << "' seed='" << parameter.seed << "' functions='" << parameter.functions << "' pre-rotate='" << (parameter.preRotate ? "yes" : "no") << "' post-rotate='" << (parameter.postRotate ? "yes" : "no") << "'/>"
                << "<t:flame coefficients='" << parameter.flameCoefficients << "'/>"
                << "<t:colour-background red='" << double(background.red) << "' green='" << double(background.green) << "' blue='" << double(background.blue) << "' alpha='" << double(background.alpha) << "'/>"
@@ -901,14 +900,6 @@ namespace topologic
          * track of all the parameters used by libefgy primitives.
          */
         efgy::geometry::parameters<Q> parameter;
-
-        /**\brief Output export multiplier
-         *
-         * A factor that is applied to any applicable quality setting for the
-         * purpose of rendering stills of a scene, as opposed to live renders
-         * with OpenGL.
-         */
-        Q exportMultiplier;
 
         /**\brief Background colour
          *

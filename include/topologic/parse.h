@@ -739,10 +739,6 @@ namespace topologic
         {
             s.parameter.polarPrecision = Q(stringToDouble(value));
         }
-        if ((value = parser.evaluate("//topologic:precision/@export-multiplier")) != "")
-        {
-            s.exportMultiplier = Q(stringToDouble(value));
-        }
         if ((value = parser.evaluate("//topologic:options/@radius")) != "")
         {
             s.parameter.polarRadius = Q(stringToDouble(value));
