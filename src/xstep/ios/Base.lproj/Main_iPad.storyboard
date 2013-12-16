@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="u5o-sR-JEC">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <scenes>
+        <!--GLKit View Controller - Render-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <glkViewController preferredFramesPerSecond="30" id="BV1-FR-VrT" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="olK-g1-m0h"/>
+                        <viewControllerLayoutGuide type="bottom" id="rfs-Lu-sh8"/>
+                    </layoutGuides>
+                    <glkView key="view" contentMode="scaleToFill" id="3se-qz-xqx">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="hnI-Xi-gbO" appends="YES" id="y0z-1b-9PW"/>
+                            <outletCollection property="gestureRecognizers" destination="fyv-1h-aog" appends="YES" id="rNQ-HQ-7JL"/>
+                        </connections>
+                    </glkView>
+                    <tabBarItem key="tabBarItem" title="Render" id="oXq-NU-f7b"/>
+                </glkViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="fyv-1h-aog">
+                    <connections>
+                        <action selector="handlePinch:" destination="BV1-FR-VrT" id="YB0-Kw-fdH"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="hnI-Xi-gbO">
+                    <connections>
+                        <action selector="handlePan:" destination="BV1-FR-VrT" id="WGx-WW-658"/>
+                    </connections>
+                </panGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="683" y="-651"/>
+        </scene>
+        <!--App Settings View Controller - Root View Controller-->
+        <scene sceneID="Dov-g8-Obu">
+            <objects>
+                <tableViewController id="qI3-ab-Gq1" customClass="IASKAppSettingsViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Tx2-Rb-IKX">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="UxP-ce-qaP">
+                                <rect key="frame" x="0.0" y="99" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UxP-ce-qaP" id="HTy-Nq-4IM">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="ptC-OH-bX6"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CbI-oZ-Ggh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1665" y="480"/>
+        </scene>
+        <!--Navigation Controller - Settings-->
+        <scene sceneID="0th-Za-ywY">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="F0J-nP-Pwe" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" id="Ng4-Lj-YyN"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NhC-We-yUx">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="qI3-ab-Gq1" kind="relationship" relationship="rootViewController" id="ucX-MC-5Bj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uiS-Pa-w3C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="683" y="480"/>
+        </scene>
+        <!--View Controller - Help-->
+        <scene sceneID="cL5-kg-3gE">
+            <objects>
+                <viewController id="6mb-md-kr5" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BgG-au-nZt"/>
+                        <viewControllerLayoutGuide type="bottom" id="gHo-4u-Ezp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yF1-Wd-KiW">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTl-9h-eQY">
+                                <rect key="frame" x="20" y="20" width="728" height="984"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Usage">
+                                        <attributes>
+                                            <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content"> Select the model to render on the 'Settings' tab. Once you're satisfied with your settings, head back to the 'Render' tab to see what the model looks like. Please keep in mind that some models can require quite a bit of processing power to calculate and render, so the output may be less than optimal on older devices.  Pan with one finger to rotate an object; pinch to zoom. Use additional fingers to rotate in higher dimensions, e.g. pan with two fingers to rotate the object in 4D, three in 5D and so on. Remember that you can't rotate in dimensions that aren't being rendered, so if your render depth is set to '4D', you can't rotate in 5D or higher.  </string>
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Fractal Flame Colouring ">
+                                        <attributes>
+                                            <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">The 'Fractal Flame' colouring algorithm can be enabled by choosing 'Fractal Flame Colouring' under 'Colours' on the Settings tab. While this algorithm can be chosen at any time and for any model, it will only produce sensible output for models with lots of overlapping sections, such as the IFS-based models.  </string>
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Website">
+                                        <attributes>
+                                            <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content"> Visit the project's website for additional information, news, source code and the free, online, desktop WebGL client, at:  http://ef.gy/topologic-ios  </string>
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Credits">
+                                        <attributes>
+                                            <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content"> This application uses the InAppSettingsKit; see futuretap's Github for more details: https://github.com/futuretap/InAppSettingsKit</string>
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eTl-9h-eQY" firstAttribute="top" secondItem="yF1-Wd-KiW" secondAttribute="top" constant="20" id="0VR-7k-yu3"/>
+                            <constraint firstAttribute="trailing" secondItem="eTl-9h-eQY" secondAttribute="trailing" constant="20" id="EkM-xT-bc4"/>
+                            <constraint firstItem="eTl-9h-eQY" firstAttribute="leading" secondItem="yF1-Wd-KiW" secondAttribute="leading" constant="20" id="cpT-Us-VHf"/>
+                            <constraint firstAttribute="bottom" secondItem="eTl-9h-eQY" secondAttribute="bottom" constant="20" id="iuP-c7-AId"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Help" id="Uaf-xj-rae"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K7r-Zw-9BR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Qt1-BR-xAW">
+                    <connections>
+                        <action selector="handleTap:" destination="6mb-md-kr5" id="LBH-Mn-4Qc"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-291" y="480"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="hnl-mu-q6D">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="u5o-sR-JEC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" alpha="0.89999999999999991" contentMode="scaleToFill" itemPositioning="fill" id="8e0-u1-xcb">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BV1-FR-VrT" kind="relationship" relationship="viewControllers" id="1vg-n6-O95"/>
+                        <segue destination="F0J-nP-Pwe" kind="relationship" relationship="viewControllers" id="tcU-PM-mzQ"/>
+                        <segue destination="6mb-md-kr5" kind="relationship" relationship="viewControllers" id="EMU-fD-9t7"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C3M-dH-buJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-291" y="-651"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <nil key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>
