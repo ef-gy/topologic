@@ -1,0 +1,545 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3412119115A7787B0012A36A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3412119015A7787B0012A36A /* Cocoa.framework */; };
+		3412119B15A7787B0012A36A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3412119915A7787B0012A36A /* InfoPlist.strings */; };
+		3412119D15A7787B0012A36A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3412119C15A7787B0012A36A /* main.m */; };
+		341211A115A7787B0012A36A /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3412119F15A7787B0012A36A /* Credits.rtf */; };
+		341211A415A7787B0012A36A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 341211A315A7787B0012A36A /* AppDelegate.mm */; };
+		341211A715A7787B0012A36A /* Topologic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 341211A515A7787B0012A36A /* Topologic.xib */; };
+		341211C515A7834B0012A36A /* OpenGLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 341211C415A7834B0012A36A /* OpenGLRenderer.mm */; };
+		341211C715A784C70012A36A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341211C615A784C70012A36A /* OpenGL.framework */; };
+		341211C915A784E70012A36A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341211C815A784E60012A36A /* GLUT.framework */; };
+		34916B641803429B007FFA81 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 34916B631803429B007FFA81 /* libxml2.dylib */; };
+		34DAF8261619D5DA00D37137 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3412119015A7787B0012A36A /* Cocoa.framework */; };
+		34DAF8271619D5DA00D37137 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DAF80F1619D09200D37137 /* ScreenSaver.framework */; };
+		34DAF82D1619D5DA00D37137 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34DAF82B1619D5DA00D37137 /* InfoPlist.strings */; };
+		34DAF8311619D5DA00D37137 /* Topologic_Screen_SaverView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34DAF8301619D5DA00D37137 /* Topologic_Screen_SaverView.mm */; };
+		34DAF8351619DD4B00D37137 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341211C815A784E60012A36A /* GLUT.framework */; };
+		34DAF8361619DD5000D37137 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341211C615A784C70012A36A /* OpenGL.framework */; };
+		34E7052715F3D64700955822 /* icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 34E7052615F3D64700955822 /* icon.iconset */; };
+		34EA994715CF1CFB00FC8E0B /* Topologic.icns in Resources */ = {isa = PBXBuildFile; fileRef = 34EA994615CF1CFB00FC8E0B /* Topologic.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3412118D15A7787B0012A36A /* Topologic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topologic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3412119015A7787B0012A36A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		3412119315A7787B0012A36A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		3412119415A7787B0012A36A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3412119515A7787B0012A36A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3412119815A7787B0012A36A /* Polygoniac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Polygoniac-Info.plist"; sourceTree = "<group>"; };
+		3412119A15A7787B0012A36A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3412119C15A7787B0012A36A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		341211A015A7787B0012A36A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		341211A215A7787B0012A36A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		341211A315A7787B0012A36A /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		341211A615A7787B0012A36A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Topologic.xib; sourceTree = "<group>"; };
+		341211AE15A7787B0012A36A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		341211C315A7834B0012A36A /* OpenGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLRenderer.h; sourceTree = "<group>"; };
+		341211C415A7834B0012A36A /* OpenGLRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLRenderer.mm; sourceTree = "<group>"; };
+		341211C615A784C70012A36A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		341211C815A784E60012A36A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		34916B631803429B007FFA81 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		34987FC9159931060063B8B3 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = SOURCE_ROOT; };
+		34DAF80F1619D09200D37137 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = System/Library/Frameworks/ScreenSaver.framework; sourceTree = SDKROOT; };
+		34DAF8251619D5DA00D37137 /* Topologic Screen Saver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Topologic Screen Saver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34DAF82A1619D5DA00D37137 /* Topologic Screen Saver-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Topologic Screen Saver-Info.plist"; sourceTree = "<group>"; };
+		34DAF82C1619D5DA00D37137 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		34DAF82E1619D5DA00D37137 /* Topologic Screen Saver-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Topologic Screen Saver-Prefix.pch"; sourceTree = "<group>"; };
+		34DAF82F1619D5DA00D37137 /* Topologic_Screen_SaverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topologic_Screen_SaverView.h; sourceTree = "<group>"; };
+		34DAF8301619D5DA00D37137 /* Topologic_Screen_SaverView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Topologic_Screen_SaverView.mm; sourceTree = "<group>"; };
+		34E7052615F3D64700955822 /* icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = icon.iconset; sourceTree = "<group>"; };
+		34EA994615CF1CFB00FC8E0B /* Topologic.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Topologic.icns; path = ../Topologic.icns; sourceTree = "<group>"; };
+		DA39918815B5B55400EDEB0A /* Topologic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Topologic.entitlements; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3412118A15A7787B0012A36A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34916B641803429B007FFA81 /* libxml2.dylib in Frameworks */,
+				341211C915A784E70012A36A /* GLUT.framework in Frameworks */,
+				341211C715A784C70012A36A /* OpenGL.framework in Frameworks */,
+				3412119115A7787B0012A36A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DAF8201619D5DA00D37137 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DAF8361619DD5000D37137 /* OpenGL.framework in Frameworks */,
+				34DAF8351619DD4B00D37137 /* GLUT.framework in Frameworks */,
+				34DAF8261619D5DA00D37137 /* Cocoa.framework in Frameworks */,
+				34DAF8271619D5DA00D37137 /* ScreenSaver.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3412118F15A7787B0012A36A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34916B631803429B007FFA81 /* libxml2.dylib */,
+				3412119015A7787B0012A36A /* Cocoa.framework */,
+				341211AE15A7787B0012A36A /* SenTestingKit.framework */,
+				34DAF80F1619D09200D37137 /* ScreenSaver.framework */,
+				3412119215A7787B0012A36A /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3412119215A7787B0012A36A /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3412119315A7787B0012A36A /* AppKit.framework */,
+				3412119415A7787B0012A36A /* CoreData.framework */,
+				3412119515A7787B0012A36A /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		3412119615A7787B0012A36A /* Topologic */ = {
+			isa = PBXGroup;
+			children = (
+				34EA994615CF1CFB00FC8E0B /* Topologic.icns */,
+				DA39918815B5B55400EDEB0A /* Topologic.entitlements */,
+				341211A215A7787B0012A36A /* AppDelegate.h */,
+				341211A315A7787B0012A36A /* AppDelegate.mm */,
+				341211A515A7787B0012A36A /* Topologic.xib */,
+				3412119715A7787B0012A36A /* Supporting Files */,
+				341211C315A7834B0012A36A /* OpenGLRenderer.h */,
+				341211C415A7834B0012A36A /* OpenGLRenderer.mm */,
+			);
+			name = Topologic;
+			path = Polygoniac;
+			sourceTree = "<group>";
+		};
+		3412119715A7787B0012A36A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3412119815A7787B0012A36A /* Polygoniac-Info.plist */,
+				3412119915A7787B0012A36A /* InfoPlist.strings */,
+				3412119C15A7787B0012A36A /* main.m */,
+				3412119F15A7787B0012A36A /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		34987FA81599291D0063B8B3 = {
+			isa = PBXGroup;
+			children = (
+				34E7052615F3D64700955822 /* icon.iconset */,
+				341211C815A784E60012A36A /* GLUT.framework */,
+				341211C615A784C70012A36A /* OpenGL.framework */,
+				34987FC9159931060063B8B3 /* include */,
+				3412119615A7787B0012A36A /* Topologic */,
+				34DAF8281619D5DA00D37137 /* Topologic Screen Saver */,
+				3412118F15A7787B0012A36A /* Frameworks */,
+				34987FB41599291D0063B8B3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34987FB41599291D0063B8B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3412118D15A7787B0012A36A /* Topologic.app */,
+				34DAF8251619D5DA00D37137 /* Topologic Screen Saver.saver */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34DAF8281619D5DA00D37137 /* Topologic Screen Saver */ = {
+			isa = PBXGroup;
+			children = (
+				34DAF82F1619D5DA00D37137 /* Topologic_Screen_SaverView.h */,
+				34DAF8301619D5DA00D37137 /* Topologic_Screen_SaverView.mm */,
+				34DAF8291619D5DA00D37137 /* Supporting Files */,
+			);
+			path = "Topologic Screen Saver";
+			sourceTree = "<group>";
+		};
+		34DAF8291619D5DA00D37137 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				34DAF82A1619D5DA00D37137 /* Topologic Screen Saver-Info.plist */,
+				34DAF82B1619D5DA00D37137 /* InfoPlist.strings */,
+				34DAF82E1619D5DA00D37137 /* Topologic Screen Saver-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		34DAF8211619D5DA00D37137 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		3412118C15A7787B0012A36A /* Topologic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 341211C015A7787B0012A36A /* Build configuration list for PBXNativeTarget "Topologic" */;
+			buildPhases = (
+				3412118915A7787B0012A36A /* Sources */,
+				3412118A15A7787B0012A36A /* Frameworks */,
+				3412118B15A7787B0012A36A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Topologic;
+			productName = Polygoniac;
+			productReference = 3412118D15A7787B0012A36A /* Topologic.app */;
+			productType = "com.apple.product-type.application";
+		};
+		34DAF8241619D5DA00D37137 /* Topologic Screen Saver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34DAF8321619D5DA00D37137 /* Build configuration list for PBXNativeTarget "Topologic Screen Saver" */;
+			buildPhases = (
+				34DAF81F1619D5DA00D37137 /* Sources */,
+				34DAF8201619D5DA00D37137 /* Frameworks */,
+				34DAF8211619D5DA00D37137 /* Headers */,
+				34DAF8221619D5DA00D37137 /* Resources */,
+				34DAF8231619D5DA00D37137 /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Topologic Screen Saver";
+			productName = "Topologic Screen Saver";
+			productReference = 34DAF8251619D5DA00D37137 /* Topologic Screen Saver.saver */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		34987FAA1599291D0063B8B3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = ef.gy;
+				TargetAttributes = {
+					3412118C15A7787B0012A36A = {
+						DevelopmentTeam = L57NBDG46N;
+					};
+				};
+			};
+			buildConfigurationList = 34987FAD1599291D0063B8B3 /* Build configuration list for PBXProject "Topologic" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 34987FA81599291D0063B8B3;
+			productRefGroup = 34987FB41599291D0063B8B3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3412118C15A7787B0012A36A /* Topologic */,
+				34DAF8241619D5DA00D37137 /* Topologic Screen Saver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3412118B15A7787B0012A36A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3412119B15A7787B0012A36A /* InfoPlist.strings in Resources */,
+				341211A115A7787B0012A36A /* Credits.rtf in Resources */,
+				341211A715A7787B0012A36A /* Topologic.xib in Resources */,
+				34EA994715CF1CFB00FC8E0B /* Topologic.icns in Resources */,
+				34E7052715F3D64700955822 /* icon.iconset in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DAF8221619D5DA00D37137 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DAF82D1619D5DA00D37137 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		34DAF8231619D5DA00D37137 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3412118915A7787B0012A36A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3412119D15A7787B0012A36A /* main.m in Sources */,
+				341211A415A7787B0012A36A /* AppDelegate.mm in Sources */,
+				341211C515A7834B0012A36A /* OpenGLRenderer.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DAF81F1619D5DA00D37137 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DAF8311619D5DA00D37137 /* Topologic_Screen_SaverView.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3412119915A7787B0012A36A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3412119A15A7787B0012A36A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3412119F15A7787B0012A36A /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				341211A015A7787B0012A36A /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		341211A515A7787B0012A36A /* Topologic.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				341211A615A7787B0012A36A /* en */,
+			);
+			name = Topologic.xib;
+			sourceTree = "<group>";
+		};
+		34DAF82B1619D5DA00D37137 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				34DAF82C1619D5DA00D37137 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		341211BC15A7787B0012A36A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = Topologic.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
+				INFOPLIST_FILE = "Polygoniac/Polygoniac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "CA80AD29-4220-4F54-8769-032DB7BEE975";
+				USER_HEADER_SEARCH_PATHS = include;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		341211BD15A7787B0012A36A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = Topologic.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
+				INFOPLIST_FILE = "Polygoniac/Polygoniac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "CA80AD29-4220-4F54-8769-032DB7BEE975";
+				USER_HEADER_SEARCH_PATHS = include;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		34987FBB1599291D0063B8B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "include/**";
+			};
+			name = Debug;
+		};
+		34987FBC1599291D0063B8B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "include/**";
+			};
+			name = Release;
+		};
+		34DAF8331619D5DA00D37137 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Topologic Screen Saver/Topologic Screen Saver-Prefix.pch";
+				INFOPLIST_FILE = "Topologic Screen Saver/Topologic Screen Saver-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Screen Savers";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "include/**";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Debug;
+		};
+		34DAF8341619D5DA00D37137 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Topologic Screen Saver/Topologic Screen Saver-Prefix.pch";
+				INFOPLIST_FILE = "Topologic Screen Saver/Topologic Screen Saver-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Screen Savers";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "include/**";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		341211C015A7787B0012A36A /* Build configuration list for PBXNativeTarget "Topologic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				341211BC15A7787B0012A36A /* Debug */,
+				341211BD15A7787B0012A36A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34987FAD1599291D0063B8B3 /* Build configuration list for PBXProject "Topologic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34987FBB1599291D0063B8B3 /* Debug */,
+				34987FBC1599291D0063B8B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34DAF8321619D5DA00D37137 /* Build configuration list for PBXNativeTarget "Topologic Screen Saver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34DAF8331619D5DA00D37137 /* Debug */,
+				34DAF8341619D5DA00D37137 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 34987FAA1599291D0063B8B3 /* Project object */;
+}

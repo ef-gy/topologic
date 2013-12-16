@@ -15,3 +15,5 @@ topologic-glut.html
 topologic-sdl.js
 topologic-sdl.html
 !topologic-icon.svg
+*.xcuser*
+*.xccheckout
