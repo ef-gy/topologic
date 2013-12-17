@@ -7,7 +7,7 @@
 //
 
 #import "OpenGLRenderer.h"
-#import "AppDelegate.h"
+#import "OSXAppDelegate.h"
 
 @interface OpenGLRenderer () {
 }
@@ -54,12 +54,12 @@
 - (void) drawRect:(NSRect)dirtyRect
 {
 	[[self openGLContext] makeCurrentContext];
-    [(AppDelegate*)[NSApp delegate] state]->width  = [self bounds].size.width;
-    [(AppDelegate*)[NSApp delegate] state]->height = [self bounds].size.height;
+    [(OSXAppDelegate*)[NSApp delegate] state]->width  = [self bounds].size.width;
+    [(OSXAppDelegate*)[NSApp delegate] state]->height = [self bounds].size.height;
 
-    if ([(AppDelegate*)[NSApp delegate] state]->model)
+    if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
     {
-        [(AppDelegate*)[NSApp delegate] state]->model->render(true);
+        [(OSXAppDelegate*)[NSApp delegate] state]->model->render(true);
     }
 
     [[self openGLContext] flushBuffer];
@@ -72,13 +72,13 @@
 
 - (void) mouseDragged:(NSEvent*)event
 {
-    [(AppDelegate*)[NSApp delegate] state]->interpretDrag([event deltaX], [event deltaY], 0);
+    [(OSXAppDelegate*)[NSApp delegate] state]->interpretDrag([event deltaX], [event deltaY], 0);
     [self setNeedsDisplay:YES];
 }
 
 - (void) magnifyWithEvent:(NSEvent *)event
 {
-    [(AppDelegate*)[NSApp delegate] state]->interpretDrag(0, 0, [event magnification]*50.);
+    [(OSXAppDelegate*)[NSApp delegate] state]->interpretDrag(0, 0, [event magnification]*50.);
     [self setNeedsDisplay:YES];
 }
 

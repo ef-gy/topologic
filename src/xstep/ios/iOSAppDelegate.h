@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  iOSAppDelegate.h
 //  Topologic-iOS
 //
 //  Created by Magnus Deininger on 11/10/2013.
@@ -19,7 +19,7 @@
 #define MAXDEPTH 7
 #endif
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface iOSAppDelegate : UIResponder <UIApplicationDelegate>
 {
 }
 

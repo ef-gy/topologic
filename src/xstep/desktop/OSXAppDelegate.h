@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  OSXAppDelegate.h
 //  Topologic
 //
 //  Created by Magnus Deininger on 06/07/2012.
@@ -17,7 +17,7 @@
 #define MAXDEPTH 7
 #endif
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface OSXAppDelegate : NSObject <NSApplicationDelegate>
 {
     OpenGLRenderer IBOutlet *openGL;
     NSSegmentedControl IBOutlet *subtypeSegmentedControl;

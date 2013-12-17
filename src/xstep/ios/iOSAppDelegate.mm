@@ -1,17 +1,17 @@
 //
-//  AppDelegate.m
+//  iOSAppDelegate.m
 //  Topologic-iOS
 //
 //  Created by Magnus Deininger on 11/10/2013.
 //  Copyright (c) 2013 ef.gy. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "iOSAppDelegate.h"
 
 static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 static topologic::xml xml;
 
-@implementation AppDelegate
+@implementation iOSAppDelegate
 
 @synthesize state;
 

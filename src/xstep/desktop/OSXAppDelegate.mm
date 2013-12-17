@@ -1,19 +1,19 @@
 //
-//  AppDelegate.m
+//  OSXAppDelegate.m
 //  Topologic
 //
 //  Created by Magnus Deininger on 06/07/2012.
 //  Copyright (c) 2012, 2013 Magnus Deininger. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "OSXAppDelegate.h"
 
 typedef efgy::math::primitive<double> FP;
 
 static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
 static topologic::xml xml;
 
-@implementation AppDelegate
+@implementation OSXAppDelegate
 
 @synthesize state;
 

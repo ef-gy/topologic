@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-#include "AppDelegate.h"
+#include "iOSAppDelegate.h"
 
 @interface ViewController () {
 }
@@ -68,12 +68,12 @@
 {
     [EAGLContext setCurrentContext:self.context];
 
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->width  = rect.size.width  * [[UIScreen mainScreen] scale];
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->height = rect.size.height * [[UIScreen mainScreen] scale];
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->width  = rect.size.width  * [[UIScreen mainScreen] scale];
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->height = rect.size.height * [[UIScreen mainScreen] scale];
 
-    if ([(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->model)
+    if ([(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model)
     {
-        [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->render(true);
+        [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->render(true);
     }
     else
     {
@@ -85,16 +85,16 @@
 {
     CGPoint translation = [recognizer translationInView:self.view];
 
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+2);
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->interpretDrag(translation.x,translation.y,0);
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+2);
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->interpretDrag(translation.x,translation.y,0);
 
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
 }
 
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer
 {
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+1);
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] state]->scale(recognizer.scale);
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+1);
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->scale(recognizer.scale);
 
     recognizer.scale = 1;
 }

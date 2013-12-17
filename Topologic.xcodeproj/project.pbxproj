@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		343EF38C185FAA950045BD78 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 343EF38B185FAA950045BD78 /* Images.xcassets */; };
-		343EF38D185FAAC10045BD78 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF37C185FAA680045BD78 /* AppDelegate.mm */; };
+		343EF38D185FAAC10045BD78 /* iOSAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF37C185FAA680045BD78 /* iOSAppDelegate.mm */; };
 		343EF38E185FAAC10045BD78 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF384185FAA680045BD78 /* main.mm */; };
 		343EF38F185FAAC10045BD78 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF388185FAA680045BD78 /* ViewController.mm */; };
-		343EF390185FAAD10045BD78 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF36F185FAA680045BD78 /* AppDelegate.mm */; };
+		343EF390185FAAD10045BD78 /* OSXAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF36F185FAA680045BD78 /* OSXAppDelegate.mm */; };
 		343EF391185FAAD10045BD78 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 343EF376185FAA680045BD78 /* main.m */; };
 		343EF392185FAAD10045BD78 /* OpenGLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF378185FAA680045BD78 /* OpenGLRenderer.mm */; };
 		343EF393185FAB410045BD78 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 343EF370185FAA680045BD78 /* Credits.rtf */; };
@@ -34,8 +34,8 @@
 
 /* Begin PBXFileReference section */
 		3412118D15A7787B0012A36A /* Topologic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topologic.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		343EF36E185FAA680045BD78 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		343EF36F185FAA680045BD78 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		343EF36E185FAA680045BD78 /* OSXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSXAppDelegate.h; sourceTree = "<group>"; };
+		343EF36F185FAA680045BD78 /* OSXAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OSXAppDelegate.mm; sourceTree = "<group>"; };
 		343EF371185FAA680045BD78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		343EF373185FAA680045BD78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		343EF375185FAA680045BD78 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Topologic.xib; sourceTree = "<group>"; };
@@ -43,8 +43,8 @@
 		343EF377185FAA680045BD78 /* OpenGLRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLRenderer.h; sourceTree = "<group>"; };
 		343EF378185FAA680045BD78 /* OpenGLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLRenderer.mm; sourceTree = "<group>"; };
 		343EF379185FAA680045BD78 /* Topologic-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Topologic-Info.plist"; sourceTree = "<group>"; };
-		343EF37B185FAA680045BD78 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		343EF37C185FAA680045BD78 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		343EF37B185FAA680045BD78 /* iOSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSAppDelegate.h; sourceTree = "<group>"; };
+		343EF37C185FAA680045BD78 /* iOSAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = iOSAppDelegate.mm; sourceTree = "<group>"; };
 		343EF37E185FAA680045BD78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		343EF380185FAA680045BD78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		343EF382185FAA680045BD78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -115,8 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				343EF3AB185FAF520045BD78 /* Topologic.entitlements */,
-				343EF36E185FAA680045BD78 /* AppDelegate.h */,
-				343EF36F185FAA680045BD78 /* AppDelegate.mm */,
+				343EF36E185FAA680045BD78 /* OSXAppDelegate.h */,
+				343EF36F185FAA680045BD78 /* OSXAppDelegate.mm */,
 				343EF370185FAA680045BD78 /* Credits.rtf */,
 				343EF372185FAA680045BD78 /* InfoPlist.strings */,
 				343EF374185FAA680045BD78 /* Topologic.xib */,
@@ -131,8 +131,8 @@
 		343EF37A185FAA680045BD78 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				343EF37B185FAA680045BD78 /* AppDelegate.h */,
-				343EF37C185FAA680045BD78 /* AppDelegate.mm */,
+				343EF37B185FAA680045BD78 /* iOSAppDelegate.h */,
+				343EF37C185FAA680045BD78 /* iOSAppDelegate.mm */,
 				343EF37D185FAA680045BD78 /* Main_iPad.storyboard */,
 				343EF37F185FAA680045BD78 /* Main_iPhone.storyboard */,
 				343EF381185FAA680045BD78 /* InfoPlist.strings */,
@@ -298,7 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				343EF390185FAAD10045BD78 /* AppDelegate.mm in Sources */,
+				343EF390185FAAD10045BD78 /* OSXAppDelegate.mm in Sources */,
 				343EF391185FAAD10045BD78 /* main.m in Sources */,
 				343EF392185FAAD10045BD78 /* OpenGLRenderer.mm in Sources */,
 			);
@@ -308,7 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				343EF38D185FAAC10045BD78 /* AppDelegate.mm in Sources */,
+				343EF38D185FAAC10045BD78 /* iOSAppDelegate.mm in Sources */,
 				343EF38E185FAAC10045BD78 /* main.mm in Sources */,
 				343EF38F185FAAC10045BD78 /* ViewController.mm in Sources */,
 			);

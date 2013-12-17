@@ -276,7 +276,7 @@
                 <binding destination="494" name="title" keyPath="selectedModelName" id="RWE-x6-ZIb"/>
             </connections>
         </window>
-        <customObject id="494" customClass="AppDelegate">
+        <customObject id="494" customClass="OSXAppDelegate">
             <connections>
                 <outlet property="models" destination="7447" id="7480"/>
                 <outlet property="openGL" destination="678" id="1050"/>
