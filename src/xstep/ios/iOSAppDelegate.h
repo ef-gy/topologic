@@ -1,5 +1,5 @@
 /**\file
- * \brief iOS Application Delegate Header
+ * \brief iOS Application Delegate header
  *
  * Contains the interface for the UIApplicationDelegate subclass for the iOS
  * frontend.
@@ -32,6 +32,12 @@
 {
 }
 
+/**\brief Topologic state object
+ *
+ * The OpenGL renderer in particular needs direct access to the state object to
+ * make it draw meshes to the current OpenGL context, which is why this property
+ * is available via the Application Delegate to access that state object.
+ */
 @property (readonly) topologic::state<topologic::GLFP,MAXDEPTH> *state;
 @property (strong, nonatomic) UIWindow *window;
 
