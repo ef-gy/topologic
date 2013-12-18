@@ -1,10 +1,13 @@
-//
-//  iOSAppDelegate.m
-//  Topologic-iOS
-//
-//  Created by Magnus Deininger on 11/10/2013.
-//  Copyright (c) 2013 ef.gy. All rights reserved.
-//
+/**\file
+ * \brief iOS Application Delegate implementation
+ *
+ * Contains the implementation of the UIApplicationDelegate subclass for the
+ * iOS frontend.
+ *
+ * \copyright
+ * Created by Magnus Deininger on 11/10/2013.
+ * Copyright (c) 2013 ef.gy. All rights reserved.
+ */
 
 #import "iOSAppDelegate.h"
 
