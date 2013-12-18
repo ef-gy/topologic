@@ -1,7 +1,7 @@
 /**\file
  * \brief iOS Application Delegate header
  *
- * Contains the interface for the UIApplicationDelegate subclass for the iOS
+ * Contains the interface for the UIApplicationDelegate subclass of the iOS
  * frontend.
  *
  * \copyright
