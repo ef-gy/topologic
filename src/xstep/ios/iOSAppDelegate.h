@@ -19,6 +19,12 @@
 #define MAXDEPTH 7
 #endif
 
+/**\brief iOS Application Delegate
+ *
+ * This is the application delegate class for the Topologic/iOS frontend. It
+ * takes care of programme setup tasks, handles the Topologic state object and
+ * keeps track of application setting chanes.
+ */
 @interface iOSAppDelegate : UIResponder <UIApplicationDelegate>
 {
 }
