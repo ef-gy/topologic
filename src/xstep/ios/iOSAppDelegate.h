@@ -1,10 +1,13 @@
-//
-//  iOSAppDelegate.h
-//  Topologic-iOS
-//
-//  Created by Magnus Deininger on 11/10/2013.
-//  Copyright (c) 2013 ef.gy. All rights reserved.
-//
+/**\file
+ * \brief iOS Application Delegate Header
+ *
+ * Contains the interface for the UIApplicationDelegate subclass for the iOS
+ * frontend.
+ *
+ * \copyright
+ * Created by Magnus Deininger on 11/10/2013.
+ * Copyright (c) 2013 ef.gy. All rights reserved.
+ */
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
