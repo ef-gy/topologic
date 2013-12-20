@@ -100,13 +100,9 @@ namespace topologic
          */
         static bool set (state<Q,e> &so)
         {
-            if (so.state<Q,2>::model)
-            {
-                delete so.state<Q,2>::model;
-                so.state<Q,2>::model = 0;
-            }
-
-            so.state<Q,2>::model = new C<Q,d,T,e,true>(so);
+            so.state<Q,2>::model
+                = std::shared_ptr<render::base<true>>
+                    (new C<Q,d,T,e,true>(so));
 
             return so.state<Q,2>::model != 0;
         }

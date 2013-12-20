@@ -41,6 +41,7 @@
 #include <ef.gy/maybe.h>
 #include <sstream>
 #include <type_traits>
+#include <memory>
 
 #include <topologic/render.h>
 
@@ -653,7 +654,6 @@ namespace topologic
               background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
               wireframe(Q(1), Q(1), Q(1), Q(1)),
               surface(Q(1), Q(1), Q(1), Q(0.1)),
-              model(0),
               fractalFlameColouring(false)
             {
                 parameter.polarRadius       = Q(1);
@@ -861,7 +861,7 @@ namespace topologic
          * topologic::render::svg with all parameters - including the model -
          * applied and properly initialised.
          */
-        render::base<true> *model;
+        std::shared_ptr<render::base<true>> model;
 
         /**\brief 2D viewport transformation matrix
          *
