@@ -32,16 +32,6 @@
 
 #include "iOSAppDelegate.h"
 
-@interface ViewController () {
-}
-
-@property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) GLKBaseEffect *effect;
-
-- (void)setupGL;
-- (void)tearDownGL;
-@end
-
 @implementation ViewController
 
 - (void)viewDidLoad

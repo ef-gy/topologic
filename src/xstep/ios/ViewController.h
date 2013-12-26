@@ -34,6 +34,12 @@
 
 @interface ViewController : GLKViewController
 
+@property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) GLKBaseEffect *effect;
+
+- (void)setupGL;
+- (void)tearDownGL;
+
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer;
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 
