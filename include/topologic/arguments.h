@@ -35,6 +35,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include <ef.gy/version.h>
 #include <ef.gy/parametric.h>
