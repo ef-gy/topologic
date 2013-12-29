@@ -64,7 +64,7 @@ namespace topologic
      * necessary, as some parts of libefgy's code expect to get a proper class
      * to work with.
      */
-    typedef efgy::math::primitive<double> FP;
+    typedef double FP;
 
     /**\brief Default CLI frontend main function
      *
