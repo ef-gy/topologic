@@ -81,15 +81,14 @@ namespace topologic
      * common to all the frontends. Could very well be a singleton, but it's OK
      * to have more than one.
      *
-     * The 'Q' parameter should either be topologic::GLFP or topologic::FP, but
-     * you do have quite a bit of flexibility here if you intend to use
-     * something fancy for your calculations. The 'd' parameter defines a limit
-     * on how 'deep' any renders can end up being, in terms of spatial
-     * dimensions.
+     * The 'Q' parameter should either be GLfloat or double, but you do have
+     * quite a bit of flexibility here if you intend to use something fancy for
+     * your calculations. The 'd' parameter defines a limit on how 'deep' any
+     * renders can end up being, in terms of spatial dimensions.
      *
      * For example, if you primarily intend to render to OpenGL and you know
-     * you won't need more than 4 spatial dimensions, you'd use a state<GLFP,4>
-     * instance.
+     * you won't need more than 4 spatial dimensions, you'd use a
+     * state<GLfloat,4> instance.
      *
      * \note This is a recursive template. Doxygen doesn't like this and will
      *       throw a warning about this, but sod them :P.

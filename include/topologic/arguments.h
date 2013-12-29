@@ -37,7 +37,6 @@
 #include <fstream>
 
 #include <ef.gy/version.h>
-#include <ef.gy/primitive.h>
 #include <ef.gy/parametric.h>
 
 #include <topologic/parse.h>

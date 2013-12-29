@@ -33,14 +33,14 @@
 
 typedef efgy::math::primitive<double> FP;
 
-static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<GLfloat,MAXDEPTH> topologicState;
 static topologic::xml xml;
 
 @implementation OSXAppDelegate
 
 @synthesize state;
 
-- (topologic::state<topologic::GLFP,MAXDEPTH> *)state
+- (topologic::state<GLfloat,MAXDEPTH> *)state
 {
     return &topologicState;
 }
@@ -768,7 +768,7 @@ static topologic::xml xml;
 
     [self didChangeValueForKey:@"activeCameraType"];
 
-    if (   topologic::parseModel<topologic::GLFP,MAXDEPTH,topologic::render::opengl> (topologicState, p)
+    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::render::opengl> (topologicState, p)
         && topologicState.model)
     {
         [self willChangeValueForKey:@"model"];
@@ -853,7 +853,7 @@ static topologic::xml xml;
         topologicState.model = 0;
 
         topologic::setModelWithTypeString
-            <topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::svg>
+            <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::svg>
             ([[model lowercaseString] UTF8String],
              topologicState,
              (const unsigned int)modelDepth,
@@ -911,7 +911,7 @@ static topologic::xml xml;
     [self willChangeValueForKey:@"selectedModelName"];
 
     topologic::setModelWithTypeString
-        <topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
+        <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
         ([[model lowercaseString] UTF8String],
          topologicState,
          (const unsigned int)modelDepth,

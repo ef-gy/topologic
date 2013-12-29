@@ -48,7 +48,7 @@
 #include "SDL/SDL_opengl.h"
 
 #include <iostream>
-#include <topologic/gl.h>
+#include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
 /**\brief Maximum render depth
@@ -68,7 +68,7 @@
  * because we need to provide C-like accessors for emscripten/JavaScript
  * callers.
  */
-static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<GLfloat,MAXDEPTH> topologicState;
 
 // these functions are defined as 'extern "C"' to disable output name mangling;
 // when compiling with emscripten these functions are exported so that they can
@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
  */
 int setRadius(double radius)
 {
-    topologicState.topologic::state<topologic::GLFP,2>::parameter.polarRadius = topologic::GLFP(radius);
+    topologicState.topologic::state<GLfloat,2>::parameter.polarRadius = GLfloat(radius);
     return 0;
 }
 
@@ -333,7 +333,7 @@ int setRadius(double radius)
  */
 int setPrecision(double precision)
 {
-    topologicState.topologic::state<topologic::GLFP,2>::parameter.polarPrecision = topologic::GLFP(precision);
+    topologicState.topologic::state<GLfloat,2>::parameter.polarPrecision = GLfloat(precision);
     return 0;
 }
 
@@ -348,7 +348,7 @@ int setPrecision(double precision)
  */
 int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::setModelWithTypeString<topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::opengl> (std::string(smodel), topologicState, dim, rdim);
+    topologic::setModelWithTypeString<GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl> (std::string(smodel), topologicState, dim, rdim);
 
     return 0;
 }
@@ -366,7 +366,7 @@ int updateModel(char *smodel, int dim, int rdim)
  */
 int updateProjection(void)
 {
-    topologicState.topologic::state<topologic::GLFP,MAXDEPTH>::updateMatrix();
+    topologicState.topologic::state<GLfloat,MAXDEPTH>::updateMatrix();
 
     return 0;
 }
@@ -383,7 +383,7 @@ int updateProjection(void)
  */
 int interpretDrag (double x, double y, double z)
 {
-    topologicState.interpretDrag(topologic::GLFP(x),topologic::GLFP(y),topologic::GLFP(z));
+    topologicState.interpretDrag(GLfloat(x),GLfloat(y),GLfloat(z));
     return 0;
 }
 

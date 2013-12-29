@@ -44,5 +44,5 @@
  */
 int main (int argc, char* argv[])
 {
-    return topologic::cli<topologic::FP> (argc, argv);
+    return topologic::cli<double> (argc, argv);
 }

@@ -57,21 +57,12 @@
 
 namespace topologic
 {
-    /**\brief Default floating point type
-     *
-     * This is an alias for a default floating point type that is compatible
-     * with the SVG renderer. Note the use of efgy::math::primitive: this is
-     * necessary, as some parts of libefgy's code expect to get a proper class
-     * to work with.
-     */
-    typedef double FP;
-
     /**\brief Default CLI frontend main function
      *
      * Main function for a typical CLI-/SVG-only frontend. This is part of the
      * library code so that it's easy to reuse where applicable.
      *
-     * \tparam FP Floating point data type to use; something like topologic::FP
+     * \tparam FP Floating point data type to use; something like double
      *
      * \param[in] argc The number of arguments that are being passed in argv.
      * \param[in] argv The actual argument vector. The first element must be

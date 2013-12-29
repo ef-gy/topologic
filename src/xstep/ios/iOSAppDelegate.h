@@ -16,7 +16,7 @@
 #define glBindVertexArray(i)       glBindVertexArrayOES(i)
 #define glDeleteVertexArrays(i, j) glDeleteVertexArraysOES(i, j)
 
-#include <topologic/gl.h>
+#include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
 #define MAXDEPTH 7
@@ -38,7 +38,7 @@
  * make it draw meshes to the current OpenGL context, which is why this property
  * is available via the Application Delegate to access that state object.
  */
-@property (readonly) topologic::state<topologic::GLFP,MAXDEPTH> *state;
+@property (readonly) topologic::state<GLfloat,MAXDEPTH> *state;
 @property (strong, nonatomic) UIWindow *window;
 
 - (void) updateModel;

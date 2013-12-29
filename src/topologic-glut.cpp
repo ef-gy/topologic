@@ -37,7 +37,7 @@
 #include <GL/glut.h>            /* FreeGLUT (hopefully) */
 #endif
 
-#include <topologic/gl.h>
+#include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
 /**\brief Maximum render depth
@@ -106,7 +106,7 @@ static bool shiftActive;
  * because we need to provide C-like accessors for emscripten/JavaScript
  * callers.
  */
-static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<GLfloat,MAXDEPTH> topologicState;
 
 /**\brief GLUT display callback
  *

@@ -34,7 +34,7 @@
 
 #import "OpenGLRenderer.h"
 
-#include <topologic/gl.h>
+#include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
 #define MAXDEPTH 7
@@ -90,7 +90,7 @@
     NSPopUpButton IBOutlet *models;
 }
 
-@property (readonly) topologic::state<topologic::GLFP,MAXDEPTH> *state;
+@property (readonly) topologic::state<GLfloat,MAXDEPTH> *state;
 
 @property (assign) NSMutableArray *outputTemplates;
 @property (assign) IBOutlet NSWindow *window;

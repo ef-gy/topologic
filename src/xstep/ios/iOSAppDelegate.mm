@@ -11,14 +11,14 @@
 
 #import "iOSAppDelegate.h"
 
-static topologic::state<topologic::GLFP,MAXDEPTH> topologicState;
+static topologic::state<GLfloat,MAXDEPTH> topologicState;
 static topologic::xml xml;
 
 @implementation iOSAppDelegate
 
 @synthesize state;
 
-- (topologic::state<topologic::GLFP,MAXDEPTH> *)state
+- (topologic::state<GLfloat,MAXDEPTH> *)state
 {
     return &topologicState;
 }
@@ -148,7 +148,7 @@ static topologic::xml xml;
     }
 
     topologic::setModelWithTypeString
-        <topologic::GLFP,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
+        <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
         ([model UTF8String],
          topologicState,
          (const unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"depth"],
