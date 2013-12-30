@@ -31,8 +31,6 @@
 
 #import "OSXAppDelegate.h"
 
-typedef efgy::math::primitive<double> FP;
-
 static topologic::state<GLfloat,MAXDEPTH> topologicState;
 static topologic::xml xml;
 
@@ -159,12 +157,12 @@ static topologic::xml xml;
             break;
         case 1:
             [self setCameraActiveCoordinate0Label:@"r"];
-            [self setCameraActiveCoordinate1Label:@"θ₁"];
-            [self setCameraActiveCoordinate2Label:@"θ₂"];
-            [self setCameraActiveCoordinate3Label:@"θ₃"];
-            [self setCameraActiveCoordinate4Label:@"θ₄"];
-            [self setCameraActiveCoordinate5Label:@"θ₅"];
-            [self setCameraActiveCoordinate6Label:@"θ₆"];
+            [self setCameraActiveCoordinate1Label:@"\u03b8\u2081"];
+            [self setCameraActiveCoordinate2Label:@"\u03b8\u2082"];
+            [self setCameraActiveCoordinate3Label:@"\u03b8\u2083"];
+            [self setCameraActiveCoordinate4Label:@"\u03b8\u2084"];
+            [self setCameraActiveCoordinate5Label:@"\u03b8\u2085"];
+            [self setCameraActiveCoordinate6Label:@"\u03b8\u2086"];
             break;
     }
 
