@@ -38,6 +38,7 @@
 #include <ef.gy/ifs.h>
 #include <ef.gy/flame.h>
 #include <ef.gy/render-null.h>
+#include <ef.gy/factory.h>
 #if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -69,218 +70,36 @@ namespace topologic
         return d;
     }
 
-    /**\brief Model factory helper
-     *
-     * Used to update the model of a topologic::state object with parameters
-     * are largely determined at run time. This approach allows the compiler to
-     * create optimised code instances of each model/renderer combination. In
-     * theory, anyway.
-     *
-     * \tparam Q Base data type for calculations
-     * \tparam d Model depth, e.g. 4 for a tesseract
-     * \tparam e Model render depth, e.g. >= 4 when rendering a tesseract
-     * \tparam T Model template, e.g. efgy::geometry::cube
-     * \tparam C Renderer template, e.g. topologic::render::opengl
-     */
-    template<typename Q, unsigned int d, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
+    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model
+    class updateModel
     {
-    public:
-        /**\brief Set model with current parameters
-         *
-         * This method will delete the current model and replace it with one
-         * created by using the template parameters of this class.
-         *
-         * \param[out] so The topologic::state object to modify.
-         *
-         * \returns 'false' if the topologic::state object that was passed in
-         *          does not contain a model after this function returns.
-         *          'true' if things went smoothly instead.
-         */
-        static bool set (state<Q,e> &so)
-        {
-            so.state<Q,2>::model
-                = std::shared_ptr<render::base<true>>
-                    (new C<Q,d,T,e,true>(so));
+        public:
+            typedef state<Q,e> &argument;
+            typedef bool output;
 
-            return so.state<Q,2>::model != 0;
-        }
-
-        /**\brief Set model with current parameters
-         *
-         * Like the set() method with just one parameter, this method will try
-         * to update the model of the state object passed in as the 'so'
-         * parameter; unlike this other overload of the method, this one is
-         * used to determine the proper template parameters to use. It will
-         * call itself recursively in order to do so.
-         *
-         * \param[out] so    The topologic::state object to modify.
-         * \param[in]  dims  Target model depth (e.g. 4 for a tesseract).
-         * \param[in]  rdims Target render depth (e.g. >= 4 for a tesseract).
-         *
-         * \returns 'true' if the model was updated successfully, 'false' when
-         *          either the parameters didn't make sense or the new model's
-         *          constructor failed to create a new model in the other set()
-         *          overload.
-         */
-        static bool set (state<Q,e> &so, const unsigned int &dims, const unsigned int &rdims)
-        {
-            if (d < T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMinimum)
+            static output apply (argument out)
             {
-                return false;
+                out.state<Q,2>::model
+                    = std::shared_ptr<render::base<true>>
+                        (new C<Q,d,T,e,true>(out));
+
+                return out.model != 0;
             }
 
-            if (   (T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum > 0)
-                && (d > T<Q,d,efgy::render::null<Q,e>,e>::modelDimensionMaximum))
+            static output pass (argument out)
             {
-                return model<Q,d-1,e,T,C>::set (so, dims, rdims);
+                return out.model != 0;
             }
-
-            if (e < T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMinimum)
-            {
-                return false;
-            }
-
-            if (   (T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum > 0)
-                && (e > T<Q,d,efgy::render::null<Q,e>,e>::renderDimensionMaximum))
-            {
-                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
-            }
-
-            if (e == rdims)
-            {
-                if (d == dims)
-                {
-                    return set(so);
-                }
-                else if (d < dims)
-                {
-                    return false;
-                }
-                else
-                {
-                    return model<Q,d-1,e,T,C>::set (so, dims, rdims);
-                }
-            }
-            else if (e < rdims)
-            {
-                return false;
-            }
-            else
-            {
-                return model<Q,d,e-1,T,C>::set (so, dims, rdims);
-            }
-        }
     };
 
-    /**\brief Model factory helper; e=2 fix point
-     *
-     * The model factory helper, topologic::model, works by calling itself
-     * recursively with different template parameters. This is one of these
-     * parameters' fix points, which prevents an infinite template recursion.
-     *
-     * \tparam Q Base data type for calculations
-     * \tparam d Model depth, e.g. 4 for a tesseract
-     * \tparam T Model template, e.g. efgy::geometry::cube
-     * \tparam C Renderer template, e.g. topologic::render::opengl
-     */
-    template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,d,2,T,C>
-    {
-    public:
-        /**\brief Set model with current parameters; e=2 fix point
-         *
-         * This is a fix point stub of the model::set() method; all arguments
-         * are ignored and this function always fails.
-         *
-         * \returns Always 'false'
-         */
-        static bool set (state<Q,2> &, const unsigned int &, const unsigned int &)
-        {
-            return false;
-        }
-    };
+    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
+    using updateModelSVG = updateModel<Q,T,d,e,render::svg>;
 
-    /**\brief Model factory helper; d=1 fix point
-     *
-     * The model factory helper, topologic::model, works by calling itself
-     * recursively with different template parameters. This is one of these
-     * parameters' fix points, which prevents an infinite template recursion.
-     *
-     * \tparam Q Base data type for calculations
-     * \tparam e Model render depth, e.g. >= 4 when rendering a tesseract
-     * \tparam T Model template, e.g. efgy::geometry::cube
-     * \tparam C Renderer template, e.g. topologic::render::opengl
-     */
-    template<typename Q, unsigned int e, template <class,unsigned int,class,unsigned int> class T,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    class model<Q,1,e,T,C>
-    {
-    public:
-        /**\brief Set model with current parameters; d=1 fix point
-         *
-         * This is a fix point stub of the model::set() method; all arguments
-         * are ignored and this function always fails.
-         *
-         * \returns Always 'false'
-         */
-        static bool set (state<Q,e> &, const unsigned int &, const unsigned int &)
-        {
-            return false;
-        }
-    };
-
-    /**\brief Set model in global state object
-     *
-     * Updates the model of a topologic::state instance. This seems easy
-     * enough in principle, but all of the model and renderer parameters are
-     * template parameters, and thus need to be known at compile time. If you
-     * don't know the parameters to use at compile time then you can use this
-     * function to determine them at run time.
-     *
-     * \tparam Q Base data type for calculations
-     * \tparam d Model depth, e.g. 4 for a tesseract
-     * \tparam e Model render depth, e.g. >= 4 when rendering a tesseract
-     * \tparam C Renderer template, e.g. topologic::render::opengl
-     *
-     * \param[in]  type  Target model id (e.g. "cube")
-     * \param[out] so    The topologic::state object to modify.
-     * \param[in]  dims  Target model depth (e.g. 4 for a tesseract).
-     * \param[in]  rdims Target render depth (e.g. >= 4 for a tesseract).
-     *
-     * \returns 'true' if the model has been updated successfully, 'false' if
-     *          either the parameters didn't make sense or the new model could
-     *          not be created for some other reason.
-     */
-    template<typename Q, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
-    static bool setModelWithTypeString (const std::string &type, state<Q,e> &so, const unsigned int &dims = d, const unsigned int &rdims = e)
-    {
-             if (type == "simplex")
-                return model<Q,d,e,efgy::geometry::simplex,C>::set(so, dims, rdims);
-        else if (type == "plane")
-                return model<Q,d,e,efgy::geometry::plane,C>::set(so, dims, rdims);
-        else if (type == "cube")
-                 return model<Q,d,e,efgy::geometry::cube,C>::set(so, dims, rdims);
-        else if (type == "sphere")
-                 return model<Q,d,e,efgy::geometry::sphere,C>::set(so, dims, rdims);
-        else if (type == "moebius-strip")
-                 return model<Q,d,e,efgy::geometry::moebiusStrip,C>::set(so, dims, rdims);
-        else if (type == "klein-bagel")
-                 return model<Q,d,e,efgy::geometry::kleinBagel,C>::set(so, dims, rdims);
-        else if (type == "sierpinski-gasket")
-                 return model<Q,d,e,efgy::geometry::sierpinski::gasket,C>::set(so, dims, rdims);
-        else if (type == "sierpinski-carpet")
-                 return model<Q,d,e,efgy::geometry::sierpinski::carpet,C>::set(so, dims, rdims);
-        else if (type == "random-affine-ifs")
-                 return model<Q,d,e,efgy::geometry::randomAffineIFS,C>::set(so, dims, rdims);
-        else if (type == "random-flame")
-                 return model<Q,d,e,efgy::geometry::flame::random,C>::set(so, dims, rdims);
-
-        return false;
-    }
+#if !defined(NO_OPENGL)
+    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
+    using updateModelOpenGL = updateModel<Q,T,d,e,render::opengl>;
+#endif
 
     /**\brief Update transformation matrix of state object instance
      *
@@ -829,10 +648,10 @@ namespace topologic
      * other parser step shouldn't have to worry about which renderer template
      * will be used for the model.
      *
-     * \tparam Q Base data type for calculations.
-     * \tparam d Maximum number of dimensions supported by the given state
-     *           instance
-     * \tparam C Model renderer wrapper, e.g. topologic::render::svg
+     * \tparam Q    Base data type for calculations.
+     * \tparam d    Maximum number of dimensions supported by the given state
+     *              instance
+     * \tparam func State object update functor, e.g. topologic::updateModelSVG
      *
      * \param[out] s      The global state object to update.
      * \param[out] parser An XML parser instance, hopefully containing
@@ -841,7 +660,7 @@ namespace topologic
      * \returns 'true' if things worked out, 'false' otherwise.
      */
     template<typename Q, unsigned int d,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+             template<typename, template <class,unsigned int,class,unsigned int> class, unsigned int, unsigned int> class func>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
         if (parser.updateContext("//topologic:model[@depth][@type][1]"))
@@ -863,7 +682,7 @@ namespace topologic
                     || (type == "klein-bagle")) rdepth++;
             }
 
-            return setModelWithTypeString<Q,d,d,C> (type, s, depth, rdepth);
+            return efgy::geometry::with<Q,func,d,d> (s, type, depth, rdepth);
         }
 
         return false;

@@ -340,15 +340,15 @@ int setPrecision(double precision)
 /**\ingroup topologic-javascript-exports
  * \brief Update model settings
  *
- * This function is a wrapper for the topologic::setModelWithTypeString()
- * function, which allows you to choose a new model to be rendered.
+ * This function is a wrapper for the efgy::geometry::with() function, which
+ * allows you to choose a new model to be rendered.
  *
  * \returns 0 if your new settings didn't blow up the code; won't return if
  *          they did.
  */
 int updateModel(char *smodel, int dim, int rdim)
 {
-    topologic::setModelWithTypeString<GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl> (std::string(smodel), topologicState, dim, rdim);
+    efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH> (topologicState, smodel, dim, rdim);
 
     return 0;
 }
