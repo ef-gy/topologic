@@ -147,10 +147,9 @@ static topologic::xml xml;
         }
     }
 
-    topologic::setModelWithTypeString
-        <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
-        ([model UTF8String],
-         topologicState,
+    efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH>
+        (topologicState,
+         [model UTF8String],
          (const unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"depth"],
          (const unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"renderDepth"]);
 }

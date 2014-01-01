@@ -766,7 +766,7 @@ static topologic::xml xml;
 
     [self didChangeValueForKey:@"activeCameraType"];
 
-    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::render::opengl> (topologicState, p)
+    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModelOpenGL> (topologicState, p)
         && topologicState.model)
     {
         [self willChangeValueForKey:@"model"];
@@ -850,10 +850,9 @@ static topologic::xml xml;
         std::shared_ptr<topologic::render::base<true>> m = topologicState.model;
         topologicState.model = 0;
 
-        topologic::setModelWithTypeString
-            <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::svg>
-            ([[model lowercaseString] UTF8String],
-             topologicState,
+        efgy::geometry::with<GLfloat,topologic::updateModelSVG,MAXDEPTH>
+            (topologicState,
+             [[model lowercaseString] UTF8String],
              (const unsigned int)modelDepth,
              (const unsigned int)renderDepth);
 
@@ -908,10 +907,9 @@ static topologic::xml xml;
 {
     [self willChangeValueForKey:@"selectedModelName"];
 
-    topologic::setModelWithTypeString
-        <GLfloat,MAXDEPTH,MAXDEPTH,topologic::render::opengl>
-        ([[model lowercaseString] UTF8String],
-         topologicState,
+    efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH>
+        (topologicState,
+         [[model lowercaseString] UTF8String],
          (const unsigned int)modelDepth,
          (const unsigned int)renderDepth);
 
