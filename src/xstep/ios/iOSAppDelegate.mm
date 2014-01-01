@@ -6,7 +6,7 @@
  *
  * \copyright
  * Created by Magnus Deininger on 11/10/2013.
- * Copyright (c) 2013 ef.gy. All rights reserved.
+ * Copyright (c) 2012-2014, Topologic Project Members
  */
 
 #import "iOSAppDelegate.h"
