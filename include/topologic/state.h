@@ -904,20 +904,20 @@ namespace topologic
          *
          * The colour that is used as a rendered image's background.
          */
-        typename efgy::colour::RGBA<Q>::value background;
+        typename efgy::colour::RGBA<Q>::vector background;
 
         /**\brief Wireframe colour
          *
          * The colour to use when rendering the wireframe of a model.
          */
-        typename efgy::colour::RGBA<Q>::value wireframe;
+        typename efgy::colour::RGBA<Q>::vector wireframe;
 
         /**\brief Surface colour
          *
          * The colour to use when rendering surfaces, i.e. the parts of an
          * image that aren't part of the wirefrome of a model.
          */
-        typename efgy::colour::RGBA<Q>::value surface;
+        typename efgy::colour::RGBA<Q>::vector surface;
 
         /**\brief Output buffer
          *
