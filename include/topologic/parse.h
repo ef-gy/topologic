@@ -70,14 +70,55 @@ namespace topologic
         return d;
     }
 
+    /**\brief Model update functor
+     *
+     * Used with efgy::geometry::with to initialise the model of a
+     * topologic::state instance. This class has one additional template
+     * parameter in addition to what the efgy::geometry::with template expects,
+     * which should be set to one of topologic's render wrappers - e.g.
+     * render::svg or render::opengl. You need to "remove" this template
+     * parameter with the help of a C++11 type alias.
+     *
+     * An appropriate type alias is already provided for render::svg and
+     * render::opengl, named updateModelSVG and updateModelOpenGL respectively.
+     *
+     * \tparam Q Base type for calculations, e.g. double or GLfloat
+     * \tparam T Model template class to use, e.g. efgy::geometry::cube
+     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
+     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
+     * \tparam C The model renderer, e.g. render::svg
+     */
     template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e,
              template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
     class updateModel
     {
         public:
+            /**\brief Argument type
+             *
+             * The argument type that is to be passed into the functor. Since we
+             * want to modify a topologic::state object, that is the type we
+             * require as input.
+             */
             typedef state<Q,e> &argument;
+
+            /**\brief Output type
+             *
+             * Return type of our functor - we return a boolean for whether or
+             * not the 'model' member of the state object has been initialise,
+             * so this is set to 'bool'.
+             */
             typedef bool output;
 
+            /**\brief Initialise new model
+             *
+             * Creates a new model and updates the given state object to use the
+             * newly created instance.
+             *
+             * \param[out] out The state object to modify.
+             *
+             * \returns 'true' if the state object has a valid model pointer at
+             *          the time the function returns.
+             */
             static output apply (argument out)
             {
                 out.state<Q,2>::model
@@ -87,16 +128,48 @@ namespace topologic
                 return out.model != 0;
             }
 
-            static output pass (argument out)
+            /**\brief Return default exit status
+             *
+             * This is used instead of the apply method whenever
+             * efgy::geometry::with was unable to find a matching model/depth
+             * combination for the given parameters.
+             *
+             * \param[out] out The state object in question. Will not be updated
+             *                 with a new model.
+             *
+             * \returns 'true' if the state object has a valid model pointer at
+             *          the time the function returns.
+             */
+            static output pass (const argument out)
             {
                 return out.model != 0;
             }
     };
 
+    /**\brief Model update functor for SVG output
+     *
+     * Convenient specialisation of updateModel using render::svg as the
+     * model renderer.
+     *
+     * \tparam Q Base type for calculations, e.g. double or GLfloat
+     * \tparam T Model template class to use, e.g. efgy::geometry::cube
+     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
+     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
+     */
     template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
     using updateModelSVG = updateModel<Q,T,d,e,render::svg>;
 
 #if !defined(NO_OPENGL)
+    /**\brief Model update functor for OpenGL output
+     *
+     * Convenient specialisation of updateModel using render::opengl as the
+     * model renderer.
+     *
+     * \tparam Q Base type for calculations, e.g. double or GLfloat
+     * \tparam T Model template class to use, e.g. efgy::geometry::cube
+     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
+     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
+     */
     template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
     using updateModelOpenGL = updateModel<Q,T,d,e,render::opengl>;
 #endif
