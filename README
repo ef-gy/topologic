@@ -1,4 +1,4 @@
-# Topologic-8 ################################################################
+# Topologic-9 ################################################################
 
 Topologic is a programme that visualises basic primitives and fractals in
 arbitrary dimensional spaces. Primitives include simplices, cubes and spheres,
@@ -39,6 +39,10 @@ there's an app for those, too:
 https://itunes.apple.com/us/app/topologic/id737310913 - I've really tried to
 make good use of the touch controls on those devices, promise :).
 
+Since version 9, the sources for these two frontends are also available in the
+repository if you're fine with compiling things yourself on your Mac. See
+below for instructions on how to do that.
+
 Topologic is designed so that almost all of the code is template-y C++ in
 header files, much like libefgy. The API documentation for this is available
 at: http://ef.gy/documentation/topologic - the documentation may not always
@@ -49,13 +53,17 @@ be quite up to date, so, if push comes to shove just read the sources.
 The Topologic source code is also available at:
 
   * https://code.google.com/p/topologic-foss/
-  * https://github.com/jyujin/topologic
+  * https://github.com/ef-gy/topologic
+
+When in doubt use the GitHub mirror.
 
 ## OBTAINING LIBEFGY #########################################################
 
 This library is distributed free of charge under a very permissive licence.
 The public GIT repository is at http://git.becquerel.org/jyujin/libefgy.git -
 see the documentation at http://ef.gy/documentation/libefgy for more details.
+
+The github mirror of libefgy is at: https://github.com/ef-gy/libefgy.git
 
 ## INSTALLATION ##############################################################
 
@@ -105,6 +113,42 @@ install emscripten instead of GLUT and run the following on a command line:
 As the name suggests, the WebGL client is based on a simple SDL client. Once
 emscripten has finished compiling you can run the client by opening the file
 topologic.html in your favourite WebGL-enabled browser.
+
+### THE COCOA/OSX FRONTEND ###################################################
+
+Since version 9, Topologic's formerly closed-source Cocoa frontend is now
+included in the source bundle. I'm not entirely sure why I used to keep that
+closed-source, but now that it's open you can just open up the
+"Topologic.xcodeproj" project in Xcode on your Mac and compile the frontend
+like any other Xcode project.
+
+You should set up a symlink to ef.gy's include directory before trying to
+compile the Xcode project. To do so, make sure you check out both Topologic
+and libefgy side-by-side in your favourite projects directory, like so:
+
+    $ git clone https://github.com/ef-gy/libefgy.git
+    $ git clone https://github.com/ef-gy/topologic.git
+
+... then create the symlink:
+
+    $ cd topologic/include
+    $ ln -s ../../libefgy/include/ef.gy
+
+This isn't strictly necessary, but it helps since it avoids having to install
+the libefgy headers globally or copying thins around manually.
+
+### THE COCOA TOUCH/iOS FRONTEND #############################################
+
+The "Topologic.xcodeproj" also includes the Cocoa Touch client for iOS. To
+compile this, use the same procedure as for the Cocoa frontend, but choose an
+iOS target in Xcode.
+
+On iOS Topologic uses futuretap's InAppSettingsKit to provide a smooth
+interface to choose model and rendering options. You will need to clone the
+InAppSettingsKit repository at https://github.com/futuretap/InAppSettingsKit
+and then copy or link the "InAppSettingsKit" directory from that repository
+to Topologic's root directory. The process is analogous to setting up the
+libefgy header symlink described in the Cocoa section.
 
 ## COMPILE-TIME OPTIONS ######################################################
 
