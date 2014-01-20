@@ -32,15 +32,42 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
+/**\brief iOS view controller
+ *
+ * Controls the applications main OpenGL ES context and issues render commands
+ * whenever they're needed.
+ */
 @interface ViewController : GLKViewController
 
+/**\brief OpenGL ES context
+ *
+ * This is the currently active OpenGL ES context.
+ */
 @property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) GLKBaseEffect *effect;
 
+/**\brief OpenGL ES initialisation
+ *
+ * Initialises some of the OpenGL context parameters.
+ */
 - (void)setupGL;
-- (void)tearDownGL;
 
+/**\brief Touch pan event handler
+ *
+ * Called by the runtime to indicate that the user has panned the OpenGL ES
+ * view; the pan gesture rotates the current model, the number of fingers used
+ * to pan determine which dimension the model is rotated in.
+ *
+ * \param[in] recognizer Describes how the view was panned.
+ */
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer;
+
+/**\brief Touch pinch event handler
+ *
+ * Called by the runtime to indicate that the user has pinched the OpenGL ES
+ * view; the pinch gestures zooms in or out of the model.
+ *
+ * \param[in] recognizer Describes how the view was pinched.
+ */
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 
 @end

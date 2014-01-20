@@ -53,8 +53,6 @@
 
 - (void)dealloc
 {    
-    [self tearDownGL];
-    
     if ([EAGLContext currentContext] == self.context) {
         [EAGLContext setCurrentContext:nil];
     }
@@ -68,13 +66,6 @@
     
     glEnable(GL_CULL_FACE);
 }
-
-- (void)tearDownGL
-{
-    [EAGLContext setCurrentContext:self.context];
-}
-
-#pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {

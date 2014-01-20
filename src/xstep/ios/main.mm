@@ -32,6 +32,16 @@
 
 #import "iOSAppDelegate.h"
 
+/**\brief iOS main function
+ *
+ * This function simply calls the UIApplicationMain() function with the correct
+ * parameters to get the iOS application up and running.
+ *
+ * \param[in] argc The number of arguments in argv.
+ * \param[in] argv The command line arguments for the programme.
+ *
+ * \returns Presumably zero if the application terminated properly.
+ */
 int main(int argc, char * argv[])
 {
     @autoreleasepool {

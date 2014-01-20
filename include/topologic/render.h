@@ -233,21 +233,25 @@ namespace topologic
                              pParameter)
                     {}
 
+                /**\copydoc base::depth */
                 unsigned int depth (void) const
                 {
                     return modelType::depth();
                 };
 
+                /**\copydoc base::renderDepth */
                 unsigned int renderDepth (void) const
                 {
                     return modelType::renderDepth();
                 };
 
+                /**\copydoc base::id */
                 const char *id (void) const
                 {
                     return modelType::id();
                 };
 
+                /**\copydoc base::name */
                 std::string name (void) const
                 {
                     std::stringstream rv;
