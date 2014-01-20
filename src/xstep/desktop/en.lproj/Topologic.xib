@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -565,7 +565,7 @@
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="2773"/>
                                 <connections>
                                     <binding destination="494" name="value" keyPath="cameraActiveCoordinate6" id="2914"/>
-                                    <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate6Enabled" id="2923"/>
+                                    <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate6Enabled" id="VZ1-l0-XYY"/>
                                 </connections>
                             </slider>
                             <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2686">
