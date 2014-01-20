@@ -158,7 +158,7 @@ namespace topologic
          * creating the projection matrix; This is the set of coordinates that
          * is used when 'polarCoordinates' is set to 'true'.
          */
-        typename efgy::geometry::polar::space<Q,d>::vector fromp;
+        efgy::math::vector<Q,d,efgy::math::space::polar> fromp;
 
         /**\brief Cartesian 'from' point
          *
