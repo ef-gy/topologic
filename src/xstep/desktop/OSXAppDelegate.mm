@@ -272,16 +272,6 @@ static topologic::xml xml;
     topologicState.polarCoordinates = false;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
-}
-
 - (NSInteger)drawerMode
 {
     return drawerMode;
