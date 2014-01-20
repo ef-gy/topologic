@@ -135,7 +135,7 @@ and libefgy side-by-side in your favourite projects directory, like so:
     $ ln -s ../../libefgy/include/ef.gy
 
 This isn't strictly necessary, but it helps since it avoids having to install
-the libefgy headers globally or copying thins around manually.
+the libefgy headers globally or copying things around manually.
 
 ### THE COCOA TOUCH/iOS FRONTEND #############################################
 
@@ -143,7 +143,7 @@ The "Topologic.xcodeproj" also includes the Cocoa Touch client for iOS. To
 compile this, use the same procedure as for the Cocoa frontend, but choose an
 iOS target in Xcode.
 
-On iOS Topologic uses futuretap's InAppSettingsKit to provide a smooth
+On iOS, Topologic uses futuretap's InAppSettingsKit to provide a smooth
 interface to choose model and rendering options. You will need to clone the
 InAppSettingsKit repository at https://github.com/futuretap/InAppSettingsKit
 and then copy or link the "InAppSettingsKit" directory from that repository
