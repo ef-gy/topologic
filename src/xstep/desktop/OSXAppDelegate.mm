@@ -43,9 +43,7 @@ static topologic::xml xml;
     return &topologicState;
 }
 
-@synthesize outputTemplates;
 @synthesize openGL;
-@synthesize subtypeSegmentedControl;
 
 @synthesize drawerVisible;
 @synthesize modelViewDrawerVisible;
@@ -57,7 +55,6 @@ static topologic::xml xml;
 @synthesize colourBackground;
 @synthesize colourWire;
 @synthesize colourSurface;
-@synthesize colourLighting;
 
 @synthesize window = _window;
 
@@ -84,8 +81,6 @@ static topologic::xml xml;
 @synthesize cameraActiveCoordinate4Label;
 @synthesize cameraActiveCoordinate5Label;
 @synthesize cameraActiveCoordinate6Label;
-
-@synthesize selectedModelName;
 
 @synthesize model;
 @synthesize modelDepth;
@@ -142,58 +137,94 @@ static topologic::xml xml;
     return [NSColor colorWithDeviceRed:topologicState.surface.red green:topologicState.surface.green blue:topologicState.surface.blue alpha:topologicState.surface.alpha];
 }
 
+- (BOOL)cameraActiveCoordinate0Enabled
+{
+    return activeCamera >= 0;
+}
+
+- (BOOL)cameraActiveCoordinate1Enabled
+{
+    return activeCamera >= 0;
+}
+
+- (BOOL)cameraActiveCoordinate2Enabled
+{
+    return activeCamera >= 0;
+}
+
+- (BOOL)cameraActiveCoordinate3Enabled
+{
+    return activeCamera >= 1;
+}
+
+- (BOOL)cameraActiveCoordinate4Enabled
+{
+    return activeCamera >= 2;
+}
+
+- (BOOL)cameraActiveCoordinate5Enabled
+{
+    return activeCamera >= 3;
+}
+
+- (BOOL)cameraActiveCoordinate6Enabled
+{
+    return activeCamera >= 4;
+}
+
+- (NSString *)cameraActiveCoordinate0Label
+{
+    return activeCameraType == 0 ? @"X" : @"r";
+}
+
+- (NSString *)cameraActiveCoordinate1Label
+{
+    return activeCameraType == 0 ? @"Y" : @"\u03b8\u2081";
+}
+
+- (NSString *)cameraActiveCoordinate2Label
+{
+    return activeCameraType == 0 ? @"Z" : @"\u03b8\u2082";
+}
+
+- (NSString *)cameraActiveCoordinate3Label
+{
+    return activeCameraType == 0 ? @"W" : @"\u03b8\u2083";
+}
+
+- (NSString *)cameraActiveCoordinate4Label
+{
+    return activeCameraType == 0 ? @"V" : @"\u03b8\u2084";
+}
+
+- (NSString *)cameraActiveCoordinate5Label
+{
+    return activeCameraType == 0 ? @"U" : @"\u03b8\u2085";
+}
+
+- (NSString *)cameraActiveCoordinate6Label
+{
+    return activeCameraType == 0 ? @"T" : @"\u03b8\u2086";
+}
+
 - (void)updateCamera
 {
-    switch (activeCameraType)
-    {
-        case 0:
-            [self setCameraActiveCoordinate0Label:@"X"];
-            [self setCameraActiveCoordinate1Label:@"Y"];
-            [self setCameraActiveCoordinate2Label:@"Z"];
-            [self setCameraActiveCoordinate3Label:@"W"];
-            [self setCameraActiveCoordinate4Label:@"V"];
-            [self setCameraActiveCoordinate5Label:@"U"];
-            [self setCameraActiveCoordinate6Label:@"T"];
-            break;
-        case 1:
-            [self setCameraActiveCoordinate0Label:@"r"];
-            [self setCameraActiveCoordinate1Label:@"\u03b8\u2081"];
-            [self setCameraActiveCoordinate2Label:@"\u03b8\u2082"];
-            [self setCameraActiveCoordinate3Label:@"\u03b8\u2083"];
-            [self setCameraActiveCoordinate4Label:@"\u03b8\u2084"];
-            [self setCameraActiveCoordinate5Label:@"\u03b8\u2085"];
-            [self setCameraActiveCoordinate6Label:@"\u03b8\u2086"];
-            break;
-    }
+    [self willChangeValueForKey:@"cameraActiveCoordinate0Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate1Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate2Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate3Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate4Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate5Enabled"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate6Enabled"];
 
-    switch (activeCamera)
-    {
-        case 4:
-            [self setCameraActiveCoordinate6Enabled:YES];
-        case 3:
-            [self setCameraActiveCoordinate5Enabled:YES];
-        case 2:
-            [self setCameraActiveCoordinate4Enabled:YES];
-        case 1:
-            [self setCameraActiveCoordinate3Enabled:YES];
-        case 0:
-            [self setCameraActiveCoordinate2Enabled:YES];
-            [self setCameraActiveCoordinate1Enabled:YES];
-            [self setCameraActiveCoordinate0Enabled:YES];
-    }
-
-    switch (activeCamera)
-    {
-        case 0:
-            [self setCameraActiveCoordinate3Enabled:NO];
-        case 1:
-            [self setCameraActiveCoordinate4Enabled:NO];
-        case 2:
-            [self setCameraActiveCoordinate5Enabled:NO];
-        case 3:
-            [self setCameraActiveCoordinate6Enabled:NO];
-    }
-
+    [self willChangeValueForKey:@"cameraActiveCoordinate0Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate1Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate2Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate3Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate4Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate5Label"];
+    [self willChangeValueForKey:@"cameraActiveCoordinate6Label"];
+    
     [self willChangeValueForKey:@"cameraActiveCoordinate0"];
     [self willChangeValueForKey:@"cameraActiveCoordinate1"];
     [self willChangeValueForKey:@"cameraActiveCoordinate2"];
@@ -204,13 +235,29 @@ static topologic::xml xml;
 
     topologicState.setActive((unsigned int)(activeCamera+3));
 
-    [self didChangeValueForKey:@"cameraActiveCoordinate0"];
-    [self didChangeValueForKey:@"cameraActiveCoordinate1"];
-    [self didChangeValueForKey:@"cameraActiveCoordinate2"];
-    [self didChangeValueForKey:@"cameraActiveCoordinate3"];
-    [self didChangeValueForKey:@"cameraActiveCoordinate4"];
-    [self didChangeValueForKey:@"cameraActiveCoordinate5"];
     [self didChangeValueForKey:@"cameraActiveCoordinate6"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate5"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate4"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate3"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate2"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate1"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate0"];
+
+    [self didChangeValueForKey:@"cameraActiveCoordinate6Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate5Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate4Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate3Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate2Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate1Label"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate0Label"];
+    
+    [self didChangeValueForKey:@"cameraActiveCoordinate6Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate5Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate4Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate3Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate2Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate1Enabled"];
+    [self didChangeValueForKey:@"cameraActiveCoordinate0Enabled"];
 }
 
 - (void)translateCartesianToPolar
@@ -242,65 +289,23 @@ static topologic::xml xml;
 
 - (void)setDrawerMode:(NSInteger)newDrawerMode
 {
+    [self willChangeValueForKey:@"drawerVisible"];
+    [self willChangeValueForKey:@"modelViewDrawerVisible"];
+
     drawerMode = newDrawerMode;
 
-    switch (drawerMode)
-    {
-        case 0:
-            [self setDrawerVisible:NO];
-            [self setModelViewDrawerVisible:NO];
-            break;
-        case 1:
-            [self setDrawerVisible:YES];
-            [self setModelViewDrawerVisible:NO];
-            break;
-        case 2:
-            [self setDrawerVisible:NO];
-            [self setModelViewDrawerVisible:YES];
-            break;
-    }
+    [self didChangeValueForKey:@"modelViewDrawerVisible"];
+    [self didChangeValueForKey:@"drawerVisible"];
 }
 
 - (BOOL)drawerVisible
 {
-    return drawerVisible;
-}
-
-- (void)setDrawerVisible:(BOOL)visibility
-{
-    if (visibility != drawerVisible)
-    {
-        drawerVisible = visibility;
-        if (visibility)
-        {
-            [self setDrawerMode:1];
-        }
-        else
-        {
-            [self setDrawerMode:(modelViewDrawerVisible ? 2 : 0)];
-        }
-    }
+    return drawerMode == 1;
 }
 
 - (BOOL)modelViewDrawerVisible
 {
-    return modelViewDrawerVisible;
-}
-
-- (void)setModelViewDrawerVisible:(BOOL)visibility
-{
-    if (visibility != modelViewDrawerVisible)
-    {
-        modelViewDrawerVisible = visibility;
-        if (visibility)
-        {
-            [self setDrawerMode:2];
-        }
-        else
-        {
-            [self setDrawerMode:(drawerVisible ? 1 : 0)];
-        }
-    }
+    return drawerMode == 2;
 }
 
 - (void)awakeFromNib
@@ -362,7 +367,6 @@ static topologic::xml xml;
     [self setColourBackground:[NSColor colorWithDeviceRed:0.45 green:0.45 blue:0.65 alpha:1]];
     [self setColourWire:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];
     [self setColourSurface:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:0.1]];
-    [self setColourLighting:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];
 
     [self updateCamera];
 
@@ -382,20 +386,6 @@ static topologic::xml xml;
 - (BOOL)fractalFlameColouring
 {
     return topologicState.fractalFlameColouring;
-}
-
--(double)clampAngle:(double)a
-{
-    while (a > M_PI)
-    {
-        a -= 2*M_PI;
-    }
-    while (a < -M_PI)
-    {
-        a += 2*M_PI;
-    }
-
-    return a;
 }
 
 -(void)setSelectedModelName:(NSString *)value
@@ -729,7 +719,6 @@ static topologic::xml xml;
     [self willChangeValueForKey:@"colourBackground"];
     [self willChangeValueForKey:@"colourWire"];
     [self willChangeValueForKey:@"colourSurface"];
-    [self willChangeValueForKey:@"colourLighting"];
 
     [self willChangeValueForKey:@"cameraActiveCoordinate0"];
     [self willChangeValueForKey:@"cameraActiveCoordinate1"];
@@ -750,7 +739,6 @@ static topologic::xml xml;
     [self didChangeValueForKey:@"colourBackground"];
     [self didChangeValueForKey:@"colourWire"];
     [self didChangeValueForKey:@"colourSurface"];
-    [self didChangeValueForKey:@"colourLighting"];
 
     [self didChangeValueForKey:@"cameraActiveCoordinate0"];
     [self didChangeValueForKey:@"cameraActiveCoordinate1"];

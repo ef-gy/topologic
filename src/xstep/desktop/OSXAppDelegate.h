@@ -40,48 +40,22 @@
 #define MAXDEPTH 7
 #endif
 
+/**\brief OSX application delegate
+ *
+ * Contains the application delegate for the OSX version of Topologic, which
+ * provides access to the C++ state object and a rather large number of
+ * properties for use with Xcode's data bindings.
+ */
 @interface OSXAppDelegate : NSObject <NSApplicationDelegate>
 {
     OpenGLRenderer IBOutlet *openGL;
-    NSSegmentedControl IBOutlet *subtypeSegmentedControl;
-
-    BOOL drawerVisible;
-    BOOL modelViewDrawerVisible;
 
     NSInteger drawerMode;
     NSInteger activeCamera;
-    NSInteger activeCameraType;
 
     NSColor *colourBackground;
     NSColor *colourWire;
     NSColor *colourSurface;
-    NSColor *colourLighting;
-
-    double cameraActiveCoordinate0;
-    double cameraActiveCoordinate1;
-    double cameraActiveCoordinate2;
-    double cameraActiveCoordinate3;
-    double cameraActiveCoordinate4;
-    double cameraActiveCoordinate5;
-    double cameraActiveCoordinate6;
-
-    bool cameraActiveCoordinate0Enabled;
-    bool cameraActiveCoordinate1Enabled;
-    bool cameraActiveCoordinate2Enabled;
-    bool cameraActiveCoordinate3Enabled;
-    bool cameraActiveCoordinate4Enabled;
-    bool cameraActiveCoordinate5Enabled;
-    bool cameraActiveCoordinate6Enabled;
-
-    NSString *cameraActiveCoordinate0Label;
-    NSString *cameraActiveCoordinate1Label;
-    NSString *cameraActiveCoordinate2Label;
-    NSString *cameraActiveCoordinate3Label;
-    NSString *cameraActiveCoordinate4Label;
-    NSString *cameraActiveCoordinate5Label;
-    NSString *cameraActiveCoordinate6Label;
-
-    NSString *selectedModelName;
 
     NSString *model;
     NSInteger modelDepth;
@@ -92,15 +66,13 @@
 
 @property (readonly) topologic::state<GLfloat,MAXDEPTH> *state;
 
-@property (assign) NSMutableArray *outputTemplates;
 @property (assign) IBOutlet NSWindow *window;
 
 @property (retain,readwrite) OpenGLRenderer *openGL;
-@property (retain,readwrite) NSSegmentedControl *subtypeSegmentedControl;
 
 @property (readwrite) BOOL fractalFlameColouring;
-@property (readwrite) BOOL drawerVisible;
-@property (readwrite) BOOL modelViewDrawerVisible;
+@property (readonly) BOOL drawerVisible;
+@property (readonly) BOOL modelViewDrawerVisible;
 
 @property (readwrite) NSInteger drawerMode;
 @property (readwrite) NSInteger activeCamera;
@@ -109,7 +81,6 @@
 @property (retain,readwrite) NSColor *colourBackground;
 @property (retain,readwrite) NSColor *colourWire;
 @property (retain,readwrite) NSColor *colourSurface;
-@property (retain,readwrite) NSColor *colourLighting;
 
 @property (readwrite) double cameraActiveCoordinate0;
 @property (readwrite) double cameraActiveCoordinate1;
@@ -119,21 +90,21 @@
 @property (readwrite) double cameraActiveCoordinate5;
 @property (readwrite) double cameraActiveCoordinate6;
 
-@property (readwrite) bool cameraActiveCoordinate0Enabled;
-@property (readwrite) bool cameraActiveCoordinate1Enabled;
-@property (readwrite) bool cameraActiveCoordinate2Enabled;
-@property (readwrite) bool cameraActiveCoordinate3Enabled;
-@property (readwrite) bool cameraActiveCoordinate4Enabled;
-@property (readwrite) bool cameraActiveCoordinate5Enabled;
-@property (readwrite) bool cameraActiveCoordinate6Enabled;
+@property (readonly) BOOL cameraActiveCoordinate0Enabled;
+@property (readonly) BOOL cameraActiveCoordinate1Enabled;
+@property (readonly) BOOL cameraActiveCoordinate2Enabled;
+@property (readonly) BOOL cameraActiveCoordinate3Enabled;
+@property (readonly) BOOL cameraActiveCoordinate4Enabled;
+@property (readonly) BOOL cameraActiveCoordinate5Enabled;
+@property (readonly) BOOL cameraActiveCoordinate6Enabled;
 
-@property (retain,readwrite) NSString *cameraActiveCoordinate0Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate1Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate2Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate3Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate4Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate5Label;
-@property (retain,readwrite) NSString *cameraActiveCoordinate6Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate0Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate1Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate2Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate3Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate4Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate5Label;
+@property (retain,readonly) NSString *cameraActiveCoordinate6Label;
 
 @property (readwrite) NSInteger modelDepth;
 @property (readwrite) NSInteger renderDepth;
