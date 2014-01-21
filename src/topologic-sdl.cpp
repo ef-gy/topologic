@@ -40,6 +40,21 @@
  * \see Project Source Code: http://git.becquerel.org/jyujin/topologic.git
  */
 
+/**\defgroup frontend-webgl WebGL frontend
+ * \brief WebGL frontend for web browsers
+ *
+ * The primary purpose of the SDL frontend is to provide the code needed to get
+ * the WebGL frontend to work. This is done through the magic of emscripten.
+ *
+ * \htmlonly
+ * <iframe width="100%" height="800" src="http://ef.gy/webgl/topologic.html"
+ *         frameborder="0"/>
+ * \endhtmlonly
+ *
+ * \see http://ef.gy/webgl/topologic.html - current, pre-compiled version of the
+ *      WebGL frontend.
+ */
+
 /**\defgroup topologic-javascript-exports emscripten/JS Exported Functions
  * \brief Functions which emscripten will export when compiling to JavaScript
  *
