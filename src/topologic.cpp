@@ -1,5 +1,15 @@
+/**\ingroup topologic-frontend
+ * \defgroup frontend-cli CLI frontend
+ * \brief Basic command line Topologic frontend
+ *
+ * This is the very simplest frontend for Topologic, which doesn't do any OpenGL
+ * magic at all but rather only provides a scriptable command line interface
+ * that produces SVGs on stdout.
+ *
+ * \{
+ */
+
 /**\file
- * \ingroup topologic-frontend
  * \brief Topologic/CLI frontend
  *
  * This is the simplest possible Topologic frontend: a command line application
@@ -46,3 +56,5 @@ int main (int argc, char* argv[])
 {
     return topologic::cli<double> (argc, argv);
 }
+
+/** \} */

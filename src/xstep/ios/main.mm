@@ -1,3 +1,18 @@
+/**\ingroup topologic-frontend
+ * \defgroup frontend-cocoa-touch iOS/Cocoa Touch frontend
+ * \brief Native Topologic frontend for iOS
+ *
+ * The native frontend for iOS devices - iPods, iPhones, iPads. This is a
+ * universal application with the user interface designed as an Xcode 5 story
+ * board.
+ *
+ * \see https://itunes.apple.com/us/app/topologic/id737310913 - this frontend on
+ *      the iOS App Store. If you like this project then it'd be totally rad if
+ *      you considered buying it.
+ *
+ * \{
+ */
+
 /**\file
  * \brief Topologic/iOS main function
  *
@@ -48,3 +63,5 @@ int main(int argc, char * argv[])
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([iOSAppDelegate class]));
     }
 }
+
+/** \} */

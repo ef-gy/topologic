@@ -1,5 +1,15 @@
+/**\ingroup topologic-frontend
+ * \defgroup frontend-sdl SDL frontend
+ * \brief Topologic frontend using SDL (for emscripten/JS)
+ *
+ * The main purpose of this frontend is to provide access to Topologic to
+ * JavaScript code by means of the emscripten LLVM-to-JS compiler. The code
+ * might even work as a primitive SDL frontend, but this is not tested.
+ *
+ * \{
+ */
+
 /**\file
- * \ingroup topologic-frontend
  * \brief Topologic/SDL frontend
  *
  * This is a basic SDL+OpenGL frontend for Topologic, designed for use with
@@ -489,3 +499,5 @@ void setColour(int colour, double red, double green, double blue, double alpha)
             break;
     }
 }
+
+/** \} */

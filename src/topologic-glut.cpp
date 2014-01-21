@@ -1,5 +1,18 @@
+/**\ingroup topologic-frontend
+ * \defgroup frontend-glut GLUT frontend
+ * \brief Topologic frontend using GLUT
+ *
+ * More of an example than a proper frontend, this is the GLUT version of
+ * Topologic. This version doesn't provide any options to change the model at
+ * runtime, so you have to use the same kind of command line parameters that
+ * the CLI frontend uses. After launching, the programme will try to get an
+ * OpenGL 3.2 full-screen context and allows you to manipulate the rendering
+ * by dragging the mouse.
+ *
+ * \{
+ */
+
 /**\file
- * \ingroup topologic-frontend
  * \brief Topologic/GLUT frontend
  *
  * Implements a simple Topologic frontend using GLUT and an OpenGL 3.2 context.
@@ -324,3 +337,5 @@ int main (int argc, char* argv[])
 
     return 0;
 }
+
+/** \} */
