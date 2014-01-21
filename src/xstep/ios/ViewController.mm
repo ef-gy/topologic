@@ -1,4 +1,5 @@
-/**\file
+/**\ingroup frontend-cocoa-touch
+ * \file
  * \brief iOS view controller implementation
  *
  * Implements the view controller for the iOS frontend.

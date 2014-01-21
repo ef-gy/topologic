@@ -1,3 +1,8 @@
+/**\ingroup frontend-cocoa-touch
+ *
+ * \{
+ */
+
 /**\file
  * \brief iOS view controller interface
  *
@@ -71,3 +76,5 @@
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 
 @end
+
+/** \} */

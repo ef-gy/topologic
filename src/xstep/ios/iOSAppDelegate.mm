@@ -1,4 +1,5 @@
-/**\file
+/**\ingroup frontend-cocoa-touch
+ * \file
  * \brief iOS Application Delegate implementation
  *
  * Contains the implementation of the UIApplicationDelegate subclass for the

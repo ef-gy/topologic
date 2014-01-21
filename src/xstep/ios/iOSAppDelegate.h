@@ -1,3 +1,8 @@
+/**\ingroup frontend-cocoa-touch
+ *
+ * \{
+ */
+
 /**\file
  * \brief iOS Application Delegate header
  *
@@ -46,3 +51,5 @@
 - (void) reconfigure;
 
 @end
+
+/** \} */

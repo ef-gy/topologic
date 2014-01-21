@@ -1,4 +1,5 @@
-/**\file
+/**\ingroup frontend-cocoa
+ * \file
  * \brief OSX Application Delegate implementation
  *
  * Contains the implementation for the NSApplicationDelegate subclass of the OSX

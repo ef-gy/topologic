@@ -47,7 +47,7 @@
 
 #import "iOSAppDelegate.h"
 
-/**\brief iOS main function
+/**\brief iOS main function stub
  *
  * This function simply calls the UIApplicationMain() function with the correct
  * parameters to get the iOS application up and running.

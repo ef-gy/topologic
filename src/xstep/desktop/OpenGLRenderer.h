@@ -1,3 +1,8 @@
+/**\ingroup frontend-cocoa
+ *
+ * \{
+ */
+
 /**\file
  * \brief OpenGL renderer view interface
  *
@@ -45,3 +50,5 @@
 - (void) magnifyWithEvent:(NSEvent *)event;
 
 @end
+
+/** \} */

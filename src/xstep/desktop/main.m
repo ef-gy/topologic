@@ -45,6 +45,16 @@
 
 #import <Cocoa/Cocoa.h>
 
+/**\brief OSX main function stub
+ *
+ * This function simply calls the NSApplicationMain() function with the correct
+ * parameters to get the OSX application up and running.
+ *
+ * \param[in] argc The number of arguments in argv.
+ * \param[in] argv The command line arguments for the programme.
+ *
+ * \returns Presumably zero if the application terminated properly.
+ */
 int main(int argc, char *argv[])
 {
     return NSApplicationMain(argc, (const char **)argv);

@@ -1,4 +1,5 @@
-/**\file
+/**\ingroup frontend-cocoa
+ * \file
  * \brief OpenGL renderer view implementation
  *
  * Implements the OpenGLRenderer class, which is derived from an NSOpenGLView
