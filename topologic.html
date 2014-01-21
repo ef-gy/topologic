@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="description" content="Topologic is a simple renderer for higher dimensional geometric primitives and arbitrary dimensional IFSs. This page contains a port of Topologic to WebGL so that it will run right in your browser window."/>
     <meta name="author" content="Magnus Achim Deininger"/>
-    <title>Topologic/V8</title>
+    <title>Topologic/V9</title>
     <style>
       * { font-family: sans-serif; }
       html, body { margin: 0; padding: 0; }
@@ -27,7 +27,7 @@
   <body>
     <canvas class="emscripten" id="canvas"></canvas>
     <progress value="0" max="100" id="progress"></progress>  
-    <div id="status">Downloading Topologic/V8...</div>
+    <div id="status">Downloading Topologic/V9...</div>
     
     <textarea id="output"></textarea>
     <script type='text/javascript'>
@@ -74,7 +74,7 @@
         },
         TOTAL_MEMORY: 268435456
       };
-      Module.setStatus('Downloading Topologic/V8...');
+      Module.setStatus('Downloading Topologic/V9...');
     </script>
     <script type='text/javascript' src="topologic-sdl.js"></script>
     <script type='text/javascript'>
@@ -108,9 +108,9 @@ var topologicFlameColouring=false;
 var topologicFlameVariants=3;
 
 var topologicColour =
-    [[0.45, 0.45, 0.65, 1],
-     [1, 1, 1, 1],
-     [1, 1, 1, 0.1]];
+    [[1,1,1,1],
+     [0,0,0,0.8],
+     [0,0,0,0.5]];
 
 function topologicUpdateDimension()
 {
