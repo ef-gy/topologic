@@ -68,11 +68,6 @@
     NSInteger drawerMode;
     NSInteger activeCamera;
 
-/* the next three are probably not necessary and should be removed */
-    NSColor *colourBackground;
-    NSColor *colourWire;
-    NSColor *colourSurface;
-
     NSString *model;
     NSInteger modelDepth;
     NSInteger renderDepth;
