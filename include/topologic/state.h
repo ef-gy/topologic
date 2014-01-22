@@ -650,9 +650,9 @@ namespace topologic
 #if !defined(NO_OPENGL)
               opengl(transformation),
 #endif
-              background(Q(0.45), Q(0.45), Q(0.65), Q(1)),
-              wireframe(Q(1), Q(1), Q(1), Q(1)),
-              surface(Q(1), Q(1), Q(1), Q(0.1)),
+              background(Q(1), Q(1), Q(1), Q(1)),
+              wireframe(Q(0), Q(0), Q(0), Q(0.8)),
+              surface(Q(0), Q(0), Q(0), Q(0.5)),
               fractalFlameColouring(false)
             {
                 parameter.polarRadius       = Q(1);
