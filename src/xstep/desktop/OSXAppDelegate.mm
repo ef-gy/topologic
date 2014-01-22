@@ -314,51 +314,14 @@ static topologic::xml xml;
 - (void)awakeFromNib
 {
     [models removeAllItems];
-    [models addItemWithTitle:@"3-simplex"];
-    [models addItemWithTitle:@"4-simplex"];
-    [models addItemWithTitle:@"5-simplex"];
-    [models addItemWithTitle:@"6-simplex"];
-    [models addItemWithTitle:@"7-simplex"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-plane"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"3-cube"];
-    [models addItemWithTitle:@"4-cube"];
-    [models addItemWithTitle:@"5-cube"];
-    [models addItemWithTitle:@"6-cube"];
-    [models addItemWithTitle:@"7-cube"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-sphere"];
-    [models addItemWithTitle:@"3-sphere"];
+
+    std::set<std::string> mod;
+    for (const std::string &m : efgy::geometry::with<GLfloat,efgy::geometry::functor::modelsWithDepth,MAXDEPTH>(mod,"*",0,0))
+    {
+        [models addItemWithTitle:@(m.c_str())];
+    }
+
 //    [[models menu] addItem:[NSMenuItem separatorItem]];
-//    [models addItemWithTitle:@"3-torus"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-moebius-strip"];
-    [models addItemWithTitle:@"2-klein-bagel"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-sierpinski-gasket"];
-    [models addItemWithTitle:@"3-sierpinski-gasket"];
-    [models addItemWithTitle:@"4-sierpinski-gasket"];
-    [models addItemWithTitle:@"5-sierpinski-gasket"];
-    [models addItemWithTitle:@"6-sierpinski-gasket"];
-    [models addItemWithTitle:@"7-sierpinski-gasket"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-sierpinski-carpet"];
-    [models addItemWithTitle:@"3-sierpinski-carpet"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-random-affine-ifs"];
-    [models addItemWithTitle:@"3-random-affine-ifs"];
-    [models addItemWithTitle:@"4-random-affine-ifs"];
-    [models addItemWithTitle:@"5-random-affine-ifs"];
-    [models addItemWithTitle:@"6-random-affine-ifs"];
-    [models addItemWithTitle:@"7-random-affine-ifs"];
-    [[models menu] addItem:[NSMenuItem separatorItem]];
-    [models addItemWithTitle:@"2-random-flame"];
-    [models addItemWithTitle:@"3-random-flame"];
-    [models addItemWithTitle:@"4-random-flame"];
-    [models addItemWithTitle:@"5-random-flame"];
-    [models addItemWithTitle:@"6-random-flame"];
-    [models addItemWithTitle:@"7-random-flame"];
 
     [self setActiveCamera:0];
     [self setActiveCameraType:1];
@@ -367,9 +330,9 @@ static topologic::xml xml;
 
     [NSColor setIgnoresAlpha:NO];
 
-    [self setColourBackground:[NSColor colorWithDeviceRed:0.45 green:0.45 blue:0.65 alpha:1]];
-    [self setColourWire:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];
-    [self setColourSurface:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:0.1]];
+    [self setColourBackground:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];
+    [self setColourWire:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0.8]];
+    [self setColourSurface:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0.5]];
 
     [self updateCamera];
 
