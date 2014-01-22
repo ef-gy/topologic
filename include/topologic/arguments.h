@@ -127,9 +127,15 @@ namespace topologic
                     else if (arg == "--version")
                     {
                         std::cout << "Topologic/V" << version << "\n"
-                                     "libefgy version " << efgy::version << "\n"
+                                     "libefgy/V" << efgy::version << "\n"
                                      "Maximum render depth of this binary is " << dim << " dimensions.\n"
-                                     "Supported models: simplex, plane, cube, sphere, moebius-strip, klein-bagel, sierpinski-gasket, sierpinski-carpet, random-affine-ifs.\n";
+                                     "Supported models:";
+                        std::set<const char *> models;
+                        for (const char *m : efgy::geometry::with<Q,efgy::geometry::functor::models,dim>(models,"*",0,0))
+                        {
+                            std::cout << " " << m;
+                        }
+                        std::cout << "\n";
                         return 0;
                     }
                     else if (arg == "--model")
