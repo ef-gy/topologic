@@ -38,6 +38,14 @@
 #include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
+/**\brief Maximum render depth
+ *
+ * This macro is used by some of the frontends to determine the maximum render
+ * depth supported by a frontend. The default value is '7', which is plenty for
+ * most applications - increasing this value will increase the size of the
+ * generated code, so it may be desirable to decrease this value in
+ * environments with tighter constraints.
+ */
 #define MAXDEPTH 7
 #endif
 
@@ -69,6 +77,10 @@
     NSInteger modelDepth;
     NSInteger renderDepth;
 
+    /**\brief Model list instance
+     *
+     * This is where the XIB reference for the list of models is stored.
+     */
     NSPopUpButton IBOutlet *models;
 }
 
@@ -92,9 +104,31 @@
  */
 @property (retain,readwrite) OpenGLRenderer *openGL;
 
+/**\brief Is the settings/camera controls drawer visible?
+ *
+ * This property is 'YES' if the settings and camera controls drawer is
+ * currently visible and 'NO' otherwise.
+ */
 @property (readonly) BOOL drawerVisible;
+
+/**\brief Is the model/parameters drawer visible?
+ *
+ * This property is 'YES' if the model and model parameters drawer is currently
+ * visible and 'NO' otherwise.
+ */
 @property (readonly) BOOL modelViewDrawerVisible;
 
+/**\brief Drawer mode
+ *
+ * Combined version of drawerVisible and modelViewDrawerVisible; The possible
+ * values here are:
+ *
+ *   - 0 when no drawers are visible.
+ *   - 1 when drawerVisible is 'YES'.
+ *   - 2 when modelViewDrawerVisible is 'YES'.
+ *
+ * Unlike the two boolean properties, this one can be set.
+ */
 @property (readwrite) NSInteger drawerMode;
 
 /**\ingroup frontend-cocoa

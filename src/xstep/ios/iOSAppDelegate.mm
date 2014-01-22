@@ -12,7 +12,19 @@
 
 #import "iOSAppDelegate.h"
 
+/**\brief Global state object
+ *
+ * Topologic programme state instance for this programme. Has to be global,
+ * because we need to provide C-like accessors for emscripten/JavaScript
+ * callers.
+ */
 static topologic::state<GLfloat,MAXDEPTH> topologicState;
+
+/**\brief XML wrapper
+ *
+ * Used to parse SVG files with Topologic metadata and to manipulate the state
+ * object accordingly. There only ever needs to be one of these objects.
+ */
 static topologic::xml xml;
 
 @implementation iOSAppDelegate

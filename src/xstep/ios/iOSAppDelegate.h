@@ -24,6 +24,14 @@
 #include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
+/**\brief Maximum render depth
+ *
+ * This macro is used by some of the frontends to determine the maximum render
+ * depth supported by a frontend. The default value is '7', which is plenty for
+ * most applications - increasing this value will increase the size of the
+ * generated code, so it may be desirable to decrease this value in
+ * environments with tighter constraints.
+ */
 #define MAXDEPTH 7
 #endif
 
@@ -44,10 +52,23 @@
  * is available via the Application Delegate to access that state object.
  */
 @property (readonly) topologic::state<GLfloat,MAXDEPTH> *state;
+
+/**\brief Application window
+ *
+ * Used to access the application's window.
+ */
 @property (strong, nonatomic) UIWindow *window;
 
+/**\copydoc OSXAppDelegate::updateModel */
 - (void) updateModel;
+
+/**\copydoc OSXAppDelegate::updateModelParameters */
 - (void) updateModelParameters;
+
+/**\brief Reconfigure with user defaults
+ *
+ * Uses the stored user defaults to set the current application settings.
+ */
 - (void) reconfigure;
 
 @end
