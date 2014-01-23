@@ -457,7 +457,7 @@ namespace topologic
                     opengl.prepared = false;
                 }
 #endif
-                Q lb = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
+                Q lb = efgy::math::lengthSquared(from);
 
                 efgy::geometry::transformation::affine<Q,d> mirror;
                 /*
@@ -478,7 +478,7 @@ namespace topologic
 
                 transformation = efgy::geometry::transformation::affine<Q,d>();
                 
-                Q la = efgy::geometry::euclidian::lengthSquared<Q,d>(from);
+                Q la = efgy::math::lengthSquared(from);
 
                 from = from * lb / la;
             }
