@@ -158,7 +158,7 @@ namespace topologic
          * creating the projection matrix; This is the set of coordinates that
          * is used when 'polarCoordinates' is set to 'true'.
          */
-        efgy::math::vector<Q,d,efgy::math::space::polar> fromp;
+        efgy::math::vector<Q,d,efgy::math::format::polar> fromp;
 
         /**\brief Cartesian 'from' point
          *
@@ -904,20 +904,20 @@ namespace topologic
          *
          * The colour that is used as a rendered image's background.
          */
-        efgy::math::vector<Q,4,efgy::math::space::RGB> background;
+        efgy::math::vector<Q,4,efgy::math::format::RGB> background;
 
         /**\brief Wireframe colour
          *
          * The colour to use when rendering the wireframe of a model.
          */
-        efgy::math::vector<Q,4,efgy::math::space::RGB> wireframe;
+        efgy::math::vector<Q,4,efgy::math::format::RGB> wireframe;
 
         /**\brief Surface colour
          *
          * The colour to use when rendering surfaces, i.e. the parts of an
          * image that aren't part of the wirefrome of a model.
          */
-        efgy::math::vector<Q,4,efgy::math::space::RGB> surface;
+        efgy::math::vector<Q,4,efgy::math::format::RGB> surface;
 
         /**\brief Output buffer
          *
