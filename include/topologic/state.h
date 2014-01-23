@@ -124,8 +124,8 @@ namespace topologic
          * of libefgy's OpenGL renderer.
          */
         state(void)
-            : projection(typename efgy::geometry::euclidian::space<Q,d>::vector(),
-                         typename efgy::geometry::euclidian::space<Q,d>::vector(),
+            : projection(efgy::math::vector<Q,d>(),
+                         efgy::math::vector<Q,d>(),
                          Q(M_PI_4),
                          false),
               from(projection.from),
@@ -166,14 +166,14 @@ namespace topologic
          * creating the projection matrix; This is the set of coordinates that
          * is used when 'polarCoordinates' is set to 'false'.
          */
-        typename efgy::geometry::euclidian::space<Q,d>::vector &from;
+        efgy::math::vector<Q,d> &from;
 
         /**\brief Cartesian 'to' point
          *
          * This is the point that the camera in this dimension is looking at.
          * Right now this should always be the origin, i.e. (0, 0, ...).
          */
-        typename efgy::geometry::euclidian::space<Q,d>::vector &to;
+        efgy::math::vector<Q,d> &to;
 
         /**\brief Projective transformation
          *
@@ -376,7 +376,7 @@ namespace topologic
             }
 #endif
 
-            typename efgy::geometry::euclidian::space<Q,d>::vector fn;
+            efgy::math::vector<Q,d> fn;
 
             if (base::polarCoordinates)
             {
