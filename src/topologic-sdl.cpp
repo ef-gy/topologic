@@ -347,18 +347,18 @@ int setRadius(double radius)
 /**\ingroup topologic-javascript-exports
  * \brief Set model precision/quality
  *
- * Sets the polarPrecision parameter used in some models - this parameter
+ * Sets the precision parameter used in some models - this parameter
  * controls different aspects of different models, but in general higher values
  * result in better output quality.
  *
- * \param[in] precision The new value of the polarPrecision parameter.
+ * \param[in] precision The new value of the precision parameter.
  *
  * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
  *          do anything that could fail, however, so it'll always return '0'.
  */
 int setPrecision(double precision)
 {
-    topologicState.topologic::state<GLfloat,2>::parameter.polarPrecision = GLfloat(precision);
+    topologicState.topologic::state<GLfloat,2>::parameter.precision = GLfloat(precision);
     return 0;
 }
 

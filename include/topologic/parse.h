@@ -625,7 +625,7 @@ namespace topologic
         std::string value;
         if ((value = parser.evaluate("//topologic:precision/@polar")) != "")
         {
-            s.parameter.polarPrecision = Q(stringToDouble(value));
+            s.parameter.precision = Q(stringToDouble(value));
         }
         if ((value = parser.evaluate("//topologic:options/@radius")) != "")
         {

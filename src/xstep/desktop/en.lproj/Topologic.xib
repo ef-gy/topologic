@@ -819,7 +819,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="40" doubleValue="6" tickMarkPosition="above" sliderType="linear" id="6498"/>
                                 <connections>
-                                    <binding destination="494" name="value" keyPath="polarPrecision" id="wa7-7w-erz"/>
+                                    <binding destination="494" name="value" keyPath="precision" id="wa7-7w-erz"/>
                                 </connections>
                             </slider>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6514">

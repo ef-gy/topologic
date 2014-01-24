@@ -208,7 +208,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<Q,2>::parameter.polarPrecision = Q(dv);
+                            topologicState.state<Q,2>::parameter.precision = Q(dv);
                         }
                     }
                     else if (arg == "--radius")

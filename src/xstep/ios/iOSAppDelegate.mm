@@ -189,7 +189,7 @@ static topologic::xml xml;
     }
     else if ([index isEqual:@"precision"])
     {
-        topologicState.parameter.polarPrecision = [[NSUserDefaults standardUserDefaults] floatForKey:@"precision"];
+        topologicState.parameter.precision = [[NSUserDefaults standardUserDefaults] floatForKey:@"precision"];
         [self updateModelParameters];
     }
     else if ([index isEqual:@"limit"])

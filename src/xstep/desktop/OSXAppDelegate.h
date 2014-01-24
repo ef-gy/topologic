@@ -413,7 +413,7 @@
  * also controls the number of subdivisons of planes (and thus indirectly the
  * fidelity of random flame geometry, as these make use of the planes).
  */
-@property (readwrite) double polarPrecision;
+@property (readwrite) double precision;
 
 /**\brief Number of IFS iterations
  *
