@@ -782,7 +782,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="13" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="7763"/>
                                 <connections>
-                                    <binding destination="494" name="value" keyPath="polarRadius" id="ncC-vM-VaB"/>
+                                    <binding destination="494" name="value" keyPath="radius" id="ncC-vM-VaB"/>
                                 </connections>
                             </slider>
                             <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7776">

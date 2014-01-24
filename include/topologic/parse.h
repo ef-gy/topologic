@@ -629,7 +629,7 @@ namespace topologic
         }
         if ((value = parser.evaluate("//topologic:options/@radius")) != "")
         {
-            s.parameter.polarRadius = Q(stringToDouble(value));
+            s.parameter.radius = Q(stringToDouble(value));
         }
         if ((value = parser.evaluate("//topologic:camera/@mode[1]")) != "")
         {

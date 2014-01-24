@@ -219,7 +219,7 @@ namespace topologic
                             std::stringstream st (argv[i]);
                             double dv;
                             st >> dv;
-                            topologicState.state<Q,2>::parameter.polarRadius = Q(dv);
+                            topologicState.state<Q,2>::parameter.radius = Q(dv);
                         }
                     }
                     else if (arg == "--background")

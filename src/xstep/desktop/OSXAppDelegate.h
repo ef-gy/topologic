@@ -404,7 +404,7 @@
  * planes, and by extension also the size of IFS elements, which use cubes or
  * planes as their base object to deform.
  */
-@property (readwrite) double polarRadius;
+@property (readwrite) double radius;
 
 /**\brief Precision
  *

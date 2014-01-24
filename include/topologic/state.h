@@ -655,7 +655,7 @@ namespace topologic
               surface(Q(0), Q(0), Q(0), Q(0.5)),
               fractalFlameColouring(false)
             {
-                parameter.polarRadius       = Q(1);
+                parameter.radius       = Q(1);
                 parameter.polarPrecision    = Q(10);
                 parameter.iterations        = 4;
                 parameter.functions         = 3;
@@ -692,7 +692,7 @@ namespace topologic
             {
                 rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>";
             }
-            rv << "<t:options radius='" << double(parameter.polarRadius) << "'/>"
+            rv << "<t:options radius='" << double(parameter.radius) << "'/>"
                << "<t:precision polar='" << double(parameter.polarPrecision) << "'/>"
                << "<t:ifs iterations='" << parameter.iterations << "' seed='" << parameter.seed << "' functions='" << parameter.functions << "' pre-rotate='" << (parameter.preRotate ? "yes" : "no") << "' post-rotate='" << (parameter.postRotate ? "yes" : "no") << "'/>"
                << "<t:flame coefficients='" << parameter.flameCoefficients << "'/>"

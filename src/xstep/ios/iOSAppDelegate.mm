@@ -184,7 +184,7 @@ static topologic::xml xml;
 {
     if ([index isEqual:@"radius"])
     {
-        topologicState.parameter.polarRadius = [[NSUserDefaults standardUserDefaults] floatForKey:@"radius"];
+        topologicState.parameter.radius = [[NSUserDefaults standardUserDefaults] floatForKey:@"radius"];
         [self updateModelParameters];
     }
     else if ([index isEqual:@"precision"])

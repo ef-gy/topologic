@@ -99,7 +99,7 @@ static topologic::xml xml;
 @synthesize modelDepth;
 @synthesize renderDepth;
 
-@synthesize polarRadius;
+@synthesize radius;
 @synthesize polarPrecision;
 
 @synthesize IFSIterations;
@@ -650,18 +650,18 @@ static topologic::xml xml;
     return topologicState.parameter.polarPrecision;
 }
 
-- (void)setPolarRadius:(double)value
+- (void)setRadius:(double)value
 {
-    if (double(topologicState.parameter.polarRadius) != value)
+    if (double(topologicState.parameter.radius) != value)
     {
-        topologicState.parameter.polarRadius = value;
+        topologicState.parameter.radius = value;
         [self updateModelParameters];
     }
 }
 
-- (double)polarRadius
+- (double)radius
 {
-    return topologicState.parameter.polarRadius;
+    return topologicState.parameter.radius;
 }
 
 - (void)openURL:(NSURL*)url
@@ -695,7 +695,7 @@ static topologic::xml xml;
     [self willChangeValueForKey:@"cameraActiveCoordinate6"];
 
     [self willChangeValueForKey:@"polarPrecision"];
-    [self willChangeValueForKey:@"polarRadius"];
+    [self willChangeValueForKey:@"radius"];
     [self willChangeValueForKey:@"IFSIterations"];
 
     [self willChangeValueForKey:@"activeCameraType"];
@@ -715,7 +715,7 @@ static topologic::xml xml;
     [self didChangeValueForKey:@"cameraActiveCoordinate6"];
 
     [self didChangeValueForKey:@"polarPrecision"];
-    [self didChangeValueForKey:@"polarRadius"];
+    [self didChangeValueForKey:@"radius"];
     [self didChangeValueForKey:@"IFSIterations"];
 
     [self didChangeValueForKey:@"activeCameraType"];

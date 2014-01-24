@@ -331,16 +331,16 @@ int main(int argc, char *argv[])
 /**\ingroup topologic-javascript-exports
  * \brief Set model radius
  *
- * Sets the polarRadius parameter used in some models.
+ * Sets the radius parameter used in some models.
  *
- * \param[in] radius The new value of the polarRadius parameter.
+ * \param[in] radius The new value of the radius parameter.
  *
  * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
  *          do anything that could fail, however, so it'll always return '0'.
  */
 int setRadius(double radius)
 {
-    topologicState.topologic::state<GLfloat,2>::parameter.polarRadius = GLfloat(radius);
+    topologicState.topologic::state<GLfloat,2>::parameter.radius = GLfloat(radius);
     return 0;
 }
 
