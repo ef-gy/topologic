@@ -316,12 +316,20 @@ static topologic::xml xml;
     [models removeAllItems];
 
     std::set<std::string> mod;
+    int li = 2;
+    int i;
     for (const std::string &m : efgy::geometry::with<GLfloat,efgy::geometry::functor::modelsWithDepth,MAXDEPTH>(mod,"*",0,0))
     {
+        std::istringstream dm (m);
+        dm >> i;
+        if (i != li)
+        {
+            li = i;
+            [[models menu] addItem:[NSMenuItem separatorItem]];
+        }
+        
         [models addItemWithTitle:@(m.c_str())];
     }
-
-//    [[models menu] addItem:[NSMenuItem separatorItem]];
 
     [self setActiveCamera:0];
     [self setActiveCameraType:1];
