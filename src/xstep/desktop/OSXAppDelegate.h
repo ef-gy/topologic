@@ -416,6 +416,13 @@
  */
 @property (readwrite) double radius2;
 
+/**\brief Constant for formulae
+ *
+ * Used in formulae like the one for klein bottles, where it determines some
+ * parts of the resulting geometry.
+ */
+@property (readwrite) double constant;
+
 /**\brief Precision
  *
  * This used to only control the precision of smooth surfaces by specifying the
