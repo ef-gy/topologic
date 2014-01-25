@@ -397,14 +397,24 @@
  * \{
  */
 
-/**\brief Model radius
+/**\brief Major model radius
  *
  * The radius parameter of things like spheres. Also used with klein bagels and
  * moebius strips. Recently this parameter also determines the size of cubes and
  * planes, and by extension also the size of IFS elements, which use cubes or
  * planes as their base object to deform.
+ *
+ * For models such as tori, which take two radius parameters, this determines
+ * the major radius of the model.
  */
 @property (readwrite) double radius;
+
+/**\brief Minor model radius
+ *
+ * For models such as tori, which take several radii, this defines the minor
+ * radius of the model.
+ */
+@property (readwrite) double radius2;
 
 /**\brief Precision
  *

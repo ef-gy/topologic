@@ -100,6 +100,7 @@ static topologic::xml xml;
 @synthesize renderDepth;
 
 @synthesize radius;
+@synthesize radius2;
 @synthesize precision;
 
 @synthesize IFSIterations;
@@ -670,6 +671,20 @@ static topologic::xml xml;
 - (double)radius
 {
     return topologicState.parameter.radius;
+}
+
+- (void)setRadius2:(double)value
+{
+    if (double(topologicState.parameter.radius2) != value)
+    {
+        topologicState.parameter.radius2 = value;
+        [self updateModelParameters];
+    }
+}
+
+- (double)radius2
+{
+    return topologicState.parameter.radius2;
 }
 
 - (void)openURL:(NSURL*)url

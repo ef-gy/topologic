@@ -767,47 +767,35 @@
             </connections>
         </drawer>
         <customView id="6466" userLabel="Model Drawer Content View">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="682"/>
+            <rect key="frame" x="0.0" y="0.0" width="279" height="682"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" misplaced="YES" title="Details" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="7499">
+                <box autoresizesSubviews="NO" title="Precision" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="7499">
                     <rect key="frame" x="17" y="564" width="245" height="57"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="1" y="1" width="243" height="41"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <slider verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7762">
-                                <rect key="frame" x="65" y="12" width="162" height="21"/>
+                            <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7762">
+                                <rect key="frame" x="16" y="12" width="211" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="13" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="7763"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="40" doubleValue="6" tickMarkPosition="above" sliderType="linear" id="7763"/>
                                 <connections>
-                                    <binding destination="494" name="value" keyPath="radius" id="ncC-vM-VaB"/>
+                                    <binding destination="494" name="value" keyPath="precision" id="bVx-au-kad"/>
                                 </connections>
                             </slider>
-                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7776">
-                                <rect key="frame" x="15" y="14" width="47" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Radius" id="7777">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstItem="7762" firstAttribute="top" secondItem="7499" secondAttribute="top" constant="25" id="7822"/>
-                        <constraint firstItem="7776" firstAttribute="leading" secondItem="7499" secondAttribute="leading" constant="16" id="7856"/>
-                        <constraint firstItem="7762" firstAttribute="leading" secondItem="7776" secondAttribute="trailing" constant="8" symbolic="YES" id="7941"/>
-                        <constraint firstAttribute="bottom" secondItem="7776" secondAttribute="bottom" constant="11" id="7942"/>
                         <constraint firstAttribute="trailing" secondItem="7762" secondAttribute="trailing" constant="16" id="7943"/>
-                        <constraint firstItem="7762" firstAttribute="centerY" secondItem="7776" secondAttribute="centerY" id="7944"/>
+                        <constraint firstAttribute="height" constant="53" id="P1E-LC-69g"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <box autoresizesSubviews="NO" misplaced="YES" title="Precision" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="6945">
+                <box autoresizesSubviews="NO" title="Radii" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="6945">
                     <rect key="frame" x="17" y="433" width="245" height="127"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
@@ -817,15 +805,32 @@
                             <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6497">
                                 <rect key="frame" x="16" y="62" width="211" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="40" doubleValue="6" tickMarkPosition="above" sliderType="linear" id="6498"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="15" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="6498"/>
                                 <connections>
-                                    <binding destination="494" name="value" keyPath="precision" id="wa7-7w-erz"/>
+                                    <binding destination="494" name="value" keyPath="radius" id="cF2-ws-rxt"/>
                                 </connections>
                             </slider>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6514">
                                 <rect key="frame" x="15" y="89" width="97" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Polar Precision" id="6515">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Major" id="6515">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YTc-SX-wfc">
+                                <rect key="frame" x="16" y="12" width="211" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="15" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="ghH-rE-pP6"/>
+                                <connections>
+                                    <binding destination="494" name="value" keyPath="radius2" id="HTJ-4N-3b2"/>
+                                </connections>
+                            </slider>
+                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q38-43-qif">
+                                <rect key="frame" x="15" y="39" width="97" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Minor" id="JEk-PF-fjW">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -838,11 +843,16 @@
                         <constraint firstAttribute="trailing" secondItem="6497" secondAttribute="trailing" constant="16" id="7722"/>
                         <constraint firstItem="6497" firstAttribute="leading" secondItem="6945" secondAttribute="leading" constant="16" id="7725"/>
                         <constraint firstItem="6514" firstAttribute="leading" secondItem="6945" secondAttribute="leading" constant="16" id="7731"/>
+                        <constraint firstAttribute="height" constant="123" id="8uD-VV-g7W"/>
+                        <constraint firstAttribute="trailing" secondItem="YTc-SX-wfc" secondAttribute="trailing" constant="16" id="99m-Ye-WW4"/>
+                        <constraint firstItem="YTc-SX-wfc" firstAttribute="leading" secondItem="6945" secondAttribute="leading" constant="16" id="HPU-ou-Cp6"/>
+                        <constraint firstItem="YTc-SX-wfc" firstAttribute="top" secondItem="q38-43-qif" secondAttribute="bottom" constant="8" symbolic="YES" id="amz-EK-DGC"/>
+                        <constraint firstItem="q38-43-qif" firstAttribute="top" secondItem="6497" secondAttribute="bottom" constant="8" id="lbr-3L-nLH"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <box autoresizesSubviews="NO" misplaced="YES" title="IFS" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="o8n-i1-bDQ">
+                <box autoresizesSubviews="NO" title="IFS" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="o8n-i1-bDQ">
                     <rect key="frame" x="17" y="255" width="245" height="174"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
@@ -1054,7 +1064,7 @@
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7447">
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7447">
                     <rect key="frame" x="18" y="638" width="244" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="7450" id="7448">
@@ -1083,10 +1093,9 @@
                 <constraint firstAttribute="trailing" secondItem="7499" secondAttribute="trailing" constant="20" symbolic="YES" id="7937"/>
                 <constraint firstItem="7447" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" symbolic="YES" id="7938"/>
                 <constraint firstAttribute="trailing" secondItem="6945" secondAttribute="trailing" constant="20" symbolic="YES" id="7940"/>
-                <constraint firstItem="o8n-i1-bDQ" firstAttribute="top" secondItem="6466" secondAttribute="top" constant="253" id="FhE-iu-HNJ"/>
-                <constraint firstItem="o8n-i1-bDQ" firstAttribute="leading" secondItem="6945" secondAttribute="leading" id="Qtd-0i-Auk"/>
+                <constraint firstItem="o8n-i1-bDQ" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" id="F2G-4Z-4lB"/>
+                <constraint firstAttribute="trailing" secondItem="o8n-i1-bDQ" secondAttribute="trailing" constant="20" id="Vxc-bi-gRh"/>
                 <constraint firstItem="o8n-i1-bDQ" firstAttribute="top" secondItem="6945" secondAttribute="bottom" constant="8" symbolic="YES" id="l9b-bb-rn5"/>
-                <constraint firstItem="o8n-i1-bDQ" firstAttribute="trailing" secondItem="6945" secondAttribute="trailing" id="zeL-P0-dzi"/>
             </constraints>
         </customView>
         <drawer preferredEdge="minX" trailingOffset="15" id="6462">
