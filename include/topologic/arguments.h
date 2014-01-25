@@ -107,6 +107,8 @@ namespace topologic
                                      "\n"
                                      "  --precision F           Set model precision to F\n"
                                      "  --radius F              Set model radius parameter to F\n"
+                                     "  --minor-radius F        Set model minor radius parameter to F\n"
+                                     "  --constant F            Set model constant parameter to F\n"
                                      "\n"
                                      "  --background R G B A    Set background colour to R G B A (use values between 0 and 1)\n"
                                      "  --wireframe R G B A     Set wireframe colour to R G B A (use values between 0 and 1)\n"
@@ -220,6 +222,28 @@ namespace topologic
                             double dv;
                             st >> dv;
                             topologicState.state<Q,2>::parameter.radius = Q(dv);
+                        }
+                    }
+                    else if (arg == "--minor-radius")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            double dv;
+                            st >> dv;
+                            topologicState.state<Q,2>::parameter.radius2 = Q(dv);
+                        }
+                    }
+                    else if (arg == "--constant")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            std::stringstream st (argv[i]);
+                            double dv;
+                            st >> dv;
+                            topologicState.state<Q,2>::parameter.constant = Q(dv);
                         }
                     }
                     else if (arg == "--background")
