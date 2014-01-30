@@ -598,16 +598,13 @@ namespace topologic
          * currently specified in cartesian coordinates, i.e. the inverse of
          * translatePolarToCartesian().
          *
-         * \todo This function is currently not implemented in libefgy.
-         *
          * \returns True if the conversions were performed successfully, false
          *          otherwise.
          */
         bool translateCartesianToPolar (void)
         {
-            // fromp = from;
-            // return state<Q,d-1>::translateCartesianToPolar();
-            return false;
+            fromp = from;
+            return state<Q,d-1>::translateCartesianToPolar();
         }
 
     protected:
