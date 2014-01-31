@@ -150,6 +150,7 @@ namespace topologic
                         fromp[i] = 1.57;
                     }
                 }
+                from = fromp;
             }
 
         /**\brief Polar 'from' point
@@ -652,8 +653,8 @@ namespace topologic
               surface(Q(0), Q(0), Q(0), Q(0.5)),
               fractalFlameColouring(false)
             {
-                parameter.radius       = Q(1);
-                parameter.precision    = Q(10);
+                parameter.radius            = Q(1);
+                parameter.precision         = Q(10);
                 parameter.iterations        = 4;
                 parameter.functions         = 3;
                 parameter.seed              = 0;
