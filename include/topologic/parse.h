@@ -82,14 +82,16 @@ namespace topologic
      * An appropriate type alias is already provided for render::svg and
      * render::opengl, named updateModelSVG and updateModelOpenGL respectively.
      *
-     * \tparam Q Base type for calculations, e.g. double or GLfloat
-     * \tparam T Model template class to use, e.g. efgy::geometry::cube
-     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
-     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
-     * \tparam C The model renderer, e.g. render::svg
+     * \tparam Q      Base type for calculations, e.g. double or GLfloat
+     * \tparam T      Model template class to use, e.g. efgy::geometry::cube
+     * \tparam d      Number of model dimensions, e.g. 4 for a tesseract
+     * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract
+     * \tparam C      The model renderer, e.g. render::svg
+     * \tparam format The vector format to use.
      */
-    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,class,unsigned int> class, unsigned int, bool> class C>
+    template<typename Q, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,class,unsigned int,typename> class, unsigned int, bool, typename> class C,
+             typename format>
     class updateModel
     {
         public:
@@ -123,7 +125,7 @@ namespace topologic
             {
                 out.state<Q,2>::model
                     = std::shared_ptr<render::base<true>>
-                        (new C<Q,d,T,e,true>(out));
+                        (new C<Q,d,T,e,true,format>(out));
 
                 return out.model != 0;
             }
@@ -151,13 +153,14 @@ namespace topologic
      * Convenient specialisation of updateModel using render::svg as the
      * model renderer.
      *
-     * \tparam Q Base type for calculations, e.g. double or GLfloat
-     * \tparam T Model template class to use, e.g. efgy::geometry::cube
-     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
-     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
+     * \tparam Q      Base type for calculations, e.g. double or GLfloat.
+     * \tparam T      Model template class to use, e.g. efgy::geometry::cube.
+     * \tparam d      Number of model dimensions, e.g. 4 for a tesseract.
+     * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract.
+     * \tparam format The vector format to use.
      */
-    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
-    using updateModelSVG = updateModel<Q,T,d,e,render::svg>;
+    template<typename Q, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
+    using updateModelSVG = updateModel<Q,T,d,e,render::svg,format>;
 
 #if !defined(NO_OPENGL)
     /**\brief Model update functor for OpenGL output
@@ -165,13 +168,14 @@ namespace topologic
      * Convenient specialisation of updateModel using render::opengl as the
      * model renderer.
      *
-     * \tparam Q Base type for calculations, e.g. double or GLfloat
-     * \tparam T Model template class to use, e.g. efgy::geometry::cube
-     * \tparam d Number of model dimensions, e.g. 4 for a tesseract
-     * \tparam e Number of render dimensions, e.g. >= 4 for a tesseract
+     * \tparam Q      Base type for calculations, e.g. double or GLfloat.
+     * \tparam T      Model template class to use, e.g. efgy::geometry::cube.
+     * \tparam d      Number of model dimensions, e.g. 4 for a tesseract.
+     * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract.
+     * \tparam format The vector format to use.
      */
-    template<typename Q, template <class,unsigned int,class,unsigned int> class T, unsigned int d, unsigned int e>
-    using updateModelOpenGL = updateModel<Q,T,d,e,render::opengl>;
+    template<typename Q, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
+    using updateModelOpenGL = updateModel<Q,T,d,e,render::opengl,format>;
 #endif
 
     /**\brief Update transformation matrix of state object instance
@@ -733,7 +737,7 @@ namespace topologic
      * \returns 'true' if things worked out, 'false' otherwise.
      */
     template<typename Q, unsigned int d,
-             template<typename, template <class,unsigned int,class,unsigned int> class, unsigned int, unsigned int> class func>
+             template<typename, template <class,unsigned int,class,unsigned int,typename> class, unsigned int, unsigned int, typename> class func>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
         if (parser.updateContext("//topologic:model[@depth][@type][1]"))
