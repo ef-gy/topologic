@@ -278,6 +278,7 @@
         </window>
         <customObject id="494" customClass="OSXAppDelegate">
             <connections>
+                <outlet property="formats" destination="kDg-tb-A64" id="OuT-jd-kHa"/>
                 <outlet property="models" destination="7447" id="7480"/>
                 <outlet property="openGL" destination="678" id="1050"/>
                 <outlet property="subtypeSegmentedControl" destination="2564" id="4501"/>
@@ -774,7 +775,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" title="Precision" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="7499">
-                    <rect key="frame" x="17" y="564" width="245" height="57"/>
+                    <rect key="frame" x="17" y="533" width="245" height="57"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="1" y="1" width="243" height="41"/>
@@ -800,7 +801,7 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <box autoresizesSubviews="NO" title="Parameters" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="6945">
-                    <rect key="frame" x="17" y="378" width="245" height="182"/>
+                    <rect key="frame" x="17" y="347" width="245" height="182"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="1" y="1" width="243" height="166"/>
@@ -878,7 +879,7 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <box autoresizesSubviews="NO" title="IFS" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="o8n-i1-bDQ">
-                    <rect key="frame" x="17" y="200" width="245" height="174"/>
+                    <rect key="frame" x="17" y="169" width="245" height="174"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="1" y="1" width="243" height="158"/>
@@ -1107,10 +1108,24 @@
                         <binding destination="494" name="selectedValue" keyPath="selectedModelName" id="7482"/>
                     </connections>
                 </popUpButton>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kDg-tb-A64">
+                    <rect key="frame" x="18" y="607" width="244" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Xk2-Gc-6Qe" id="vTu-oG-pJm">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="OtherViews" id="mPW-Os-Xd9">
+                            <items>
+                                <menuItem title="Item 1" state="on" id="Xk2-Gc-6Qe"/>
+                                <menuItem title="Item 2" id="qwv-9q-aoQ"/>
+                                <menuItem title="Item 3" id="ln5-7e-Z7A"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
             </subviews>
             <constraints>
                 <constraint firstItem="7447" firstAttribute="top" secondItem="6466" secondAttribute="top" constant="20" symbolic="YES" id="7922"/>
-                <constraint firstItem="7499" firstAttribute="top" secondItem="7447" secondAttribute="bottom" constant="20" id="7926"/>
                 <constraint firstItem="6945" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" symbolic="YES" id="7927"/>
                 <constraint firstAttribute="trailing" secondItem="7447" secondAttribute="trailing" constant="20" symbolic="YES" id="7930"/>
                 <constraint firstItem="6945" firstAttribute="top" secondItem="7499" secondAttribute="bottom" constant="8" symbolic="YES" id="7935"/>
@@ -1119,8 +1134,12 @@
                 <constraint firstItem="7447" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" symbolic="YES" id="7938"/>
                 <constraint firstAttribute="trailing" secondItem="6945" secondAttribute="trailing" constant="20" symbolic="YES" id="7940"/>
                 <constraint firstItem="o8n-i1-bDQ" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" id="F2G-4Z-4lB"/>
+                <constraint firstItem="kDg-tb-A64" firstAttribute="top" secondItem="7447" secondAttribute="bottom" constant="10" id="M5x-Pr-Knn"/>
                 <constraint firstAttribute="trailing" secondItem="o8n-i1-bDQ" secondAttribute="trailing" constant="20" id="Vxc-bi-gRh"/>
+                <constraint firstItem="7499" firstAttribute="top" secondItem="kDg-tb-A64" secondAttribute="bottom" constant="20" id="ceo-JW-HJv"/>
                 <constraint firstItem="o8n-i1-bDQ" firstAttribute="top" secondItem="6945" secondAttribute="bottom" constant="8" symbolic="YES" id="l9b-bb-rn5"/>
+                <constraint firstItem="kDg-tb-A64" firstAttribute="leading" secondItem="6466" secondAttribute="leading" constant="20" id="lX4-Mg-7nm"/>
+                <constraint firstAttribute="trailing" secondItem="kDg-tb-A64" secondAttribute="trailing" constant="20" id="nPZ-EY-PpF"/>
             </constraints>
         </customView>
         <drawer preferredEdge="minX" trailingOffset="15" id="6462">

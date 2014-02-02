@@ -112,6 +112,7 @@ static topologic::xml xml;
 @synthesize IFSPostRotate;
 
 @synthesize models;
+@synthesize formats;
 
 - (void)setColourBackground:(NSColor *)colour
 {
@@ -316,6 +317,7 @@ static topologic::xml xml;
 - (void)awakeFromNib
 {
     [models removeAllItems];
+    [formats removeAllItems];
 
     std::set<std::string> mod;
     int li = 2;
@@ -331,6 +333,12 @@ static topologic::xml xml;
         }
         
         [models addItemWithTitle:@(m.c_str())];
+    }
+
+    std::set<const char*> form;
+    for (const char *f : efgy::geometry::with<GLfloat,efgy::geometry::functor::formats,MAXDEPTH>(form,"*","cube",0,0))
+    {
+        [formats addItemWithTitle:@(f)];
     }
 
     [self setActiveCamera:0];

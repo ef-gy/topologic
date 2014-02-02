@@ -117,11 +117,12 @@ namespace topologic
              * newly created instance.
              *
              * \param[out] out The state object to modify.
+             * \param[in]  tag The vector format tag instance to use.
              *
              * \returns 'true' if the state object has a valid model pointer at
              *          the time the function returns.
              */
-            static output apply (argument out)
+            static output apply (argument out, const format &tag)
             {
                 out.state<Q,2>::model
                     = std::shared_ptr<render::base<true>>

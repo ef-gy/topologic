@@ -77,6 +77,13 @@
      * This is where the XIB reference for the list of models is stored.
      */
     NSPopUpButton IBOutlet *models;
+
+    /**\brief Coordinate format list instance
+     *
+     * This is where the XIB reference for the list of supported coordinate
+     * formats is stored.
+     */
+    NSPopUpButton IBOutlet *formats;
 }
 
 /**\brief Application window
@@ -91,6 +98,13 @@
  * fly and this instance is bound with Interface Builder.
  */
 @property (retain,readwrite) IBOutlet NSPopUpButton *models;
+
+/**\brief List of coordinate formats
+ *
+ * This is the complete list of supported coordinate formats; The list is
+ * populated on the fly and this instance is bound with Interface Builder.
+ */
+@property (retain,readwrite) IBOutlet NSPopUpButton *formats;
 
 /**\brief The OpenGL context
  *
