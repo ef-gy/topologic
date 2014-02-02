@@ -1122,6 +1122,9 @@
                             </items>
                         </menu>
                     </popUpButtonCell>
+                    <connections>
+                        <binding destination="494" name="selectedValue" keyPath="format" id="Ex3-Ys-fG8"/>
+                    </connections>
                 </popUpButton>
             </subviews>
             <constraints>

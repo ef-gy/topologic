@@ -126,7 +126,7 @@ namespace topologic
             {
                 out.state<Q,2>::model
                     = std::shared_ptr<render::base<true>>
-                        (new C<Q,d,T,e,true,format>(out));
+                        (new C<Q,d,T,e,true,format>(out, tag));
 
                 return out.model != 0;
             }

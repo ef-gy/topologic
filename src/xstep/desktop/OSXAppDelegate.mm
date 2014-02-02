@@ -96,6 +96,7 @@ static topologic::xml xml;
 @synthesize cameraActiveCoordinate6Label;
 
 @synthesize model;
+@synthesize format;
 @synthesize modelDepth;
 @synthesize renderDepth;
 
@@ -354,6 +355,8 @@ static topologic::xml xml;
 
     [self updateCamera];
 
+    format = @"cartesian";
+
     [self setModel:@"cube"];
     [self setModelDepth:4];
     [self setRenderDepth:4];
@@ -458,6 +461,23 @@ static topologic::xml xml;
 - (NSString *)model
 {
     return model;
+}
+
+- (void)setFormat:(NSString *)value
+{
+    if (![format isEqualToString:value])
+    {
+        format = value;
+    }
+    if (!topologicState.model || (std::string(topologicState.model->formatID()) != [format UTF8String]))
+    {
+        [self updateModel];
+    }
+}
+
+- (NSString *)format
+{
+    return format;
 }
 
 -(void)setActiveCamera:(NSInteger)newValue
@@ -909,6 +929,7 @@ static topologic::xml xml;
 
     efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH>
         (topologicState,
+         [[format lowercaseString] UTF8String],
          [[model lowercaseString] UTF8String],
          (const unsigned int)modelDepth,
          (const unsigned int)renderDepth);

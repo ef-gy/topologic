@@ -142,6 +142,15 @@ namespace topologic
                  * because you changed some parameters that it may have cached.
                  */
                 virtual void update (void) = 0;
+
+                /**\brief Query vector format ID
+                 *
+                 * Used to obtain a string that identifies the vector format
+                 * currently used by the model.
+                 *
+                 * \returns Vector format ID string.
+                 */
+                virtual const char *formatID (void) = 0;
         };
 
         /**\brief Non-virtual model renderer base class
@@ -211,11 +220,11 @@ namespace topologic
                  *
                  * \param[in,out] pState  The global topologic::state instance
                  * \param[in,out] pRender An appropriate renderer instance
+                 * \param[in]     pFormat The vector format tag to use
                  */
-                common(stateType &pState, renderType &pRender)
+                common(stateType &pState, renderType &pRender, const format &pFormat)
                     : gState(pState),
-                      object(pRender,
-                             gState.parameter)
+                      object(pRender, gState.parameter, pFormat)
                     {}
 
                 /**\brief Construct with global state, renderer and parameters
@@ -227,11 +236,13 @@ namespace topologic
                  *                           instance
                  * \param[in,out] pRender    An appropriate renderer instance
                  * \param[in]     pParameter The parameter instance to use
+                 * \param[in]     pFormat    The vector format tag to use
                  */
-                common(stateType &pState, renderType &pRender, const efgy::geometry::parameters<Q> &pParameter)
+                common(stateType &pState, renderType &pRender,
+                       const efgy::geometry::parameters<Q> &pParameter,
+                       const format &pFormat)
                     : gState(pState),
-                      object(pRender,
-                             pParameter)
+                      object(pRender, pParameter, pFormat)
                     {}
 
                 /**\copydoc base::depth */
@@ -258,6 +269,12 @@ namespace topologic
                     std::stringstream rv;
                     rv << depth() << "-" << id();
                     return rv.str();
+                }
+
+                /**\copydoc base::formatID */
+                const char *formatID (void)
+                {
+                    return modelType::formatID();
                 }
 
             protected:
@@ -341,10 +358,11 @@ namespace topologic
                  * instance. The other parameters are gathered from this state
                  * object.
                  *
-                 * \param[in,out] pState Global topologic state object to use
+                 * \param[in,out] pState  Global topologic state object to use
+                 * \param[in]     pFormat The vector format tag to use
                  */
-                wrapper(stateType &pState)
-                    : parent(pState, pState.svg) {}
+                wrapper(stateType &pState, const format &pFormat)
+                    : parent(pState, pState.svg, pFormat) {}
 
                 /**\brief Construct with global state and custom parameters
                  *
@@ -357,9 +375,12 @@ namespace topologic
                  *                           use
                  * \param[in]     pParameter The model parameters to substitute
                  *                           for the ones in the global state
+                 * \param[in]     pFormat    The vector format tag to use
                  */
-                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : parent(pState, pState.svg, pParameter) {}
+                wrapper(stateType &pState,
+                        const efgy::geometry::parameters<Q> &pParameter,
+                        const format &pFormat)
+                    : parent(pState, pState.svg, pParameter, pFormat) {}
 
                 std::stringstream &render (bool updateMatrix = false)
                 {
@@ -444,10 +465,11 @@ namespace topologic
                  * topologic::state instance. The other parameters are gathered
                  * from this state object.
                  *
-                 * \param[in,out] pState Global topologic state object to use
+                 * \param[in,out] pState  Global topologic state object to use
+                 * \param[in]     pFormat The vector format tag to use
                  */
-                wrapper(stateType &pState)
-                    : parent(pState, pState.opengl, pState.parameter)
+                wrapper(stateType &pState, const format &pFormat)
+                    : parent(pState, pState.opengl, pFormat)
                     {
                         gState.opengl.prepared = false;
                     }
@@ -463,9 +485,12 @@ namespace topologic
                  *                           use
                  * \param[in]     pParameter The model parameters to substitute
                  *                           for the ones in the global state
+                 * \param[in]     pFormat    The vector format tag to use
                  */
-                wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter)
-                    : parent(pState, pState.opengl, pParameter)
+                wrapper(stateType &pState,
+                        const efgy::geometry::parameters<Q> &pParameter,
+                        const format &pFormat)
+                    : parent(pState, pState.opengl, pParameter, pFormat)
                     {
                         gState.opengl.prepared = false;
                     }

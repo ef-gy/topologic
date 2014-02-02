@@ -69,6 +69,7 @@
     NSInteger activeCamera;
 
     NSString *model;
+    NSString *format;
     NSInteger modelDepth;
     NSInteger renderDepth;
 
@@ -391,6 +392,12 @@
  * tesseract, etc.
  */
 @property (retain,readwrite) NSString *model;
+
+/**\brief Current coordinate format
+ *
+ * Contains the current coordinate format's name, e.g. 'cartesian'.
+ */
+@property (retain,readwrite) NSString *format;
 
 /**\brief Current qualified model name
  *
