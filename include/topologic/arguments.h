@@ -137,6 +137,13 @@ namespace topologic
                         {
                             std::cout << " " << m;
                         }
+                        std::cout << "\n"
+                                     "Supported vector formats:";
+                        std::set<const char *> formats;
+                        for (const char *f : efgy::geometry::with<Q,efgy::geometry::functor::formats,dim>(formats,"*","*",0,0))
+                        {
+                            std::cout << " " << f;
+                        }
                         std::cout << "\n";
                         return 0;
                     }
