@@ -77,6 +77,7 @@ namespace topologic
 #endif
             unsigned int depth = 4, rdepth = 4;
             std::string model = "cube";
+            std::string format = "cartesian";
 
             if (argc > 1)
             {
@@ -95,6 +96,7 @@ namespace topologic
                                      "  --depth N               Set model depth to N\n"
                                      "  --render-depth N        Set render depth to N\n"
                                      "  --model M               Set model to M (cube, sphere, ...)\n"
+                                     "  --coordinate-format C   Set coordinate format to C (cartesian, polar, ...)\n"
                                      "\n"
                                      "  --iterations N          Set IFS iterations to N\n"
                                      "  --seed N                Set the RNG seed to N (e.g. for the random-affine-ifs model)\n"
@@ -153,6 +155,14 @@ namespace topologic
                         if (i < argc)
                         {
                             model = argv[i];
+                        }
+                    }
+                    else if (arg == "--coordinate-format")
+                    {
+                        i++;
+                        if (i < argc)
+                        {
+                            format = argv[i];
                         }
                     }
                     else if (arg == "--depth")
@@ -468,6 +478,7 @@ namespace topologic
 #endif
                         if (topologicState.model)
                         {
+                            format = topologicState.model->formatID();
                             model = topologicState.model->id();
                             depth = topologicState.model->depth();
                             rdepth = topologicState.model->renderDepth();
@@ -485,12 +496,12 @@ namespace topologic
             {
                 if (out == outSVG)
                 {
-                    efgy::geometry::with<Q,updateModelSVG,dim> (topologicState, model, depth, rdepth);
+                    efgy::geometry::with<Q,updateModelSVG,dim> (topologicState, format, model, depth, rdepth);
                 }
 #if !defined(NO_OPENGL)
                 else if (out == outGL)
                 {
-                    efgy::geometry::with<Q,updateModelOpenGL,dim> (topologicState, model, depth, rdepth);
+                    efgy::geometry::with<Q,updateModelOpenGL,dim> (topologicState, format, model, depth, rdepth);
                 }
 #endif
             }

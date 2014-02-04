@@ -28,8 +28,9 @@ For an OpenGL/GLUT-based frontend, see
 .IP "--help"
 Display a short summary of the available command line options, then exit.
 .IP "--version"
-Display the version of the binary and the maximum number of supported
-dimensions, then exit.
+Display the version of the binary, the maximum number of supported dimensions,
+the list of supported models and the list of supported vector coordinate formats,
+then exit.
 .IP "--model model"
 Render the given
 .I model
@@ -44,6 +45,10 @@ Render an
 Render the model in
 .I N
 -space.
+.IP "--coordinate-format C"
+Interpret the models' coordinates as having been in the given coordinate format
+.I C
+instead of being plain cartesian coordinates.
 .IP "--iterations N"
 Set the number of iterations when computing iterative function systems to
 .I N
