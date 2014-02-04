@@ -872,6 +872,7 @@ static topologic::xml xml;
 
         efgy::geometry::with<GLfloat,topologic::updateModelSVG,MAXDEPTH>
             (topologicState,
+             [[format lowercaseString] UTF8String],
              [[model lowercaseString] UTF8String],
              (const unsigned int)modelDepth,
              (const unsigned int)renderDepth);

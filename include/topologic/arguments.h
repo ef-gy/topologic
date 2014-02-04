@@ -96,7 +96,7 @@ namespace topologic
                                      "  --depth N               Set model depth to N\n"
                                      "  --render-depth N        Set render depth to N\n"
                                      "  --model M               Set model to M (cube, sphere, ...)\n"
-                                     "  --coordinate-format C   Set coordinate format to C (cartesian, polar, ...)\n"
+                                     "  --coordinate-format C   Set vector coordinate format to C (cartesian, polar, ...)\n"
                                      "\n"
                                      "  --iterations N          Set IFS iterations to N\n"
                                      "  --seed N                Set the RNG seed to N (e.g. for the random-affine-ifs model)\n"
@@ -140,7 +140,7 @@ namespace topologic
                             std::cout << " " << m;
                         }
                         std::cout << "\n"
-                                     "Supported vector formats:";
+                                     "Supported vector coordinate formats:";
                         std::set<const char *> formats;
                         for (const char *f : efgy::geometry::with<Q,efgy::geometry::functor::formats,dim>(formats,"*","*",0,0))
                         {
