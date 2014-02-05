@@ -78,9 +78,10 @@
     </script>
     <script type='text/javascript' src="topologic-sdl.js"></script>
     <script type='text/javascript'>
-var setRadius = Module.cwrap('setRadius', 'number', ['number']);
+var setRadius = Module.cwrap('setRadius', 'number', ['number', 'number']);
+var setConstant = Module.cwrap('setConstant', 'number', ['number']);
 var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
-var updateModel = Module.cwrap('updateModel', 'number', ['string', 'number', 'number']);
+var updateModel = Module.cwrap('updateModel', 'number', ['string', 'string', 'number', 'number']);
 var setActiveDimension = Module.cwrap ('setActiveDimension', 'number', ['number']);
 var forceRedraw = Module.cwrap('forceRedraw', null, []);
 var setFlameColouring = Module.cwrap('setFlameColouring', null, ['number']);
@@ -92,10 +93,13 @@ var resetColourMap = Module.cwrap('resetColourMap', null, []);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
+var topologicFormat='cartesian';
 var topologicModelDepth=4;
 var topologicModelRenderDepth=4;
-var topologicModelPrecision=3;
+var topologicModelPrecision=8.5;
 var topologicModelRadius=1;
+var topologicModelMinorRadius=0.5;
+var topologicModelConstant=1;
 var topologicActiveDimension=3;
 
 var topologicIFSIterations=4;
@@ -139,7 +143,7 @@ function topologicUpdateCurrentModel()
             topologicModelDepth--;
         }
     }
-    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel') || (topologicModel == 'plane'))
+    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel') || (topologicModel == 'plane') || (topologicModel == 'klein-bottle') || (topologicModel == 'torus'))
     {
         if (topologicModelDepth != 2)
         {
@@ -191,6 +195,16 @@ function topologicUpdateCurrentModel()
     {
         output.textContent=topologicModelRadius;
     }
+    output = document.getElementById('modelMinorRadius');
+    if (output)
+    {
+        output.textContent=topologicModelMinorRadius;
+    }
+    output = document.getElementById('modelConstant');
+    if (output)
+    {
+        output.textContent=topologicModelConstant;
+    }
     if (topologicIFSIterations < 2)
     {
         topologicIFSIterations = 2;
@@ -224,7 +238,8 @@ function topologicUpdateCurrentModel()
         output.textContent=topologicFlameVariants;
     }
 
-    setRadius(topologicModelRadius);
+    setRadius(topologicModelRadius, topologicModelMinorRadius);
+    setConstant(topologicModelConstant);
     setPrecision(topologicModelPrecision);
 
     setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate, topologicIFSPostRotate);
@@ -236,7 +251,7 @@ function topologicUpdateCurrentModel()
     setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
     forceRedraw();
-    updateModel(topologicModel, topologicModelDepth, topologicModelRenderDepth);
+    updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
 }
 </script>
     <table id="options">
@@ -257,6 +272,12 @@ function topologicUpdateCurrentModel()
             <option>random-flame</option>
           </select></td>
         </tr>
+        <tr><th>Format</th>
+          <td colspan="3"><select onchange="topologicFormatl=this.value; topologicUpdateCurrentModel();">
+            <option selected="selected">cartesian</option>
+            <option>polar</option>
+          </select></td>
+        </tr>
         <tr><th>Model Depth</th>
           <td onclick="topologicModelDepth--; topologicUpdateCurrentModel();">&lt;</td>
           <td id="modelDepth">4</td>
@@ -267,10 +288,20 @@ function topologicUpdateCurrentModel()
           <td id="modelRenderDepth">4</td>
           <td onclick="topologicModelRenderDepth++; topologicUpdateCurrentModel();">&gt;</td>
         </tr>
-        <tr><th>Radius</th>
+        <tr><th>Major Radius</th>
           <td onclick="topologicModelRadius-=0.25; topologicUpdateCurrentModel();">&lt;</td>
           <td id="modelRadius">1</td>
           <td onclick="topologicModelRadius+=0.25; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Minor Radius</th>
+          <td onclick="topologicModelMinorRadius-=0.25; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelMinorRadius">1</td>
+          <td onclick="topologicModelMinorRadius+=0.25; topologicUpdateCurrentModel();">&gt;</td>
+        </tr>
+        <tr><th>Constant</th>
+          <td onclick="topologicModelConstant-=0.25; topologicUpdateCurrentModel();">&lt;</td>
+          <td id="modelConstant">1</td>
+          <td onclick="topologicModelConstant+=0.25; topologicUpdateCurrentModel();">&gt;</td>
         </tr>
         <tr><th>Precision</th>
           <td onclick="topologicModelPrecision-=0.25; topologicUpdateCurrentModel();">&lt;</td>

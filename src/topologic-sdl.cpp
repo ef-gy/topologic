@@ -101,9 +101,10 @@ static topologic::state<GLfloat,MAXDEPTH> topologicState;
 extern "C"
 {
     void process(void);
-    int setRadius(double);
+    int setRadius(double, double);
+    int setConstant(double);
     int setPrecision(double);
-    int updateModel(char *, int, int);
+    int updateModel(char *, char *, int, int);
     int updateProjection(void);
     int interpretDrag(double, double, double);
     int setActiveDimension(int);
@@ -333,14 +334,32 @@ int main(int argc, char *argv[])
  *
  * Sets the radius parameter used in some models.
  *
- * \param[in] radius The new value of the radius parameter.
+ * \param[in] radius  The new value of the radius parameter.
+ * \param[in] radius2 The new minor radius parameter.
  *
  * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
  *          do anything that could fail, however, so it'll always return '0'.
  */
-int setRadius(double radius)
+int setRadius(double radius, double radius2)
 {
     topologicState.topologic::state<GLfloat,2>::parameter.radius = GLfloat(radius);
+    topologicState.topologic::state<GLfloat,2>::parameter.radius2 = GLfloat(radius2);
+    return 0;
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Set model constant
+ *
+ * Sets the constant parameter used in some models.
+ *
+ * \param[in] constant The new value of the radius parameter.
+ *
+ * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
+ *          do anything that could fail, however, so it'll always return '0'.
+ */
+int setConstant(double constant)
+{
+    topologicState.topologic::state<GLfloat,2>::parameter.constant = GLfloat(constant);
     return 0;
 }
 
@@ -371,9 +390,9 @@ int setPrecision(double precision)
  * \returns 0 if your new settings didn't blow up the code; won't return if
  *          they did.
  */
-int updateModel(char *smodel, int dim, int rdim)
+int updateModel(char *format, char *smodel, int dim, int rdim)
 {
-    efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH> (topologicState, smodel, dim, rdim);
+    efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH> (topologicState, format, smodel, dim, rdim);
 
     return 0;
 }
