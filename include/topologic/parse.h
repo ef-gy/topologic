@@ -741,6 +741,12 @@ namespace topologic
              template<typename, template <class,unsigned int,class,unsigned int,typename> class, unsigned int, unsigned int, typename> class func>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
+        std::string format = "cartesian", value;
+        if ((value = parser.evaluate("//topologic:coordinates/@format")) != "")
+        {
+            format = value;
+        }
+
         if (parser.updateContext("//topologic:model[@depth][@type][1]"))
         {
             int depth  = int(stringToDouble(parser.evaluate("@depth")));
@@ -760,7 +766,7 @@ namespace topologic
                     || (type == "klein-bagle")) rdepth++;
             }
 
-            return efgy::geometry::with<Q,func,d,d> (s, type, depth, rdepth);
+            return efgy::geometry::with<Q,func,d,d> (s, format, type, depth, rdepth);
         }
 
         return false;

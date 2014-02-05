@@ -688,7 +688,8 @@ namespace topologic
             rv << "<t:camera mode='" << (polarCoordinates ? "polar" : "cartesian") << "'/>";
             if (model)
             {
-                rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>";
+                rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>"
+                      "<t:coordinates format='" << model->formatID() << "'/>";
             }
             rv << "<t:options radius='" << double(parameter.radius) << "'/>"
                << "<t:precision polar='" << double(parameter.precision) << "'/>"
