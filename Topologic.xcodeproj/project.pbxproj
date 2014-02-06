@@ -17,19 +17,18 @@
 		343EF393185FAB410045BD78 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 343EF370185FAA680045BD78 /* Credits.rtf */; };
 		343EF394185FAB410045BD78 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 343EF372185FAA680045BD78 /* InfoPlist.strings */; };
 		343EF395185FAB410045BD78 /* Topologic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 343EF374185FAA680045BD78 /* Topologic.xib */; };
-		343EF396185FAB4F0045BD78 /* Topologic-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 343EF379185FAA680045BD78 /* Topologic-Info.plist */; };
 		343EF398185FABD20045BD78 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF397185FABD20045BD78 /* Cocoa.framework */; };
 		343EF39A185FABD60045BD78 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF399185FABD60045BD78 /* OpenGL.framework */; };
 		343EF39C185FABE70045BD78 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF39B185FABE70045BD78 /* libxml2.2.dylib */; };
 		343EF39D185FAC970045BD78 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 343EF37D185FAA680045BD78 /* Main_iPad.storyboard */; };
 		343EF39E185FAC970045BD78 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 343EF37F185FAA680045BD78 /* Main_iPhone.storyboard */; };
 		343EF39F185FAC970045BD78 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 343EF383185FAA680045BD78 /* InAppSettings.bundle */; };
-		343EF3A0185FAC970045BD78 /* Topologic-iOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 343EF385185FAA680045BD78 /* Topologic-iOS-Info.plist */; };
 		343EF3A5185FADF00045BD78 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A3185FADF00045BD78 /* GLKit.framework */; };
 		343EF3A6185FADF00045BD78 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A4185FADF00045BD78 /* OpenGLES.framework */; };
 		343EF3A8185FADF50045BD78 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A7185FADF50045BD78 /* libxml2.2.dylib */; };
 		343EF3AA185FAE0C0045BD78 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A9185FAE0C0045BD78 /* UIKit.framework */; };
 		343EF3AC185FAF520045BD78 /* Topologic.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 343EF3AB185FAF520045BD78 /* Topologic.entitlements */; };
+		34DA23CC18A3394800E9302A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 343EF38B185FAA950045BD78 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -272,7 +271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				343EF3AC185FAF520045BD78 /* Topologic.entitlements in Resources */,
-				343EF396185FAB4F0045BD78 /* Topologic-Info.plist in Resources */,
 				343EF393185FAB410045BD78 /* Credits.rtf in Resources */,
 				343EF394185FAB410045BD78 /* InfoPlist.strings in Resources */,
 				343EF395185FAB410045BD78 /* Topologic.xib in Resources */,
@@ -287,7 +285,7 @@
 				343EF39D185FAC970045BD78 /* Main_iPad.storyboard in Resources */,
 				343EF39E185FAC970045BD78 /* Main_iPhone.storyboard in Resources */,
 				343EF39F185FAC970045BD78 /* InAppSettings.bundle in Resources */,
-				343EF3A0185FAC970045BD78 /* Topologic-iOS-Info.plist in Resources */,
+				34DA23CC18A3394800E9302A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
