@@ -21,8 +21,10 @@
 				<string>cube</string>
 				<string>plane</string>
 				<string>sphere</string>
+				<string>torus</string>
 				<string>moebius-strip</string>
 				<string>klein-bagel</string>
+				<string>klein-bottle</string>
 				<string>sierpinski-gasket</string>
 				<string>sierpinski-carpet</string>
 				<string>random-affine-ifs</string>
@@ -34,8 +36,10 @@
 				<string>Cube</string>
 				<string>Plane</string>
 				<string>Sphere</string>
+				<string>Torus</string>
 				<string>Möbius Strip</string>
 				<string>Klein Bagel</string>
+				<string>Klein Bottle</string>
 				<string>Sierpinski Gasket</string>
 				<string>Sierpinski Carpet</string>
 				<string>(Random) Affine IFS</string>
@@ -49,6 +53,26 @@
 			<string>model</string>
 			<key>DefaultValue</key>
 			<string>cube</string>
+		</dict>
+		<dict>
+			<key>Values</key>
+			<array>
+				<string>cartesian</string>
+				<string>polar</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Cartesian</string>
+				<string>Polar/Spherical</string>
+			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Coordinate Format</string>
+			<key>Key</key>
+			<string>format</string>
+			<key>DefaultValue</key>
+			<string>cartesian</string>
 		</dict>
 		<dict>
 			<key>Values</key>
@@ -135,6 +159,18 @@
 			<integer>2</integer>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSSliderSpecifier</string>
+			<key>Key</key>
+			<string>minorRadius</string>
+			<key>DefaultValue</key>
+			<real>0.5</real>
+			<key>MinimumValue</key>
+			<real>0.1</real>
+			<key>MaximumValue</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
 			<key>Key</key>
 			<string></string>
 			<key>Type</key>
@@ -153,6 +189,26 @@
 			<integer>2</integer>
 			<key>MaximumValue</key>
 			<integer>12</integer>
+		</dict>
+		<dict>
+			<key>Key</key>
+			<string></string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Constant Factor</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSSliderSpecifier</string>
+			<key>Key</key>
+			<string>constant</string>
+			<key>DefaultValue</key>
+			<integer>1</integer>
+			<key>MinimumValue</key>
+			<integer>0</integer>
+			<key>MaximumValue</key>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>Type</key>

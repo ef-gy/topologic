@@ -105,8 +105,9 @@ static topologic::xml xml;
 - (void) updateModel
 {
     NSString *model = [[NSUserDefaults standardUserDefaults] stringForKey:@"model"];
+    NSString *format = [[NSUserDefaults standardUserDefaults] stringForKey:@"format"];
 
-    if (!model)
+    if (!model || !format)
     {
         return;
     }
@@ -131,7 +132,9 @@ static topologic::xml xml;
 
     if (   [model isEqual:@"plane"]
         || [model isEqual:@"moebius-strip"]
-        || [model isEqual:@"klein-bagel"])
+        || [model isEqual:@"klein-bagel"]
+        || [model isEqual:@"klein-bottle"]
+        || [model isEqual:@"klein-torus"])
     {
         if ([[NSUserDefaults standardUserDefaults] integerForKey:@"depth"] != 2)
         {
@@ -162,6 +165,7 @@ static topologic::xml xml;
 
     efgy::geometry::with<GLfloat,topologic::updateModelOpenGL,MAXDEPTH>
         (topologicState,
+         [format UTF8String],
          [model UTF8String],
          (const unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"depth"],
          (const unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"renderDepth"]);
@@ -185,6 +189,16 @@ static topologic::xml xml;
     if ([index isEqual:@"radius"])
     {
         topologicState.parameter.radius = [[NSUserDefaults standardUserDefaults] floatForKey:@"radius"];
+        [self updateModelParameters];
+    }
+    else if ([index isEqual:@"minorRadius"])
+    {
+        topologicState.parameter.radius2 = [[NSUserDefaults standardUserDefaults] floatForKey:@"minorRadius"];
+        [self updateModelParameters];
+    }
+    else if ([index isEqual:@"constant"])
+    {
+        topologicState.parameter.constant = [[NSUserDefaults standardUserDefaults] floatForKey:@"constant"];
         [self updateModelParameters];
     }
     else if ([index isEqual:@"precision"])
@@ -300,6 +314,10 @@ static topologic::xml xml;
     {
         [self updateModel];
     }
+    else if ([index isEqual:@"format"])
+    {
+        [self updateModel];
+    }
     else if ([index isEqual:@"depth"])
     {
         if (   [[[NSUserDefaults standardUserDefaults] stringForKey:@"model"] isEqual:@"sphere"]
@@ -325,6 +343,8 @@ static topologic::xml xml;
 - (void) reconfigure
 {
     [self reconfigureWithIndex:@"radius"];
+    [self reconfigureWithIndex:@"minorRadius"];
+    [self reconfigureWithIndex:@"constant"];
     [self reconfigureWithIndex:@"precision"];
     [self reconfigureWithIndex:@"limit"];
     [self reconfigureWithIndex:@"seed"];
