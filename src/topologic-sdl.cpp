@@ -136,6 +136,16 @@ static bool buttonDown = false;
  */
 static bool doRender = true;
 
+/**\brief Has the scene's dimensions been forced to the current values?
+ *
+ * Set to 'true' with setViewportSize() so that the main loop will not try to
+ * use the SDL information to specify the output dimensions.
+ *
+ * This is needed with version of emscripten that do not support querying the
+ * canvas size.
+ */
+static bool forcedSize = false;
+
 /**\ingroup topologic-javascript-exports
  * \brief Render the scene
  *
@@ -182,14 +192,23 @@ void resetColourMap(void)
  * \param[in] width  The viewport's new width
  * \param[in] height The viewport's new height
  *
- * \bug The current WebGL client is not calling this function when the window
- *      is resized by the user. This results in pixelated output and/or an
- *      incorrect aspect ratio for most users.
+ * \note Setting the viewport to (0,0) will reset the viewport to be queried via
+ *       SDL on the next frame render cycle.
  */
 void setViewportSize(int width, int height)
 {
-    topologicState.width = width;
-    topologicState.height = height;
+    if ((width == 0) && (height == 0))
+    {
+        forcedSize = false;
+        topologicState.width  = 1280;
+        topologicState.height = 720;
+    }
+    else
+    {
+        forcedSize = true;
+        topologicState.width  = width;
+        topologicState.height = height;
+    }
     doRender = true;
 }
 
@@ -206,7 +225,7 @@ void process(void)
 {
     const SDL_VideoInfo* info = SDL_GetVideoInfo();
 
-    if (info)
+    if (info && !forcedSize)
     {
         topologicState.width  = info->current_w;
         topologicState.height = info->current_h;

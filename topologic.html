@@ -251,6 +251,10 @@ function topologicUpdateCurrentModel()
     setColour(1, topologicColour[1][0], topologicColour[1][1], topologicColour[1][2], topologicColour[1][3]);
     setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
+
+    var canvas = document.getElementById('canvas');
+
+    setViewportSize(canvas.width, canvas.height);
     forceRedraw();
     updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
 }
