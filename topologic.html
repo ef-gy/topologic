@@ -252,12 +252,30 @@ function topologicUpdateCurrentModel()
     setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
 
-    var canvas = document.getElementById('canvas');
-
-    setViewportSize(canvas.width, canvas.height);
     forceRedraw();
     updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
 }
+
+(function() {
+    var canvas = document.getElementById('canvas');
+
+    if (!canvas)
+    {
+        return;
+    }
+
+    window.addEventListener('resize', resizeCanvas, false);
+    window.setTimeout(resizeCanvas, 100);
+
+    function resizeCanvas()
+    {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        setViewportSize(canvas.width, canvas.height);
+    }
+
+    resizeCanvas();
+})();
 </script>
     <table id="options">
       <tbody>
