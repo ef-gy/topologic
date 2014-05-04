@@ -39,6 +39,7 @@
 #include <ef.gy/projection.h>
 #include <ef.gy/colour-space-rgb.h>
 #include <ef.gy/maybe.h>
+#include <ef.gy/render-xml.h>
 #include <sstream>
 #include <type_traits>
 #include <memory>
@@ -221,62 +222,6 @@ namespace topologic
             }
             projection.updateMatrix();
             state<Q,d-1>::updateMatrix();
-        }
-
-        /**\brief Gather model metadata
-         *
-         * Creates an XML fragment string containing all of the settings in
-         * this instance of the global state object. Will call its parent
-         * class's metadata method as well, which will do the same recursively
-         * until finally the 2D fix point method is called.
-         *
-         * \returns A string containing an XML fragment with all the metadata
-         *          needed to recreate this instance of the state object.
-         */
-        const std::string metadata(void) const
-        {
-            std::stringstream rv;
-            rv << "<t:camera";
-            if (base::polarCoordinates)
-            {
-                rv << " radius='" << double(fromp[0]) << "'";
-                for (unsigned int i = 1; i < d; i++)
-                {
-                    rv << " theta-" << i << "='" << double(fromp[i]) << "'";
-                }
-            }
-            else
-            {
-                for (unsigned int i = 0; i < d; i++)
-                {
-                    if (i < sizeof(cartesianDimensions))
-                    {
-                        rv << " " << cartesianDimensions[i] << "='" << double(from[i]) << "'";
-                    }
-                    else
-                    {
-                        rv << " d-" << i << "='" << double(from[i]) << "'";
-                    }
-                }
-            }
-            rv << "/>";
-            rv << "<t:transformation";
-            if (isIdentity (transformation.transformationMatrix))
-            {
-                rv << " matrix='identity' depth='" << d << "'";
-            }
-            else
-            {
-                for (unsigned int i = 0; i <= d; i++)
-                {
-                    for (unsigned int j = 0; j <= d; j++)
-                    {
-                        rv << " e" << i << "-" << j << "='" << double(transformation.transformationMatrix[i][j]) << "'";
-                    }
-                }
-            }
-            rv << "/>";
-            return rv.str() + state<Q,d-1>::metadata();
         }
 
         /**\brief Apply scale
@@ -672,36 +617,6 @@ namespace topologic
          */
         void updateMatrix (void) const {}
 
-        /**\brief Gather model metadata
-         *
-         * Creates an XML fragment string containing all of the settings in
-         * this instance of the global state object. This particular method
-         * will not recurse, much unlike the higher level equivalents.
-         *
-         * \returns A string containing an XML fragment with all the metadata
-         *          needed to recreate this instance of the state object.
-         */
-        const std::string metadata(void) const
-        {
-            std::stringstream rv("");
-
-            rv << "<t:camera mode='" << (polarCoordinates ? "polar" : "cartesian") << "'/>";
-            if (model)
-            {
-                rv << "<t:model type='" << model->id() << "' depth='" << model->depth() << "D' render-depth='" << model->renderDepth() << "D'/>"
-                      "<t:coordinates format='" << model->formatID() << "'/>";
-            }
-            rv << "<t:options radius='" << double(parameter.radius) << "'/>"
-               << "<t:precision polar='" << double(parameter.precision) << "'/>"
-               << "<t:ifs iterations='" << parameter.iterations << "' seed='" << parameter.seed << "' functions='" << parameter.functions << "' pre-rotate='" << (parameter.preRotate ? "yes" : "no") << "' post-rotate='" << (parameter.postRotate ? "yes" : "no") << "'/>"
-               << "<t:flame coefficients='" << parameter.flameCoefficients << "'/>"
-               << "<t:colour-background red='" << double(background.red) << "' green='" << double(background.green) << "' blue='" << double(background.blue) << "' alpha='" << double(background.alpha) << "'/>"
-               << "<t:colour-wireframe red='" << double(wireframe.red) << "' green='" << double(wireframe.green) << "' blue='" << double(wireframe.blue) << "' alpha='" << double(wireframe.alpha) << "'/>"
-               << "<t:colour-surface red='" << double(surface.red) << "' green='" << double(surface.green) << "' blue='" << double(surface.blue) << "' alpha='" << double(surface.alpha) << "'/>";
-
-            return rv.str();
-        }
-
         /**\brief Apply scale; 2D fix point
          *
          * Applies a scale to the affine transformation matrix; since the 2D
@@ -959,6 +874,111 @@ namespace topologic
          */
         bool fractalFlameColouring;
     };
+
+    /**\brief Gather model metadata
+     *
+     * Creates an XML fragment string containing all of the settings in
+     * this instance of the global state object. Will call its parent
+     * class's metadata method as well, which will do the same recursively
+     * until finally the 2D fix point method is called.
+     *
+     * \param[out] stream The XML stream to write to.
+     * \param[in]  pValue The state to serialise.
+     *
+     * \returns A new copy of the input stream.
+     *
+     * \tparam C Character type for the basic_ostream reference.
+     * \tparam Q Base data type; should be a class that acts like a rational
+     *           base arithmetic type.
+     * \tparam d Maximum render depth
+     */
+    template <typename C, typename Q, unsigned int d>
+    static inline efgy::render::oxmlstream<C> operator <<
+        (efgy::render::oxmlstream<C> stream,
+         const state<Q,d> &pState)
+    {
+        stream.stream << "<t:camera";
+        if (pState.polarCoordinates)
+        {
+            stream.stream << " radius='" << double(pState.fromp[0]) << "'";
+            for (unsigned int i = 1; i < d; i++)
+            {
+                stream.stream << " theta-" << i << "='" << double(pState.fromp[i]) << "'";
+            }
+        }
+        else
+        {
+            for (unsigned int i = 0; i < d; i++)
+            {
+                if (i < sizeof(cartesianDimensions))
+                {
+                    stream.stream << " " << cartesianDimensions[i] << "='" << double(pState.from[i]) << "'";
+                }
+                else
+                {
+                    stream.stream << " d-" << i << "='" << double(pState.from[i]) << "'";
+                }
+            }
+        }
+        stream.stream << "/>";
+        stream.stream << "<t:transformation";
+        if (isIdentity (pState.transformation.transformationMatrix))
+        {
+            stream.stream << " matrix='identity' depth='" << d << "'";
+        }
+        else
+        {
+            for (unsigned int i = 0; i <= d; i++)
+            {
+                for (unsigned int j = 0; j <= d; j++)
+                {
+                    stream.stream << " e" << i << "-" << j << "='" << double(pState.transformation.transformationMatrix[i][j]) << "'";
+                }
+            }
+        }
+        stream.stream << "/>";
+
+        return operator << <C,Q,d-1> (stream, pState);
+    }
+
+    /**\brief Gather model metadata (2D fix point)
+     *
+     * Creates an XML fragment string containing all of the settings in
+     * this instance of the global state object. This particular method
+     * will not recurse, much unlike the higher level equivalents.
+     *
+     * \param[out] stream The XML stream to write to.
+     * \param[in]  pValue The state to serialise.
+     *
+     * \returns A new copy of the input stream.
+     *
+     * \tparam C Character type for the basic_ostream reference.
+     * \tparam Q Base data type; should be a class that acts like a rational
+     *           base arithmetic type.
+     * \tparam d Maximum render depth
+     */
+    template <typename C, typename Q, unsigned int d>
+    static inline efgy::render::oxmlstream<C> operator <<
+        (efgy::render::oxmlstream<C> stream,
+         const state<Q,2> &pState)
+    {
+        stream.stream << "<t:camera mode='" << (pState.polarCoordinates ? "polar" : "cartesian") << "'/>";
+        if (pState.model)
+        {
+            stream.stream << "<t:model type='" << pState.model->id() << "' depth='" << pState.model->depth() << "D' render-depth='" << pState.model->renderDepth() << "D'/>"
+            "<t:coordinates format='" << pState.model->formatID() << "'/>";
+        }
+        stream.stream
+            << "<t:options radius='" << double(pState.parameter.radius) << "'/>"
+            << "<t:precision polar='" << double(pState.parameter.precision) << "'/>"
+            << "<t:ifs iterations='" << pState.parameter.iterations << "' seed='" << pState.parameter.seed << "' functions='" << pState.parameter.functions << "' pre-rotate='" << (pState.parameter.preRotate ? "yes" : "no") << "' post-rotate='" << (pState.parameter.postRotate ? "yes" : "no") << "'/>"
+            << "<t:flame coefficients='" << pState.parameter.flameCoefficients << "'/>"
+            << "<t:colour-background red='" << double(pState.background.red) << "' green='" << double(pState.background.green) << "' blue='" << double(pState.background.blue) << "' alpha='" << double(pState.background.alpha) << "'/>"
+            << "<t:colour-wireframe red='" << double(pState.wireframe.red) << "' green='" << double(pState.wireframe.green) << "' blue='" << double(pState.wireframe.blue) << "' alpha='" << double(pState.wireframe.alpha) << "'/>"
+            << "<t:colour-surface red='" << double(pState.surface.red) << "' green='" << double(pState.surface.green) << "' blue='" << double(pState.surface.blue) << "' alpha='" << double(pState.surface.alpha) << "'/>";
+
+        return stream;
+    }
 };
 
 #endif
