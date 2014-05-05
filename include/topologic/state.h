@@ -978,10 +978,6 @@ namespace topologic
             << "<t:colour-wireframe red='" << double(pState.wireframe.red) << "' green='" << double(pState.wireframe.green) << "' blue='" << double(pState.wireframe.blue) << "' alpha='" << double(pState.wireframe.alpha) << "'/>"
             << "<t:colour-surface red='" << double(pState.surface.red) << "' green='" << double(pState.surface.green) << "' blue='" << double(pState.surface.blue) << "' alpha='" << double(pState.surface.alpha) << "'/>";
 
-        stream.stream << "<t:json>";
-        operator << <C,Q,2> (stream.stream << efgy::render::JSON(), pState);
-        stream.stream << "</t:json>";
-
         return stream;
     }
 
@@ -1007,6 +1003,41 @@ namespace topologic
         (efgy::render::ojsonstream<C> stream,
          const state<Q,d> &pState)
     {
+        stream.stream << "\"camera-" << d << "\":[";
+        if (pState.polarCoordinates)
+        {
+            stream.stream << "\"polar\"";
+            for (unsigned int i = 0; i < d; i++)
+            {
+                stream.stream << "," << double(pState.from[i]);
+            }
+        }
+        else
+        {
+            stream.stream << "\"cartesian\"";
+            for (unsigned int i = 0; i < d; i++)
+            {
+                stream.stream << "," << double(pState.from[i]);
+            }
+        }
+        stream.stream << "],\"transformation-" << d << "\":[";
+        if (isIdentity (pState.transformation.transformationMatrix))
+        {
+            stream.stream << "\"identitiy\"";
+        }
+        else
+        {
+            stream.stream << "\"matrix\"";
+            for (unsigned int i = 0; i <= d; i++)
+            {
+                for (unsigned int j = 0; j <= d; j++)
+                {
+                    stream.stream << "," << double(pState.transformation.transformationMatrix[i][j]);
+                }
+            }
+        }
+        stream.stream << "],";
+        
         return operator << <C,Q,d-1> (stream, pState);
     }
 
@@ -1031,22 +1062,21 @@ namespace topologic
         (efgy::render::ojsonstream<C> stream,
          const state<Q,2> &pState)
     {
-        stream.stream << "{ \"mode\": \"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
+        stream.stream << "\"mode\":\"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
         if (pState.model)
         {
-            stream.stream << " \"model\": \"" << pState.model->id() << "\", \"depth\": \"" << pState.model->depth() << "D\", \"renderDepth\": \"" << pState.model->renderDepth() << "D\","
-            " \"coordinateFormat\": \"" << pState.model->formatID() << "\",";
+            stream.stream << "\"model\":\"" << pState.model->id() << "\",\"depth\":\"" << pState.model->depth() << "D\",\"renderDepth\":\"" << pState.model->renderDepth() << "D\","
+            " \"coordinateFormat\":\"" << pState.model->formatID() << "\",";
         }
         stream.stream
-            << " \"radius\": \"" << double(pState.parameter.radius) << "\","
-            << " \"polarPrecision\": \"" << double(pState.parameter.precision) << "\","
-            << " \"IFSIterations\": \"" << pState.parameter.iterations << "\", \"IFSSeed\": \"" << pState.parameter.seed << "\", \"IFSFunctions\": \"" << pState.parameter.functions << "\", \"IFSPreRotate\": \"" << (pState.parameter.preRotate ? "yes" : "no") << "\", \"IFSPostRotate\": \"" << (pState.parameter.postRotate ? "yes" : "no") << "\","
-            << " \"flameCoefficients\": \"" << pState.parameter.flameCoefficients << "\","
-            << " \"background\": [ \"rgb\", " << double(pState.background.red) << ", " << double(pState.background.green) << ", " << double(pState.background.blue) << ", " << double(pState.background.alpha) << " ],"
-            << " \"wireframe\": [ \"rgb\", " << double(pState.wireframe.red) << ", " << double(pState.wireframe.green) << ", " << double(pState.wireframe.blue) << ", " << double(pState.wireframe.alpha) << " ],"
-            << " \"surface\": [ \"rgb\", " << double(pState.surface.red) << ", " << double(pState.surface.green) << ", " << double(pState.surface.blue) << ", " << double(pState.surface.alpha) << " ]"
-            << " }";
-        
+            << "\"radius\":\"" << double(pState.parameter.radius) << "\","
+            << "\"polarPrecision\": \"" << double(pState.parameter.precision) << "\","
+            << "\"IFSIterations\":\"" << pState.parameter.iterations << "\",\"IFSSeed\":\"" << pState.parameter.seed << "\",\"IFSFunctions\":\"" << pState.parameter.functions << "\", \"IFSPreRotate\": \"" << (pState.parameter.preRotate ? "yes" : "no") << "\",\"IFSPostRotate\":\"" << (pState.parameter.postRotate ? "yes" : "no") << "\","
+            << "\"flameCoefficients\":\"" << pState.parameter.flameCoefficients << "\","
+            << "\"background\":[\"rgb\", " << double(pState.background.red) << ", " << double(pState.background.green) << ", " << double(pState.background.blue) << ", " << double(pState.background.alpha) << "],"
+            << "\"wireframe\":[\"rgb\", " << double(pState.wireframe.red) << ", " << double(pState.wireframe.green) << ", " << double(pState.wireframe.blue) << ", " << double(pState.wireframe.alpha) << "],"
+            << "\"surface\":[\"rgb\", " << double(pState.surface.red) << ", " << double(pState.surface.green) << ", " << double(pState.surface.blue) << ", " << double(pState.surface.alpha) << "]";
+
         return stream;
     }
 };

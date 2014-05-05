@@ -403,6 +403,9 @@ namespace topologic
                          "<title>" + name() + "</title>"
                          "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
                       << efgy::render::XML() << gState;
+                    gState.svg.output << "<t:json>{";
+                    gState.svg.output << efgy::render::JSON() << gState;
+                    gState.svg.output << "}</t:json>";
                     gState.svg.output
                       << "</metadata>"
                          "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
