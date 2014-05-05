@@ -40,6 +40,7 @@
 #include <ef.gy/colour-space-rgb.h>
 #include <ef.gy/maybe.h>
 #include <ef.gy/render-xml.h>
+#include <ef.gy/render-json.h>
 #include <sstream>
 #include <type_traits>
 #include <memory>
@@ -877,10 +878,10 @@ namespace topologic
 
     /**\brief Gather model metadata
      *
-     * Creates an XML fragment string containing all of the settings in
-     * this instance of the global state object. Will call its parent
-     * class's metadata method as well, which will do the same recursively
-     * until finally the 2D fix point method is called.
+     * Creates an XML fragment containing all of the settings in this instance
+     * of the global state object. Will call its parent class's metadata method
+     * as well, which will do the same recursively until finally the 2D fix
+     * point method is called.
      *
      * \param[out] stream The XML stream to write to.
      * \param[in]  pValue The state to serialise.
@@ -943,9 +944,9 @@ namespace topologic
 
     /**\brief Gather model metadata (2D fix point)
      *
-     * Creates an XML fragment string containing all of the settings in
-     * this instance of the global state object. This particular method
-     * will not recurse, much unlike the higher level equivalents.
+     * Creates an XML fragment containing all of the settings in this instance
+     * of the global state object. This particular method will not recurse, much
+     * unlike the higher level equivalents.
      *
      * \param[out] stream The XML stream to write to.
      * \param[in]  pValue The state to serialise.
@@ -977,6 +978,75 @@ namespace topologic
             << "<t:colour-wireframe red='" << double(pState.wireframe.red) << "' green='" << double(pState.wireframe.green) << "' blue='" << double(pState.wireframe.blue) << "' alpha='" << double(pState.wireframe.alpha) << "'/>"
             << "<t:colour-surface red='" << double(pState.surface.red) << "' green='" << double(pState.surface.green) << "' blue='" << double(pState.surface.blue) << "' alpha='" << double(pState.surface.alpha) << "'/>";
 
+        stream.stream << "<t:json>";
+        operator << <C,Q,2> (stream.stream << efgy::render::JSON(), pState);
+        stream.stream << "</t:json>";
+
+        return stream;
+    }
+
+    /**\brief Gather model metadata (JSON)
+     *
+     * Creates a JSON fragment containing all of the settings in this instance
+     * of the global state object. Will call its parent class's metadata method
+     * as well, which will do the same recursively until finally the 2D fix
+     * point method is called.
+     *
+     * \param[out] stream The JSON stream to write to.
+     * \param[in]  pValue The state to serialise.
+     *
+     * \returns A new copy of the input stream.
+     *
+     * \tparam C Character type for the basic_ostream reference.
+     * \tparam Q Base data type; should be a class that acts like a rational
+     *           base arithmetic type.
+     * \tparam d Maximum render depth
+     */
+    template <typename C, typename Q, unsigned int d>
+    static inline efgy::render::ojsonstream<C> operator <<
+        (efgy::render::ojsonstream<C> stream,
+         const state<Q,d> &pState)
+    {
+        return operator << <C,Q,d-1> (stream, pState);
+    }
+
+    /**\brief Gather model metadata (2D fix point, JSON)
+     *
+     * Creates a JSON fragment containing all of the settings in this instance
+     * of the global state object. This particular method will not recurse, much
+     * unlike the higher level equivalents.
+     *
+     * \param[out] stream The JSON stream to write to.
+     * \param[in]  pValue The state to serialise.
+     *
+     * \returns A new copy of the input stream.
+     *
+     * \tparam C Character type for the basic_ostream reference.
+     * \tparam Q Base data type; should be a class that acts like a rational
+     *           base arithmetic type.
+     * \tparam d Maximum render depth
+     */
+    template <typename C, typename Q, unsigned int d>
+    static inline efgy::render::ojsonstream<C> operator <<
+        (efgy::render::ojsonstream<C> stream,
+         const state<Q,2> &pState)
+    {
+        stream.stream << "{ \"mode\": \"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
+        if (pState.model)
+        {
+            stream.stream << " \"model\": \"" << pState.model->id() << "\", \"depth\": \"" << pState.model->depth() << "D\", \"renderDepth\": \"" << pState.model->renderDepth() << "D\","
+            " \"coordinateFormat\": \"" << pState.model->formatID() << "\",";
+        }
+        stream.stream
+            << " \"radius\": \"" << double(pState.parameter.radius) << "\","
+            << " \"polarPrecision\": \"" << double(pState.parameter.precision) << "\","
+            << " \"IFSIterations\": \"" << pState.parameter.iterations << "\", \"IFSSeed\": \"" << pState.parameter.seed << "\", \"IFSFunctions\": \"" << pState.parameter.functions << "\", \"IFSPreRotate\": \"" << (pState.parameter.preRotate ? "yes" : "no") << "\", \"IFSPostRotate\": \"" << (pState.parameter.postRotate ? "yes" : "no") << "\","
+            << " \"flameCoefficients\": \"" << pState.parameter.flameCoefficients << "\","
+            << " \"background\": [ \"rgb\", " << double(pState.background.red) << ", " << double(pState.background.green) << ", " << double(pState.background.blue) << ", " << double(pState.background.alpha) << " ],"
+            << " \"wireframe\": [ \"rgb\", " << double(pState.wireframe.red) << ", " << double(pState.wireframe.green) << ", " << double(pState.wireframe.blue) << ", " << double(pState.wireframe.alpha) << " ],"
+            << " \"surface\": [ \"rgb\", " << double(pState.surface.red) << ", " << double(pState.surface.green) << ", " << double(pState.surface.blue) << ", " << double(pState.surface.alpha) << " ]"
+            << " }";
+        
         return stream;
     }
 };
