@@ -413,7 +413,7 @@ namespace topologic
                          " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
                     if (gState.surface.alpha > Q(0.))
                     {
-                        object.renderSolid();
+                        gState.svg.output << gState.svg << object;
                     }
                     gState.svg.output << "</svg>\n";
 
