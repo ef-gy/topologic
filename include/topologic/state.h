@@ -1065,17 +1065,17 @@ namespace topologic
         stream.stream << "\"mode\":\"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
         if (pState.model)
         {
-            stream.stream << "\"model\":\"" << pState.model->id() << "\",\"depth\":\"" << pState.model->depth() << "D\",\"renderDepth\":\"" << pState.model->renderDepth() << "D\","
+            stream.stream << "\"model\":\"" << pState.model->id() << "\",\"depth\":" << pState.model->depth() << ",\"renderDepth\":" << pState.model->renderDepth() << ","
             " \"coordinateFormat\":\"" << pState.model->formatID() << "\",";
         }
         stream.stream
             << "\"radius\":\"" << double(pState.parameter.radius) << "\","
-            << "\"polarPrecision\": \"" << double(pState.parameter.precision) << "\","
-            << "\"IFSIterations\":\"" << pState.parameter.iterations << "\",\"IFSSeed\":\"" << pState.parameter.seed << "\",\"IFSFunctions\":\"" << pState.parameter.functions << "\", \"IFSPreRotate\": \"" << (pState.parameter.preRotate ? "yes" : "no") << "\",\"IFSPostRotate\":\"" << (pState.parameter.postRotate ? "yes" : "no") << "\","
+            << "\"polarPrecision\":\"" << double(pState.parameter.precision) << "\","
+            << "\"IFSIterations\":\"" << pState.parameter.iterations << "\",\"IFSSeed\":\"" << pState.parameter.seed << "\",\"IFSFunctions\":\"" << pState.parameter.functions << "\",\"IFSPreRotate\":" << (pState.parameter.preRotate ? "true" : "false") << ",\"IFSPostRotate\":" << (pState.parameter.postRotate ? "true" : "false") << ","
             << "\"flameCoefficients\":\"" << pState.parameter.flameCoefficients << "\","
-            << "\"background\":[\"rgb\", " << double(pState.background.red) << ", " << double(pState.background.green) << ", " << double(pState.background.blue) << ", " << double(pState.background.alpha) << "],"
-            << "\"wireframe\":[\"rgb\", " << double(pState.wireframe.red) << ", " << double(pState.wireframe.green) << ", " << double(pState.wireframe.blue) << ", " << double(pState.wireframe.alpha) << "],"
-            << "\"surface\":[\"rgb\", " << double(pState.surface.red) << ", " << double(pState.surface.green) << ", " << double(pState.surface.blue) << ", " << double(pState.surface.alpha) << "]";
+            << "\"background\":[\"rgb\"," << double(pState.background.red) << "," << double(pState.background.green) << "," << double(pState.background.blue) << "," << double(pState.background.alpha) << "],"
+            << "\"wireframe\":[\"rgb\"," << double(pState.wireframe.red) << "," << double(pState.wireframe.green) << "," << double(pState.wireframe.blue) << "," << double(pState.wireframe.alpha) << "],"
+            << "\"surface\":[\"rgb\"," << double(pState.surface.red) << "," << double(pState.surface.green) << "," << double(pState.surface.blue) << "," << double(pState.surface.alpha) << "]";
 
         return stream;
     }
