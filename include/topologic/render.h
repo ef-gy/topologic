@@ -185,7 +185,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
         class common : public base<isVirtual>
         {
             public:
@@ -194,7 +194,7 @@ namespace topologic
                  * Alias of the model type that this class represents with all
                  * the template parameters filled in.
                  */
-                typedef T<Q,d,R<Q,rd>,rd,format> modelType;
+                typedef T<Q,d,rd,format> modelType;
 
                 /**\brief Renderer type
                  *
@@ -224,7 +224,7 @@ namespace topologic
                  */
                 common(stateType &pState, renderType &pRender, const format &pFormat)
                     : gState(pState),
-                      object(pRender, gState.parameter, pFormat)
+                      object(gState.parameter, pFormat)
                     {}
 
                 /**\brief Construct with global state, renderer and parameters
@@ -242,7 +242,7 @@ namespace topologic
                        const efgy::geometry::parameters<Q> &pParameter,
                        const format &pFormat)
                     : gState(pState),
-                      object(pRender, pParameter, pFormat)
+                      object(pParameter, pFormat)
                     {}
 
                 /**\copydoc base::depth */
@@ -314,7 +314,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
         class wrapper;
 
         /**\brief SVG model renderer
@@ -336,7 +336,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
         class wrapper<Q,d,T,efgy::render::svg,rd,isVirtual,format> : public common<Q,d,T,efgy::render::svg,rd,isVirtual,format>
         {
             public:
@@ -448,7 +448,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
         class wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual,format> : public common<Q,d,T,efgy::render::opengl,rd,isVirtual,format>
         {
             public:
@@ -574,7 +574,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
         using svg = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual,format>;
 
 #if !defined (NO_OPENGL)
@@ -596,7 +596,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,class,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
         using opengl = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual,format>;
 #endif
     };
