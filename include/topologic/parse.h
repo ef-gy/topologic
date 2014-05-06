@@ -161,7 +161,7 @@ namespace topologic
      * \tparam format The vector format to use.
      */
     template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
-    using updateModelSVG = updateModel<Q,T,d,e,render::svg,format>;
+    using updateModelSVG = updateModel<Q,T,d,e,render::wrapper,format>;
 
 #if !defined(NO_OPENGL)
     /**\brief Model update functor for OpenGL output
@@ -176,7 +176,7 @@ namespace topologic
      * \tparam format The vector format to use.
      */
     template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
-    using updateModelOpenGL = updateModel<Q,T,d,e,render::opengl,format>;
+    using updateModelOpenGL = updateModel<Q,T,d,e,render::wrapper,format>;
 #endif
 
     /**\brief Update transformation matrix of state object instance

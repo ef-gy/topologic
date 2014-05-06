@@ -79,7 +79,7 @@
 
     if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
     {
-        [(OSXAppDelegate*)[NSApp delegate] state]->model->render(true);
+        [(OSXAppDelegate*)[NSApp delegate] state]->model->opengl(true);
     }
 
     [[self openGLContext] flushBuffer];

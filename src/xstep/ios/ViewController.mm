@@ -77,7 +77,7 @@
 
     if ([(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model)
     {
-        [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->render(true);
+        [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->opengl(true);
     }
     else
     {

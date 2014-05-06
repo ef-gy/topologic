@@ -89,7 +89,7 @@ namespace topologic
             }
             else
             {
-                std::cout << topologicState.model->render(true).str();
+                std::cout << topologicState.model->svg(true).str();
             }
         }
         catch (std::exception &e)

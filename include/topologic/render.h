@@ -82,20 +82,6 @@ namespace topologic
                  */
                 virtual ~base(void) {}
 
-                /**\brief Render model
-                 *
-                 * Processes the model with the renderer. Depending on the
-                 * output, this may or may not produce output directly on
-                 * screen or fill a provided stringstream.
-                 *
-                 * \param[in] updateMatrix Whether to update the projection
-                 *                         matrices.
-                 *
-                 * \returns A stringstream which will either be empty or
-                 *          contain the generated data.
-                 */
-                virtual std::stringstream &render (bool updateMatrix = false) = 0;
-
                 /**\brief Query model depth
                  *
                  * Used to access the model depth; this is typically a template
@@ -151,6 +137,33 @@ namespace topologic
                  * \returns Vector format ID string.
                  */
                 virtual const char *formatID (void) = 0;
+
+                /**\brief Render to SVG
+                 *
+                 * This is a wrapper for libefgy's SVG renderer, augmented with
+                 * some code to write out model parameters and use Topologic's
+                 * state object to handle these parameters.
+                 *
+                 * \param[in] updateMatrix Whether to update the projection
+                 *                         matrices.
+                 *
+                 * \returns A stringstream which will either be empty or
+                 *          contain the generated data.
+                 */
+                virtual std::stringstream &svg (bool updateMatrix = false) = 0;
+
+#if !defined (NO_OPENGL)
+                /**\brief Render to OpenGL context
+                 *
+                 * This is a wrapper for libefgy's OpenGL renderer.
+                 *
+                 * \param[in] updateMatrix Whether to update the projection
+                 *                         matrices.
+                 *
+                 * \returns 'true' upon success.
+                 */
+                virtual bool opengl (bool updateMatrix = false) = 0;
+#endif
         };
 
         /**\brief Non-virtual model renderer base class
@@ -174,7 +187,6 @@ namespace topologic
          * \tparam Q  Base data type for calculations
          * \tparam d  Model depth; typically has to be <= the render depth
          * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam R  Model renderer template; use things like efgy::render::svg
          * \tparam rd Model render depth; this is the maximum depth for your
          *            models and also specifies the maximum depth of any
          *            transformations you can apply.
@@ -185,8 +197,8 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
-        class common : public base<isVirtual>
+        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        class wrapper : public base<isVirtual>
         {
             public:
                 /**\brief Model type
@@ -195,13 +207,6 @@ namespace topologic
                  * the template parameters filled in.
                  */
                 typedef T<Q,d,rd,format> modelType;
-
-                /**\brief Renderer type
-                 *
-                 * Alias of the model renderer type that this class represents
-                 * with all the template parameters filled in.
-                 */
-                typedef R<Q,rd> renderType;
 
                 /**\brief Global state type
                  *
@@ -219,13 +224,14 @@ namespace topologic
                  * provided by the global state object.
                  *
                  * \param[in,out] pState  The global topologic::state instance
-                 * \param[in,out] pRender An appropriate renderer instance
                  * \param[in]     pFormat The vector format tag to use
                  */
-                common(stateType &pState, renderType &pRender, const format &pFormat)
+                wrapper(stateType &pState, const format &pFormat)
                     : gState(pState),
                       object(gState.parameter, pFormat)
-                    {}
+                    {
+                        update();
+                    }
 
                 /**\brief Construct with global state, renderer and parameters
                  *
@@ -234,16 +240,17 @@ namespace topologic
                  *
                  * \param[in,out] pState     The global topologic::state
                  *                           instance
-                 * \param[in,out] pRender    An appropriate renderer instance
                  * \param[in]     pParameter The parameter instance to use
                  * \param[in]     pFormat    The vector format tag to use
                  */
-                common(stateType &pState, renderType &pRender,
+                wrapper(stateType &pState,
                        const efgy::geometry::parameters<Q> &pParameter,
                        const format &pFormat)
                     : gState(pState),
                       object(pParameter, pFormat)
-                    {}
+                    {
+                        update();
+                    }
 
                 /**\copydoc base::depth */
                 unsigned int depth (void) const
@@ -277,112 +284,7 @@ namespace topologic
                     return modelType::formatID();
                 }
 
-            protected:
-                /**\brief Global state object
-                 *
-                 * A reference to the global state object, which was passed to
-                 * the constructor as 'pState'. This is necessary to keep track
-                 * of updated global settings.
-                 */
-                stateType &gState;
-
-                /**\brief Intrinsic object instance
-                 *
-                 * Contains the instance of the model that this renderer is
-                 * trying to create a representation of.
-                 */
-                modelType object;
-        };
-
-        /**\brief Model renderer wrapper
-         *
-         * Base definition for libefgy model renderers; there's no generic
-         * definition for this template, but rather only partial
-         * specialisations for the individual renderers.
-         *
-         * \tparam Q  Base data type for calculations
-         * \tparam d  Model depth; typically has to be <= the render depth
-         * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam R  Model renderer template; use things like efgy::render::svg
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
-         * \tparam isVirtual Whether the class should contain the virtual
-         *                   functions defined in renderer<true>. It'll contain
-         *                   the actual functions in there either way, this
-         *                   just determines if they should make the class a
-         *                   virtual class.
-         * \tparam format    The vector format to use.
-         */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, template <class,unsigned int> class R, unsigned int rd, bool isVirtual, typename format>
-        class wrapper;
-
-        /**\brief SVG model renderer
-         *
-         * This is a wrapper for libefgy's SVG renderer, augmented with some
-         * code to write out model parameters and use Topologic's state object
-         * to handle these parameters.
-         *
-         * \tparam Q  Base data type for calculations
-         * \tparam d  Model depth; typically has to be <= the render depth
-         * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
-         * \tparam isVirtual Whether the class should contain the virtual
-         *                   functions defined in renderer<true>. It'll contain
-         *                   the actual functions in there either way, this
-         *                   just determines if they should make the class a
-         *                   virtual class.
-         * \tparam format    The vector format to use.
-         */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
-        class wrapper<Q,d,T,efgy::render::svg,rd,isVirtual,format> : public common<Q,d,T,efgy::render::svg,rd,isVirtual,format>
-        {
-            public:
-                /**\brief Base type alias
-                 *
-                 * The base type for this class is rather unwieldy; this
-                 * typedef should help a bit with that.
-                 */
-                typedef common<Q,d,T,efgy::render::svg,rd,isVirtual,format> parent;
-                using typename parent::stateType;
-
-                using parent::name;
-                using parent::gState;
-                using parent::object;
-
-                /**\brief Construct with global state
-                 *
-                 * Initialises an SVG renderer with a global topologic::state
-                 * instance. The other parameters are gathered from this state
-                 * object.
-                 *
-                 * \param[in,out] pState  Global topologic state object to use
-                 * \param[in]     pFormat The vector format tag to use
-                 */
-                wrapper(stateType &pState, const format &pFormat)
-                    : parent(pState, pState.svg, pFormat) {}
-
-                /**\brief Construct with global state and custom parameters
-                 *
-                 * Initialises an SVG renderer with a global topologic::state
-                 * instance. Additionally, instead of using the global state's
-                 * parameter instance, this constructor substitutes the given
-                 * 'pParameter'.
-                 *
-                 * \param[in,out] pState     Global topologic state object to
-                 *                           use
-                 * \param[in]     pParameter The model parameters to substitute
-                 *                           for the ones in the global state
-                 * \param[in]     pFormat    The vector format tag to use
-                 */
-                wrapper(stateType &pState,
-                        const efgy::geometry::parameters<Q> &pParameter,
-                        const format &pFormat)
-                    : parent(pState, pState.svg, pParameter, pFormat) {}
-
-                std::stringstream &render (bool updateMatrix = false)
+                std::stringstream &svg (bool updateMatrix = false)
                 {
                     if (updateMatrix)
                     {
@@ -390,116 +292,40 @@ namespace topologic
                         gState.height = 3;
                         gState.updateMatrix();
                     }
-
+                    
                     gState.svg.frameStart();
-
+                    
                     gState.svg.reset();
-
+                    
                     gState.svg.output
-                      << "<?xml version='1.0' encoding='utf-8'?>"
-                         "<svg xmlns='http://www.w3.org/2000/svg'"
-                         " xmlns:xlink='http://www.w3.org/1999/xlink'"
-                         " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
-                         "<title>" + name() + "</title>"
-                         "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
-                      << efgy::render::XML() << gState;
+                        <<  "<?xml version='1.0' encoding='utf-8'?>"
+                            "<svg xmlns='http://www.w3.org/2000/svg'"
+                            " xmlns:xlink='http://www.w3.org/1999/xlink'"
+                            " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
+                            "<title>" + name() + "</title>"
+                            "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
+                        <<  efgy::render::XML() << gState;
                     gState.svg.output << "<t:json>{";
                     gState.svg.output << efgy::render::JSON() << gState;
                     gState.svg.output << "}</t:json>";
                     gState.svg.output
-                      << "</metadata>"
-                         "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
-                         " path { stroke-width: 0.002; stroke: rgba(" << double(gState.wireframe.red)*100. << "%," << double(gState.wireframe.green)*100. << "%," << double(gState.wireframe.blue)*100. << "%," << double(gState.wireframe.alpha) << ");"
-                         " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
+                        <<  "</metadata>"
+                            "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
+                            " path { stroke-width: 0.002; stroke: rgba(" << double(gState.wireframe.red)*100. << "%," << double(gState.wireframe.green)*100. << "%," << double(gState.wireframe.blue)*100. << "%," << double(gState.wireframe.alpha) << ");"
+                            " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
                     if (gState.surface.alpha > Q(0.))
                     {
                         gState.svg.output << gState.svg << object;
                     }
                     gState.svg.output << "</svg>\n";
-
+                    
                     gState.svg.frameEnd();
-
+                    
                     return gState.svg.output;
                 }
 
-                void update (void)
-                {
-                    object.calculateObject();
-                }
-        };
-
 #if !defined (NO_OPENGL)
-        /**\brief OpenGL model renderer
-         *
-         * This is a wrapper for libefgy's OpenGL renderer, augmented with some
-         * code to write out model parameters and use Topologic's state object
-         * to handle these parameters.
-         *
-         * \tparam Q  Base data type for calculations
-         * \tparam d  Model depth; typically has to be <= the render depth
-         * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
-         * \tparam isVirtual Whether the class should contain the virtual
-         *                   functions defined in renderer<true>. It'll contain
-         *                   the actual functions in there either way, this
-         *                   just determines if they should make the class a
-         *                   virtual class.
-         * \tparam format    The vector format to use.
-         */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
-        class wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual,format> : public common<Q,d,T,efgy::render::opengl,rd,isVirtual,format>
-        {
-            public:
-                /**\brief Base type alias
-                 *
-                 * The base type for this class is rather unwieldy; this
-                 * typedef should help a bit with that.
-                 */
-                typedef common<Q,d,T,efgy::render::opengl,rd,isVirtual,format> parent;
-                using typename parent::stateType;
-
-                using parent::gState;
-                using parent::object;
-
-                /**\brief Construct with global state
-                 *
-                 * Initialises an OpenGL renderer with a global
-                 * topologic::state instance. The other parameters are gathered
-                 * from this state object.
-                 *
-                 * \param[in,out] pState  Global topologic state object to use
-                 * \param[in]     pFormat The vector format tag to use
-                 */
-                wrapper(stateType &pState, const format &pFormat)
-                    : parent(pState, pState.opengl, pFormat)
-                    {
-                        gState.opengl.prepared = false;
-                    }
-
-                /**\brief Construct with global state and custom parameters
-                 *
-                 * Initialises an OpenGL renderer with a global
-                 * topologic::state instance. Additionally, instead of using
-                 * the global state's parameter instance, this constructor
-                 * substitutes the given 'pParameter'.
-                 *
-                 * \param[in,out] pState     Global topologic state object to
-                 *                           use
-                 * \param[in]     pParameter The model parameters to substitute
-                 *                           for the ones in the global state
-                 * \param[in]     pFormat    The vector format tag to use
-                 */
-                wrapper(stateType &pState,
-                        const efgy::geometry::parameters<Q> &pParameter,
-                        const format &pFormat)
-                    : parent(pState, pState.opengl, pParameter, pFormat)
-                    {
-                        gState.opengl.prepared = false;
-                    }
-
-                std::stringstream &render (bool updateMatrix = false)
+                bool opengl (bool updateMatrix = false)
                 {
                     if (updateMatrix)
                     {
@@ -509,7 +335,7 @@ namespace topologic
                     gState.opengl.fractalFlameColouring = gState.fractalFlameColouring;
                     gState.opengl.width  = gState.width;
                     gState.opengl.height = gState.height;
-
+                    
                     if (!gState.fractalFlameColouring)
                     {
                         glClearColor
@@ -519,8 +345,6 @@ namespace topologic
                     
                     gState.opengl.frameStart();
                     
-                    gState.output.str("");
-
                     if (gState.fractalFlameColouring)
                     {
                         gState.opengl.setColour(0,0,0,0.5,true);
@@ -537,68 +361,42 @@ namespace topologic
                              gState.surface.blue, gState.surface.alpha,
                              false);
                     }
-
+                    
                     if (!gState.opengl.prepared)
                     {
                         std::cerr << gState.opengl << object;
                     }
-
+                    
                     gState.opengl.frameEnd();
-
-                    return gState.output;
+                    
+                    return true;
                 }
+#endif
 
                 void update (void)
                 {
+#if !defined (NO_OPENGL)
                     gState.opengl.prepared = false;
+#endif
                     object.calculateObject();
                 }
+
+            protected:
+                /**\brief Global state object
+                 *
+                 * A reference to the global state object, which was passed to
+                 * the constructor as 'pState'. This is necessary to keep track
+                 * of updated global settings.
+                 */
+                stateType &gState;
+
+                /**\brief Intrinsic object instance
+                 *
+                 * Contains the instance of the model that this renderer is
+                 * trying to create a representation of.
+                 */
+                modelType object;
         };
-#endif
-
-        /**\brief Convenient alias for the SVG renderer
-         *
-         * This is a convenient alias for a wrapper using the efgy::render::svg
-         * base renderer.
-         *
-         * \tparam Q  Base data type for calculations
-         * \tparam d  Model depth; typically has to be <= the render depth
-         * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
-         * \tparam isVirtual Whether the class should contain the virtual
-         *                   functions defined in renderer<true>. It'll contain
-         *                   the actual functions in there either way, this
-         *                   just determines if they should make the class a
-         *                   virtual class.
-         * \tparam format    The vector format to use.
-         */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
-        using svg = render::wrapper<Q,d,T,efgy::render::svg,rd,isVirtual,format>;
-
-#if !defined (NO_OPENGL)
-        /**\brief Convenient alias for the OpenGL renderer
-         *
-         * This is a convenient alias for a wrapper using the
-         * efgy::render::opengl base renderer.
-         *
-         * \tparam Q  Base data type for calculations
-         * \tparam d  Model depth; typically has to be <= the render depth
-         * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
-         * \tparam isVirtual Whether the class should contain the virtual
-         *                   functions defined in renderer<true>. It'll contain
-         *                   the actual functions in there either way, this
-         *                   just determines if they should make the class a
-         *                   virtual class.
-         * \tparam format    The vector format to use.
-         */
-        template<typename Q, unsigned int d, template <class,unsigned int,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
-        using opengl = render::wrapper<Q,d,T,efgy::render::opengl,rd,isVirtual,format>;
-#endif
     };
 };
 

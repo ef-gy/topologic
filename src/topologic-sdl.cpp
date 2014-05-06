@@ -277,7 +277,7 @@ void process(void)
 
         if (topologicState.model)
         {
-            topologicState.model->render(true);
+            topologicState.model->opengl(true);
         }
 
         SDL_GL_SwapBuffers();

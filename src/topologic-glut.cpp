@@ -129,7 +129,7 @@ static void displayCall(void)
 {
     if (topologicState.model)
     {
-        topologicState.model->render(true);
+        topologicState.model->opengl(true);
     }
 
     glutSwapBuffers();
