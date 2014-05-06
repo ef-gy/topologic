@@ -540,7 +540,7 @@ namespace topologic
 
                     if (!gState.opengl.prepared)
                     {
-                        object.renderSolid();
+                        std::cerr << gState.opengl << object;
                     }
 
                     gState.opengl.frameEnd();
