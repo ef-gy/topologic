@@ -867,28 +867,11 @@ static topologic::xml xml;
 
     if (topologicState.model)
     {
-        std::shared_ptr<topologic::render::base<true>> m = topologicState.model;
-        topologicState.model = 0;
-
-        efgy::geometry::with<GLfloat,topologic::updateModelSVG,MAXDEPTH>
-            (topologicState,
-             [[format lowercaseString] UTF8String],
-             [[model lowercaseString] UTF8String],
-             (const unsigned int)modelDepth,
-             (const unsigned int)renderDepth);
-
-        if (topologicState.model)
-        {
-            topologicState.model->update();
-            os << topologicState.model->svg(true).str();
-        }
-
-        topologicState.model = m;
+        topologicState.model->update();
+        os << topologicState.model->svg(true).str();
     }
 
     fb.close();
-
-    [self updateModel];
 }
 
 - (IBAction)reset1:(id)sender
