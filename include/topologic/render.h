@@ -144,13 +144,15 @@ namespace topologic
                  * some code to write out model parameters and use Topologic's
                  * state object to handle these parameters.
                  *
+                 * \param[in] output       The stream to write to.
                  * \param[in] updateMatrix Whether to update the projection
                  *                         matrices.
                  *
                  * \returns A stringstream which will either be empty or
                  *          contain the generated data.
                  */
-                virtual std::stringstream &svg (bool updateMatrix = false) = 0;
+                virtual bool svg (std::ostream &output,
+                                  bool updateMatrix = false);
 
 #if !defined (NO_OPENGL)
                 /**\brief Render to OpenGL context
@@ -284,7 +286,8 @@ namespace topologic
                     return modelType::formatID();
                 }
 
-                std::stringstream &svg (bool updateMatrix = false)
+                bool svg (std::ostream &output,
+                          bool updateMatrix = false)
                 {
                     if (updateMatrix)
                     {
@@ -295,9 +298,7 @@ namespace topologic
                     
                     gState.svg.frameStart();
                     
-                    gState.svg.reset();
-                    
-                    gState.svg.output
+                    output
                         <<  "<?xml version='1.0' encoding='utf-8'?>"
                             "<svg xmlns='http://www.w3.org/2000/svg'"
                             " xmlns:xlink='http://www.w3.org/1999/xlink'"
@@ -305,23 +306,23 @@ namespace topologic
                             "<title>" + name() + "</title>"
                             "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
                         <<  efgy::render::XML() << gState;
-                    gState.svg.output << "<t:json>{";
-                    gState.svg.output << efgy::render::JSON() << gState;
-                    gState.svg.output << "}</t:json>";
-                    gState.svg.output
+                    output << "<t:json>{";
+                    output << efgy::render::JSON() << gState;
+                    output << "}</t:json>";
+                    output
                         <<  "</metadata>"
                             "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
                             " path { stroke-width: 0.002; stroke: rgba(" << double(gState.wireframe.red)*100. << "%," << double(gState.wireframe.green)*100. << "%," << double(gState.wireframe.blue)*100. << "%," << double(gState.wireframe.alpha) << ");"
                             " fill: rgba(" << double(gState.surface.red)*100. << "%," << double(gState.surface.green)*100. << "%," << double(gState.surface.blue)*100. << "%," << double(gState.surface.alpha) << "); }</style>";
                     if (gState.surface.alpha > Q(0.))
                     {
-                        gState.svg.output << gState.svg << object;
+                        output << gState.svg << object;
                     }
-                    gState.svg.output << "</svg>\n";
+                    output << "</svg>\n";
                     
                     gState.svg.frameEnd();
                     
-                    return gState.svg.output;
+                    return true;
                 }
 
 #if !defined (NO_OPENGL)

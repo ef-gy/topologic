@@ -868,7 +868,7 @@ static topologic::xml xml;
     if (topologicState.model)
     {
         topologicState.model->update();
-        os << topologicState.model->svg(true).str();
+        topologicState.model->svg(os, true);
     }
 
     fb.close();
