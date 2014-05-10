@@ -149,9 +149,9 @@ namespace topologic
             }
     };
 
-    /**\brief Model update functor for SVG output
+    /**\brief Model update functor for render::wrapper
      *
-     * Convenient specialisation of updateModel using render::svg as the
+     * Convenient specialisation of updateModel using render::wrapper as the
      * model renderer.
      *
      * \tparam Q      Base type for calculations, e.g. double or GLfloat.
