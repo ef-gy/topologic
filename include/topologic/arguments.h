@@ -466,16 +466,8 @@ namespace topologic
     
                         xml::parser p(s, arg);
                         parse (topologicState, p);
-                        if (out == outSVG)
-                        {
-                            parseModel<Q,dim,updateModelWrapper> (topologicState, p);
-                        }
-#if !defined(NO_OPENGL)
-                        else if (out == outGL)
-                        {
-                            parseModel<Q,dim,updateModelWrapper> (topologicState, p);
-                        }
-#endif
+                        parseModel<Q,dim,updateModelWrapper> (topologicState, p);
+
                         if (topologicState.model)
                         {
                             format = topologicState.model->formatID();
