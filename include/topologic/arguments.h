@@ -468,12 +468,12 @@ namespace topologic
                         parse (topologicState, p);
                         if (out == outSVG)
                         {
-                            parseModel<Q,dim,updateModelSVG> (topologicState, p);
+                            parseModel<Q,dim,updateModelWrapper> (topologicState, p);
                         }
 #if !defined(NO_OPENGL)
                         else if (out == outGL)
                         {
-                            parseModel<Q,dim,updateModelOpenGL> (topologicState, p);
+                            parseModel<Q,dim,updateModelWrapper> (topologicState, p);
                         }
 #endif
                         if (topologicState.model)
@@ -496,12 +496,12 @@ namespace topologic
             {
                 if (out == outSVG)
                 {
-                    efgy::geometry::with<Q,updateModelSVG,dim> (topologicState, format, model, depth, rdepth);
+                    efgy::geometry::with<Q,updateModelWrapper,dim> (topologicState, format, model, depth, rdepth);
                 }
 #if !defined(NO_OPENGL)
                 else if (out == outGL)
                 {
-                    efgy::geometry::with<Q,updateModelOpenGL,dim> (topologicState, format, model, depth, rdepth);
+                    efgy::geometry::with<Q,updateModelWrapper,dim> (topologicState, format, model, depth, rdepth);
                 }
 #endif
             }

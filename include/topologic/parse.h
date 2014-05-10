@@ -80,7 +80,7 @@ namespace topologic
      * parameter with the help of a C++11 type alias.
      *
      * An appropriate type alias is already provided for render::svg and
-     * render::opengl, named updateModelSVG and updateModelOpenGL respectively.
+     * render::opengl, named updateModelWrapper.
      *
      * \tparam Q      Base type for calculations, e.g. double or GLfloat
      * \tparam T      Model template class to use, e.g. efgy::geometry::cube
@@ -161,23 +161,7 @@ namespace topologic
      * \tparam format The vector format to use.
      */
     template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
-    using updateModelSVG = updateModel<Q,T,d,e,render::wrapper,format>;
-
-#if !defined(NO_OPENGL)
-    /**\brief Model update functor for OpenGL output
-     *
-     * Convenient specialisation of updateModel using render::opengl as the
-     * model renderer.
-     *
-     * \tparam Q      Base type for calculations, e.g. double or GLfloat.
-     * \tparam T      Model template class to use, e.g. efgy::geometry::cube.
-     * \tparam d      Number of model dimensions, e.g. 4 for a tesseract.
-     * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract.
-     * \tparam format The vector format to use.
-     */
-    template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
-    using updateModelOpenGL = updateModel<Q,T,d,e,render::wrapper,format>;
-#endif
+    using updateModelWrapper = updateModel<Q,T,d,e,render::wrapper,format>;
 
     /**\brief Update transformation matrix of state object instance
      *
@@ -729,7 +713,8 @@ namespace topologic
      * \tparam Q    Base data type for calculations.
      * \tparam d    Maximum number of dimensions supported by the given state
      *              instance
-     * \tparam func State object update functor, e.g. topologic::updateModelSVG
+     * \tparam func State object update functor, e.g.
+     *              topologic::updateModelWrapper
      *
      * \param[out] s      The global state object to update.
      * \param[out] parser An XML parser instance, hopefully containing
