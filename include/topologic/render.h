@@ -148,11 +148,21 @@ namespace topologic
                  * \param[in] updateMatrix Whether to update the projection
                  *                         matrices.
                  *
-                 * \returns A stringstream which will either be empty or
-                 *          contain the generated data.
+                 * \returns 'true' upon success.
                  */
                 virtual bool svg (std::ostream &output,
                                   bool updateMatrix = false);
+
+                /**\brief Render to JSON
+                 *
+                 * Writes the metadata for the object to a stream in JSON
+                 * format.
+                 *
+                 * \param[in] output       The stream to write to.
+                 *
+                 * \returns 'true' upon success.
+                 */
+                virtual bool json (std::ostream &output);
 
 #if !defined (NO_OPENGL)
                 /**\brief Render to OpenGL context
@@ -306,9 +316,6 @@ namespace topologic
                             "<title>" + name() + "</title>"
                             "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
                         <<  efgy::render::XML() << gState;
-                    output << "<t:json>{";
-                    output << efgy::render::JSON() << gState;
-                    output << "}</t:json>";
                     output
                         <<  "</metadata>"
                             "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"
@@ -322,6 +329,16 @@ namespace topologic
                     
                     gState.svg.frameEnd();
                     
+                    return true;
+                }
+
+                bool json (std::ostream &output)
+                {
+                    output
+                        << "{"
+                        << efgy::render::JSON() << gState;
+                    output << "}";
+
                     return true;
                 }
 
