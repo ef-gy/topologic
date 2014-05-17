@@ -336,7 +336,7 @@ namespace topologic
                 {
                     output
                         << "{"
-                        << efgy::render::JSON() << gState;
+                        << efgy::json::tag() << gState;
                     output << "}";
 
                     return true;

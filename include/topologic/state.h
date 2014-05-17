@@ -41,6 +41,7 @@
 #include <ef.gy/maybe.h>
 #include <ef.gy/render-xml.h>
 #include <ef.gy/render-json.h>
+#include <ef.gy/render-css.h>
 #include <sstream>
 #include <type_traits>
 #include <memory>
@@ -999,8 +1000,8 @@ namespace topologic
      * \tparam d Maximum render depth
      */
     template <typename C, typename Q, unsigned int d>
-    static inline efgy::render::ojsonstream<C> operator <<
-        (efgy::render::ojsonstream<C> stream,
+    static inline efgy::json::ostream<C> operator <<
+        (efgy::json::ostream<C> stream,
          const state<Q,d> &pState)
     {
         stream.stream << "\"camera-" << d << "\":[";
@@ -1058,8 +1059,8 @@ namespace topologic
      * \tparam d Maximum render depth
      */
     template <typename C, typename Q, unsigned int d>
-    static inline efgy::render::ojsonstream<C> operator <<
-        (efgy::render::ojsonstream<C> stream,
+    static inline efgy::json::ostream<C> operator <<
+        (efgy::json::ostream<C> stream,
          const state<Q,2> &pState)
     {
         stream.stream << "\"mode\":\"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
