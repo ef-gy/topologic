@@ -315,7 +315,7 @@ namespace topologic
                             " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
                             "<title>" + name() + "</title>"
                             "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
-                        <<  efgy::render::XML() << gState;
+                        <<  efgy::xml::tag() << gState;
                     output
                         <<  "</metadata>"
                             "<style type='text/css'>svg { background: rgba(" << double(gState.background.red)*100. << "%," <<double(gState.background.green)*100. << "%," << double(gState.background.blue)*100. << "%," << double(gState.background.alpha) << "); }"

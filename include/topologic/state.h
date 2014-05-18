@@ -895,8 +895,8 @@ namespace topologic
      * \tparam d Maximum render depth
      */
     template <typename C, typename Q, unsigned int d>
-    static inline efgy::render::oxmlstream<C> operator <<
-        (efgy::render::oxmlstream<C> stream,
+    static inline efgy::xml::ostream<C> operator <<
+        (efgy::xml::ostream<C> stream,
          const state<Q,d> &pState)
     {
         stream.stream << "<t:camera";
@@ -960,8 +960,8 @@ namespace topologic
      * \tparam d Maximum render depth
      */
     template <typename C, typename Q, unsigned int d>
-    static inline efgy::render::oxmlstream<C> operator <<
-        (efgy::render::oxmlstream<C> stream,
+    static inline efgy::xml::ostream<C> operator <<
+        (efgy::xml::ostream<C> stream,
          const state<Q,2> &pState)
     {
         stream.stream << "<t:camera mode='" << (pState.polarCoordinates ? "polar" : "cartesian") << "'/>";
