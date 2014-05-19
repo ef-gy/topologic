@@ -22,10 +22,10 @@ Just type that in your browser's address bar and enjoy :3.
 ## OBTAINING TOPOLOGIC #######################################################
 
 The Free/Open Source Software version of this programme is available free of
-charge via git at http://git.becquerel.org/jyujin/topologic.git - to check
+charge via git at http://github.com/ef-gy/topologic.git - to check
 out a local copy of that repository, use the git command line tool like this:
 
-    $ git clone git://git.becquerel.org/jyujin/topologic.git
+    $ git clone git://github.com/ef-gy/topologic.git
 
 Additionally there's a paid version available on the Mac App Store at
 http://itunes.apple.com/us/app/topologic/id558300160 - this version is
@@ -53,17 +53,14 @@ be quite up to date, so, if push comes to shove just read the sources.
 The Topologic source code is also available at:
 
   * https://code.google.com/p/topologic-foss/
-  * https://github.com/ef-gy/topologic
 
 When in doubt use the GitHub mirror.
 
 ## OBTAINING LIBEFGY #########################################################
 
 This library is distributed free of charge under a very permissive licence.
-The public GIT repository is at http://git.becquerel.org/jyujin/libefgy.git -
+The public GIT repository is at http://github.com/ef-gy/libefgy.git -
 see the documentation at http://ef.gy/documentation/libefgy for more details.
-
-The github mirror of libefgy is at: https://github.com/ef-gy/libefgy.git
 
 ## INSTALLATION ##############################################################
 
