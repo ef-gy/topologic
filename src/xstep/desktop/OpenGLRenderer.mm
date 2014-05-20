@@ -27,7 +27,7 @@
  * THE SOFTWARE.
  *
  * \see Project Documentation: http://ef.gy/documentation/topologic
- * \see Project Source Code: http://git.becquerel.org/jyujin/topologic.git
+ * \see Project Source Code: https://github.com/ef-gy/topologic.git
  */
 
 #import "OpenGLRenderer.h"
