@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  *
  * \see Project Documentation: http://ef.gy/documentation/topologic
- * \see Project Source Code: https://github.com/ef-gy/topologic.git
+ * \see Project Source Code: https://github.com/ef-gy/topologic
  */
 
 #import "ViewController.h"
