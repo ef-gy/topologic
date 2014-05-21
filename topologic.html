@@ -91,6 +91,8 @@ var setColour = Module.cwrap('setColour', null, ['number', 'number', 'number', '
 var setFlameParameters = Module.cwrap('setFlameParameters', null, ['number']);
 var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number']);
 var resetColourMap = Module.cwrap('resetColourMap', null, []);
+var getJSON = Module.cwrap('getJSON', 'string', []);
+var getSVG = Module.cwrap('getSVG', 'string', []);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
@@ -116,6 +118,28 @@ var topologicColour =
     [[1,1,1,1],
      [0,0,0,0.8],
      [0,0,0,0.5]];
+
+var topologicIgnoreHashChange = false;
+
+if (JSON)
+{
+    function parseHash()
+    {
+        if (topologicIgnoreHashChange) return;
+
+        try
+        {
+            var hash = JSON.parse(window.location.hash.substring(1));
+        }
+        catch(err)
+        {
+        }
+    }
+
+    window.addEventListener('hashchange', parseHash, false);
+
+    parseHash();
+}
 
 function topologicUpdateDimension()
 {
@@ -251,9 +275,12 @@ function topologicUpdateCurrentModel()
     setColour(1, topologicColour[1][0], topologicColour[1][1], topologicColour[1][2], topologicColour[1][3]);
     setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
-
     forceRedraw();
     updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
+
+    topologicIgnoreHashChange = true;
+    window.location.hash = getJSON();
+    topologicIgnoreHashChange = false;
 }
 
 (function() {

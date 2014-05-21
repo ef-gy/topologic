@@ -115,6 +115,8 @@ extern "C"
     void setFlameParameters(int);
     void resetColourMap(void);
     void setViewportSize(int, int);
+    const char *getJSON(void);
+    const char *getSVG(void);
 }
 
 /**\brief Is a mouse button currently being?
@@ -551,6 +553,53 @@ void setColour(int colour, double red, double green, double blue, double alpha)
             topologicState.surface.alpha = alpha;
             break;
     }
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Obtain JSON metadata
+ *
+ * Creates JSON metadata, stores it locally and returns a pointer to it so it
+ * may be reused later.
+ *
+ * \returns A pointer to a C-style string containing JSON model metadata.
+ */
+const char *getJSON(void)
+{
+    std::ostringstream os("");
+    static std::string str;
+
+    if (topologicState.model)
+    {
+        topologicState.model->json(os);
+    }
+
+    str = os.str();
+
+    return str.c_str();
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Obtain SVG render
+ *
+ * Creates an SVG render, stores it locally and returns a pointer to a C-style
+ * string that contains this SVG data.
+ *
+ * \returns A pointer to a C-style string containing an SVG render of the
+ *          currently active model.
+ */
+const char *getSVG(void)
+{
+    std::ostringstream os("");
+    static std::string str;
+
+    if (topologicState.model)
+    {
+        topologicState.model->svg(os);
+    }
+
+    str = os.str();
+
+    return str.c_str();
 }
 
 /** \} */
