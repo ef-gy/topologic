@@ -123,8 +123,14 @@ namespace topologic
              */
             static output apply (argument out, const format &tag)
             {
-                out.state<Q,2>::model
-                    = std::shared_ptr<render::base<true>>
+                if (out.model)
+                {
+                    delete out.model;
+                    out.model = 0;
+                }
+
+                out.model
+                    = (render::base<true>*)
                         (new C<Q,d,T,e,true,format>(out, tag));
 
                 return out.model != 0;

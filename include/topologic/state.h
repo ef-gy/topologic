@@ -44,7 +44,6 @@
 #include <ef.gy/render-css.h>
 #include <sstream>
 #include <type_traits>
-#include <memory>
 
 #include <topologic/render.h>
 
@@ -598,7 +597,8 @@ namespace topologic
               background(Q(1), Q(1), Q(1), Q(1)),
               wireframe(Q(0), Q(0), Q(0), Q(0.8)),
               surface(Q(0), Q(0), Q(0), Q(0.5)),
-              fractalFlameColouring(false)
+              fractalFlameColouring(false),
+              model(0)
             {
                 parameter.radius            = Q(1);
                 parameter.precision         = Q(10);
@@ -608,6 +608,19 @@ namespace topologic
                 parameter.preRotate         = true;
                 parameter.postRotate        = false;
                 parameter.flameCoefficients = 3;
+            }
+
+        /**\brief Destructor
+         *
+         * Deletes the model instance, if it exists.
+         */
+        ~state(void)
+            {
+                if (model)
+                {
+                    delete model;
+                    model = 0;
+                }
             }
 
         /**\brief Update projection matrices; 2D fix point
@@ -776,7 +789,7 @@ namespace topologic
          * topologic::render::svg with all parameters - including the model -
          * applied and properly initialised.
          */
-        std::shared_ptr<render::base<true>> model;
+        render::base<true> *model;
 
         /**\brief 2D viewport transformation matrix
          *
