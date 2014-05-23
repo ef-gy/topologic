@@ -293,7 +293,7 @@ namespace topologic
                 /**\copydoc base::formatID */
                 const char *formatID (void)
                 {
-                    return modelType::formatID();
+                    return modelType::format::id();
                 }
 
                 bool svg (std::ostream &output,
