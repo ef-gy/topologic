@@ -34,8 +34,8 @@ GLCFLAGS:=
 GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
-CXXFLAGS:=$(CFLAGS)
-EMCFLAGS:=-O3 --llvm-lto 3 -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -DDEBUG --closure 1
+CXXFLAGS:=$(CFLAGS) -fno-exceptions
+EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -DDEBUG --closure 1
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 

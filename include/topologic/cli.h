@@ -74,33 +74,20 @@ namespace topologic
     template<typename FP>
     int cli (int argc, char* argv[])
     {
-        try
-        {
-            state<FP,MAXDEPTH> topologicState;
+        state<FP,MAXDEPTH> topologicState;
 
-            if (!parseArguments (topologicState, argc, argv, outSVG))
-            {
-                return 1;
-            }
-
-            if (!topologicState.model)
-            {
-                std::cerr << "error: no model to render\n";
-            }
-            else
-            {
-                topologicState.model->svg(std::cout, true);
-            }
-        }
-        catch (std::exception &e)
+        if (!parseArguments (topologicState, argc, argv, outSVG))
         {
-            std::cerr << "Exception: " << e.what() << "\n";
             return 1;
         }
-        catch (...)
+
+        if (!topologicState.model)
         {
-            std::cerr << "Unknown Exception\n";
-            return 1;
+            std::cerr << "error: no model to render\n";
+        }
+        else
+        {
+            topologicState.model->svg(std::cout, true);
         }
 
         return 0;

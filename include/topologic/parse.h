@@ -46,7 +46,6 @@
 #include <libxml/xpathInternals.h>
 #endif
 #include <set>
-#include <stdexcept>
 #include <sstream>
 
 namespace topologic
@@ -268,14 +267,16 @@ namespace topologic
             {
                 if (document == 0)
                 {
-                    throw std::runtime_error("failed to parse xml file");
+                    std::cerr << "failed to parse xml file\n";
+                    return;
                 }
 
                 xpathContext = xmlXPathNewContext(document);
                 if (xpathContext == 0)
                 {
                     xmlFreeDoc(document); 
-                    throw std::runtime_error("failed to create XPath context");
+                    document = 0;
+                    std::cerr << "failed to create XPath context\n";
                 }
 
                 if (xmlXPathRegisterNs
@@ -283,9 +284,11 @@ namespace topologic
                          (const xmlChar *)"svg",
                          (const xmlChar *)"http://www.w3.org/2000/svg") != 0)
                 {
-                    xmlFreeDoc(document); 
                     xmlXPathFreeContext(xpathContext);
-                    throw std::runtime_error("failed to register namespace: svg");
+                    xpathContext = 0;
+                    xmlFreeDoc(document); 
+                    document = 0;
+                    std::cerr << "failed to register namespace: svg\n";
                 }
 
                 if (xmlXPathRegisterNs
@@ -293,9 +296,11 @@ namespace topologic
                          (const xmlChar *)"topologic",
                          (const xmlChar *)"http://ef.gy/2012/topologic") != 0)
                 {
-                    xmlFreeDoc(document);
                     xmlXPathFreeContext(xpathContext);
-                    throw std::runtime_error("failed to register namespace: topologic");
+                    xpathContext = 0;
+                    xmlFreeDoc(document); 
+                    document = 0;
+                    std::cerr << "failed to register namespace: topologic\n";
                 }
             }
 
@@ -315,8 +320,15 @@ namespace topologic
              */
             ~parser(void)
             {
-                xmlXPathFreeContext(xpathContext);
-                xmlFreeDoc(document);
+                if (xpathContext)
+                {
+                    xmlXPathFreeContext(xpathContext);
+                }
+
+                if (document)
+                {
+                    xmlFreeDoc(document);
+                }
             }
 
             /**\brief Evaluate XPath expression to string
@@ -361,7 +373,8 @@ namespace topologic
                 xmlBufferPtr buffer = xmlBufferCreate();
                 if (buffer == 0)
                 {
-                    throw std::runtime_error("failed to create xmlBufferPtr");
+                    std::cerr << "failed to create xmlBufferPtr\n";
+                    return "";
                 }
 
                 xmlNodeSetPtr nodeset = xpathObject->nodesetval;
@@ -373,7 +386,8 @@ namespace topologic
 
                 if (xmlNodeDump (buffer, document, nodeset->nodeTab[0], 0, 0) == -1)
                 {
-                    throw std::runtime_error("could not generate XML fragment");
+                    std::cerr << "could not generate XML fragment\n";
+                    return "";
                 }
 
                 const std::string rv((const char*)buffer->content, buffer->size);
@@ -463,7 +477,7 @@ namespace topologic
                      xpathContext);
                 if (xpathObject == 0)
                 {
-                    throw std::runtime_error("failed to evaluate XPath expression");
+                    std::cerr << "failed to evaluate XPath expression\n";
                 }
 
                 return xpathObject;
