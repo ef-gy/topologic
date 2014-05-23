@@ -190,17 +190,6 @@ namespace topologic
                 virtual bool svg (std::ostream &output,
                                   bool updateMatrix = false);
 
-                /**\brief Render to JSON
-                 *
-                 * Writes the metadata for the object to a stream in JSON
-                 * format.
-                 *
-                 * \param[in] output       The stream to write to.
-                 *
-                 * \returns 'true' upon success.
-                 */
-                virtual bool json (std::ostream &output);
-
 #if !defined (NO_OPENGL)
                 /**\brief Render to OpenGL context
                  *
@@ -349,16 +338,6 @@ namespace topologic
                     
                     gState.svg.frameEnd();
                     
-                    return true;
-                }
-
-                bool json (std::ostream &output)
-                {
-                    output
-                        << "{"
-                        << efgy::json::tag() << gState;
-                    output << "}";
-
                     return true;
                 }
 

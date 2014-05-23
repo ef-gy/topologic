@@ -568,10 +568,10 @@ const char *getJSON(void)
     std::ostringstream os("");
     static std::string str;
 
-    if (topologicState.model)
-    {
-        topologicState.model->json(os);
-    }
+    os
+        << "{"
+        << efgy::json::tag() << topologicState;
+    os  << "}";
 
     str = os.str();
 
