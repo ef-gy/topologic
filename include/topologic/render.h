@@ -75,8 +75,10 @@ namespace topologic
                  *
                  * Sets the basic metadata for a model.
                  */
-                metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0)
-                    : depth(pDepth), renderDepth(pRenderDepth)
+                metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
+                         const char *pID = "none")
+                    : depth(pDepth), renderDepth(pRenderDepth),
+                      id(pID)
                     {}
                 
                 /**\brief Query model depth
@@ -98,6 +100,31 @@ namespace topologic
                  *          greater than or equal to the model's depth.
                  */
                 const unsigned int renderDepth;
+
+                /**\brief Query model name
+                 *
+                 * Used to obtain a short, descriptive name of a model. This
+                 * name is also used when instantiating the model with a
+                 * factory.
+                 *
+                 * \returns A C-style, 0-terminated string containing the name
+                 *          of the model. This should never return a 0-pointer.
+                 */
+                const char *id;
+
+                /**\brief Query extended model name
+                 *
+                 * This returns a string of the form "depth()-id()", e.g.
+                 * "4-cube" for a 4D model with the id "cube".
+                 *
+                 * \returns A C++ std::string containing the model's name.
+                 */
+                std::string name (void) const
+                {
+                    std::stringstream rv;
+                    rv << metadata::depth << "-" << id;
+                    return rv.str();
+                }
         };
 
         /**\brief Base class for a model renderer
@@ -116,8 +143,9 @@ namespace topologic
                  *
                  * Sets the basic metadata for a model.
                  */
-                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0)
-                    : metadata(pDepth, pRenderDepth)
+                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
+                     const char *pID = 0)
+                    : metadata(pDepth, pRenderDepth, pID)
                     {}
 
                 /**\brief Virtual destructor
@@ -126,26 +154,6 @@ namespace topologic
                  * trivial destructor.
                  */
                 virtual ~base(void) {}
-
-                /**\brief Query model name
-                 *
-                 * Used to obtain a short, descriptive name of a model. This
-                 * name is also used when instantiating the model with a
-                 * factory.
-                 *
-                 * \returns A C-style, 0-terminated string containing the name
-                 *          of the model. This should never return a 0-pointer.
-                 */
-                virtual const char *id (void) const = 0;
-
-                /**\brief Query extended model name
-                 *
-                 * This returns a string of the form "depth()-id()", e.g.
-                 * "4-cube" for a 4D model with the id "cube".
-                 *
-                 * \returns A C++ std::string containing the model's name.
-                 */
-                virtual std::string name (void) const = 0;
 
                 /**\brief Force internal update
                  *
@@ -213,7 +221,18 @@ namespace topologic
          * compiler should be able to provide slightly better code.
          */
         template<>
-        class base<false> {};
+        class base<false> : public metadata
+        {
+            public:
+                /**\brief Construct with model metadata
+                 *
+                 * Sets the basic metadata for a model.
+                 */
+                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
+                     const char *pID = 0)
+                    : metadata(pDepth, pRenderDepth, pID)
+                    {}
+        };
 
         /**\brief Renderer base class with default methods
          *
@@ -266,7 +285,7 @@ namespace topologic
                 wrapper(stateType &pState, const format &pFormat)
                     : gState(pState),
                       object(gState.parameter, pFormat),
-                      base<isVirtual>(d, rd)
+                      base<isVirtual>(d, rd, modelType::id())
                     {
                         update();
                     }
@@ -286,24 +305,10 @@ namespace topologic
                        const format &pFormat)
                     : gState(pState),
                       object(pParameter, pFormat),
-                      base<isVirtual>(d, rd)
+                      base<isVirtual>(d, rd, modelType::id())
                     {
                         update();
                     }
-
-                /**\copydoc base::id */
-                const char *id (void) const
-                {
-                    return modelType::id();
-                }
-
-                /**\copydoc base::name */
-                std::string name (void) const
-                {
-                    std::stringstream rv;
-                    rv << metadata::depth << "-" << id();
-                    return rv.str();
-                }
 
                 /**\copydoc base::formatID */
                 const char *formatID (void)
@@ -328,7 +333,7 @@ namespace topologic
                             "<svg xmlns='http://www.w3.org/2000/svg'"
                             " xmlns:xlink='http://www.w3.org/1999/xlink'"
                             " version='1.1' width='100%' height='100%' viewBox='-1.2 -1.2 2.4 2.4'>"
-                            "<title>" + name() + "</title>"
+                            "<title>" + metadata::name() + "</title>"
                             "<metadata xmlns:t='http://ef.gy/2012/topologic'>"
                         <<  efgy::xml::tag() << gState;
                     output

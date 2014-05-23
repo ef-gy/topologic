@@ -452,7 +452,7 @@ static topologic::xml xml;
     {
         model = value;
     }
-    if (!topologicState.model || (std::string(topologicState.model->id()) != [model UTF8String]))
+    if (!topologicState.model || (std::string(topologicState.model->id) != [model UTF8String]))
     {
         [self updateModel];
     }
@@ -794,7 +794,7 @@ static topologic::xml xml;
         [self willChangeValueForKey:@"renderDepth"];
         [self willChangeValueForKey:@"selectedModelName"];
 
-        std::string  mo = topologicState.model->id();
+        std::string  mo = topologicState.model->id;
         unsigned int md = topologicState.model->depth;
         unsigned int rd = topologicState.model->renderDepth;
 
