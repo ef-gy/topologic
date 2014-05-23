@@ -981,7 +981,7 @@ namespace topologic
         if (pState.model)
         {
             stream.stream << "<t:model type='" << pState.model->id << "' depth='" << pState.model->depth << "D' render-depth='" << pState.model->renderDepth << "D'/>"
-            "<t:coordinates format='" << pState.model->formatID() << "'/>";
+            "<t:coordinates format='" << pState.model->formatID << "'/>";
         }
         stream.stream
             << "<t:options radius='" << double(pState.parameter.radius) << "'/>"
@@ -1080,7 +1080,7 @@ namespace topologic
         if (pState.model)
         {
             stream.stream << "\"model\":\"" << pState.model->id << "\",\"depth\":" << pState.model->depth << ",\"renderDepth\":" << pState.model->renderDepth << ","
-            " \"coordinateFormat\":\"" << pState.model->formatID() << "\",";
+            " \"coordinateFormat\":\"" << pState.model->formatID << "\",";
         }
         stream.stream
             << "\"radius\":\"" << double(pState.parameter.radius) << "\","

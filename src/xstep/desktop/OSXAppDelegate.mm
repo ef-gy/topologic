@@ -469,7 +469,7 @@ static topologic::xml xml;
     {
         format = value;
     }
-    if (!topologicState.model || (std::string(topologicState.model->formatID()) != [format UTF8String]))
+    if (!topologicState.model || (std::string(topologicState.model->formatID) != [format UTF8String]))
     {
         [self updateModel];
     }

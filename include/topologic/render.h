@@ -75,10 +75,12 @@ namespace topologic
                  *
                  * Sets the basic metadata for a model.
                  */
-                metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
-                         const char *pID = "none")
+                metadata(unsigned int pDepth = 0,
+                         unsigned int pRenderDepth = 0,
+                         const char *pID = "none",
+                         const char *pFormatID = "default")
                     : depth(pDepth), renderDepth(pRenderDepth),
-                      id(pID)
+                      id(pID), formatID(pFormatID)
                     {}
                 
                 /**\brief Query model depth
@@ -125,6 +127,15 @@ namespace topologic
                     rv << metadata::depth << "-" << id;
                     return rv.str();
                 }
+
+                /**\brief Query vector format ID
+                 *
+                 * Used to obtain a string that identifies the vector format
+                 * currently used by the model.
+                 *
+                 * \returns Vector format ID string.
+                 */
+                const char *formatID;
         };
 
         /**\brief Base class for a model renderer
@@ -143,9 +154,11 @@ namespace topologic
                  *
                  * Sets the basic metadata for a model.
                  */
-                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
-                     const char *pID = 0)
-                    : metadata(pDepth, pRenderDepth, pID)
+                base(unsigned int pDepth = 0,
+                     unsigned int pRenderDepth = 0,
+                     const char *pID = "none",
+                     const char *pFormatID = "default")
+                    : metadata(pDepth, pRenderDepth, pID, pFormatID)
                     {}
 
                 /**\brief Virtual destructor
@@ -161,15 +174,6 @@ namespace topologic
                  * because you changed some parameters that it may have cached.
                  */
                 virtual void update (void) = 0;
-
-                /**\brief Query vector format ID
-                 *
-                 * Used to obtain a string that identifies the vector format
-                 * currently used by the model.
-                 *
-                 * \returns Vector format ID string.
-                 */
-                virtual const char *formatID (void) = 0;
 
                 /**\brief Render to SVG
                  *
@@ -228,9 +232,11 @@ namespace topologic
                  *
                  * Sets the basic metadata for a model.
                  */
-                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
-                     const char *pID = 0)
-                    : metadata(pDepth, pRenderDepth, pID)
+                base(unsigned int pDepth = 0,
+                     unsigned int pRenderDepth = 0,
+                     const char *pID = "none",
+                     const char *pFormatID = "default")
+                    : metadata(pDepth, pRenderDepth, pID, pFormatID)
                     {}
         };
 
@@ -285,7 +291,7 @@ namespace topologic
                 wrapper(stateType &pState, const format &pFormat)
                     : gState(pState),
                       object(gState.parameter, pFormat),
-                      base<isVirtual>(d, rd, modelType::id())
+                      base<isVirtual>(d, rd, modelType::id(), modelType::format::id())
                     {
                         update();
                     }
@@ -305,16 +311,10 @@ namespace topologic
                        const format &pFormat)
                     : gState(pState),
                       object(pParameter, pFormat),
-                      base<isVirtual>(d, rd, modelType::id())
+                      base<isVirtual>(d, rd, modelType::id(), modelType::format::id())
                     {
                         update();
                     }
-
-                /**\copydoc base::formatID */
-                const char *formatID (void)
-                {
-                    return modelType::format::id();
-                }
 
                 bool svg (std::ostream &output,
                           bool updateMatrix = false)
