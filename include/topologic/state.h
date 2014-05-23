@@ -980,7 +980,7 @@ namespace topologic
         stream.stream << "<t:camera mode='" << (pState.polarCoordinates ? "polar" : "cartesian") << "'/>";
         if (pState.model)
         {
-            stream.stream << "<t:model type='" << pState.model->id() << "' depth='" << pState.model->depth() << "D' render-depth='" << pState.model->renderDepth() << "D'/>"
+            stream.stream << "<t:model type='" << pState.model->id() << "' depth='" << pState.model->depth << "D' render-depth='" << pState.model->renderDepth << "D'/>"
             "<t:coordinates format='" << pState.model->formatID() << "'/>";
         }
         stream.stream
@@ -1079,7 +1079,7 @@ namespace topologic
         stream.stream << "\"mode\":\"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
         if (pState.model)
         {
-            stream.stream << "\"model\":\"" << pState.model->id() << "\",\"depth\":" << pState.model->depth() << ",\"renderDepth\":" << pState.model->renderDepth() << ","
+            stream.stream << "\"model\":\"" << pState.model->id() << "\",\"depth\":" << pState.model->depth << ",\"renderDepth\":" << pState.model->renderDepth << ","
             " \"coordinateFormat\":\"" << pState.model->formatID() << "\",";
         }
         stream.stream

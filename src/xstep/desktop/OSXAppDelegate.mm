@@ -410,7 +410,7 @@ static topologic::xml xml;
             modelDepth = MAXDEPTH;
         }
     }
-    if (!topologicState.model || (topologicState.model->depth() != depth))
+    if (!topologicState.model || (topologicState.model->depth != depth))
     {
         [self updateModel];
     }
@@ -435,7 +435,7 @@ static topologic::xml xml;
             renderDepth = MAXDEPTH;
         }
     }
-    if (!topologicState.model || (topologicState.model->renderDepth() != depth))
+    if (!topologicState.model || (topologicState.model->renderDepth != depth))
     {
         [self updateModel];
     }
@@ -795,8 +795,8 @@ static topologic::xml xml;
         [self willChangeValueForKey:@"selectedModelName"];
 
         std::string  mo = topologicState.model->id();
-        unsigned int md = topologicState.model->depth();
-        unsigned int rd = topologicState.model->renderDepth();
+        unsigned int md = topologicState.model->depth;
+        unsigned int rd = topologicState.model->renderDepth;
 
         model       = @(mo.c_str());
         modelDepth  = md;

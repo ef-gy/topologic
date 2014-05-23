@@ -63,6 +63,43 @@ namespace topologic
      */
     namespace render
     {
+        /**\brief Model metadata
+         *
+         * Holds all the common model metadata that is needed to identify a
+         * model type.
+         */
+        class metadata
+        {
+            public:
+                /**\brief Construct with model metadata
+                 *
+                 * Sets the basic metadata for a model.
+                 */
+                metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0)
+                    : depth(pDepth), renderDepth(pRenderDepth)
+                    {}
+                
+                /**\brief Query model depth
+                 *
+                 * Used to access the model depth; this is typically a template
+                 * parameter.
+                 *
+                 * \returns The model depth; expect values like "2" for a
+                 *          square, "3" for a cube, etc.
+                 */
+                const unsigned int depth;
+                
+                /**\brief Query render depth
+                 *
+                 * Used to access the depth that the renderer has been
+                 * initialised to.
+                 *
+                 * \returns The model renderer's depth; expect this value to be
+                 *          greater than or equal to the model's depth.
+                 */
+                const unsigned int renderDepth;
+        };
+
         /**\brief Base class for a model renderer
          *
          * The primary purpose of this class is to force certain parts of a
@@ -72,35 +109,23 @@ namespace topologic
          *                   methods.
          */
         template<bool isVirtual = false>
-        class base
+        class base : public metadata
         {
             public:
+                /**\brief Construct with model metadata
+                 *
+                 * Sets the basic metadata for a model.
+                 */
+                base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0)
+                    : metadata(pDepth, pRenderDepth)
+                    {}
+
                 /**\brief Virtual destructor
                  *
                  * Generally necessary for virtual classes; stubbed to be a
                  * trivial destructor.
                  */
                 virtual ~base(void) {}
-
-                /**\brief Query model depth
-                 *
-                 * Used to access the model depth; this is typically a template
-                 * parameter.
-                 *
-                 * \returns The model depth; expect values like "2" for a
-                 *          square, "3" for a cube, etc.
-                 */
-                virtual unsigned int depth (void) const = 0;
-
-                /**\brief Query render depth
-                 *
-                 * Used to access the depth that the renderer has been
-                 * initialised to.
-                 *
-                 * \returns The model renderer's depth; expect this value to be
-                 *          greater than or equal to the model's depth.
-                 */
-                virtual unsigned int renderDepth (void) const = 0;
 
                 /**\brief Query model name
                  *
@@ -240,7 +265,8 @@ namespace topologic
                  */
                 wrapper(stateType &pState, const format &pFormat)
                     : gState(pState),
-                      object(gState.parameter, pFormat)
+                      object(gState.parameter, pFormat),
+                      base<isVirtual>(d, rd)
                     {
                         update();
                     }
@@ -259,22 +285,11 @@ namespace topologic
                        const efgy::geometry::parameters<Q> &pParameter,
                        const format &pFormat)
                     : gState(pState),
-                      object(pParameter, pFormat)
+                      object(pParameter, pFormat),
+                      base<isVirtual>(d, rd)
                     {
                         update();
                     }
-
-                /**\copydoc base::depth */
-                unsigned int depth (void) const
-                {
-                    return modelType::depth;
-                }
-
-                /**\copydoc base::renderDepth */
-                unsigned int renderDepth (void) const
-                {
-                    return modelType::renderDepth;
-                }
 
                 /**\copydoc base::id */
                 const char *id (void) const
@@ -286,7 +301,7 @@ namespace topologic
                 std::string name (void) const
                 {
                     std::stringstream rv;
-                    rv << depth() << "-" << id();
+                    rv << metadata::depth << "-" << id();
                     return rv.str();
                 }
 

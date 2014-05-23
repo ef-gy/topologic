@@ -469,9 +469,9 @@ namespace topologic
                     if (topologicState.model)
                     {
                         format = topologicState.model->formatID();
-                        model = topologicState.model->id();
-                        depth = topologicState.model->depth();
-                        rdepth = topologicState.model->renderDepth();
+                        model  = topologicState.model->id();
+                        depth  = topologicState.model->depth;
+                        rdepth = topologicState.model->renderDepth;
                     }
                 }
 #endif
