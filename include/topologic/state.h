@@ -848,13 +848,6 @@ namespace topologic
          */
         efgy::math::vector<Q,4,efgy::math::format::RGB> surface;
 
-        /**\brief Output buffer
-         *
-         * \todo This buffer should not be necessary, so it ought to be
-         *       removed.
-         */
-        std::stringstream output;
-
         /**\brief Viewport width
          *
          * The width, most likely in pixels, of the output viewport that models

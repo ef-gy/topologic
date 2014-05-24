@@ -37,7 +37,6 @@
 #include <ef.gy/parametric.h>
 #include <ef.gy/ifs.h>
 #include <ef.gy/flame.h>
-#include <ef.gy/render-null.h>
 #include <ef.gy/factory.h>
 #if !defined (NOLIBRARIES)
 #include <libxml/tree.h>
