@@ -782,7 +782,7 @@ namespace topologic
                     || (type == "klein-bagle")) rdepth++;
             }
 
-            return efgy::geometry::with<Q,func,d,d> (s, format, type, depth, rdepth);
+            return efgy::geometry::with<Q,func,d> (s, format, type, depth, rdepth);
         }
 
         return false;
