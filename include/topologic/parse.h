@@ -109,8 +109,18 @@ namespace topologic
              */
             typedef bool output;
 
+            /**\brief Adapted model type
+             *
+             * The resolved model type wrapped in a geometry::adapt template so
+             * it works in arbirary dimensions.
+             *
+             * \tparam tQ Base type for calculations, e.g. double or GLfloat
+             * \tparam tD Number of model dimensions, e.g. 4 for a tesseract
+             * \tparam tE Number of render dimensions
+             * \tparam tF The vector format to use.
+             */
             template <class tQ, unsigned int tD, unsigned int tE, typename tF>
-            using M = efgy::geometry::adapt<tQ,tE,T<tQ,tD,tE,tF>>;
+            using adapted = efgy::geometry::adapt<tQ,tE,T<tQ,tD,tE,tF>>;
 
             /**\brief Initialise new model
              *
@@ -133,7 +143,7 @@ namespace topologic
 
                 out.model
                     = (render::base<true>*)
-                        (new C<Q,d,M,e,true,format>(out, tag));
+                        (new C<Q,d,adapted,e,true,format>(out, tag));
 
                 return out.model != 0;
             }
