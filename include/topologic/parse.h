@@ -109,6 +109,9 @@ namespace topologic
              */
             typedef bool output;
 
+            template <class tQ, unsigned int tD, unsigned int tE, typename tF>
+            using M = efgy::geometry::adapt<tQ,tE,T<tQ,tD,tE,tF>>;
+
             /**\brief Initialise new model
              *
              * Creates a new model and updates the given state object to use the
@@ -130,7 +133,7 @@ namespace topologic
 
                 out.model
                     = (render::base<true>*)
-                        (new C<Q,d,T,e,true,format>(out, tag));
+                        (new C<Q,d,M,e,true,format>(out, tag));
 
                 return out.model != 0;
             }
