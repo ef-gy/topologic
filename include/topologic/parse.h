@@ -87,8 +87,8 @@ namespace topologic
      * \tparam C      The model renderer, e.g. render::svg
      * \tparam format The vector format to use.
      */
-    template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,unsigned int,typename> class, unsigned int, bool, typename> class C,
+    template<typename Q, template <class,unsigned int,typename> class T, unsigned int d, unsigned int e,
+             template <typename, unsigned int, template <class,unsigned int,typename> class, unsigned int, bool, typename> class C,
              typename format>
     class updateModel
     {
@@ -116,11 +116,10 @@ namespace topologic
              *
              * \tparam tQ Base type for calculations, e.g. double or GLfloat
              * \tparam tD Number of model dimensions, e.g. 4 for a tesseract
-             * \tparam tE Number of render dimensions
              * \tparam tF The vector format to use.
              */
-            template <class tQ, unsigned int tD, unsigned int tE, typename tF>
-            using adapted = efgy::geometry::adapt<tQ,tE,T<tQ,tD,tE,tF>>;
+            template <class tQ, unsigned int tD, typename tF>
+            using adapted = efgy::geometry::adapt<tQ,e,T<tQ,tD,tF>>;
 
             /**\brief Initialise new model
              *
@@ -177,7 +176,7 @@ namespace topologic
      * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract.
      * \tparam format The vector format to use.
      */
-    template<typename Q, template <class,unsigned int,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
+    template<typename Q, template <class,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
     using updateModelWrapper = updateModel<Q,T,d,e,render::wrapper,format>;
 
     /**\brief Update transformation matrix of state object instance
@@ -755,7 +754,7 @@ namespace topologic
      * \returns 'true' if things worked out, 'false' otherwise.
      */
     template<typename Q, unsigned int d,
-             template<typename, template <class,unsigned int,unsigned int,typename> class, unsigned int, unsigned int, typename> class func>
+             template<typename, template <class,unsigned int,typename> class, unsigned int, unsigned int, typename> class func>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
         std::string format = "cartesian", value;
