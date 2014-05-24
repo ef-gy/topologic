@@ -175,7 +175,7 @@ static topologic::xml xml;
 {
     if (topologicState.model)
     {
-        topologicState.model->update();
+        topologicState.model->update = true;
     }
 }
 

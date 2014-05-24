@@ -80,7 +80,8 @@ namespace topologic
                          const char *pID = "none",
                          const char *pFormatID = "default")
                     : depth(pDepth), renderDepth(pRenderDepth),
-                      id(pID), formatID(pFormatID)
+                      id(pID), formatID(pFormatID),
+                      update(true)
                     {}
                 
                 /**\brief Query model depth
@@ -136,6 +137,13 @@ namespace topologic
                  * \returns Vector format ID string.
                  */
                 const char *formatID;
+
+                /**\brief Force internal update
+                 *
+                 * This tells a renderer that it should do a full redraw,
+                 * because you changed some parameters that it may have cached.
+                 */
+                bool update;
         };
 
         /**\brief Base class for a model renderer
@@ -167,13 +175,6 @@ namespace topologic
                  * trivial destructor.
                  */
                 virtual ~base(void) {}
-
-                /**\brief Force internal update
-                 *
-                 * This tells a renderer that it should do a full redraw,
-                 * because you changed some parameters that it may have cached.
-                 */
-                virtual void update (void) = 0;
 
                 /**\brief Render to SVG
                  *
@@ -281,9 +282,7 @@ namespace topologic
                     : gState(pState),
                       object(gState.parameter, pFormat),
                       base<isVirtual>(d, rd, modelType::id(), modelType::format::id())
-                    {
-                        update();
-                    }
+                    {}
 
                 /**\brief Construct with global state, renderer and parameters
                  *
@@ -301,13 +300,17 @@ namespace topologic
                     : gState(pState),
                       object(pParameter, pFormat),
                       base<isVirtual>(d, rd, modelType::id(), modelType::format::id())
-                    {
-                        update();
-                    }
+                    {}
 
                 bool svg (std::ostream &output,
                           bool updateMatrix = false)
                 {
+                    if (metadata::update)
+                    {
+                        object.calculateObject();
+                        metadata::update = false;
+                    }
+
                     if (updateMatrix)
                     {
                         gState.width  = 3;
@@ -344,6 +347,13 @@ namespace topologic
 #if !defined (NO_OPENGL)
                 bool opengl (bool updateMatrix = false)
                 {
+                    if (metadata::update)
+                    {
+                        gState.opengl.prepared = false;
+                        object.calculateObject();
+                        metadata::update = false;
+                    }
+
                     if (updateMatrix)
                     {
                         gState.updateMatrix();
@@ -389,14 +399,6 @@ namespace topologic
                     return true;
                 }
 #endif
-
-                void update (void)
-                {
-#if !defined (NO_OPENGL)
-                    gState.opengl.prepared = false;
-#endif
-                    object.calculateObject();
-                }
 
             protected:
                 /**\brief Global state object

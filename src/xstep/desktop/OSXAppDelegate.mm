@@ -867,7 +867,7 @@ static topologic::xml xml;
 
     if (topologicState.model)
     {
-        topologicState.model->update();
+        topologicState.model->update = true;
         topologicState.model->svg(os, true);
     }
 
@@ -929,7 +929,7 @@ static topologic::xml xml;
 {
     if (topologicState.model)
     {
-        topologicState.model->update();
+        topologicState.model->update = true;
         [openGL setNeedsDisplay:YES];
     }
 }
