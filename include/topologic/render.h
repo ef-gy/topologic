@@ -239,9 +239,6 @@ namespace topologic
          * \tparam Q  Base data type for calculations
          * \tparam d  Model depth; typically has to be <= the render depth
          * \tparam T  Model template; use things like efgy::geometry::cube
-         * \tparam rd Model render depth; this is the maximum depth for your
-         *            models and also specifies the maximum depth of any
-         *            transformations you can apply.
          * \tparam isVirtual Whether the class should contain the virtual
          *                   functions defined in renderer<true>. It'll contain
          *                   the actual functions in there either way, this
@@ -249,7 +246,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,typename> class T, unsigned int rd, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int,typename> class T, bool isVirtual, typename format>
         class wrapper : public base<isVirtual>
         {
             public:
@@ -259,6 +256,13 @@ namespace topologic
                  * the template parameters filled in.
                  */
                 typedef T<Q,d,format> modelType;
+
+                /* \brief Model render depth
+                 *
+                 * This is the maximum depth for your models and also specifies
+                 * the maximum depth of any transformations you can apply.
+                 */
+                static constexpr const unsigned int rd = modelType::renderDepth;
 
                 /**\brief Global state type
                  *

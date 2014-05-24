@@ -88,7 +88,7 @@ namespace topologic
      * \tparam format The vector format to use.
      */
     template<typename Q, template <class,unsigned int,typename> class T, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,typename> class, unsigned int, bool, typename> class C,
+             template <typename, unsigned int, template <class,unsigned int,typename> class, bool, typename> class C,
              typename format>
     class updateModel
     {
@@ -142,7 +142,7 @@ namespace topologic
 
                 out.model
                     = (render::base<true>*)
-                        (new C<Q,d,adapted,e,true,format>(out, tag));
+                        (new C<Q,d,adapted,true,format>(out, tag));
 
                 return out.model != 0;
             }
