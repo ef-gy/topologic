@@ -46,6 +46,7 @@
 #endif
 #include <set>
 #include <sstream>
+#include <type_traits>
 
 namespace topologic
 {
@@ -110,7 +111,11 @@ namespace topologic
              * \tparam tF The vector format to use.
              */
             template <class tQ, unsigned int tD>
-            using adapted = efgy::geometry::adapt<tQ,e,T<tQ,tD>,format>;
+            using adapted = typename std::conditional
+                <   std::is_same<format,typename T<tQ,tD>::format>::value
+                 && (e == T<tQ,tD>::renderDepth),
+                 T<tQ,tD>,
+                 efgy::geometry::adapt<tQ,e,T<tQ,tD>,format>>::type;
 
             /**\brief Initialise new model
              *
