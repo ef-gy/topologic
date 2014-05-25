@@ -163,7 +163,7 @@ static topologic::xml xml;
         }
     }
 
-    efgy::geometry::with<GLfloat,topologic::updateModelWrapper,MAXDEPTH>
+    efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH>
         (topologicState,
          [format UTF8String],
          [model UTF8String],

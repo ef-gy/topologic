@@ -786,7 +786,7 @@ static topologic::xml xml;
 
     [self didChangeValueForKey:@"activeCameraType"];
 
-    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModelWrapper> (topologicState, p)
+    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, p)
         && topologicState.model)
     {
         [self willChangeValueForKey:@"model"];
@@ -912,7 +912,7 @@ static topologic::xml xml;
 {
     [self willChangeValueForKey:@"selectedModelName"];
 
-    efgy::geometry::with<GLfloat,topologic::updateModelWrapper,MAXDEPTH>
+    efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH>
         (topologicState,
          [[format lowercaseString] UTF8String],
          [[model lowercaseString] UTF8String],

@@ -71,24 +71,15 @@ namespace topologic
     /**\brief Model update functor
      *
      * Used with efgy::geometry::with to initialise the model of a
-     * topologic::state instance. This class has one additional template
-     * parameter in addition to what the efgy::geometry::with template expects,
-     * which should be set to one of topologic's render wrappers - e.g.
-     * render::svg or render::opengl. You need to "remove" this template
-     * parameter with the help of a C++11 type alias.
-     *
-     * An appropriate type alias is already provided for render::svg and
-     * render::opengl, named updateModelWrapper.
+     * topologic::state instance.
      *
      * \tparam Q      Base type for calculations, e.g. double or GLfloat
      * \tparam T      Model template class to use, e.g. efgy::geometry::cube
      * \tparam d      Number of model dimensions, e.g. 4 for a tesseract
      * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract
-     * \tparam C      The model renderer, e.g. render::svg
      * \tparam format The vector format to use.
      */
     template<typename Q, template <class,unsigned int,typename> class T, unsigned int d, unsigned int e,
-             template <typename, unsigned int, template <class,unsigned int,typename> class, bool, typename> class C,
              typename format>
     class updateModel
     {
@@ -142,7 +133,7 @@ namespace topologic
 
                 out.model
                     = (render::base<true>*)
-                        (new C<Q,d,adapted,true,format>(out, tag));
+                        (new render::wrapper<Q,d,adapted,true,format>(out, tag));
 
                 return out.model != 0;
             }
@@ -164,20 +155,6 @@ namespace topologic
                 return out.model != 0;
             }
     };
-
-    /**\brief Model update functor for render::wrapper
-     *
-     * Convenient specialisation of updateModel using render::wrapper as the
-     * model renderer.
-     *
-     * \tparam Q      Base type for calculations, e.g. double or GLfloat.
-     * \tparam T      Model template class to use, e.g. efgy::geometry::cube.
-     * \tparam d      Number of model dimensions, e.g. 4 for a tesseract.
-     * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract.
-     * \tparam format The vector format to use.
-     */
-    template<typename Q, template <class,unsigned int,typename> class T, unsigned int d, unsigned int e, typename format>
-    using updateModelWrapper = updateModel<Q,T,d,e,render::wrapper,format>;
 
     /**\brief Update transformation matrix of state object instance
      *
@@ -745,7 +722,7 @@ namespace topologic
      * \tparam d    Maximum number of dimensions supported by the given state
      *              instance
      * \tparam func State object update functor, e.g.
-     *              topologic::updateModelWrapper
+     *              topologic::updateModel
      *
      * \param[out] s      The global state object to update.
      * \param[out] parser An XML parser instance, hopefully containing
