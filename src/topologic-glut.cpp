@@ -283,56 +283,43 @@ static void processKeyboard(unsigned char key, int x, int y)
  */
 int main (int argc, char* argv[])
 {
-    try
+    if (!topologic::parseArguments (topologicState, argc, argv, topologic::outGL))
     {
-        if (!topologic::parseArguments (topologicState, argc, argv, topologic::outGL))
-        {
-            return 1;
-        }
+        return 1;
+    }
 
-        if (!topologicState.model)
-        {
-            std::cerr << "error: no model to render\n";
-        }
-        else
-        {
-            glutInit(&argc, argv);
-            glutInitWindowSize(1280, 720);
+    if (!topologicState.model)
+    {
+        std::cerr << "error: no model to render\n";
+    }
+    else
+    {
+        glutInit(&argc, argv);
+        glutInitWindowSize(1280, 720);
 
 #ifdef __APPLE__
-	        glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+        glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #else
 #if defined(GLUT_CORE_PROFILE)
-	        glutInitContextVersion(3, 2);
-	        glutInitContextProfile(GLUT_CORE_PROFILE);
+        glutInitContextVersion(3, 2);
+        glutInitContextProfile(GLUT_CORE_PROFILE);
 #endif
-	        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #endif
-            glutCreateWindow("Topologic/GLUT");
+        glutCreateWindow("Topologic/GLUT");
 #ifndef __APPLE__
-            glewInit();
+        glewInit();
 #endif
 
-            glutDisplayFunc (displayCall);
-            glutReshapeFunc (reshape);
-            glutMouseFunc(processMouseButton);
-            glutMotionFunc(processMouse);
-            glutPassiveMotionFunc(processMouse);
-            glutKeyboardFunc(processKeyboard);
-            glutFullScreen();
+        glutDisplayFunc (displayCall);
+        glutReshapeFunc (reshape);
+        glutMouseFunc(processMouseButton);
+        glutMotionFunc(processMouse);
+        glutPassiveMotionFunc(processMouse);
+        glutKeyboardFunc(processKeyboard);
+        glutFullScreen();
 
-            glutMainLoop();
-        }
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << "Exception: " << e.what() << "\n";
-        return 1;
-    }
-    catch (...)
-    {
-        std::cerr << "Unknown Exception\n";
-        return 1;
+        glutMainLoop();
     }
 
     return 0;
