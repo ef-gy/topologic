@@ -413,7 +413,7 @@ int setPrecision(double precision)
  */
 int updateModel(char *format, char *smodel, int dim, int rdim)
 {
-    efgy::geometry::with<GLfloat,topologic::updateModelWrapper,MAXDEPTH> (topologicState, format, smodel, dim, rdim);
+    efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH> (topologicState, format, smodel, dim, rdim);
 
     return 0;
 }
