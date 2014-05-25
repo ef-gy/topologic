@@ -246,7 +246,7 @@ namespace topologic
          *                   virtual class.
          * \tparam format    The vector format to use.
          */
-        template<typename Q, unsigned int d, template <class,unsigned int,typename> class T, bool isVirtual, typename format>
+        template<typename Q, unsigned int d, template <class,unsigned int> class T, bool isVirtual, typename format>
         class wrapper : public base<isVirtual>
         {
             public:
@@ -255,7 +255,7 @@ namespace topologic
                  * Alias of the model type that this class represents with all
                  * the template parameters filled in.
                  */
-                typedef T<Q,d,format> modelType;
+                typedef T<Q,d> modelType;
 
                 /* \brief Model render depth
                  *
