@@ -401,9 +401,9 @@ static topologic::xml xml;
     if (modelDepth != depth)
     {
         modelDepth = depth;
-        if (modelDepth < 2)
+        if (modelDepth < 1)
         {
-            modelDepth = 2;
+            modelDepth = 1;
         }
         if (modelDepth > MAXDEPTH)
         {
