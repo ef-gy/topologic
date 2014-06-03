@@ -864,7 +864,6 @@ static topologic::xml xml;
     fb.open (cFileName,std::ios::out);
     
     std::ostream os(&fb);
-
     if (topologicState.model)
     {
         topologicState.model->update = true;

@@ -554,6 +554,44 @@ namespace topologic
             return state<Q,d-1>::translateCartesianToPolar();
         }
 
+        /**\brief Get JSON value
+         *
+         * Modifies the passed-in value so that it contains the metadata that
+         * would be needed to reconstruct this state object. Then returns that
+         * value.
+         *
+         * \param[out] value The JSON value object to modify.
+         *
+         * \returns The value that was passed in, after it has been modified.
+         */
+        efgy::json::value<Q> &json(efgy::json::value<Q> &value) const
+        {
+            state<Q,d-1>::json(value);
+
+            efgy::json::value<Q> v;
+            v.toArray();
+
+            for (unsigned int i = 0; i < d; i++)
+            {
+                v.getArray().push_back(base::polarCoordinates ? fromp[i] : from[i]);
+            }
+
+            value.getObject()["camera"].getArray().push_back(v);
+
+            v.toArray();
+            for (unsigned int i = 0; i <= d; i++)
+            {
+                for (unsigned int j = 0; j <= d; j++)
+                {
+                    v.getArray().push_back(transformation.transformationMatrix[i][j]);
+                }
+            }
+
+            value.getObject()["transformation"].getArray().push_back(v);
+
+            return value;
+        }
+
     protected:
         /**\brief Is this the currently active dimension?
          *
@@ -783,6 +821,65 @@ namespace topologic
          */
         bool translateCartesianToPolar (void) const { return true; }
 
+        /**\brief Get JSON value (2D fix point)
+         *
+         * Modifies the passed-in value so that it contains the metadata that
+         * would be needed to reconstruct this state object. Then returns that
+         * value.
+         *
+         * \param[out] value The JSON value object to modify.
+         *
+         * \returns The value that was passed in, after it has been modified.
+         */
+        efgy::json::value<Q> &json(efgy::json::value<Q> &value) const
+        {
+            if (value.type != efgy::json::value<Q>::object)
+            {
+                value.toObject();
+            }
+
+            value.getObject()["polar"] = polarCoordinates;
+            value.getObject()["camera"].toArray();
+            value.getObject()["transformation"].toArray();
+            if (model)
+            {
+                value.getObject()["model"]            = model->id;
+                value.getObject()["depth"]            = Q(model->depth);
+                value.getObject()["renderDepth"]      = Q(model->renderDepth);
+                value.getObject()["coordinateFormat"] = model->formatID;
+            }
+            value.getObject()["radius"]            = parameter.radius;
+            value.getObject()["polarPrecision"]    = parameter.precision;
+            value.getObject()["iterations"]        = Q(parameter.iterations);
+            value.getObject()["seed"]              = Q(parameter.seed);
+            value.getObject()["functions"]         = Q(parameter.functions);
+            value.getObject()["preRotate"]         = parameter.preRotate;
+            value.getObject()["postRotate"]        = parameter.postRotate;
+            value.getObject()["flameCoefficients"] = Q(parameter.flameCoefficients);
+
+            value.getObject()["background"].toArray();
+            value.getObject()["wireframe"].toArray();
+            value.getObject()["surface"].toArray();
+
+            value.getObject()["background"].getArray().push_back("rgb");
+            value.getObject()["background"].getArray().push_back(background.red);
+            value.getObject()["background"].getArray().push_back(background.green);
+            value.getObject()["background"].getArray().push_back(background.blue);
+            value.getObject()["background"].getArray().push_back(background.alpha);
+            value.getObject()["wireframe"].getArray().push_back("rgb");
+            value.getObject()["wireframe"].getArray().push_back(wireframe.red);
+            value.getObject()["wireframe"].getArray().push_back(wireframe.green);
+            value.getObject()["wireframe"].getArray().push_back(wireframe.blue);
+            value.getObject()["wireframe"].getArray().push_back(wireframe.alpha);
+            value.getObject()["surface"].getArray().push_back("rgb");
+            value.getObject()["surface"].getArray().push_back(surface.red);
+            value.getObject()["surface"].getArray().push_back(surface.green);
+            value.getObject()["surface"].getArray().push_back(surface.blue);
+            value.getObject()["surface"].getArray().push_back(surface.alpha);
+
+            return value;
+        }
+
         /**\brief Model renderer instance
          *
          * Points to an instance of a model renderer, e.g.
@@ -1010,81 +1107,8 @@ namespace topologic
         (efgy::json::ostream<C> stream,
          const state<Q,d> &pState)
     {
-        stream.stream << "\"camera-" << d << "\":[";
-        if (pState.polarCoordinates)
-        {
-            stream.stream << "\"polar\"";
-            for (unsigned int i = 0; i < d; i++)
-            {
-                stream.stream << "," << double(pState.from[i]);
-            }
-        }
-        else
-        {
-            stream.stream << "\"cartesian\"";
-            for (unsigned int i = 0; i < d; i++)
-            {
-                stream.stream << "," << double(pState.from[i]);
-            }
-        }
-        stream.stream << "],\"transformation-" << d << "\":[";
-        if (isIdentity (pState.transformation.transformationMatrix))
-        {
-            stream.stream << "\"identitiy\"";
-        }
-        else
-        {
-            stream.stream << "\"matrix\"";
-            for (unsigned int i = 0; i <= d; i++)
-            {
-                for (unsigned int j = 0; j <= d; j++)
-                {
-                    stream.stream << "," << double(pState.transformation.transformationMatrix[i][j]);
-                }
-            }
-        }
-        stream.stream << "],";
-        
-        return operator << <C,Q,d-1> (stream, pState);
-    }
-
-    /**\brief Gather model metadata (2D fix point, JSON)
-     *
-     * Creates a JSON fragment containing all of the settings in this instance
-     * of the global state object. This particular method will not recurse, much
-     * unlike the higher level equivalents.
-     *
-     * \param[out] stream The JSON stream to write to.
-     * \param[in]  pValue The state to serialise.
-     *
-     * \returns A new copy of the input stream.
-     *
-     * \tparam C Character type for the basic_ostream reference.
-     * \tparam Q Base data type; should be a class that acts like a rational
-     *           base arithmetic type.
-     * \tparam d Maximum render depth
-     */
-    template <typename C, typename Q, unsigned int d>
-    static inline efgy::json::ostream<C> operator <<
-        (efgy::json::ostream<C> stream,
-         const state<Q,2> &pState)
-    {
-        stream.stream << "\"mode\":\"" << (pState.polarCoordinates ? "polar" : "cartesian") << "\",";
-        if (pState.model)
-        {
-            stream.stream << "\"model\":\"" << pState.model->id << "\",\"depth\":" << pState.model->depth << ",\"renderDepth\":" << pState.model->renderDepth << ","
-            " \"coordinateFormat\":\"" << pState.model->formatID << "\",";
-        }
-        stream.stream
-            << "\"radius\":\"" << double(pState.parameter.radius) << "\","
-            << "\"polarPrecision\":\"" << double(pState.parameter.precision) << "\","
-            << "\"IFSIterations\":\"" << pState.parameter.iterations << "\",\"IFSSeed\":\"" << pState.parameter.seed << "\",\"IFSFunctions\":\"" << pState.parameter.functions << "\",\"IFSPreRotate\":" << (pState.parameter.preRotate ? "true" : "false") << ",\"IFSPostRotate\":" << (pState.parameter.postRotate ? "true" : "false") << ","
-            << "\"flameCoefficients\":\"" << pState.parameter.flameCoefficients << "\","
-            << "\"background\":[\"rgb\"," << double(pState.background.red) << "," << double(pState.background.green) << "," << double(pState.background.blue) << "," << double(pState.background.alpha) << "],"
-            << "\"wireframe\":[\"rgb\"," << double(pState.wireframe.red) << "," << double(pState.wireframe.green) << "," << double(pState.wireframe.blue) << "," << double(pState.wireframe.alpha) << "],"
-            << "\"surface\":[\"rgb\"," << double(pState.surface.red) << "," << double(pState.surface.green) << "," << double(pState.surface.blue) << "," << double(pState.surface.alpha) << "]";
-
-        return stream;
+        efgy::json::value<Q> v;
+        return stream << pState.json(v);
     }
 };
 
