@@ -427,24 +427,25 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2570">
-                    <rect key="frame" x="51" y="683" width="170" height="24"/>
+                    <rect key="frame" x="18" y="683" width="209" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="2571">
                         <font key="font" metaFont="system"/>
                         <segments>
+                            <segment label="2D" width="32" tag="-1"/>
                             <segment label="3D" width="32" selected="YES"/>
                             <segment label="4D" width="32" tag="1"/>
                             <segment label="5D" width="32" tag="2"/>
                             <segment label="6D" width="32" tag="3"/>
-                            <segment label="7D" width="32" tag="4"/>
+                            <segment label="7D" tag="4"/>
                         </segments>
                     </segmentedCell>
                     <connections>
                         <binding destination="494" name="selectedTag" keyPath="activeCamera" id="2630"/>
                     </connections>
                 </segmentedControl>
-                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2614">
-                    <rect key="frame" x="61" y="712" width="151" height="24"/>
+                <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2614">
+                    <rect key="frame" x="18" y="712" width="151" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="2615">
                         <font key="font" metaFont="system"/>
@@ -759,7 +760,8 @@
                 <constraint firstItem="2631" firstAttribute="top" secondItem="2570" secondAttribute="bottom" constant="8" symbolic="YES" id="6479"/>
                 <constraint firstItem="4020" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" symbolic="YES" id="6481"/>
                 <constraint firstAttribute="trailing" secondItem="4020" secondAttribute="trailing" constant="20" symbolic="YES" id="6482"/>
-                <constraint firstItem="2570" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="53" id="8023"/>
+                <constraint firstItem="2614" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="3x1-6o-o3m"/>
+                <constraint firstItem="2570" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="fXG-Pi-xMG"/>
             </constraints>
         </customView>
         <drawer preferredEdge="minX" trailingOffset="15" id="1320">
