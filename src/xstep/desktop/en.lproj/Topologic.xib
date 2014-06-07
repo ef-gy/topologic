@@ -240,16 +240,17 @@
                     <toolbarItem implicitItemIdentifier="5B151887-D41F-479D-99AF-358E80A2B777" label="Render Depth" paletteLabel="Render Depth" id="HIn-hL-znx">
                         <nil key="toolTip"/>
                         <size key="minSize" width="104" height="28"/>
-                        <size key="maxSize" width="190" height="28"/>
+                        <size key="maxSize" width="221" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="P5U-er-bLU">
-                            <rect key="frame" x="0.0" y="14" width="182" height="28"/>
+                            <rect key="frame" x="0.0" y="14" width="221" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" alignment="left" style="texturedRounded" trackingMode="selectOne" id="j5w-sp-4nU">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="3D" width="32" tag="3"/>
-                                    <segment label="4D" width="32" selected="YES" tag="4"/>
-                                    <segment label="5D" width="32" tag="5"/>
+                                    <segment label="2D" width="32" tag="2"/>
+                                    <segment label="3D" width="32" selected="YES" tag="3"/>
+                                    <segment label="4D" width="32" tag="4"/>
+                                    <segment label="5D" tag="5"/>
                                     <segment label="6D" tag="6"/>
                                     <segment label="7D" tag="7"/>
                                 </segments>

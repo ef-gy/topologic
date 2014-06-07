@@ -426,9 +426,9 @@ static topologic::xml xml;
     if (renderDepth != depth)
     {
         renderDepth = depth;
-        if (renderDepth < 3)
+        if (renderDepth < 2)
         {
-            renderDepth = 3;
+            renderDepth = 2;
         }
         if (renderDepth > MAXDEPTH)
         {

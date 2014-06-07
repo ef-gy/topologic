@@ -618,7 +618,7 @@ namespace topologic
      *           base arithmetic type.
      */
     template<typename Q>
-    class state<Q,2>
+    class state<Q,1>
     {
     public:
         /**\brief Default constructor
@@ -628,9 +628,9 @@ namespace topologic
          */
         state(void)
             : polarCoordinates(true),
-              svg(transformation),
+              svg(),
 #if !defined(NO_OPENGL)
-              opengl(transformation),
+              opengl(),
 #endif
               background(Q(1), Q(1), Q(1), Q(1)),
               wireframe(Q(0), Q(0), Q(0), Q(0.8)),
@@ -888,20 +888,11 @@ namespace topologic
          */
         render::base<true> *model;
 
-        /**\brief 2D viewport transformation matrix
-         *
-         * An affine transformation which should be applied to the 2D viewport
-         * as part of the rendering process.
-         *
-         * \note Currently ignored by the SVG and the OpenGL renderer.
-         */
-        typename efgy::geometry::transformation::affine<Q,2> transformation;
-
         /**\brief libefgy SVG renderer instance; 2D fix point
          *
          * This is an instance of the 2D fix point of libefgy's SVG renderer.
          */
-        typename efgy::render::svg<Q,2> svg;
+        typename efgy::render::svg<Q,1> svg;
 
 #if !defined(NO_OPENGL)
         /**\brief libefgy OpenGL renderer instance; 2D fix point
@@ -909,7 +900,7 @@ namespace topologic
          * This is an instance of the 2D fix point of libefgy's OpenGL
          * renderer.
          */
-        typename efgy::render::opengl<Q,2> opengl;
+        typename efgy::render::opengl<Q,1> opengl;
 #endif
 
         /**\brief Use polar coordinates?
@@ -1065,7 +1056,7 @@ namespace topologic
     template <typename C, typename Q, unsigned int d>
     static inline efgy::xml::ostream<C> operator <<
         (efgy::xml::ostream<C> stream,
-         const state<Q,2> &pState)
+         const state<Q,1> &pState)
     {
         stream.stream << "<t:camera mode='" << (pState.polarCoordinates ? "polar" : "cartesian") << "'/>";
         if (pState.model)
