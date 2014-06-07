@@ -376,23 +376,9 @@ namespace topologic
                     
                     gState.opengl.frameStart();
                     
-                    if (gState.fractalFlameColouring)
-                    {
-                        gState.opengl.setColour(0,0,0,0.5,true);
-                        gState.opengl.setColour(0,0,0,0.8,false);
-                    }
-                    else
-                    {
-                        gState.opengl.setColour
-                            (gState.wireframe.red, gState.wireframe.green,
-                             gState.wireframe.blue, gState.wireframe.alpha,
-                             true);
-                        gState.opengl.setColour
-                            (gState.surface.red, gState.surface.green,
-                             gState.surface.blue, gState.surface.alpha,
-                             false);
-                    }
-                    
+                    gState.opengl.wireframeColour = gState.wireframe;
+                    gState.opengl.surfaceColour   = gState.surface;
+
                     if (!gState.opengl.prepared)
                     {
                         std::cerr << gState.opengl << object;
