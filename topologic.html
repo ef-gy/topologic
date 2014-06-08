@@ -143,9 +143,9 @@ if (JSON)
 
 function topologicUpdateDimension()
 {
-    if (topologicActiveDimension < 3)
+    if (topologicActiveDimension < 2)
     {
-        topologicActiveDimension = 3;
+        topologicActiveDimension = 2;
     }
     if (topologicActiveDimension > topologicModelRenderDepth)
     {
@@ -179,13 +179,13 @@ function topologicUpdateCurrentModel()
     {
         topologicModelDepth = topologicMaxDepth;
     }
-    if (topologicModelDepth < 2)
+    if (topologicModelDepth < 1)
     {
-        topologicModelDepth = 2;
+        topologicModelDepth = 1;
     }
-    if (topologicModelRenderDepth < 3)
+    if (topologicModelRenderDepth < 2)
     {
-        topologicModelRenderDepth = 3;
+        topologicModelRenderDepth = 2;
     }
     if (topologicModelRenderDepth > topologicMaxDepth)
     {
@@ -313,6 +313,7 @@ function topologicUpdateCurrentModel()
             <option>plane</option>
             <option>sphere</option>
             <option>torus</option>
+            <option>clifford-torus</option>
             <option>dinis-surface</option>
             <option>moebius-strip</option>
             <option>klein-bagel</option>
