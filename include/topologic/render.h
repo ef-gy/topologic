@@ -383,8 +383,7 @@ namespace topologic
                     {
                         std::cerr << gState.opengl << object;
                     }
-                    
-                    gState.opengl.clear();
+
                     gState.opengl.frameEnd();
                     
                     return true;
