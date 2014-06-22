@@ -634,7 +634,7 @@ namespace topologic
 #endif
               background(Q(1), Q(1), Q(1), Q(1)),
               wireframe(Q(0), Q(0), Q(0), Q(0.8)),
-              surface(Q(0), Q(0), Q(0), Q(0.5)),
+              surface(Q(0), Q(0), Q(0), Q(0.2)),
               fractalFlameColouring(false),
               model(0)
             {

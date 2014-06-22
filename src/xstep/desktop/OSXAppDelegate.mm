@@ -351,7 +351,7 @@ static topologic::xml xml;
 
     [self setColourBackground:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];
     [self setColourWire:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0.8]];
-    [self setColourSurface:[NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0.5]];
+    [self setColourSurface:[NSColor colorWithDeviceRed:0.5 green:0.5 blue:0.5 alpha:0.2]];
 
     [self updateCamera];
 

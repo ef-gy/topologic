@@ -274,12 +274,12 @@ static topologic::xml xml;
                 topologicState.wireframe.red    = 0;
                 topologicState.wireframe.green  = 0;
                 topologicState.wireframe.blue   = 0;
-                topologicState.wireframe.alpha  = 0.7;
+                topologicState.wireframe.alpha  = 0.8;
                 
-                topologicState.surface.red      = 0;
-                topologicState.surface.green    = 0;
-                topologicState.surface.blue     = 0;
-                topologicState.surface.alpha    = 0.5;
+                topologicState.surface.red      = 0.5;
+                topologicState.surface.green    = 0.5;
+                topologicState.surface.blue     = 0.5;
+                topologicState.surface.alpha    = 0.2;
                 break;
 
             case 2:
@@ -291,12 +291,12 @@ static topologic::xml xml;
                 topologicState.wireframe.red    = 0;
                 topologicState.wireframe.green  = 1;
                 topologicState.wireframe.blue   = 0;
-                topologicState.wireframe.alpha  = 0.7;
+                topologicState.wireframe.alpha  = 0.8;
                 
                 topologicState.surface.red      = 0;
                 topologicState.surface.green    = 1;
                 topologicState.surface.blue     = 0;
-                topologicState.surface.alpha    = 0.5;
+                topologicState.surface.alpha    = 0.2;
                 break;
         }
     }
