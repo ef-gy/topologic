@@ -117,6 +117,7 @@ extern "C"
     void setViewportSize(int, int);
     const char *getJSON(void);
     const char *getSVG(void);
+    void parseJSON(const char *);
 }
 
 /**\brief Is a mouse button currently being?
@@ -599,6 +600,23 @@ const char *getSVG(void)
     str = os.str();
 
     return str.c_str();
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Parse JSON export
+ *
+ * Takes a JSON string, parses it and applies it to the current global state
+ * context.
+ *
+ * \param{in} json The JSON string to parse.
+ */
+void parseJSON(const char *json)
+{
+    std::string s(json);
+    efgy::json::value<> v;
+    s >> v;
+    topologic::parse (topologicState, v);
+    topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, v);
 }
 
 /** \} */
