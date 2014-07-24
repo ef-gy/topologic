@@ -63,12 +63,12 @@ namespace topologic
      * \param[out] topologicState The topologic::state instance to populate
      * \param[in]  argc           Number of arguments in the argv array
      * \param[in]  argv           Command line argument array (c.f. main())
-     * \param[in]  out            Output mode, e.g. topologic::outGL
+     * \param[out] out            Output mode, e.g. topologic::outGL
      *
      * \returns 'true' if things went smoothly, 'false' otherwise.
      */
     template<typename Q, unsigned int dim>
-    bool parseArguments (state<Q, dim> &topologicState, int argc, char* argv[], enum outputMode out)
+    bool parseArguments (state<Q, dim> &topologicState, int argc, char* argv[], enum outputMode &out)
     {
 #if !defined (NOLIBRARIES)
         topologic::xml XML;
@@ -121,6 +121,9 @@ namespace topologic
                                  "\n"
                                  "  --regular-colours       Use regular colouring algorithm\n"
                                  "  --fractal-flame-colours Use fractal flame colouring algorithm (OpenGL only)\n"
+                                 "\n"
+                                 "  --json                  Write JSON output\n"
+                                 "  --svg                   Write SVG output\n"
                                  "\n"
                                  "See the man page of this programme for further details; e.g. run:\n"
                                  "man topologic\n\n";
@@ -455,16 +458,35 @@ namespace topologic
                         }
                     }
                 }
-#if !defined (NOLIBRARIES)
+                else if (arg == "--json")
+                {
+                    out = topologic::outJSON;
+                }
+                else if (arg == "--svg")
+                {
+                    out = topologic::outSVG;
+                }
                 else
                 {
                     std::ifstream in(argv[i]);
                     std::istreambuf_iterator<char> eos;
                     std::string s(std::istreambuf_iterator<char>(in), eos);
 
+#if !defined (NOLIBRARIES)
                     xml::parser p(s, arg);
-                    parse (topologicState, p);
-                    parseModel<Q,dim,updateModel> (topologicState, p);
+                    if (p.valid)
+                    {
+                        parse (topologicState, p);
+                        parseModel<Q,dim,updateModel> (topologicState, p);
+                    }
+                    else
+#endif
+                    {
+                        efgy::json::value<> v;
+                        s >> v;
+                        parse (topologicState, v);
+                        parseModel<Q,dim,updateModel> (topologicState, v);
+                    }
 
                     if (topologicState.model)
                     {
@@ -474,7 +496,6 @@ namespace topologic
                         rdepth = topologicState.model->renderDepth;
                     }
                 }
-#endif
             }
         }
 

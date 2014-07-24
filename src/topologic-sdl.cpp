@@ -306,7 +306,9 @@ void process(void)
  */
 int main(int argc, char *argv[])
 {
-    if (!topologic::parseArguments (topologicState, argc, argv, topologic::outGL))
+    enum topologic::outputMode out = topologic::outGL;
+
+    if (!topologic::parseArguments (topologicState, argc, argv, out))
     {
         return 1;
     }

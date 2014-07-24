@@ -75,8 +75,9 @@ namespace topologic
     int cli (int argc, char* argv[])
     {
         state<FP,MAXDEPTH> topologicState;
+        enum outputMode out = outSVG;
 
-        if (!parseArguments (topologicState, argc, argv, outSVG))
+        if (!parseArguments (topologicState, argc, argv, out))
         {
             return 1;
         }
@@ -85,9 +86,13 @@ namespace topologic
         {
             std::cerr << "error: no model to render\n";
         }
-        else
+        else if (out == outSVG)
         {
             topologicState.model->svg(std::cout, true);
+        }
+        else if (out == outJSON)
+        {
+            std::cout << efgy::json::tag() << topologicState;
         }
 
         return 0;

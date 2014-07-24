@@ -185,12 +185,12 @@ namespace topologic
         return setMatrixCell<Q,d-1>(s, sd, x, y, vv);
     }
 
-    /**\brief Update transformation matrix of state object instance; 2D fix
+    /**\brief Update transformation matrix of state object instance; 1D fix
      *        point
      *
      * This is a helper template to update a specific affine transformation
-     * matrix cell of a topologic::state instance. This 2D fix point doesn't
-     * do anything at all, because the 2D transformation matrix of the state
+     * matrix cell of a topologic::state instance. This 1D fix point doesn't
+     * do anything at all, because the 1D transformation matrix of the state
      * object isn't being used right now.
      *
      * Any parameters passed to this function are currently being ignored.
@@ -203,7 +203,7 @@ namespace topologic
      *          function doesn't do anything by design it will always fail.
      */
     template<typename Q, unsigned int d>
-    static bool setMatrixCell (state<Q,2> &, const unsigned int &, const unsigned int &, const unsigned int &, const Q &)
+    static bool setMatrixCell (state<Q,1> &, const unsigned int &, const unsigned int &, const unsigned int &, const Q &)
     {
         return false;
     }
@@ -256,8 +256,10 @@ namespace topologic
              */
             parser(const std::string &data,
                    const std::string &filename)
-                : document (xmlReadMemory (data.data(), int(data.size()), filename.c_str(), 0,
-                            XML_PARSE_NOERROR | XML_PARSE_NOWARNING))
+                : valid(false),
+                  document (xmlReadMemory (data.data(), int(data.size()), filename.c_str(), 0,
+                            XML_PARSE_NOERROR | XML_PARSE_NOWARNING)),
+                  xpathContext(0)
             {
                 if (document == 0)
                 {
@@ -296,6 +298,8 @@ namespace topologic
                     document = 0;
                     std::cerr << "failed to register namespace: topologic\n";
                 }
+
+                valid = true;
             }
 
             /**\brief Copy constructor
@@ -436,6 +440,13 @@ namespace topologic
                 return true;
             }
 
+            /**\brief Has a valid XML file been loaded?
+             *
+             * Set to 'true' when this parser context has a valid object loaded,
+             * 'false' otherwise. Set by the constructor.
+             */
+            bool valid;
+
         protected:
             /**\brief libxml2 document context
              *
@@ -502,6 +513,11 @@ namespace topologic
     template<typename Q, unsigned int d>
     static bool parse (state<Q,d> &s, xml::parser &parser)
     {
+        if (!parser.valid)
+        {
+            return false;
+        }
+
         std::stringstream st;
         std::string value, dims, dimssq;
         st << d;
@@ -591,7 +607,7 @@ namespace topologic
         return parse<Q,d-1>(s, parser);
     }
 
-    /**\brief Parse XML file contents and update global state object; 2D fix
+    /**\brief Parse XML file contents and update global state object; 1D fix
      *        point.
      *
      * This function uses an xml::parser instance to update a topologic::state
@@ -601,7 +617,7 @@ namespace topologic
      * designated metadata element in your XML files, such as the svg:metadata
      * element.
      *
-     * This process is applied recursively, and this is the 2D fix point, which
+     * This process is applied recursively, and this is the 1D fix point, which
      * makes certain that the compiler won't blow up due to infinite template
      * recursion.
      *
@@ -617,8 +633,13 @@ namespace topologic
      *          'false' if it did. Probably.
      */
     template<typename Q, unsigned int d>
-    static bool parse (state<Q,2> &s, xml::parser &parser)
+    static bool parse (state<Q,1> &s, xml::parser &parser)
     {
+        if (!parser.valid)
+        {
+            return false;
+        }
+
         std::string value;
         if ((value = parser.evaluate("//topologic:precision/@polar")) != "")
         {
@@ -734,6 +755,11 @@ namespace topologic
              template<typename, template <class,unsigned int> class, unsigned int, unsigned int, typename> class func>
     static bool parseModel (state<Q,d> &s, xml::parser &parser)
     {
+        if (!parser.valid)
+        {
+            return false;
+        }
+
         std::string format = "cartesian", value;
         if ((value = parser.evaluate("//topologic:coordinates/@format")) != "")
         {
@@ -765,6 +791,232 @@ namespace topologic
         return false;
     }
 #endif
+
+    /**\brief Parse JSON file contents and update global state object
+     *
+     * This is analogous to topologic::parse() with XML data; however, this
+     * parses a JSON value instead of querying an XML parser.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] value  A JSON value, hopefully containing Topologic metadata.
+     *
+     * \returns 'true' if the code didn't blow up trying to parse your XML,
+     *          'false' if it did. Probably.
+     */
+    template<typename Q, unsigned int d>
+    static bool parse (state<Q,d> &s, efgy::json::value<> &value)
+    {
+        if (value.type != efgy::json::value<>::object)
+        {
+            return false;
+        }
+
+        bool polar = value.getObject()["polar"].type  == efgy::json::value<>::yes;
+
+        if (value.getObject()["camera"].type == efgy::json::value<>::array)
+        {
+            efgy::json::value<> &cameras = value.getObject()["camera"];
+            for (efgy::json::value<> &c : cameras.getArray())
+            {
+                if (   c.type == efgy::json::value<>::array
+                    && c.getArray().size() == d)
+                {
+                    for (unsigned int i = 0; i < d; i++)
+                    {
+                        if (c.getArray()[i].type == efgy::json::value<>::number)
+                        {
+                            if (polar)
+                            {
+                                s.fromp[i] = c.getArray()[i].getNumber();
+                            }
+                            else
+                            {
+                                s.from[i] = c.getArray()[i].getNumber();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (value.getObject()["transformation"].type == efgy::json::value<>::array)
+        {
+            efgy::json::value<> &transformations = value.getObject()["transformation"];
+            for (efgy::json::value<> &t : transformations.getArray())
+            {
+                if (   t.type == efgy::json::value<>::array
+                    && t.getArray().size() == ((d+1)*(d+1)))
+                {
+                    for (unsigned int i = 0; i <= d; i++)
+                    {
+                        for (unsigned int j = 0; j <= d; j++)
+                        {
+                            if (t.getArray()[(i*(d+1)+j)].type == efgy::json::value<>::number)
+                            {
+                                s.transformation.transformationMatrix[i][j]
+                                    = t.getArray()[(i*(d+1)+j)].getNumber();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return parse<Q,d-1>(s, value);
+    }
+    
+    /**\brief Parse JSON file contents and update global state object; 1D fix
+     *        point.
+     *
+     * This is analogous to topologic::parse() with XML data; however, this
+     * parses a JSON value instead of querying an XML parser.
+     *
+     * \tparam Q Base data type for calculations.
+     * \tparam d Maximum number of dimensions supported by the given state
+     *           instance
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] value  A JSON value, hopefully containing Topologic metadata.
+     *
+     * \returns 'true' if the code didn't blow up trying to parse your XML,
+     *          'false' if it did. Probably.
+     */
+    template<typename Q, unsigned int d>
+    static bool parse (state<Q,1> &s, efgy::json::value<> &value)
+    {
+        if (value.type != efgy::json::value<>::object)
+        {
+            return false;
+        }
+
+        if (value.getObject()["radius"].type == efgy::json::value<>::number)
+        {
+            s.parameter.radius = value.getObject()["radius"].getNumber();
+        }
+        if (value.getObject()["polarPrecision"].type == efgy::json::value<>::number)
+        {
+            s.parameter.precision = value.getObject()["polarPrecision"].getNumber();
+        }
+        if (value.getObject()["iterations"].type == efgy::json::value<>::number)
+        {
+            s.parameter.iterations = (int)value.getObject()["iterations"].getNumber();
+        }
+        if (value.getObject()["seed"].type == efgy::json::value<>::number)
+        {
+            s.parameter.seed = (int)value.getObject()["seed"].getNumber();
+        }
+        if (value.getObject()["functions"].type == efgy::json::value<>::number)
+        {
+            s.parameter.functions = (int)value.getObject()["functions"].getNumber();
+        }
+        if (value.getObject()["flameCoefficients"].type == efgy::json::value<>::number)
+        {
+            s.parameter.flameCoefficients = (int)value.getObject()["flameCoefficients"].getNumber();
+        }
+
+        s.parameter.preRotate  = value.getObject()["preRotate"].type  == efgy::json::value<>::yes;
+        s.parameter.postRotate = value.getObject()["postRotate"].type == efgy::json::value<>::yes;
+
+        if (   value.getObject()["background"].type == efgy::json::value<>::array
+            && value.getObject()["background"].getArray().size() >= 5
+            && value.getObject()["background"].getArray()[1].type == efgy::json::value<>::number
+            && value.getObject()["background"].getArray()[2].type == efgy::json::value<>::number
+            && value.getObject()["background"].getArray()[3].type == efgy::json::value<>::number
+            && value.getObject()["background"].getArray()[4].type == efgy::json::value<>::number)
+        {
+            s.background.red   = value.getObject()["background"].getArray()[1].getNumber();
+            s.background.green = value.getObject()["background"].getArray()[2].getNumber();
+            s.background.blue  = value.getObject()["background"].getArray()[3].getNumber();
+            s.background.alpha = value.getObject()["background"].getArray()[4].getNumber();
+        }
+        if (   value.getObject()["wireframe"].type == efgy::json::value<>::array
+            && value.getObject()["wireframe"].getArray().size() >= 5
+            && value.getObject()["wireframe"].getArray()[1].type == efgy::json::value<>::number
+            && value.getObject()["wireframe"].getArray()[2].type == efgy::json::value<>::number
+            && value.getObject()["wireframe"].getArray()[3].type == efgy::json::value<>::number
+            && value.getObject()["wireframe"].getArray()[4].type == efgy::json::value<>::number)
+        {
+            s.wireframe.red   = value.getObject()["wireframe"].getArray()[1].getNumber();
+            s.wireframe.green = value.getObject()["wireframe"].getArray()[2].getNumber();
+            s.wireframe.blue  = value.getObject()["wireframe"].getArray()[3].getNumber();
+            s.wireframe.alpha = value.getObject()["wireframe"].getArray()[4].getNumber();
+        }
+        if (   value.getObject()["surface"].type == efgy::json::value<>::array
+            && value.getObject()["surface"].getArray().size() >= 5
+            && value.getObject()["surface"].getArray()[1].type == efgy::json::value<>::number
+            && value.getObject()["surface"].getArray()[2].type == efgy::json::value<>::number
+            && value.getObject()["surface"].getArray()[3].type == efgy::json::value<>::number
+            && value.getObject()["surface"].getArray()[4].type == efgy::json::value<>::number)
+        {
+            s.surface.red   = value.getObject()["surface"].getArray()[1].getNumber();
+            s.surface.green = value.getObject()["surface"].getArray()[2].getNumber();
+            s.surface.blue  = value.getObject()["surface"].getArray()[3].getNumber();
+            s.surface.alpha = value.getObject()["surface"].getArray()[4].getNumber();
+        }
+
+        return true;
+    }
+
+    /**\brief Parse and update model data
+     *
+     * This is analogous to topologic::parseModel() with XML data; however, this
+     * parses a JSON value instead of querying an XML parser.
+     *
+     * \tparam Q    Base data type for calculations.
+     * \tparam d    Maximum number of dimensions supported by the given state
+     *              instance
+     * \tparam func State object update functor, e.g.
+     *              topologic::updateModel
+     *
+     * \param[out] s      The global state object to update.
+     * \param[out] value  A JSON value, hopefully containing Topologic metadata.
+     *
+     * \returns 'true' if things worked out, 'false' otherwise.
+     */
+    template<typename Q, unsigned int d,
+             template<typename, template <class,unsigned int> class, unsigned int, unsigned int, typename> class func>
+    static bool parseModel (state<Q,d> &s, efgy::json::value<> &value)
+    {
+        if (value.type != efgy::json::value<>::object)
+        {
+            return false;
+        }
+
+        std::string type = "cube";
+        std::string format = "cartesian";
+        int depth = 4;
+        int rdepth = 4;
+
+        if (value.getObject()["coordinateFormat"].type == efgy::json::value<>::string)
+        {
+            format = value.getObject()["coordinateFormat"].getString();
+        }
+
+        if (value.getObject()["model"].type == efgy::json::value<>::string)
+        {
+            type = value.getObject()["model"].getString();
+        }
+        else
+        {
+            return false;
+        }
+
+        if (value.getObject()["depth"].type == efgy::json::value<>::number)
+        {
+            depth = (int)value.getObject()["depth"].getNumber();
+        }
+
+        if (value.getObject()["renderDepth"].type == efgy::json::value<>::number)
+        {
+            rdepth = (int)value.getObject()["renderDepth"].getNumber();
+        }
+
+        return efgy::geometry::with<Q,func,d> (s, format, type, depth, rdepth);
+    }
 };
 
 #endif

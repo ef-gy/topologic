@@ -74,7 +74,14 @@ namespace topologic
          * render, this one also supports 3D lighting and a Fractal Flame
          * colouring mode.
          */
-        outGL   = 2
+        outGL   = 2,
+
+        /**\brief JSON renderer label
+         *
+         * The JSON output method only produces metadata and not proper image
+         * renditions.
+         */
+        outJSON = 4
     };
 
     /**\brief Topologic global programme state object
@@ -110,13 +117,13 @@ namespace topologic
          */
         typedef state<Q,d-1> parent;
 
-        /**\brief Base (2D) class type
+        /**\brief Base (1D) class type
          *
-         * Some data is only contained in the 2D version of this class, which
+         * Some data is only contained in the 1D version of this class, which
          * this higher-dimensional variant is based on thanks to the power of
          * recursive templates.
          */
-        typedef state<Q,2> base;
+        typedef state<Q,1> base;
 
         /**\brief Default constructor
          *
@@ -236,7 +243,7 @@ namespace topologic
          * \param[in] scale The scale to apply.
          *
          * \returns 'true' if the active matrix was modified, 'false' if there
-         *          wasn't any active dimension or if you called the 2D version
+         *          wasn't any active dimension or if you called the 1D version
          *          of this method.
          */
         bool scale (const Q &scale)
@@ -270,7 +277,7 @@ namespace topologic
          * \param[in] magnification The magnification factor to apply.
          *
          * \returns 'true' if the active matrix was modified, 'false' if there
-         *          wasn't any active dimension or if you called the 2D version
+         *          wasn't any active dimension or if you called the 1D version
          *          of this method.
          */
         bool magnify (const Q &magnification)
@@ -362,7 +369,7 @@ namespace topologic
          *          state object succeeded. Since there is no way for this
          *          method to fail it will always return 'true'.
          *
-         * \note The 2D state object does not have an 'active' flag, so this
+         * \note The 1D state object does not have an 'active' flag, so that
          *       particular instance of the method never does anything.
          */
         bool setActive (const unsigned int &dim)
@@ -605,9 +612,9 @@ namespace topologic
         bool active;
     };
 
-    /**\brief Topologic programme state (2D fix point)
+    /**\brief Topologic programme state (1D fix point)
      *
-     * Part of the global Topologic state class, this is the 2D fix point and
+     * Part of the global Topologic state class, this is the 1D fix point and
      * as such contains most of the flags and other state that apply to all 
      * dimensions: output sizes, colours, model parameters, etc.
      *
@@ -623,7 +630,7 @@ namespace topologic
     public:
         /**\brief Default constructor
          *
-         * Constructs an instance of a 2D state object with more-or-less sane
+         * Constructs an instance of a 1D state object with more-or-less sane
          * defaults.
          */
         state(void)
@@ -661,22 +668,22 @@ namespace topologic
                 }
             }
 
-        /**\brief Update projection matrices; 2D fix point
+        /**\brief Update projection matrices; 1D fix point
          *
-         * This is the 2D fix point of the state::updateMatrix() method. Since
+         * This is the 1D fix point of the state::updateMatrix() method. Since
          * there's not much point in projecting from a 2-space -- which would
          * result in an image in 1-space -- this method is a stub that doesn't
          * do anything.
          */
         void updateMatrix (void) const {}
 
-        /**\brief Apply scale; 2D fix point
+        /**\brief Apply scale; 1D fix point
          *
-         * Applies a scale to the affine transformation matrix; since the 2D
+         * Applies a scale to the affine transformation matrix; since the 1D
          * fix point's transformation matrix is currently being ignored, this
          * particular instance of the method will not do anything at all.
          *
-         * \returns 'true' if things went as expected. This 2D fix point should
+         * \returns 'true' if things went as expected. This 1D fix point should
          *          only be called as a fallback of the higher-level magnify()
          *          methods, so it is not actually expected to ever be called,
          *          which means it'll always return 'false'.
@@ -686,13 +693,13 @@ namespace topologic
             return false;
         }
 
-        /**\brief Apply magnification; 2D fix point
+        /**\brief Apply magnification; 1D fix point
          *
-         * Applies a scale to the affine transformation matrix; since the 2D
+         * Applies a scale to the affine transformation matrix; since the 1D
          * fix point's transformation matrix is currently being ignored, this
          * particular instance of the method will not do anything at all.
          *
-         * \returns 'true' if things went as expected. This 2D fix point should
+         * \returns 'true' if things went as expected. This 1D fix point should
          *          only be called as a fallback of the higher-level magnify()
          *          methods, so it is not actually expected to ever be called,
          *          which means it'll always return 'false'.
@@ -702,10 +709,10 @@ namespace topologic
             return false;
         }
 
-        /**\brief Apply mouse drag; 2D fix point
+        /**\brief Apply mouse drag; 1D fix point
          *
          * Applies mouse drag events to the affine transformation matrix; this
-         * is the 2D fix point, which doesn't do anything at all as the 2D
+         * is the 1D fix point, which doesn't do anything at all as the 1D
          * transformation matrix is currently being ignored.
          *
          * \returns 'true' if things went as expected. Since this function
@@ -748,7 +755,7 @@ namespace topologic
          * stay the same, the orientation of the image will be reset so that the
          * top of the screen will point to the coordinate system's 'up' vector.
          *
-         * Since the 2D state object does not have a 'from' point, this method
+         * Since the 1D state object does not have a 'from' point, this method
          * doesn't have anything to do but to reset the used coordinate system
          * back to cartesian coordinates by clearing the polarCoordinates flag.
          *
@@ -764,11 +771,11 @@ namespace topologic
 
         /**\brief Set 'from' coordinate
          *
-         * This is the 2D fix point of the setFromCoordinate() method - this
+         * This is the 1D fix point of the setFromCoordinate() method - this
          * instance in particular cannot set anything, as there is no 'from'
-         * point in 2D. The arguments are ignored.
+         * point in 1D. The arguments are ignored.
          *
-         * \returns 'false' because the 2D fix point does not have a 'from'
+         * \returns 'false' because the 1D fix point does not have a 'from'
          *          point, so the function cannot succeed.
          */
         constexpr bool setFromCoordinate
@@ -780,11 +787,11 @@ namespace topologic
 
         /**\brief Query 'from' coordinate
          *
-         * This is the 2D fix point of the getFromCoordinate() method - this
+         * This is the 1D fix point of the getFromCoordinate() method - this
          * instance in particular cannot query anything, as there is no 'from'
-         * point in 2D. The arguments are ignored.
+         * point in 1D. The arguments are ignored.
          *
-         * \returns The default-constructed value of Q, as the 2D fix point does
+         * \returns The default-constructed value of Q, as the 1D fix point does
          *          not have a 'from' point to query.
          */
         constexpr const Q getFromCoordinate
@@ -802,7 +809,7 @@ namespace topologic
          * \returns True if the conversions were performed successfully, false
          *          otherwise. Should always be 'true'.
          *
-         * \note This is the 2D fix point; as there are no 2d 'from' points,
+         * \note This is the 1D fix point; as there are no 1D 'from' points,
          *       this method does nothing.
          */
         bool translatePolarToCartesian (void) const { return true; }
@@ -816,12 +823,12 @@ namespace topologic
          * \returns True if the conversions were performed successfully, false
          *          otherwise.
          *
-         * \note This is the 2D fix point; as there are no 2d 'from' points,
+         * \note This is the 1D fix point; as there are no 1D 'from' points,
          *       this method does nothing.
          */
         bool translateCartesianToPolar (void) const { return true; }
 
-        /**\brief Get JSON value (2D fix point)
+        /**\brief Get JSON value (1D fix point)
          *
          * Modifies the passed-in value so that it contains the metadata that
          * would be needed to reconstruct this state object. Then returns that
@@ -888,16 +895,16 @@ namespace topologic
          */
         render::base<true> *model;
 
-        /**\brief libefgy SVG renderer instance; 2D fix point
+        /**\brief libefgy SVG renderer instance; 1D fix point
          *
-         * This is an instance of the 2D fix point of libefgy's SVG renderer.
+         * This is an instance of the 1D fix point of libefgy's SVG renderer.
          */
         typename efgy::render::svg<Q,1> svg;
 
 #if !defined(NO_OPENGL)
-        /**\brief libefgy OpenGL renderer instance; 2D fix point
+        /**\brief libefgy OpenGL renderer instance; 1D fix point
          *
-         * This is an instance of the 2D fix point of libefgy's OpenGL
+         * This is an instance of the 1D fix point of libefgy's OpenGL
          * renderer.
          */
         typename efgy::render::opengl<Q,1> opengl;
@@ -975,7 +982,7 @@ namespace topologic
      *
      * Creates an XML fragment containing all of the settings in this instance
      * of the global state object. Will call its parent class's metadata method
-     * as well, which will do the same recursively until finally the 2D fix
+     * as well, which will do the same recursively until finally the 1D fix
      * point method is called.
      *
      * \param[out] stream The XML stream to write to.
@@ -1037,7 +1044,7 @@ namespace topologic
         return operator << <C,Q,d-1> (stream, pState);
     }
 
-    /**\brief Gather model metadata (2D fix point)
+    /**\brief Gather model metadata (1D fix point)
      *
      * Creates an XML fragment containing all of the settings in this instance
      * of the global state object. This particular method will not recurse, much
@@ -1080,7 +1087,7 @@ namespace topologic
      *
      * Creates a JSON fragment containing all of the settings in this instance
      * of the global state object. Will call its parent class's metadata method
-     * as well, which will do the same recursively until finally the 2D fix
+     * as well, which will do the same recursively until finally the 1D fix
      * point method is called.
      *
      * \param[out] stream The JSON stream to write to.

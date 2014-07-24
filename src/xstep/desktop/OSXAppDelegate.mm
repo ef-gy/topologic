@@ -745,8 +745,13 @@ static topologic::xml xml;
 
     std::string s([contents UTF8String]);
     std::string path([[url absoluteString] UTF8String]);
+    efgy::json::value<> v;
 
     topologic::xml::parser p(s, path);
+    if (!p.valid)
+    {
+        s >> v;
+    }
 
     [self willChangeValueForKey:@"colourBackground"];
     [self willChangeValueForKey:@"colourWire"];
@@ -766,7 +771,14 @@ static topologic::xml xml;
 
     [self willChangeValueForKey:@"activeCameraType"];
 
-    topologic::parse (topologicState, p);
+    if (p.valid)
+    {
+        topologic::parse (topologicState, p);
+    }
+    else
+    {
+        topologic::parse (topologicState, v);
+    }
     
     [self didChangeValueForKey:@"colourBackground"];
     [self didChangeValueForKey:@"colourWire"];
@@ -786,8 +798,16 @@ static topologic::xml xml;
 
     [self didChangeValueForKey:@"activeCameraType"];
 
-    if (   topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, p)
-        && topologicState.model)
+    if (p.valid)
+    {
+        topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, p);
+    }
+    else
+    {
+        topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, v);
+    }
+
+    if (topologicState.model)
     {
         [self willChangeValueForKey:@"model"];
         [self willChangeValueForKey:@"modelDepth"];
@@ -831,7 +851,7 @@ static topologic::xml xml;
 - (IBAction)openDocument:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    [openPanel setAllowedFileTypes:[NSArray arrayWithObject:@"public.svg-image"]];
+    [openPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"public.svg-image", @"public.json", nil]];
     [openPanel beginSheetModalForWindow:_window completionHandler:^(NSInteger result)
      {
          if (result == NSFileHandlingPanelOKButton)
@@ -846,6 +866,8 @@ static topologic::xml xml;
     NSSavePanel * savePanel = [NSSavePanel savePanel];
     [savePanel setAllowedFileTypes:[NSArray arrayWithObjects:@"public.svg-image", @"public.json", nil]];
     [savePanel setNameFieldStringValue:[self selectedModelName]];
+    [savePanel setAllowsOtherFileTypes:NO];
+    [savePanel setExtensionHidden:NO];
     [savePanel beginSheetModalForWindow:_window completionHandler:^(NSInteger result)
     {
         if (result == NSFileHandlingPanelOKButton)
@@ -864,10 +886,20 @@ static topologic::xml xml;
     fb.open (cFileName,std::ios::out);
     
     std::ostream os(&fb);
-    if (topologicState.model)
+
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef) [fileName pathExtension], NULL);
+
+    if ([(NSString*)UTI isEqualToString:@"public.svg-image"])
     {
-        topologicState.model->update = true;
-        topologicState.model->svg(os, true);
+        if (topologicState.model)
+        {
+            topologicState.model->update = true;
+            topologicState.model->svg(os, true);
+        }
+    }
+    else if ([(NSString*)UTI isEqualToString:@"public.json"])
+    {
+        os << efgy::json::tag() << topologicState;
     }
 
     fb.close();
