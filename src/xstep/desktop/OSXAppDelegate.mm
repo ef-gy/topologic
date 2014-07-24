@@ -844,7 +844,7 @@ static topologic::xml xml;
 - (IBAction)saveDocumentAs:(id)sender
 {
     NSSavePanel * savePanel = [NSSavePanel savePanel];
-    [savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"public.svg-image"]];
+    [savePanel setAllowedFileTypes:[NSArray arrayWithObjects:@"public.svg-image", @"public.json", nil]];
     [savePanel setNameFieldStringValue:[self selectedModelName]];
     [savePanel beginSheetModalForWindow:_window completionHandler:^(NSInteger result)
     {

@@ -9,6 +9,10 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array/>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>image/svg+xml</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>Scalable Vector Graphics</string>
 			<key>CFBundleTypeRole</key>
@@ -20,11 +24,25 @@
 				<string>public.svg-image</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/json</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>JavaScript Object Notation</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.json</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>Topologic</string>
 	<key>CFBundleIdentifier</key>
 	<string>gy.ef.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -38,7 +56,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>76</string>
+	<string>89</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.education</string>
 	<key>LSMinimumSystemVersion</key>
