@@ -9,23 +9,19 @@
     <style>
       * { font-family: sans-serif; }
       html, body { margin: 0; padding: 0; }
-      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      textarea.emscripten { font-family: monospace; width: 80%; }
-      div.emscripten { text-align: center; }
-      canvas.emscripten { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+      canvas.emscripten { width: 100%; height: 100%; padding: 0; margin: 0 }
       #status { position: absolute; text-align: left; top: 1em; left: 1em; }
       #progress { position: absolute; text-align: left; bottom: 1em; left: 1em; display: none; }
       textarea#output { display: none; }
-      #options { position: absolute; left: 0; bottom: 0; width: 20em; background: rgba(255,255,255,0.7); padding: 0 1em; }
-      #options td { text-align: center; padding: 0.1em; }
-      #options th { padding: 0.1em; }
-      #options tbody th { text-align: right; }
-      #options td[onclick] { cursor: pointer; background: rgba(255,255,255,0.6); width: 2em; }
-      #options td[onclick]:hover { background: rgba(255,255,255,0.9); }
     </style>
-    <link rel="stylesheet" href="gh-fork-ribbon.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
   </head>
   <body>
+   <div data-role="page">
+    <div data-role="header"><a href="#options">Settings</a></div>
+    <div data-role="content">
     <canvas class="emscripten" id="canvas"></canvas>
     <progress value="0" max="100" id="progress"></progress>  
     <div id="status">Downloading Topologic/V9...</div>
@@ -93,6 +89,7 @@ var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number'])
 var resetColourMap = Module.cwrap('resetColourMap', null, []);
 var getJSON = Module.cwrap('getJSON', 'string', []);
 var getSVG = Module.cwrap('getSVG', 'string', []);
+var parseJSON = Module.cwrap('parseJSON', 'string', []);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
@@ -304,10 +301,19 @@ function topologicUpdateCurrentModel()
     resizeCanvas();
 })();
 </script>
-    <table id="options">
-      <tbody>
-        <tr><th>Model</th>
-          <td colspan="3"><select onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
+    </div>
+    <div data-role="footer"></div>
+    <div data-role="panel" id="options">
+     <form>
+      <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(false, true);"/>
+      <label for="activeDimension">Active Dimension</label>
+      <input type="number" id="activeDimension" name="activeDimension" onchange="topologicActiveDimension=this.value; topologicUpdateDimension();" min="3" max="7" step="1" value="3"/>
+      Drag the mouse to rotate in the currently active dimension; scroll to zoom in or out.
+      <div data-role="collapsibleset" data-inset="false">
+      <div data-role="collapsible" data-collapsed="false">
+      <h3>Model Parameters</h3>
+      <label for="model">Model</label>
+      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
             <option>simplex</option>
             <option selected="selected">cube</option>
             <option>plane</option>
@@ -322,92 +328,60 @@ function topologicUpdateCurrentModel()
             <option>sierpinski-carpet</option>
             <option>random-affine-ifs</option>
             <option>random-flame</option>
-          </select></td>
-        </tr>
-        <tr><th>Format</th>
-          <td colspan="3"><select onchange="topologicFormat=this.value; topologicUpdateCurrentModel();">
+      </select>
+      <label for="format">Format</label>
+      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();">
             <option selected="selected">cartesian</option>
             <option>polar</option>
-          </select></td>
-        </tr>
-        <tr><th>Model Depth</th>
-          <td colspan="3"><input type="number" id="modelDepth" name="modelDepth" onchange="topologicModelDepth=this.value; topologicUpdateCurrentModel();" min="1" max="7" step="1" value="4"/></td>
-        </tr>
-        <tr><th>Render Depth</th>
-          <td colspan="3"><input type="number" id="modelRenderDepth" name="modelRenderDepth" onchange="topologicModelRenderDepth=this.value; topologicUpdateCurrentModel();" min="2" max="7" step="1" value="4"/></td>
-        </tr>
-        <tr><th>Major Radius</th>
-          <td colspan="3"><input type="range" id="modelRadius" name="modelRadius" onchange="topologicModelRadius=this.value; topologicUpdateCurrentModel();" min="1" max="30" value="1"/></td>
-        </tr>
-        <tr><th>Minor Radius</th>
-          <td colspan="3"><input type="range" id="modelMinorRadius" name="modelMinorRadius" onchange="topologicModelMinorRadius=this.value; topologicUpdateCurrentModel();" min="-10" max="10" value="0.5"/></td>
-        </tr>
-        <tr><th>Constant</th>
-          <td colspan="3"><input type="range" id="modelConstant" name="modelConstant" onchange="topologicModelConstant=this.value; topologicUpdateCurrentModel();" min="-20" max="20" value="1"/></td>
-        </tr>
-        <tr><th>Precision</th>
-          <td colspan="3"><input type="range" id="modelPrecision" name="modelPrecision" onchange="topologicModelPrecision=this.value; topologicUpdateCurrentModel();" min="1" max="40" value="8.5"/></td>
-        </tr>
-        <tr><th>Active Dimension</th>
-          <td colspan="3"><input type="number" id="activeDimension" name="activeDimension" onchange="topologicActiveDimension=this.value; topologicUpdateDimension();" min="3" max="7" step="1" value="3"/></td>
-        </tr>
-        <tr><th>IFS Iterations</th>
-          <td colspan="3"><input type="number" id="IFSIterations" name="IFSIterations" onchange="topologicIFSIterations=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="4"/></td>
-        </tr>
-        <tr><th>IFS Seed</th>
-          <td colspan="3"><input type="number" id="IFSSeed" name="IFSSeed" onchange="topologicIFSSeed=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="0"/></td>
-        </tr>
-        <tr><th>IFS Functions</th>
-          <td colspan="3"><input type="number" id="IFSFunctions" name="IFSFunctions" onchange="topologicIFSFunctions=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/></td>
-        </tr>
-        <tr>
-          <th colspan="3">Pre-translation rotations</th>
-          <td><input type="checkbox" id="preRotate" checked="checked"
-                     onclick="topologicIFSPreRotate=this.checked; topologicUpdateCurrentModel();"/></td>
-        </tr>
-        <tr>
-          <th colspan="3">Post-translation rotations</th>
-          <td><input type="checkbox" id="postRotate"
-                     onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/></td>
-        </tr>
-        <tr><th>Flame Variants</th>
-          <td colspan="3"><input type="number" id="FlameVariants" name="FlameVariants" onchange="topologicFlameVariants=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="19"/></td>
-        </tr>
-        <tr>
-          <th colspan="3">Fractal Flame Colouring</th>
-          <td><input type="checkbox" id="flameColouring"
-                     onclick="topologicFlameColouring=this.checked; topologicUpdateCurrentModel();"/></td>
-        </tr>
-        <tr>
-          <th>Colours</th>
-          <td colspan="3">
-            <input type="button" value="White/Black" onclick="topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.5]]; topologicUpdateCurrentModel();"/>
-            <input type="button" value="Default" onclick="topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();"/>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="4">
-            <input type="button" value="Randomise Flame Colours" onclick="resetColourMap();"/>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="4">
-            Drag the mouse to rotate in the currently active dimension; scroll to zoom in or out.
-          </td>
-        </tr>
-        <tr>
-          <td colspan="4">
-            <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(false, true);"/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Github CSS Fork Ribbon from https://github.com/simonwhitaker/github-fork-ribbon-css -->
-    <div class="github-fork-ribbon-wrapper right">
-        <div class="github-fork-ribbon">
-            <a href="https://github.com/ef-gy/topologic">Fork me on GitHub</a>
-        </div>
+      </select>
+      <label for="modelDepth">Model Depth</label>
+      <input type="number" id="modelDepth" name="modelDepth" onchange="topologicModelDepth=this.value; topologicUpdateCurrentModel();" min="1" max="7" step="1" value="4"/>
+      <label for="renderDepth">Render Depth</label>
+      <input type="number" id="modelRenderDepth" name="modelRenderDepth" onchange="topologicModelRenderDepth=this.value; topologicUpdateCurrentModel();" min="2" max="7" step="1" value="4"/>
+      </div>
+      <div data-role="collapsible">
+      <h3>Base Parameters</h3>
+      <label for="modelRadius">Major Radius</label>
+      <input type="range" id="modelRadius" name="modelRadius" onchange="topologicModelRadius=this.value; topologicUpdateCurrentModel();" min="1" max="30" value="1"/>
+      <label for="modelMinorRadius">Minor Radius</label>
+      <input type="range" id="modelMinorRadius" name="modelMinorRadius" onchange="topologicModelMinorRadius=this.value; topologicUpdateCurrentModel();" min="-10" max="10" value="0.5"/>
+      <label for="modelConstant">Constant</label>
+      <input type="range" id="modelConstant" name="modelConstant" onchange="topologicModelConstant=this.value; topologicUpdateCurrentModel();" min="-20" max="20" value="1"/>
+      <label for="modelPrecision">Precision</label>
+      <input type="range" id="modelPrecision" name="modelPrecision" onchange="topologicModelPrecision=this.value; topologicUpdateCurrentModel();" min="1" max="40" value="8.5"/>
+      </div>
+      <div data-role="collapsible">
+      <h3>IFS Parameters</h3>
+      <label for="IFSIterations">Iterations</label>
+      <input type="number" id="IFSIterations" name="IFSIterations" onchange="topologicIFSIterations=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="4"/>
+      <label for="IFSSeed">Seed</label>
+      <input type="number" id="IFSSeed" name="IFSSeed" onchange="topologicIFSSeed=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="0"/>
+      <label for="IFSFunctions">Functions</label>
+      <input type="number" id="IFSFunctions" name="IFSFunctions" onchange="topologicIFSFunctions=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/>
+      <input type="checkbox" id="preRotate" checked="checked"
+                     onclick="topologicIFSPreRotate=this.checked; topologicUpdateCurrentModel();"/>
+      <label for="preRotate">Post-translation rotations</label>
+      <input type="checkbox" id="postRotate"
+                     onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/>
+      <label for="postRotate">Post-translation rotations</label>
+      </div>
+      <div data-role="collapsible">
+      <h3>Fractal Flame Parameters</h3>
+      <label for="Flame Variants">Variants</label>
+      <input type="number" id="FlameVariants" name="FlameVariants" onchange="topologicFlameVariants=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/>
+      <input type="checkbox" id="flameColouring"
+                     onclick="topologicFlameColouring=this.checked; topologicUpdateCurrentModel();"/>
+      <label for="flameColouring">Fractal Flame Colouring</label>
+      </div>
+      <div data-role="collapsible">
+      <h3>Colours</h3>
+      <input type="button" value="White/Black" onclick="topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.5]]; topologicUpdateCurrentModel();"/>
+      <input type="button" value="Default" onclick="topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();"/>
+      <input type="button" value="Randomise Flame Colours" onclick="resetColourMap();"/>
+      </div>
+      </div>
+     <form>
     </div>
+   </div>
   </body>
 </html>
