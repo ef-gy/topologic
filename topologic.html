@@ -19,9 +19,12 @@
     <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
   </head>
   <body>
-   <div data-role="page">
-    <div data-role="header"><a href="#options">Settings</a></div>
-    <div data-role="content">
+   <div data-role="page" class="ui-responsive-panel">
+    <div data-role="header">
+      <h1>Topologic/V9</h1>
+      <a href="#options" data-icon="bars" data-iconpos="notext">Settings</a>
+    </div>
+    <div data-role="main" class="ui-content jqm-content jqm-fullwidth">
     <canvas class="emscripten" id="canvas"></canvas>
     <progress value="0" max="100" id="progress"></progress>  
     <div id="status">Downloading Topologic/V9...</div>
