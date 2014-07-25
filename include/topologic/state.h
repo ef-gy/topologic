@@ -575,6 +575,11 @@ namespace topologic
         {
             state<Q,d-1>::json(value);
 
+            if (!state<Q,1>::model || (d > state<Q,1>::model->renderDepth))
+            {
+                return value;
+            }
+
             efgy::json::value<Q> v;
             v.toArray();
 

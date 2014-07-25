@@ -8,12 +8,17 @@
     <title>Topologic/V9</title>
     <style>
       * { font-family: sans-serif; }
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; min-height: 100%; }
       canvas.emscripten { width: 100%; height: 100%; padding: 0; margin: 0 }
       #status { position: absolute; text-align: left; top: 1em; left: 1em; }
       #progress { position: absolute; text-align: left; bottom: 1em; left: 1em; display: none; }
       textarea#output { display: none; }
+      div.ui-content { margin: 0; padding: 0; min-height: 100%; }
+      form { margin: 0; padding: 0; }
+      #export-popup { width: 80%; left: 10%; right: 10%; top: 10%; }
+      #export-popup textarea { height: 20em !important; }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
@@ -21,8 +26,8 @@
   <body>
    <div data-role="page" class="ui-responsive-panel">
     <div data-role="header">
-      <h1>Topologic/V9</h1>
-      <a href="#options" data-icon="bars" data-iconpos="notext">Settings</a>
+      <a href="#options" data-icon="bars" data-dismissible="false">Settings</a>
+      <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){jQuery('#export').popup('open');},100);">Export/Import...</a>
     </div>
     <div data-role="main" class="ui-content jqm-content jqm-fullwidth">
     <canvas class="emscripten" id="canvas"></canvas>
@@ -72,7 +77,8 @@
           this.totalDependencies = Math.max(this.totalDependencies, left);
           Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
         },
-        TOTAL_MEMORY: 268435456
+        TOTAL_MEMORY: 268435456,
+        doNotCaptureKeyboard: true
       };
       Module.setStatus('Downloading Topologic/V9...');
     </script>
@@ -92,7 +98,7 @@ var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number'])
 var resetColourMap = Module.cwrap('resetColourMap', null, []);
 var getJSON = Module.cwrap('getJSON', 'string', []);
 var getSVG = Module.cwrap('getSVG', 'string', []);
-var parseJSON = Module.cwrap('parseJSON', 'string', []);
+var parseJSON = Module.cwrap('parseJSON', null, ['string']);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
@@ -121,25 +127,39 @@ var topologicColour =
 
 var topologicIgnoreHashChange = false;
 
-if (JSON)
+function parseHash()
 {
-    function parseHash()
-    {
-        if (topologicIgnoreHashChange) return;
+    if (topologicIgnoreHashChange) return;
 
-        try
-        {
-            var hash = JSON.parse(window.location.hash.substring(1));
-        }
-        catch(err)
-        {
-        }
-    }
+    parseJSON(window.location.hash.substring(1));
+    forceRedraw();
 
-    window.addEventListener('hashchange', parseHash, false);
+    var val = jQuery.parseJSON(getJSON());
+    topologicModel             = val['model'];
+    topologicFormat            = val['coordinateFormat'];
+    topologicModelDepth        = val['depth'];
+    topologicModelRenderDepth  = val['renderDepth'];
+    topologicModelPrecision    = val['polarPrecision'];
+    topologicModelRadius       = val['radius'];
+//    topologicModelMinorRadius  = val['minorRadius'];
+//    topologicModelConstant     = val['constant'];
+    topologicIFSIterations     = val['iterations'];
+    topologicIFSSeed           = val['seed'];
+    topologicIFSFunctions      = val['functions'];
+    topologicIFSPreRotate      = val['preRotate'];
+    topologicIFSPostRotate     = val['postRotate'];
+//    topologicIFSFlameColouring = val['flameColouring'];
+    topologicIFSFlameVariants  = val['flameCoefficients'];
 
-    parseHash();
+    topologicColour = [ val['background'].slice(1),
+                        val['wireframe'].slice(1),
+                        val['surface'].slice(1) ];
+
+    topologicUpdateDimension();
+    topologicUpdateCurrentModelData();
 }
+
+window.addEventListener('hashchange', parseHash, false);
 
 function topologicUpdateDimension()
 {
@@ -159,7 +179,7 @@ function topologicUpdateDimension()
     setActiveDimension(topologicActiveDimension);
 }
 
-function topologicUpdateCurrentModel()
+function topologicUpdateCurrentModelData()
 {
     if (topologicModel == 'sphere')
     {
@@ -200,7 +220,19 @@ function topologicUpdateCurrentModel()
         topologicUpdateDimension();
     }
 
-    var output = document.getElementById('modelDepth');
+    var output = document.getElementById('model');
+    if (output)
+    {
+        output.value=topologicModel;
+        jQuery('#model').selectmenu('refresh');
+    }
+    output = document.getElementById('format');
+    if (output)
+    {
+        output.value=topologicFormat;
+        jQuery('#format').selectmenu('refresh');
+    }
+    output = document.getElementById('modelDepth');
     if (output)
     {
         output.value=topologicModelDepth;
@@ -262,6 +294,11 @@ function topologicUpdateCurrentModel()
     {
         output.value=topologicFlameVariants;
     }
+}
+
+function topologicUpdateCurrentModel()
+{
+    topologicUpdateCurrentModelData();
 
     setRadius(topologicModelRadius, topologicModelMinorRadius);
     setConstant(topologicModelConstant);
@@ -281,6 +318,15 @@ function topologicUpdateCurrentModel()
     topologicIgnoreHashChange = true;
     window.location.hash = getJSON();
     topologicIgnoreHashChange = false;
+}
+
+function updateHash(silent)
+{
+    silent = typeof silent !== 'undefined' ? silent : true;
+
+    topologicIgnoreHashChange = silent;
+    window.location.hash = getJSON();
+    topologicIgnoreHashChange = !silent;
 }
 
 (function() {
@@ -305,14 +351,19 @@ function topologicUpdateCurrentModel()
 })();
 </script>
     </div>
-    <div data-role="footer"></div>
-    <div data-role="panel" id="options" data-display="push">
-     <form>
-      <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(false, true);"/>
+    <div data-role="panel" id="options" data-display="overlay" data-dismissible="false">
+     <ul data-role="listview">
+      <li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
+      <li>
       <label for="activeDimension">Active Dimension</label>
       <input type="number" id="activeDimension" name="activeDimension" onchange="topologicActiveDimension=this.value; topologicUpdateDimension();" min="3" max="7" step="1" value="3"/>
-      Drag the mouse to rotate in the currently active dimension; scroll to zoom in or out.
+      </li>
+     </ul>
       <div data-role="collapsibleset" data-inset="false">
+      <div data-role="collapsible">
+      <h3>Help</h3>
+      <p>Drag the mouse to rotate in the currently active dimension; scroll to zoom in or out.</p>
+      </div>
       <div data-role="collapsible" data-collapsed="false">
       <h3>Model Parameters</h3>
       <label for="model">Model</label>
@@ -347,7 +398,7 @@ function topologicUpdateCurrentModel()
       <label for="modelRadius">Major Radius</label>
       <input type="range" id="modelRadius" name="modelRadius" onchange="topologicModelRadius=this.value; topologicUpdateCurrentModel();" min="1" max="30" value="1"/>
       <label for="modelMinorRadius">Minor Radius</label>
-      <input type="range" id="modelMinorRadius" name="modelMinorRadius" onchange="topologicModelMinorRadius=this.value; topologicUpdateCurrentModel();" min="-10" max="10" value="0.5"/>
+      <input type="range" id="modelMinorRadius" name="modelMinorRadius" onchange="topologicModelMinorRadius=this.value; topologicUpdateCurrentModel();" min="-9" max="9" value="0.5"/>
       <label for="modelConstant">Constant</label>
       <input type="range" id="modelConstant" name="modelConstant" onchange="topologicModelConstant=this.value; topologicUpdateCurrentModel();" min="-20" max="20" value="1"/>
       <label for="modelPrecision">Precision</label>
@@ -383,8 +434,19 @@ function topologicUpdateCurrentModel()
       <input type="button" value="Randomise Flame Colours" onclick="resetColourMap();"/>
       </div>
       </div>
-     <form>
+    </div>
+    <div data-role="popup" id="export">
+      <div data-role="header">
+        <h3>Export/Import</h3>
+      </div>
+      <div role="main" class="ui-content">
+        <textarea id="exportData"></textarea>
+      </div>
+      <input type="button" value="Export JSON" data-inline="true" onclick="document.getElementById('exportData').value = getJSON();"/>
+      <input type="button" value="Export SVG" data-inline="true" onclick="document.getElementById('exportData').value = getSVG();"/>
+      <input type="button" value="Import" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>
     </div>
    </div>
+   <script type='text/javascript'>window.setTimeout(function() { parseHash(); updateHash(); }, 100);</script>
   </body>
 </html>
