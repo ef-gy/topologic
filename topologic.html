@@ -10,7 +10,6 @@
       * { font-family: sans-serif; }
       html, body { margin: 0; padding: 0; min-height: 100%; }
       canvas.emscripten { width: 100%; height: 100%; padding: 0; margin: 0 }
-      #status { position: absolute; text-align: left; top: 1em; left: 1em; }
       #progress { position: absolute; text-align: left; bottom: 1em; left: 1em; display: none; }
       textarea#output { display: none; }
       div.ui-content { margin: 0; padding: 0; min-height: 100%; overflow: hidden; }
@@ -29,15 +28,14 @@
     </style>
   </head>
   <body>
-   <div data-role="page" class="ui-responsive-panel">
+   <div data-role="page">
     <div data-role="header">
       <a href="#options" data-icon="bars" data-dismissible="false">Settings</a>
+      <a href="#help" data-icon="info">Help</a>
     </div>
     <div data-role="main" class="ui-content jqm-content jqm-fullwidth">
     <canvas class="emscripten" id="canvas"></canvas>
     <progress value="0" max="100" id="progress"></progress>  
-    <div id="status">Downloading Topologic/V10...</div>
-    
     <textarea id="output"></textarea>
     <script type='text/javascript'>
       // connect to canvas
@@ -59,32 +57,9 @@
           console.log(text);
         },
         canvas: document.getElementById('canvas'),
-        setStatus: function(text) {
-          if (Module.setStatus.interval) clearInterval(Module.setStatus.interval);
-          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-          var statusElement = document.getElementById('status');
-          var progressElement = document.getElementById('progress');
-          if (m) {
-            text = m[1];
-            progressElement.value = parseInt(m[2])*100;
-            progressElement.max = parseInt(m[4])*100;
-            progressElement.hidden = false;
-          } else {
-            progressElement.value = null;
-            progressElement.max = null;
-            progressElement.hidden = true;
-          }
-          statusElement.innerHTML = text;
-        },
-        totalDependencies: 0,
-        monitorRunDependencies: function(left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        },
         TOTAL_MEMORY: 268435456,
         doNotCaptureKeyboard: true
       };
-      Module.setStatus('Downloading Topologic/V10...');
     </script>
     <script type='text/javascript' src="topologic-sdl.js"></script>
     <script type='text/javascript'>
@@ -249,13 +224,11 @@ function topologicUpdateCurrentModelData()
     if (output)
     {
         output.value=topologicModel;
-        jQuery('#model').selectmenu('refresh');
     }
     output = document.getElementById('format');
     if (output)
     {
         output.value=topologicFormat;
-        jQuery('#format').selectmenu('refresh');
     }
     output = document.getElementById('modelDepth');
     if (output)
@@ -397,12 +370,6 @@ function getEmbed()
       </li>
      </ul>
       <div data-role="collapsibleset" data-inset="false">
-      <div data-role="collapsible" data-iconpos="right">
-      <h2>Information</h2>
-      <p>Drag the mouse to rotate in the currently active dimension; scroll to zoom in or out.</p>
-      <p>Get the source code at <a href="https://github.com/ef-gy/topologic">https://github.com/ef-gy/topologic</a>.</p>
-      <p>Support the project by getting the <a href="https://itunes.apple.com/us/app/topologic/id737310913">the iOS app</a> or <a href="http://itunes.apple.com/us/app/topologic/id558300160">the OSX app</a> in their respective app store.</p>
-      </div>
       <div data-role="collapsible" data-collapsed="false" data-iconpos="right">
       <h2>Model Parameters</h2>
       <fieldset data-role="controlgroup">
@@ -482,6 +449,24 @@ function getEmbed()
       </div>
       </div>
     </div>
+    <div data-role="panel" id="help" data-display="overlay" data-position="right">
+      <h2>Welcome to Topologic/V10!</h2>
+      <p>Topologic is your versatile, open-source window into the fourth dimension and beyond.</p>
+      <p>Click or tap anywhere outside this panel to get back to the application. Drag the mouse or pan to rotate in the currently active dimension; scroll to zoom in or out.</p>
+      <p>Select the dimension to rotate in - and a host of other settings - in the left-hand <a href="#options">Settings</a> menu.</p>
+      <div data-role="collapsibleset" data-inset="false">
+      <div data-role="collapsible" data-iconpos="right" data-collapsed="false">
+      <h2>Information</h2>
+      <p>Get the source code at <a href="https://github.com/ef-gy/topologic">https://github.com/ef-gy/topologic</a>.</p>
+      <p>Support the project by getting <a href="https://itunes.apple.com/us/app/topologic/id737310913">the iOS app</a> or <a href="http://itunes.apple.com/us/app/topologic/id558300160">the OSX app</a> in their respective app store.</p>
+      </div>
+      <div data-role="collapsible" data-iconpos="right">
+      <h2>Embedding</h2>
+      <p>Feel free to embed the output of this application in your presentations, blog articles or other web content. Click on <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){jQuery('#export').popup('open');},100);">Export/Import...</a> to generate SVGs, links or HTML code to embed this application directly in your site.</p>
+      <p>The <em>Export/Import...</em> button is also available from the left-hand <a href="#options">Settings</a> menu.</p>
+      </div>
+      </div>
+    </div>
     <div data-role="popup" id="export">
       <div data-role="header">
         <h2>Export/Import</h2>
@@ -496,6 +481,10 @@ function getEmbed()
       <input type="button" value="Import JSON" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>
     </div>
    </div>
-   <script type='text/javascript'>window.setTimeout(function() { parseHash(); updateHash(); }, 100);</script>
+   <script type='text/javascript'>if (window.location.hash == '') { window.setTimeout(function(){jQuery('#help').panel('open')},200); } parseHash(); updateHash(); window.setTimeout(function(){
+        jQuery('#model').selectmenu('refresh');
+        jQuery('#format').selectmenu('refresh');
+},200);
+</script>
   </body>
 </html>
