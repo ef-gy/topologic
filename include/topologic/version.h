@@ -65,7 +65,7 @@ namespace topologic
      * single-integer versioning scheme: whenever a new version is released,
      * this number is increased by one and used until the next release.
      */
-    static const unsigned int version = 9;
+    static const unsigned int version = 10;
 };
 
 #endif
