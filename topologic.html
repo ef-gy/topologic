@@ -403,8 +403,9 @@ function getEmbed()
       </div>
       <div data-role="collapsible" data-collapsed="false" data-iconpos="right">
       <h2>Model Parameters</h2>
+      <div class="ui-field-contain">
       <label for="model">Model</label>
-      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
+      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();" data-mini="true">
             <option>simplex</option>
             <option selected="selected">cube</option>
             <option>plane</option>
@@ -420,11 +421,14 @@ function getEmbed()
             <option>random-affine-ifs</option>
             <option>random-flame</option>
       </select>
+      </div>
+      <div class="ui-field-contain">
       <label for="format">Format</label>
-      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();">
+      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();" data-mini="true">
             <option selected="selected">cartesian</option>
             <option>polar</option>
       </select>
+      </div>
       <label for="modelDepth">Model Depth</label>
       <input type="range" id="modelDepth" name="modelDepth" onchange="topologicModelDepth=this.value; topologicUpdateCurrentModel();" min="1" max="7" step="1" value="4"/>
       <label for="renderDepth">Render Depth</label>
@@ -444,17 +448,20 @@ function getEmbed()
       <div data-role="collapsible" data-iconpos="right">
       <h2>IFS Parameters</h2>
       <label for="IFSIterations">Iterations</label>
-      <input type="number" id="IFSIterations" name="IFSIterations" onchange="topologicIFSIterations=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="4"/>
+      <input type="range" id="IFSIterations" name="IFSIterations" onchange="topologicIFSIterations=this.value; topologicUpdateCurrentModel();" min="0" max="14" step="1" value="4"/>
       <label for="IFSSeed">Seed</label>
       <input type="number" id="IFSSeed" name="IFSSeed" onchange="topologicIFSSeed=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="0"/>
       <label for="IFSFunctions">Functions</label>
       <input type="number" id="IFSFunctions" name="IFSFunctions" onchange="topologicIFSFunctions=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/>
+      <fieldset data-role="controlgroup">
+      <legend>Rotations</legend>
       <input type="checkbox" id="preRotate" checked="checked"
                      onclick="topologicIFSPreRotate=this.checked; topologicUpdateCurrentModel();"/>
-      <label for="preRotate">Post-translation rotations</label>
+      <label for="preRotate">Pre-translation</label>
       <input type="checkbox" id="postRotate"
                      onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/>
-      <label for="postRotate">Post-translation rotations</label>
+      <label for="postRotate">Post-translation</label>
+      </fieldset>
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Fractal Flame Parameters</h2>
@@ -466,9 +473,11 @@ function getEmbed()
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Colours</h2>
-      <input type="button" value="White/Black" onclick="topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.2]]; topologicUpdateCurrentModel();"/>
-      <input type="button" value="Default" onclick="topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();"/>
-      <input type="button" value="Randomise Flame Colours" onclick="resetColourMap();"/>
+      <ul data-role="listview" data-inset="true">
+      <li><a href="javascript:topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.2]];topologicUpdateCurrentModel();">White/Black</a></li>
+      <li><a href="javascript:topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();">Default</a></li>
+      <li><a href="javascript:resetColourMap();">Randomise Flame Colours</a></li>
+      </ul>
       </div>
       </div>
     </div>
