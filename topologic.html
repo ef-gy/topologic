@@ -99,6 +99,7 @@ var resetColourMap = Module.cwrap('resetColourMap', null, []);
 var getJSON = Module.cwrap('getJSON', 'string', []);
 var getSVG = Module.cwrap('getSVG', 'string', []);
 var parseJSON = Module.cwrap('parseJSON', null, ['string']);
+var interpretDrag = Module.cwrap('interpretDrag', 'number', ['number','number','number']);
 
 var topologicMaxDepth = 7;
 var topologicModel='cube';
@@ -160,6 +161,26 @@ function parseHash()
 }
 
 window.addEventListener('hashchange', parseHash, false);
+
+(function(){
+    var x, y;
+    jQuery('#canvas').on({ 'touchstart' : function(ev) {
+        ev = ev.originalEvent.touches[0];
+        x = ev.clientX;
+        y = ev.clientY;
+    }});
+
+    jQuery('#canvas').on({ 'touchmove' : function(ev) {
+        ev = ev.originalEvent.touches[0];
+
+        interpretDrag(ev.clientX - x, ev.clientY - y, 0);
+
+        x = ev.clientX;
+        y = ev.clientY;
+
+        forceRedraw();
+    }});
+})();
 
 function topologicUpdateDimension()
 {
@@ -444,7 +465,7 @@ function updateHash(silent)
       </div>
       <input type="button" value="Export JSON" data-inline="true" onclick="document.getElementById('exportData').value = getJSON();"/>
       <input type="button" value="Export SVG" data-inline="true" onclick="document.getElementById('exportData').value = getSVG();"/>
-      <input type="button" value="Import" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>
+      <input type="button" value="Import JSON" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>
     </div>
    </div>
    <script type='text/javascript'>window.setTimeout(function() { parseHash(); updateHash(); }, 100);</script>
