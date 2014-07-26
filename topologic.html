@@ -403,9 +403,10 @@ function getEmbed()
       </div>
       <div data-role="collapsible" data-collapsed="false" data-iconpos="right">
       <h2>Model Parameters</h2>
-      <div class="ui-field-contain">
+      <fieldset data-role="controlgroup">
+      <legend>Model</legend>
       <label for="model">Model</label>
-      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();" data-mini="true">
+      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
             <option>simplex</option>
             <option selected="selected">cube</option>
             <option>plane</option>
@@ -421,14 +422,12 @@ function getEmbed()
             <option>random-affine-ifs</option>
             <option>random-flame</option>
       </select>
-      </div>
-      <div class="ui-field-contain">
       <label for="format">Format</label>
-      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();" data-mini="true">
+      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();">
             <option selected="selected">cartesian</option>
             <option>polar</option>
       </select>
-      </div>
+      </fieldset>
       <label for="modelDepth">Model Depth</label>
       <input type="range" id="modelDepth" name="modelDepth" onchange="topologicModelDepth=this.value; topologicUpdateCurrentModel();" min="1" max="7" step="1" value="4"/>
       <label for="renderDepth">Render Depth</label>
