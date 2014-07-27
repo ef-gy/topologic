@@ -550,13 +550,13 @@
 
 /**\brief Open file
  *
- * Opens a file on the file system. The file should be an SVG with Topologic
- * metadata, in which case this metadata is read from the file and applied to
- * the active programme instance.
+ * Opens a file on the file system. The file should be an SVG or JSON with
+ * Topologic metadata, in which case this metadata is read from the file and
+ * applied to the active programme instance.
  *
  * \param[in] fullPath The file to open.
  *
- * \bug This function has quite possibly not been implemented.
+ * \note This is just a wrapper for openURL.
  */
 - (BOOL)openFile:(NSString*)fullPath;
 

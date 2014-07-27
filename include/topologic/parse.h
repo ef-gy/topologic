@@ -306,8 +306,6 @@ namespace topologic
              *
              * The copy constructor is explicitly deleted for memory management
              * reasons.
-             *
-             * \todo Provide a move constructor.
              */
             parser(const parser &) = delete;
 

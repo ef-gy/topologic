@@ -838,6 +838,8 @@ static topologic::xml xml;
 
 - (BOOL)openFile:(NSString*)fullPath
 {
+    [self openURL:[NSURL fileURLWithPath:fullPath]];
+
     return YES;
 }
 
