@@ -991,7 +991,7 @@ namespace topologic
      * point method is called.
      *
      * \param[out] stream The XML stream to write to.
-     * \param[in]  pValue The state to serialise.
+     * \param[in]  pState The state to serialise.
      *
      * \returns A new copy of the input stream.
      *
@@ -1056,7 +1056,7 @@ namespace topologic
      * unlike the higher level equivalents.
      *
      * \param[out] stream The XML stream to write to.
-     * \param[in]  pValue The state to serialise.
+     * \param[in]  pState The state to serialise.
      *
      * \returns A new copy of the input stream.
      *
@@ -1096,7 +1096,7 @@ namespace topologic
      * point method is called.
      *
      * \param[out] stream The JSON stream to write to.
-     * \param[in]  pValue The state to serialise.
+     * \param[in]  pState The state to serialise.
      *
      * \returns A new copy of the input stream.
      *

@@ -257,7 +257,7 @@ namespace topologic
                  */
                 typedef T<Q,d> modelType;
 
-                /* \brief Model render depth
+                /**\brief Model render depth
                  *
                  * This is the maximum depth for your models and also specifies
                  * the maximum depth of any transformations you can apply.

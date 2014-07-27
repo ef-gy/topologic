@@ -608,7 +608,7 @@ const char *getSVG(void)
  * Takes a JSON string, parses it and applies it to the current global state
  * context.
  *
- * \param{in} json The JSON string to parse.
+ * \param[in] json The JSON string to parse.
  */
 void parseJSON(const char *json)
 {
