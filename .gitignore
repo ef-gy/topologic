@@ -18,3 +18,5 @@ topologic-sdl.html
 *.xcuser*
 *.xccheckout
 documentation/*.tag
+*.user
+build-*
