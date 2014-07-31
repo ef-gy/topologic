@@ -189,7 +189,7 @@ namespace topologic
                  * \returns 'true' upon success.
                  */
                 virtual bool svg (std::ostream &output,
-                                  bool updateMatrix = false);
+                                  bool updateMatrix = false) = 0;
 
 #if !defined (NO_OPENGL)
                 /**\brief Render to OpenGL context
