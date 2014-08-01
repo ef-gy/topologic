@@ -75,6 +75,9 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 documentation: doxyfile include/*/* xslt/doxy*
 	doxygen $^
 
+documentation.xml: documentation/xml/combine.xslt documentation/xml/index.xml xslt/doxygen*
+	xsltproc documentation/xml/combine.xslt documentation/xml/index.xml | xsltproc xslt/doxygen-post-process.xslt - > $@
+
 # meta rules for javascript
 js: $(JSBINARIES)
 

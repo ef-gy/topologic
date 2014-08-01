@@ -20,3 +20,4 @@ topologic-sdl.html
 documentation/*.tag
 *.user
 build-*
+documentation.xml
