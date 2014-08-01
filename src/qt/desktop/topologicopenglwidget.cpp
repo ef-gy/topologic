@@ -48,6 +48,4 @@ void TopologicOpenGLWidget::resizeGL(int width, int height)
 
     state.width  = width;
     state.height = height;
-
-    paintGL();
 }
