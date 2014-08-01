@@ -164,7 +164,9 @@ STRIP_FROM_PATH        = . \
 # using the -I flag.
 
 STRIP_FROM_INC_PATH    = include/ \
-                         ../libefgy/include
+                         ../libefgy/include \
+                         src/xstep \
+                         src/qt
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -1852,7 +1854,7 @@ DOCBOOK_OUTPUT         = docbook
 # The default value is: NO.
 # This tag requires that the tag GENERATE_DOCBOOK is set to YES.
 
-DOCBOOK_PROGRAMLISTING = NO
+#DOCBOOK_PROGRAMLISTING = NO
 
 #---------------------------------------------------------------------------
 # Configuration options for the AutoGen Definitions output

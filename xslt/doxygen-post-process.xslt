@@ -49,6 +49,17 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xsl:template name="fix-path">
+    <xsl:param name="original"/>
+    <xsl:choose>
+      <xsl:when test="substring-after($original,'include')">include<xsl:value-of select="substring-after($original,'include')"/></xsl:when>
+      <xsl:when test="substring-after($original,'src')">src<xsl:value-of select="substring-after($original,'src')"/></xsl:when>
+      <xsl:when test="substring-after($original,'documentation')">documentation<xsl:value-of select="substring-after($original,'documentation')"/></xsl:when>
+      <xsl:when test="substring-after($original,'README')">README<xsl:value-of select="substring-after($original,'README')"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="$original"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
@@ -63,6 +74,24 @@
 
   <xsl:template match="@refid">
     <xsl:attribute name="refid"><xsl:call-template name="recover-id">
+        <xsl:with-param name="original" select="." />
+      </xsl:call-template></xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="@file">
+    <xsl:attribute name="file"><xsl:call-template name="fix-path">
+        <xsl:with-param name="original" select="." />
+      </xsl:call-template></xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="@bodyfile">
+    <xsl:attribute name="bodyfile"><xsl:call-template name="fix-path">
+        <xsl:with-param name="original" select="." />
+      </xsl:call-template></xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="@external">
+    <xsl:attribute name="external"><xsl:call-template name="fix-path">
         <xsl:with-param name="original" select="." />
       </xsl:call-template></xsl:attribute>
   </xsl:template>

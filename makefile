@@ -72,8 +72,8 @@ archive: ../$(NAME)-$(VERSION).tar.gz
 	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 >$@
 
 # meta rules for documentation
-documentation: doxyfile include/*/* xslt/doxy*
-	doxygen $^
+documentation documentation/xml/combine.xslt documentation/xml/index.xml: doxyfile include/*/* xslt/doxy*
+	doxygen $<
 
 documentation.xml: documentation/xml/combine.xslt documentation/xml/index.xml xslt/doxygen*
 	xsltproc documentation/xml/combine.xslt documentation/xml/index.xml | xsltproc xslt/doxygen-post-process.xslt - > $@
