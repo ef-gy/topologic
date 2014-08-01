@@ -6,12 +6,22 @@
 TopologicOpenGLWidget::TopologicOpenGLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
+    /*
+    QGLFormat fmt = format();
+    fmt.setProfile(QGLFormat::CoreProfile);
+    fmt.setVersion(3, 2);
+    setFormat(fmt);
+    makeCurrent();
+    */
 }
 
 void TopologicOpenGLWidget::initializeGL()
 {
-    QOpenGLContext *context = QOpenGLContext::currentContext();
-    qDebug() << Q_FUNC_INFO << "context =" << context;
+    qDebug() << "OpenGL Versions Supported: " << QGLFormat::openGLVersionFlags();
+
+    QString versionString(QLatin1String(reinterpret_cast<const char*>(glGetString(GL_VERSION))));
+    qDebug() << "Driver Version String:" << versionString;
+    qDebug() << "Current Context:" << format();
 
     enum topologic::outputMode out = topologic::outGL;
 
@@ -27,25 +37,15 @@ void TopologicOpenGLWidget::initializeGL()
 
 void TopologicOpenGLWidget::paintGL()
 {
-    QOpenGLContext *context = QOpenGLContext::currentContext();
-    qDebug() << Q_FUNC_INFO << "context =" << context;
-
     if (state.model)
     {
         std::cerr << "have model\n";
         state.model->opengl(true);
     }
-    else
-    {
-        std::cerr << "no model\n";
-    }
 }
 
 void TopologicOpenGLWidget::resizeGL(int width, int height)
 {
-    QOpenGLContext *context = QOpenGLContext::currentContext();
-    qDebug() << Q_FUNC_INFO << "context =" << context;
-
     state.width  = width;
     state.height = height;
 }
