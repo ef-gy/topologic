@@ -353,7 +353,7 @@ namespace topologic
                 {
                     if (metadata::update)
                     {
-                        gState.opengl.prepared = false;
+                        gState.opengl.context.prepared = false;
                         object.calculateObject();
                         metadata::update = false;
                     }
@@ -364,8 +364,8 @@ namespace topologic
                     }
 
                     gState.opengl.fractalFlameColouring = gState.fractalFlameColouring;
-                    gState.opengl.width  = gState.width;
-                    gState.opengl.height = gState.height;
+                    gState.opengl.context.width  = gState.width;
+                    gState.opengl.context.height = gState.height;
                     
                     if (!gState.fractalFlameColouring)
                     {
@@ -376,10 +376,10 @@ namespace topologic
                     
                     gState.opengl.frameStart();
                     
-                    gState.opengl.wireframeColour = gState.wireframe;
-                    gState.opengl.surfaceColour   = gState.surface;
+                    gState.opengl.context.wireframeColour = gState.wireframe;
+                    gState.opengl.context.surfaceColour   = gState.surface;
 
-                    if (!gState.opengl.prepared)
+                    if (!gState.opengl.context.prepared)
                     {
                         std::cerr << gState.opengl << object;
                     }
