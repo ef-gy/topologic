@@ -363,7 +363,7 @@ namespace topologic
                         gState.updateMatrix();
                     }
 
-                    gState.opengl.fractalFlameColouring = gState.fractalFlameColouring;
+                    gState.opengl.context.fractalFlameColouring = gState.fractalFlameColouring;
                     gState.opengl.context.width  = gState.width;
                     gState.opengl.context.height = gState.height;
                     
