@@ -14,6 +14,7 @@ PKGCONFIG:=pkg-config
 INSTALL:=install
 XSLTPROC:=xsltproc
 CURL:=curl -s
+CSSMIN:=cssmin
 
 UNAME:=$(shell uname)
 LIBRARIES:=libxml-2.0
@@ -147,4 +148,4 @@ topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/s
 	cat $^ > $@
 
 topologic.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
-	cat $^ > $@
+	cat $^ | $(CSSMIN) > $@
