@@ -149,3 +149,11 @@ topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/s
 
 topologic.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
 	cat $^ | $(CSSMIN) > $@
+
+topologic.css.xml: topologic.css
+	echo "<style xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" > $@
+	cat $^ >> $@
+	echo "]]></style>" >> $@
+
+topologic-web.html: src/web/topologic.html
+	cat $^ > $@
