@@ -52,8 +52,10 @@
     </script>
     <script type='text/javascript' src="topologic-sdl.js"></script>
     <script type='text/javascript'>
-jQuery('body, html').on('touchmove', function(e){
-  e.preventDefault();
+jQuery(document).on('touchmove', function(e) {
+    if (!jQuery(e.target).parents('.ui-panel-inner')[0]) {
+        e.preventDefault();
+    }
 });
 
 var setRadius = Module.cwrap('setRadius', 'number', ['number', 'number']);
