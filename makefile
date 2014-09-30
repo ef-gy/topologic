@@ -13,6 +13,7 @@ EMXX:=em++
 PKGCONFIG:=pkg-config
 INSTALL:=install
 XSLTPROC:=xsltproc
+CURL:=curl -s
 
 UNAME:=$(shell uname)
 LIBRARIES:=libxml-2.0
@@ -21,6 +22,11 @@ FRAMEWORKS:=
 FRAMEWORKS_GL:=GLUT OpenGL Cocoa
 
 DEBUG:=false
+
+DOWNLOADS:=.downloads
+JQUERY:=https://code.jquery.com/jquery-1.11.1.min.js
+JQUERYMOBILE:=https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js
+JQUERYMOBILECSS:=https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css
 
 ifneq ($(UNAME),Darwin)
 PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
@@ -122,6 +128,23 @@ $(MANDIR)/man1/%.1: src/%.1
 %.html: src/%.cpp include/*/*.h
 	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@
 
+# downloads
+$(DOWNLOADS)/.volatile:
+	mkdir -p $(DOWNLOADS) || true
+	touch $@
+
+$(DOWNLOADS)/jquery.js: $(DOWNLOADS)/.volatile
+	$(CURL) '$(JQUERY)' -o $@
+
+$(DOWNLOADS)/jquery.mobile.js: $(DOWNLOADS)/.volatile
+	$(CURL) '$(JQUERYMOBILE)' -o $@
+
+$(DOWNLOADS)/jquery.mobile.css: $(DOWNLOADS)/.volatile
+	$(CURL) '$(JQUERYMOBILECSS)' -o $@
+
 # merge instructions
-topologic-web.js: src/web/setup.js topologic-sdl.js src/web/glue.js
+topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
+	cat $^ > $@
+
+topologic.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
 	cat $^ > $@

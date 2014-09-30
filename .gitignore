@@ -22,3 +22,5 @@ documentation/*.tag
 build-*
 documentation.xml
 topologic-web.js
+.downloads
+topologic.css
