@@ -147,13 +147,13 @@ $(DOWNLOADS)/jquery.mobile.css: $(DOWNLOADS)/.volatile
 topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
 	cat $^ > $@
 
-topologic.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
+topologic-web.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
 	cat $^ | $(CSSMIN) > $@
 
-topologic.css.xml: topologic.css
+topologic-web.css.xml: topologic-web.css
 	echo "<style xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" > $@
 	cat $^ >> $@
 	echo "]]></style>" >> $@
 
-topologic-web.html: src/web/topologic.html
-	cat $^ > $@
+topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.css.xml
+	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/web-prepare.xslt $<
