@@ -20,6 +20,10 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="xhtml:script[@src='topologic-web.js']">
+    <xsl:apply-templates select="document(concat($root,'/topologic-web.js.xml'))/*"/>
+  </xsl:template>
+
   <xsl:template match="xhtml:link[@href='topologic-web.css']">
     <xsl:apply-templates select="document(concat($root,'/topologic-web.css.xml'))/*"/>
   </xsl:template>

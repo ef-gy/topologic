@@ -144,8 +144,14 @@ $(DOWNLOADS)/jquery.mobile.css: $(DOWNLOADS)/.volatile
 	$(CURL) '$(JQUERYMOBILECSS)' -o $@
 
 # merge instructions
-topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
+#topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
+topologic-web.js: src/web/setup.js topologic-sdl.js src/web/glue.js
 	cat $^ > $@
+
+topologic-web.js.xml: topologic-web.js
+	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" > $@
+	cat $^ >> $@
+	echo "]]></script>" >> $@
 
 topologic-web.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
 	cat $^ | $(CSSMIN) > $@
@@ -155,5 +161,5 @@ topologic-web.css.xml: topologic-web.css
 	cat $^ >> $@
 	echo "]]></style>" >> $@
 
-topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.css.xml
+topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.js.xml topologic-web.css.xml
 	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/web-prepare.xslt $<
