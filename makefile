@@ -121,3 +121,7 @@ $(MANDIR)/man1/%.1: src/%.1
 
 %.html: src/%.cpp include/*/*.h
 	$(EMXX) -std=c++0x -Iinclude/ -D NOLIBRARIES $(EMXXFLAGS) $< $(LDFLAGS) -o $@
+
+# merge instructions
+topologic-web.js: src/web/setup.js topologic-sdl.js
+	cat $^ > $@

@@ -35,23 +35,7 @@
     </div>
     <div data-role="main" class="ui-content jqm-content jqm-fullwidth">
     <canvas class="emscripten" id="canvas"></canvas>
-    <script type='text/javascript'>
-      // connect to canvas
-      var Module = {
-        arguments: ['topologic-webgl'].concat(window.location.hash.substring(1).match(/[^+\s]+/g)),
-        preRun: [],
-        postRun: [],
-        print: console.log,
-        printErr: function(text) {
-          text = Array.prototype.slice.call(arguments).join(' ');
-          console.log(text);
-        },
-        canvas: document.getElementById('canvas'),
-        TOTAL_MEMORY: 268435456,
-        doNotCaptureKeyboard: true
-      };
-    </script>
-    <script type='text/javascript' src="topologic-sdl.js"></script>
+    <script type='text/javascript' src="topologic-web.js"></script>
     <script type='text/javascript'>
 jQuery(document).on('touchmove', function(e) {
     if (!jQuery(e.target).parents('.ui-panel-inner')[0]) {

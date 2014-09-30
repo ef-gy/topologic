@@ -21,3 +21,4 @@ documentation/*.tag
 *.user
 build-*
 documentation.xml
+topologic-web.js
