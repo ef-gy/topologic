@@ -25,9 +25,9 @@ FRAMEWORKS_GL:=GLUT OpenGL Cocoa
 DEBUG:=false
 
 DOWNLOADS:=.downloads
-JQUERY:=https://code.jquery.com/jquery-1.11.1.min.js
-JQUERYMOBILE:=https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js
-JQUERYMOBILECSS:=https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css
+JQUERY:=https://code.jquery.com/jquery-2.1.1.min.js
+JQUERYMOBILE:=https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js
+JQUERYMOBILECSS:=https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css
 
 ifneq ($(UNAME),Darwin)
 PCCFLAGS:=$(shell $(PKGCONFIG) --cflags $(LIBRARIES) 2>/dev/null)
