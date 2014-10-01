@@ -66,7 +66,7 @@ IMANPAGES:=$(addprefix $(MANDIR)/man1/,$(notdir $(wildcard src/*.1)))
 # meta rules
 all: $(DATABASES) $(BINARIES)
 clean:
-	rm -f $(DATABASES) $(BINARIES) $(JSBINARIES) topologic-*.js topologic-web.*; true
+	rm -rf $(DATABASES) $(BINARIES) $(JSBINARIES) topologic-*.js topologic-web.* $(DOWNLOADS); true
 scrub: clean
 
 install: $(IBINARIES) $(IINCLUDES) $(IMANPAGES)
