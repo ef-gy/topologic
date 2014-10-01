@@ -144,11 +144,18 @@ $(DOWNLOADS)/jquery.mobile.css: $(DOWNLOADS)/.volatile
 	$(CURL) '$(JQUERYMOBILECSS)' -o $@
 
 # merge instructions
-topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
+#topologic-web.js: $(DOWNLOADS)/jquery.js $(DOWNLOADS)/jquery.mobile.js src/web/setup.js topologic-sdl.js src/web/glue.js
+topologic-web.js: src/web/setup.js topologic-sdl.js src/web/glue.js
 	cat $^ > $@
 
+topologic-web.min.js: topologic-web.js
+	uglifyjs $^ -o $@ -c -m
+
 topologic-web.js.xml: topologic-web.js
-	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml' src='data:text/javascript;base64,$$(base64 -w 0 $^)'/>" > $@
+#	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml' src='data:text/javascript;base64,$$(base64 -w 0 $^)'/>" > $@
+	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" > $@
+	cat $^ >> $@
+	echo "]]></script>" >> $@
 
 topologic-web.css: $(DOWNLOADS)/jquery.mobile.css src/web/topologic.css
 	cat $^ | $(CSSMIN) > $@
