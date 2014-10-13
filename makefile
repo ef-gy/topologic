@@ -42,7 +42,7 @@ GLLDFLAGS:=$(addprefix -framework ,$(FRAMEWORKS_GL))
 endif
 CFLAGS:=-O2 $(shell if $(DEBUG); then echo '-g'; fi)
 CXXFLAGS:=$(CFLAGS) -fno-exceptions
-EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL --closure 1
+EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -s ASSERTIONS=1 --memory-init-file 0
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
@@ -167,3 +167,6 @@ topologic-web.css.xml: topologic-web.css
 
 topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.js.xml topologic-web.css.xml
 	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/web-prepare.xslt $<
+
+%.gz: %
+	gzip -kf9n $<

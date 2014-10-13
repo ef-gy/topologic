@@ -12,3 +12,4 @@ form { margin: 0; padding: 0; }
 .jqm-content { overflow: hidden; height: 100% !important; }
 .ui-page, .ui-mobile-viewport { overflow: hidden !important; }
 textarea { min-height: 20em; margin-top: 2.5em !important; }
+.ui-icon-loading {background: none;}
