@@ -256,7 +256,7 @@ namespace topologic
 #if !defined(NO_OPENGL)
             if (d > 3)
             {
-                opengl.prepared = false;
+                opengl.context.prepared = false;
             }
 #endif
 
