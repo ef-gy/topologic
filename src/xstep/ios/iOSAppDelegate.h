@@ -16,6 +16,7 @@
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
+#import <OpenGLES/ES2/glext.h>
 
 #define glGenVertexArrays(i, j)    glGenVertexArraysOES(i, j)
 #define glBindVertexArray(i)       glBindVertexArrayOES(i)

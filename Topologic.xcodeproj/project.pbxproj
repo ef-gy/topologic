@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		341E5DF519ED216500ED1C6E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341E5DF419ED216500ED1C6E /* UIKit.framework */; };
+		341E5DF719ED216A00ED1C6E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341E5DF619ED216A00ED1C6E /* GLKit.framework */; };
+		341E5DF919ED217000ED1C6E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 341E5DF819ED216F00ED1C6E /* OpenGLES.framework */; };
 		343EF38C185FAA950045BD78 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 343EF38B185FAA950045BD78 /* Images.xcassets */; };
 		343EF38D185FAAC10045BD78 /* iOSAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF37C185FAA680045BD78 /* iOSAppDelegate.mm */; };
 		343EF38E185FAAC10045BD78 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 343EF384185FAA680045BD78 /* main.mm */; };
@@ -23,16 +26,15 @@
 		343EF39D185FAC970045BD78 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 343EF37D185FAA680045BD78 /* Main_iPad.storyboard */; };
 		343EF39E185FAC970045BD78 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 343EF37F185FAA680045BD78 /* Main_iPhone.storyboard */; };
 		343EF39F185FAC970045BD78 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 343EF383185FAA680045BD78 /* InAppSettings.bundle */; };
-		343EF3A5185FADF00045BD78 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A3185FADF00045BD78 /* GLKit.framework */; };
-		343EF3A6185FADF00045BD78 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A4185FADF00045BD78 /* OpenGLES.framework */; };
-		343EF3A8185FADF50045BD78 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A7185FADF50045BD78 /* libxml2.2.dylib */; };
-		343EF3AA185FAE0C0045BD78 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343EF3A9185FAE0C0045BD78 /* UIKit.framework */; };
 		343EF3AC185FAF520045BD78 /* Topologic.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 343EF3AB185FAF520045BD78 /* Topologic.entitlements */; };
 		34DA23CC18A3394800E9302A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 343EF38B185FAA950045BD78 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3412118D15A7787B0012A36A /* Topologic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topologic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		341E5DF419ED216500ED1C6E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		341E5DF619ED216A00ED1C6E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
+		341E5DF819ED216F00ED1C6E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		343EF36E185FAA680045BD78 /* OSXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSXAppDelegate.h; sourceTree = "<group>"; };
 		343EF36F185FAA680045BD78 /* OSXAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OSXAppDelegate.mm; sourceTree = "<group>"; };
 		343EF371185FAA680045BD78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -57,10 +59,6 @@
 		343EF397185FABD20045BD78 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		343EF399185FABD60045BD78 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		343EF39B185FABE70045BD78 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		343EF3A3185FADF00045BD78 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
-		343EF3A4185FADF00045BD78 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
-		343EF3A7185FADF50045BD78 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/lib/libxml2.2.dylib; sourceTree = DEVELOPER_DIR; };
-		343EF3A9185FAE0C0045BD78 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		343EF3AB185FAF520045BD78 /* Topologic.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Topologic.entitlements; sourceTree = "<group>"; };
 		348825E318087F5C0075E8D2 /* Topologic-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Topologic-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34987FC9159931060063B8B3 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = SOURCE_ROOT; };
@@ -81,10 +79,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				343EF3AA185FAE0C0045BD78 /* UIKit.framework in Frameworks */,
-				343EF3A8185FADF50045BD78 /* libxml2.2.dylib in Frameworks */,
-				343EF3A5185FADF00045BD78 /* GLKit.framework in Frameworks */,
-				343EF3A6185FADF00045BD78 /* OpenGLES.framework in Frameworks */,
+				341E5DF919ED217000ED1C6E /* OpenGLES.framework in Frameworks */,
+				341E5DF719ED216A00ED1C6E /* GLKit.framework in Frameworks */,
+				341E5DF519ED216500ED1C6E /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,10 +155,9 @@
 		343EF3A2185FAD050045BD78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				343EF3A7185FADF50045BD78 /* libxml2.2.dylib */,
-				343EF3A9185FAE0C0045BD78 /* UIKit.framework */,
-				343EF3A3185FADF00045BD78 /* GLKit.framework */,
-				343EF3A4185FADF00045BD78 /* OpenGLES.framework */,
+				341E5DF819ED216F00ED1C6E /* OpenGLES.framework */,
+				341E5DF619ED216A00ED1C6E /* GLKit.framework */,
+				341E5DF419ED216500ED1C6E /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -450,17 +446,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "src/xstep/ios/Topologic-iOS-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					NOLIBRARIES,
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src/xstep/ios/Topologic-iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -494,14 +490,15 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "src/xstep/ios/Topologic-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = NOLIBRARIES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src/xstep/ios/Topologic-iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

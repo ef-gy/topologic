@@ -20,13 +20,6 @@
  */
 static topologic::state<GLfloat,MAXDEPTH> topologicState;
 
-/**\brief XML wrapper
- *
- * Used to parse SVG files with Topologic metadata and to manipulate the state
- * object accordingly. There only ever needs to be one of these objects.
- */
-static topologic::xml xml;
-
 @implementation iOSAppDelegate
 
 @synthesize state;
