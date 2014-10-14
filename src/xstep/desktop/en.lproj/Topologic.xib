@@ -370,18 +370,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fbj-BM-P6M">
-                                <rect key="frame" x="16" y="58" width="203" height="18"/>
-                                <buttonCell key="cell" type="check" title="Fractal Flame Colouring" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pae-G8-zJg">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="updateOpenGLView:" target="494" id="eab-dg-c43"/>
-                                    <binding destination="494" name="value" keyPath="fractalFlameColouring" id="8la-wD-RNy"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19y-Mh-83M">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="19y-Mh-83M">
                                 <rect key="frame" x="12" y="12" width="211" height="32"/>
                                 <buttonCell key="cell" type="push" title="Reset Flame Colours" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="df5-Uk-RCm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -390,6 +379,17 @@
                                 <connections>
                                     <action selector="randomFlameColours:" target="494" id="vsQ-G6-TJr"/>
                                     <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="ckX-sn-z7R"/>
+                                </connections>
+                            </button>
+                            <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fbj-BM-P6M">
+                                <rect key="frame" x="16" y="50" width="203" height="18"/>
+                                <buttonCell key="cell" type="check" title="Fractal Flame Colouring" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pae-G8-zJg">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="updateOpenGLView:" target="494" id="eab-dg-c43"/>
+                                    <binding destination="494" name="value" keyPath="fractalFlameColouring" id="8la-wD-RNy"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -406,7 +406,9 @@
                         <constraint firstItem="4229" firstAttribute="top" secondItem="4223" secondAttribute="bottom" constant="8" symbolic="YES" id="8122"/>
                         <constraint firstItem="4240" firstAttribute="centerY" secondItem="4223" secondAttribute="centerY" id="8124"/>
                         <constraint firstItem="4240" firstAttribute="top" secondItem="4216" secondAttribute="top" constant="25" id="8125"/>
+                        <constraint firstAttribute="bottom" secondItem="19y-Mh-83M" secondAttribute="bottom" constant="16" id="1Y0-fu-DM7"/>
                         <constraint firstItem="19y-Mh-83M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4216" secondAttribute="leading" constant="16" id="213-KO-Kec"/>
+                        <constraint firstItem="19y-Mh-83M" firstAttribute="top" secondItem="Fbj-BM-P6M" secondAttribute="bottom" constant="12" id="51D-m5-78N"/>
                         <constraint firstAttribute="trailing" secondItem="19y-Mh-83M" secondAttribute="trailing" constant="16" id="H5j-nb-nPi"/>
                         <constraint firstAttribute="height" constant="189" id="J1N-9G-jpt"/>
                         <constraint firstItem="0Ux-6m-rka" firstAttribute="leading" secondItem="4216" secondAttribute="leading" constant="15" id="XKo-Oz-LRm"/>
