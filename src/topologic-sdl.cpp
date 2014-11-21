@@ -109,7 +109,7 @@ extern "C"
     int interpretDrag(double, double, double);
     int setActiveDimension(int);
     void forceRedraw(void);
-    void setIFSParameters(int, int, int, bool, bool);
+    void setIFSParameters(int, int, int, int, int);
     void setFlameColouring(bool);
     void setColour(int, double, double, double, double);
     void setFlameParameters(int);
@@ -489,7 +489,7 @@ int setActiveDimension(int dim)
  * \param[in] postRotate Whether to consider adding a post-translation rotation
  *                       to random affine IFSs.
  */
-void setIFSParameters(int iterations, int seed, int functions, bool preRotate, bool postRotate)
+void setIFSParameters(int iterations, int seed, int functions, int preRotate, int postRotate)
 {
     topologicState.parameter.iterations = iterations;
     topologicState.parameter.seed       = seed;

@@ -813,7 +813,7 @@ namespace topologic
             return false;
         }
 
-        bool polar = value.getObject()["polar"].type  == efgy::json::value<>::yes;
+        bool polar = value.getObject()["polar"].getBoolean();
 
         if (value.getObject()["camera"].type == efgy::json::value<>::array)
         {
@@ -916,8 +916,14 @@ namespace topologic
             s.parameter.flameCoefficients = (int)value.getObject()["flameCoefficients"].getNumber();
         }
 
-        s.parameter.preRotate  = value.getObject()["preRotate"].type  == efgy::json::value<>::yes;
-        s.parameter.postRotate = value.getObject()["postRotate"].type == efgy::json::value<>::yes;
+        if (value.getObject()["preRotate"].type != efgy::json::value<>::null)
+        {
+            s.parameter.preRotate  = value.getObject()["preRotate"].getBoolean();
+        }
+        if (value.getObject()["postRotate"].type != efgy::json::value<>::null)
+        {
+            s.parameter.postRotate = value.getObject()["postRotate"].getBoolean();
+        }
 
         if (   value.getObject()["background"].type == efgy::json::value<>::array
             && value.getObject()["background"].getArray().size() >= 5

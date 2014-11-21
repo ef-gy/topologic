@@ -47,37 +47,38 @@ var topologicColour =
      [0,0,0,0.2]];
 
 var topologicIgnoreHashChange = false;
+var originalSettings = JSON.parse(getJSON());
 
 function parseHash()
 {
-    if (topologicIgnoreHashChange) return;
+  if (topologicIgnoreHashChange) return;
 
-    parseJSON(window.location.hash.substring(1));
-    forceRedraw();
+  parseJSON(window.location.hash.substring(1));
+  forceRedraw();
 
-    var val = jQuery.parseJSON(getJSON());
-    topologicModel             = val['model'];
-    topologicFormat            = val['coordinateFormat'];
-    topologicModelDepth        = val['depth'];
-    topologicModelRenderDepth  = val['renderDepth'];
-    topologicModelPrecision    = val['polarPrecision'];
-    topologicModelRadius       = val['radius'];
-//    topologicModelMinorRadius  = val['minorRadius'];
-//    topologicModelConstant     = val['constant'];
-    topologicIFSIterations     = val['iterations'];
-    topologicIFSSeed           = val['seed'];
-    topologicIFSFunctions      = val['functions'];
-    topologicIFSPreRotate      = val['preRotate'];
-    topologicIFSPostRotate     = val['postRotate'];
-//    topologicIFSFlameColouring = val['flameColouring'];
-    topologicIFSFlameVariants  = val['flameCoefficients'];
+  var val = JSON.parse(getJSON());
+  topologicModel             = val['model'];
+  topologicFormat            = val['coordinateFormat'];
+  topologicModelDepth        = val['depth'];
+  topologicModelRenderDepth  = val['renderDepth'];
+  topologicModelPrecision    = val['polarPrecision'];
+  topologicModelRadius       = val['radius'];
+//  topologicModelMinorRadius  = val['minorRadius'];
+//  topologicModelConstant     = val['constant'];
+  topologicIFSIterations     = val['iterations'];
+  topologicIFSSeed           = val['seed'];
+  topologicIFSFunctions      = val['functions'];
+  topologicIFSPreRotate      = val['preRotate'];
+  topologicIFSPostRotate     = val['postRotate'];
+//  topologicIFSFlameColouring = val['flameColouring'];
+  topologicIFSFlameVariants  = val['flameCoefficients'];
 
-    topologicColour = [ val['background'].slice(1),
-                        val['wireframe'].slice(1),
-                        val['surface'].slice(1) ];
+  topologicColour = [ val['background'].slice(1),
+                      val['wireframe'].slice(1),
+                      val['surface'].slice(1) ];
 
-    topologicUpdateDimension();
-    topologicUpdateCurrentModelData();
+  topologicUpdateDimension();
+  topologicUpdateCurrentModelData();
 }
 
 window.addEventListener('hashchange', parseHash, false);
@@ -243,7 +244,7 @@ function topologicUpdateCurrentModel()
     setConstant(topologicModelConstant);
     setPrecision(topologicModelPrecision);
 
-    setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate, topologicIFSPostRotate);
+    setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate ? 1 : 0, topologicIFSPostRotate ? 1 : 0);
     setFlameColouring(topologicFlameColouring);
     setFlameParameters(topologicFlameVariants);
 
@@ -255,8 +256,41 @@ function topologicUpdateCurrentModel()
     updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
 
     topologicIgnoreHashChange = true;
-    window.location.hash = getJSON();
+    window.location.hash = getHash();
     topologicIgnoreHashChange = false;
+}
+
+function arrayEquals (a, b) {
+  if (Array.isArray(a)) {
+    if (Array.isArray(b)) {
+      if (a.length === b.length) {
+        for (j in a) {
+          if (!arrayEquals(a[j], b[j])) {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return a == b;
+  }
+}
+
+function getHash() {
+  var data = JSON.parse(getJSON());
+
+  for (i in data) {
+    if (arrayEquals(originalSettings[i], data[i])) {
+      delete data[i];
+    }
+  }
+
+  return JSON.stringify(data);
 }
 
 function updateHash(silent)
@@ -264,7 +298,7 @@ function updateHash(silent)
     silent = typeof silent !== 'undefined' ? silent : true;
 
     topologicIgnoreHashChange = silent;
-    window.location.hash = getJSON();
+    window.location.hash = getHash();
     topologicIgnoreHashChange = !silent;
 }
 
@@ -291,7 +325,7 @@ function updateHash(silent)
 
 function getLink()
 {
-    return 'https://ef.gy/webgl/topologic.html#' + getJSON();
+    return 'https://dee.pe/r#' + getHash();
 }
 
 function getEmbed()
