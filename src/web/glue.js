@@ -53,7 +53,20 @@ function parseHash()
 {
   if (topologicIgnoreHashChange) return;
 
-  parseJSON(window.location.hash.substring(1));
+  var json = window.location.hash.substring(1);
+  try {
+    JSON.parse(json);
+    parseJSON(json);
+  } catch (e) {
+    try {
+      console.error(e);
+      json = decodeURIComponent(json);
+      JSON.parse(json);
+      parseJSON(json);
+    } catch (e) {
+      return;
+    }
+  }
   forceRedraw();
 
   var val = JSON.parse(getJSON());
@@ -287,6 +300,14 @@ function getHash() {
   for (i in data) {
     if (arrayEquals(originalSettings[i], data[i])) {
       delete data[i];
+    } else if ((i === 'camera') || (i === 'transformation')) {
+      var t = [];
+      for (k in data[i]) {
+        if (!arrayEquals(originalSettings[i][k], data[i][k])) {
+          t.push(data[i][k]);
+        }
+      }
+      data[i] = t;
     }
   }
 
