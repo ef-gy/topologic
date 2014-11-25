@@ -1,0 +1,53 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    keepalive_timeout   70;
+
+    server_name *.dee.pe;
+    server_name dee.pe;
+
+    return 301 https://dee.pe$request_uri;
+
+    access_log /var/log/nginx/$scheme-$dnt-$http_host.access.log;
+}
+
+server {
+    listen 443 ssl spdy;
+    listen [::]:443 ssl spdy;
+
+    keepalive_timeout   70;
+
+    server_name dee.pe;
+
+    ssl_certificate     /srv/certificates/dee.pe/dee.pe.crt;
+    ssl_certificate_key /srv/certificates/dee.pe/dee.pe.key;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
+
+    gzip            on;
+    gzip_min_length 1000;
+    gzip_proxied    expired no-cache no-store private auth;
+    gzip_types      text/plain application/xml text/css text/html application/xhtml+xml application/javascript text/javascript application/x-javascript;
+
+    gzip_static     on;
+
+    add_header Vary "Accept";
+    add_header Vary "Accept-Encoding";
+    add_header DNT $http_dnt;
+
+    charset_types text/html application/xhtml+xml text/xml text/plain text/vnd.wap.wml application/javascript application/rss+xml application/atom+xml;
+    charset utf-8;
+
+    access_log /var/log/nginx/$scheme-$dnt-$http_host.access.log;
+
+    xslt_types application/xhtml+xml application/atom+xml image/svg+xml;
+
+    root /srv/http/dee.pe;
+
+    rewrite ^/r:(.*)$ /r#$1 redirect;
+    rewrite ^/r$ /topologic-web.html last;
+    rewrite ^/$ /r permanent;
+}
