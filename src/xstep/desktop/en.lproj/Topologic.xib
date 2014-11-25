@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -90,6 +90,15 @@
                                     <action selector="saveDocumentAs:" target="494" id="QHY-kv-0OL"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="3HN-SA-adb">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Open in Browser" id="l5J-pE-LNF">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openInBrowser:" target="494" id="8HZ-RZ-mSi"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -140,10 +149,16 @@
                         <items>
                             <menuItem title="Topologic Help" keyEquivalent="?" id="492"/>
                             <menuItem isSeparatorItem="YES" id="7945"/>
-                            <menuItem title="Topologic Website" id="7946">
+                            <menuItem title="Website" id="7946">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="goToWebsite:" target="494" id="7947"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Source Code" id="J4c-if-QFA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="goToRepository:" target="494" id="1nl-EO-Jhp"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -433,56 +448,56 @@
                     <rect key="frame" x="55" y="648" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-6.2800000000000002" maxValue="6.2800000000000002" tickMarkPosition="above" sliderType="linear" id="ZMR-u6-SBt"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate0Enabled" id="sjZ-as-XS9"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate0" id="sBj-91-Fde"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate0Enabled" id="sjZ-as-XS9"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HHN-fi-oDC">
                     <rect key="frame" x="55" y="623" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="rz8-Gu-Zv1"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate1Enabled" id="6uD-fs-qri"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate1" id="QcK-Ui-NXM"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate1Enabled" id="6uD-fs-qri"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J5i-Oi-c1J">
                     <rect key="frame" x="55" y="598" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="uzw-t7-oGZ"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate2Enabled" id="b5N-1l-IZp"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate2" id="0lt-EJ-zaG"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate2Enabled" id="b5N-1l-IZp"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wT5-ZP-Wm9">
                     <rect key="frame" x="55" y="573" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="n7o-uW-uVC"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate3Enabled" id="A39-7v-0pi"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate3" id="rTt-tu-UXd"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate3Enabled" id="A39-7v-0pi"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yuE-Nv-pe7">
                     <rect key="frame" x="55" y="548" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="8Ne-Sq-J1T"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate4Enabled" id="ONV-pW-9hY"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate4" id="76G-zW-3rE"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate4Enabled" id="ONV-pW-9hY"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d6N-J3-toV">
                     <rect key="frame" x="55" y="523" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="sZa-H2-b0c"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate5Enabled" id="BFR-Js-lEl"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate5" id="QYe-1K-9Fb"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate5Enabled" id="BFR-Js-lEl"/>
                     </connections>
                 </slider>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hFy-65-NCC">
                     <rect key="frame" x="55" y="498" width="198" height="21"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="gxt-0J-OK7"/>
                     <connections>
-                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate6Enabled" id="OG2-o1-858"/>
                         <binding destination="494" name="value" keyPath="cameraActiveCoordinate6" id="2q1-WP-C8z"/>
+                        <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate6Enabled" id="OG2-o1-858"/>
                     </connections>
                 </slider>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zLB-ci-JRf">

@@ -974,7 +974,21 @@ static topologic::xml xml;
 
 - (IBAction)goToWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://ef.gy/topologic"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@(topologic::website)]];
+}
+
+- (IBAction)goToRepository:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@(topologic::repository)]];
+}
+
+- (IBAction)openInBrowser:(id)sender
+{
+    std::ostringstream service("");
+    
+    service << topologic::service << ":" << efgy::json::tag() << topologicState;
+
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@(service.str().c_str())]];
 }
 
 - (IBAction)updateOpenGLView:(id)sender

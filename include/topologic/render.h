@@ -43,7 +43,7 @@ namespace topologic
 {
     /**\brief Cartesian dimension shorthands
      *
-     * As you'll probably remember form high school, it's customary to label the
+     * As you'll probably remember from high school, it's customary to label the
      * first three dimensions in a euclidian coordinate space "x", "y" and "z".
      * If you've had a poke at OpenGL or two, you'll also remember that the
      * fourth coordinate is often called "w". But what about the remaining "n"

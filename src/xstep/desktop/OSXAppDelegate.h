@@ -630,6 +630,24 @@
  */
 - (IBAction)goToWebsite:(id)sender;
 
+/**\brief Go to repository
+ *
+ * Opens a browser window and jumps to Topologic's source code repository. Part
+ * of the 'help' menu.
+ *
+ * \param[in] sender Part of the Interface Builder action interface; ignored.
+ */
+- (IBAction)goToRepository:(id)sender;
+
+/**\brief Open in browser
+ *
+ * Opens a browser window with the web version of Topologic using the current
+ * settings.
+ *
+ * \param[in] sender Part of the Interface Builder action interface; ignored.
+ */
+- (IBAction)openInBrowser:(id)sender;
+
 /**\brief Update OpenGL view
  *
  * Used to tell the OpenGL view that it should draw itself anew.
