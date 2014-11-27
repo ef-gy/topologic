@@ -895,6 +895,14 @@ namespace topologic
         {
             s.parameter.radius = value.getObject()["radius"].getNumber();
         }
+        if (value.getObject()["minorRadius"].type == efgy::json::value<>::number)
+        {
+            s.parameter.radius2 = value.getObject()["minorRadius"].getNumber();
+        }
+        if (value.getObject()["constant"].type == efgy::json::value<>::number)
+        {
+            s.parameter.constant = value.getObject()["constant"].getNumber();
+        }
         if (value.getObject()["polarPrecision"].type == efgy::json::value<>::number)
         {
             s.parameter.precision = value.getObject()["polarPrecision"].getNumber();
