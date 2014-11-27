@@ -76,8 +76,8 @@ function parseHash()
   topologicModelRenderDepth  = val['renderDepth'];
   topologicModelPrecision    = val['polarPrecision'];
   topologicModelRadius       = val['radius'];
-//  topologicModelMinorRadius  = val['minorRadius'];
-//  topologicModelConstant     = val['constant'];
+  topologicModelMinorRadius  = val['minorRadius'];
+  topologicModelConstant     = val['constant'];
   topologicIFSIterations     = val['iterations'];
   topologicIFSSeed           = val['seed'];
   topologicIFSFunctions      = val['functions'];
