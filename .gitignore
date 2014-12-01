@@ -28,3 +28,4 @@ topologic-web.html
 topologic-web.css
 topologic-web.css.xml
 *.gz
+src/chrome/topologic.html

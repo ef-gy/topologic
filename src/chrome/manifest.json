@@ -1,0 +1,12 @@
+{
+  "name": "Topologic",
+  "description": "Visualiser for basic geometric primitives and fractals in arbitrary-dimensional spaces.",
+  "version": "10.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons": { "16": "topologic-16.png", "128": "topologic-128.png" }
+}
