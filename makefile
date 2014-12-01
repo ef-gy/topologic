@@ -170,3 +170,9 @@ topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.
 
 %.gz: %
 	gzip -kf9n $<
+
+src/chrome/topologic.xhtml: src/web/topologic.xhtml
+	cp $< $@
+
+src/chrome/topologic.html: src/chrome/topologic.xhtml xslt/web-prepare.xslt topologic-web.js.xml topologic-web.css.xml
+	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/web-prepare.xslt $<
