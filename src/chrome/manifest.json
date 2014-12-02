@@ -8,5 +8,8 @@
       "scripts": ["background.js"]
     }
   },
-  "icons": { "16": "topologic-16.png", "128": "topologic-128.png" }
+  "icons": { "16": "topologic-16.png", "128": "topologic-128.png" },
+  "sandbox": {
+     "pages": ["topologic.html"]
+  } 
 }
