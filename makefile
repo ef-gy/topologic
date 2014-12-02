@@ -171,8 +171,14 @@ topologic-web.html: src/web/topologic.xhtml xslt/web-prepare.xslt topologic-web.
 %.gz: %
 	gzip -kf9n $<
 
-src/chrome/topologic.xhtml: src/web/topologic.xhtml
+src/chrome/jquery-2.1.1.min.js:
+	curl -q -s https://code.jquery.com/jquery-2.1.1.min.js -o $@
+
+src/chrome/jquery.mobile-1.4.4.min.js:
+	curl -q -s https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js -o $@
+
+src/chrome/topologic.js: topologic-web.js
 	cp $< $@
 
-src/chrome/topologic.html: src/chrome/topologic.xhtml xslt/web-prepare.xslt topologic-web.js.xml topologic-web.css.xml
-	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/web-prepare.xslt $<
+src/chrome/topologic.html: src/web/topologic.xhtml xslt/chrome-prepare.xslt src/chrome/topologic.js topologic-web.css.xml
+	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/chrome-prepare.xslt $<
