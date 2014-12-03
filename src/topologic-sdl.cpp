@@ -100,14 +100,10 @@ static topologic::state<GLfloat,MAXDEPTH> topologicState;
 extern "C"
 {
     void process(void);
-    int updateProjection(void);
     int interpretDrag(double, double, double);
     int setActiveDimension(int);
     void forceRedraw(void);
-    void setIFSParameters(int, int, int, int, int);
     void setFlameColouring(bool);
-    void setColour(int, double, double, double, double);
-    void setFlameParameters(int);
     void resetColourMap(void);
     void setViewportSize(int, int);
     const char *getJSON(void);
@@ -154,19 +150,6 @@ static bool forcedSize = false;
 void forceRedraw(void)
 {
     doRender = true;
-}
-
-/**\ingroup topologic-javascript-exports
- * \brief Update fractal flame parameter
- *
- * Modifies parameters of the global state object related to fractal flames.
- *
- * \param[in] variants The number of distinct, non-zero variant factors to use
- *                     when generating fractal flames.
- */
-void setFlameParameters(int variants)
-{
-    topologicState.parameter.flameCoefficients = variants;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -347,24 +330,6 @@ int main(int argc, char *argv[])
 }
 
 /**\ingroup topologic-javascript-exports
- * \brief Update projection matrices
- *
- * Calls topologic::state::updateMatrix() on the global state object to update
- * the current projection matrices; use after updating any parameters that
- * are used to form the projection matrix, such as the from/to point or the
- * output window size.
- *
- * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
- *          do anything that could fail, however, so it'll always return '0'.
- */
-int updateProjection(void)
-{
-    topologicState.topologic::state<GLfloat,MAXDEPTH>::updateMatrix();
-
-    return 0;
-}
-
-/**\ingroup topologic-javascript-exports
  * \brief Interpret trackball/mouse drag events
  *
  * Call this functin after detecting mouse drag or scroll events. This is a
@@ -398,32 +363,6 @@ int setActiveDimension(int dim)
 }
 
 /**\ingroup topologic-javascript-exports
- * \brief Set IFS parameters
- *
- * Allows you to modify the model parameters related to (random) IFS creation
- * and rendition. Keep in mind that the fractal flames are also IFSs, so these
- * parameters also apply to fractal flames.
- *
- * \param[in] iterations The number of iterations to run an IFS when creating
- *                       the model.
- * \param[in] seed       Seed value for the mersenne twister used to create
- *                       random IFS functions.
- * \param[in] functions  Target number of functions to use with IFSs.
- * \param[in] preRotate  Whether to consider adding a pre-translation rotation
- *                       to random affine IFSs.
- * \param[in] postRotate Whether to consider adding a post-translation rotation
- *                       to random affine IFSs.
- */
-void setIFSParameters(int iterations, int seed, int functions, int preRotate, int postRotate)
-{
-    topologicState.parameter.iterations = iterations;
-    topologicState.parameter.seed       = seed;
-    topologicState.parameter.functions  = functions;
-    topologicState.parameter.preRotate  = preRotate;
-    topologicState.parameter.postRotate = postRotate;
-}
-
-/**\ingroup topologic-javascript-exports
  * \brief Enable or disable fractal flame colouring
  *
  * Set the 'fractal flame colouring algorithm' flag of the global topologic
@@ -435,52 +374,6 @@ void setIFSParameters(int iterations, int seed, int functions, int preRotate, in
 void setFlameColouring(bool flameColouring)
 {
     topologicState.fractalFlameColouring = flameColouring;
-}
-
-/**\ingroup topologic-javascript-exports
- * \brief Set output colour
- *
- * Allows you to modify any of the global state's colour values. The 'colour'
- * parameter specifies which colour to set to (red, green, blue, alpha). Alpha
- * is used to provide transparency.
- *
- * The colour vector (red, green, blue, alpha) should have each component in
- * the range [0,1]. Setting the alpha component of the wireframe or surface
- * colour to 0 or less will disable rendering of wireframe lines or surfaces,
- * respectively.
- *
- * \param[in] colour Which colour to set. Accepted values are:
- *                     * 0: set the background colour
- *                     * 1: set the wireframe colour
- *                     * 2: set the surface colour
- * \param[in] red    Red component of the colour vector
- * \param[in] green  Green component of the colour vector
- * \param[in] blue   Blue component of the colour vector
- * \param[in] alpha  Alpha component of the colour vector
- */
-void setColour(int colour, double red, double green, double blue, double alpha)
-{
-    switch (colour)
-    {
-        case 0:
-            topologicState.background.red   = red;
-            topologicState.background.green = green;
-            topologicState.background.blue  = blue;
-            topologicState.background.alpha = alpha;
-            break;
-        case 1:
-            topologicState.wireframe.red   = red;
-            topologicState.wireframe.green = green;
-            topologicState.wireframe.blue  = blue;
-            topologicState.wireframe.alpha = alpha;
-            break;
-        case 2:
-            topologicState.surface.red   = red;
-            topologicState.surface.green = green;
-            topologicState.surface.blue  = blue;
-            topologicState.surface.alpha = alpha;
-            break;
-    }
 }
 
 /**\ingroup topologic-javascript-exports

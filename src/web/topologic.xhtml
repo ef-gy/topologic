@@ -57,26 +57,24 @@
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>IFS Parameters</h2>
-      <label for="IFSIterations">Iterations</label>
-      <input type="range" id="IFSIterations" name="IFSIterations" onchange="topologicIFSIterations=this.value; topologicUpdateCurrentModel();" min="0" max="14" step="1" value="4"/>
-      <label for="IFSSeed">Seed</label>
-      <input type="number" id="IFSSeed" name="IFSSeed" onchange="topologicIFSSeed=this.value; topologicUpdateCurrentModel();" min="0" step="1" value="0"/>
-      <label for="IFSFunctions">Functions</label>
-      <input type="number" id="IFSFunctions" name="IFSFunctions" onchange="topologicIFSFunctions=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/>
+      <label for="iterations">Iterations</label>
+      <input type="range" id="iterations" min="0" max="14" step="1" value="4"/>
+      <label for="seed">Seed</label>
+      <input type="number" id="seed" min="0" step="1" value="0"/>
+      <label for="functions">Functions</label>
+      <input type="number" id="functions" min="1" step="1" value="3"/>
       <fieldset data-role="controlgroup">
       <legend>Rotations</legend>
-      <input type="checkbox" id="preRotate" checked="checked"
-                     onclick="topologicIFSPreRotate=this.checked; topologicUpdateCurrentModel();"/>
+      <input type="checkbox" id="preRotate" checked="checked"/>
       <label for="preRotate">Pre-translation</label>
-      <input type="checkbox" id="postRotate"
-                     onclick="topologicIFSPostRotate=this.checked; topologicUpdateCurrentModel();"/>
+      <input type="checkbox" id="postRotate"/>
       <label for="postRotate">Post-translation</label>
       </fieldset>
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Fractal Flame Parameters</h2>
       <label for="Flame Variants">Variants</label>
-      <input type="number" id="FlameVariants" name="FlameVariants" onchange="topologicFlameVariants=this.value; topologicUpdateCurrentModel();" min="1" step="1" value="3"/>
+      <input type="number" id="flameCoefficients" min="1" step="1" value="3"/>
       <input type="checkbox" id="flameColouring"
                      onclick="topologicFlameColouring=this.checked; topologicUpdateCurrentModel();"/>
       <label for="flameColouring">Fractal Flame Colouring</label>
@@ -84,8 +82,8 @@
       <div data-role="collapsible" data-iconpos="right">
       <h2>Colours</h2>
       <ul data-role="listview" data-inset="true">
-      <li><a href="javascript:topologicColour=[[1,1,1,1],[0,0,0,0.8],[0,0,0,0.2]];topologicUpdateCurrentModel();">White/Black</a></li>
-      <li><a href="javascript:topologicColour=[[0.45,0.45,0.65,1],[1,1,1,1],[1,1,1,0.1]]; topologicUpdateCurrentModel();">Default</a></li>
+      <li><a href="javascript:settings['background']=['rgb',1,1,1,1];settings['wireframe']=['rgb',0,0,0,0.8];settings['surface']=['rgb',0,0,0,0.2];updateSettings();">White/Black</a></li>
+      <li><a href="javascript:settings['background']=['rgb',0.45,0.45,0.65,1];settings['wireframe']=['rgb',1,1,1,1];settings['surface']=['rgb',1,1,1,0.1];updateSettings();">Default</a></li>
       <li><a href="javascript:resetColourMap();">Randomise Flame Colours</a></li>
       </ul>
       </div>

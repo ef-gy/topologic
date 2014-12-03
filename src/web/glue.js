@@ -1,15 +1,6 @@
-jQuery(document).on('touchmove', function(e) {
-    if (!jQuery(e.target).parents('.ui-panel-inner')[0]) {
-        e.preventDefault();
-    }
-});
-
 var setActiveDimension = Module.cwrap ('setActiveDimension', 'number', ['number']);
 var forceRedraw = Module.cwrap('forceRedraw', null, []);
 var setFlameColouring = Module.cwrap('setFlameColouring', null, ['number']);
-var setIFSParameters = Module.cwrap('setIFSParameters', null, ['number', 'number', 'number', 'number', 'number']);
-var setColour = Module.cwrap('setColour', null, ['number', 'number', 'number', 'number', 'number']);
-var setFlameParameters = Module.cwrap('setFlameParameters', null, ['number']);
 var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number']);
 var resetColourMap = Module.cwrap('resetColourMap', null, []);
 var getJSON = Module.cwrap('getJSON', 'string', []);
@@ -21,27 +12,14 @@ var getModels = Module.cwrap('getModels', 'string', []);
 var topologicMaxDepth = 7;
 var topologicActiveDimension=3;
 
-var topologicIFSIterations=4;
-var topologicIFSFunctions=3;
-var topologicIFSSeed=0;
-var topologicIFSPreRotate=true;
-var topologicIFSPostRotate=false;
-
 var topologicFlameColouring=false;
-var topologicFlameVariants=3;
-
-var topologicColour =
-    [[1,1,1,1],
-     [0,0,0,0.8],
-     [0,0,0,0.2]];
 
 var topologicIgnoreHashChange = false;
 var originalSettingsJSON = getJSON();
 var originalSettings = JSON.parse(originalSettingsJSON);
 var settings = JSON.parse(originalSettingsJSON);
 
-function parseHash()
-{
+function parseHash() {
   if (topologicIgnoreHashChange) return;
 
   var json = window.location.hash.substring(1);
@@ -61,45 +39,12 @@ function parseHash()
   forceRedraw();
 
   var val = JSON.parse(getJSON());
-  topologicIFSIterations     = val['iterations'];
-  topologicIFSSeed           = val['seed'];
-  topologicIFSFunctions      = val['functions'];
-  topologicIFSPreRotate      = val['preRotate'];
-  topologicIFSPostRotate     = val['postRotate'];
 //  topologicIFSFlameColouring = val['flameColouring'];
-  topologicIFSFlameVariants  = val['flameCoefficients'];
-
-  topologicColour = [ val['background'].slice(1),
-                      val['wireframe'].slice(1),
-                      val['surface'].slice(1) ];
-
-  topologicUpdateCurrentModelData();
 }
 
-window.addEventListener('hashchange', parseHash, false);
+$(window).hashchange(parseHash);
 
-(function(){
-    var x, y;
-    jQuery('#canvas').on({ 'touchstart' : function(ev) {
-        ev = ev.originalEvent.touches[0];
-        x = ev.clientX;
-        y = ev.clientY;
-    }});
-
-    jQuery('#canvas').on({ 'touchmove' : function(ev) {
-        ev = ev.originalEvent.touches[0];
-
-        interpretDrag(ev.clientX - x, ev.clientY - y, 0);
-
-        x = ev.clientX;
-        y = ev.clientY;
-
-        forceRedraw();
-    }});
-})();
-
-function topologicUpdateDimension()
-{
+function topologicUpdateDimension() {
     var output = document.getElementById('activeDimension');
     if (output)
     {
@@ -108,53 +53,8 @@ function topologicUpdateDimension()
     setActiveDimension(topologicActiveDimension);
 }
 
-function topologicUpdateCurrentModelData()
-{
-    if (topologicIFSIterations < 2)
-    {
-        topologicIFSIterations = 2;
-    }
-    if (topologicIFSFunctions < 2)
-    {
-        topologicIFSFunctions = 2;
-    }
-    if (topologicFlameVariants < 1)
-    {
-        topologicFlameVariants = 1;
-    }
-    output = document.getElementById('IFSIterations');
-    if (output)
-    {
-        output.value=topologicIFSIterations;
-    }
-    output = document.getElementById('IFSSeed');
-    if (output)
-    {
-        output.value=topologicIFSSeed;
-    }
-    output = document.getElementById('IFSFunctions');
-    if (output)
-    {
-        output.value=topologicIFSFunctions;
-    }
-    output = document.getElementById('FlameVariants');
-    if (output)
-    {
-        output.value=topologicFlameVariants;
-    }
-}
-
-function topologicUpdateCurrentModel()
-{
-    topologicUpdateCurrentModelData();
-
-    setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate ? 1 : 0, topologicIFSPostRotate ? 1 : 0);
+function topologicUpdateCurrentModel() {
     setFlameColouring(topologicFlameColouring);
-    setFlameParameters(topologicFlameVariants);
-
-    setColour(0, topologicColour[0][0], topologicColour[0][1], topologicColour[0][2], topologicColour[0][3]);
-    setColour(1, topologicColour[1][0], topologicColour[1][1], topologicColour[1][2], topologicColour[1][3]);
-    setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
     forceRedraw();
 
@@ -204,8 +104,7 @@ function getHash() {
   return JSON.stringify(data);
 }
 
-function updateHash(silent)
-{
+function updateHash(silent) {
     silent = typeof silent !== 'undefined' ? silent : true;
 
     topologicIgnoreHashChange = silent;
@@ -213,36 +112,18 @@ function updateHash(silent)
     topologicIgnoreHashChange = !silent;
 }
 
-(function() {
-    var canvas = document.getElementById('canvas');
-
-    if (!canvas)
-    {
-        return;
-    }
-
-    window.addEventListener('resize', resizeCanvas, false);
-    window.setTimeout(resizeCanvas, 100);
-
-    function resizeCanvas()
-    {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-        setViewportSize(canvas.width, canvas.height);
-    }
-
-    resizeCanvas();
-})();
-
-function getLink()
-{
+function getLink() {
   return 'https://dee.pe/r:' + encodeURIComponent(getHash());
 }
 
-function getEmbed()
-{
+function getEmbed() {
   return '<iframe height="720" width="1280" src=\'' + getLink() + '\'></iframe>'
        + '<!-- iframe code generated by Topologic/V10; hosted on https://ef.gy/ -->';
+}
+
+function updateSettings() {
+  parseJSON(JSON.stringify(settings));
+  updateHash();
 }
 
 jQuery(document).ready(function() {
@@ -261,8 +142,40 @@ jQuery(document).ready(function() {
       if (typeof originalSettings[s] === 'number') {
         settings[s] = parseFloat(settings[s]);
       }
-      parseJSON(JSON.stringify(settings));
-      updateHash();
+      updateSettings();
     }).val(settings[s]);
   })(s);
+
+  var x, y;
+  jQuery('#canvas').on({ 'touchstart' : function(ev) {
+    ev = ev.originalEvent.touches[0];
+    x = ev.clientX;
+    y = ev.clientY;
+  }});
+
+  jQuery('#canvas').on({ 'touchmove' : function(ev) {
+    ev = ev.originalEvent.touches[0];
+
+    interpretDrag(ev.clientX - x, ev.clientY - y, 0);
+
+    x = ev.clientX;
+    y = ev.clientY;
+
+    forceRedraw();
+  }});
+
+  jQuery(window).resize(function() {
+    var canvas = document.getElementById('canvas');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    setViewportSize(canvas.width, canvas.height);
+  });
+
+  jQuery(window).resize();
+
+  jQuery(document).on('touchmove', function(e) {
+    if (!jQuery(e.target).parents('.ui-panel-inner')[0]) {
+      e.preventDefault();
+    }
+  });
 });
