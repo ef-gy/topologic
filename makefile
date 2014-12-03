@@ -46,7 +46,7 @@ EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_setRadius','_setConstant','_setPrecision','_updateModel','_updateProjection','_getProjection','_interpretDrag','_setActiveDimension','cwrap','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_parseJSON']
+JSFUNCTIONS:=['_main','_setRadius','_setConstant','_setPrecision','_updateModel','_updateProjection','_interpretDrag','_setActiveDimension','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_parseJSON']
 
 DATABASE:=
 BINARIES:=$(filter-out %-glut %-gles %-sdl,$(basename $(notdir $(wildcard src/*.cpp)))) $(addprefix test-case-,$(notdir $(wildcard src/test-case/*.cpp)))
@@ -177,7 +177,7 @@ src/chrome/jquery-2.1.1.min.js:
 src/chrome/jquery.mobile-1.4.4.min.js:
 	curl -q -s https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js -o $@
 
-src/chrome/topologic.js: topologic-web.js
+src/chrome/topologic.js: topologic-web.js src/chrome/jquery-2.1.1.min.js src/chrome/jquery.mobile-1.4.4.min.js
 	cp $< $@
 
 src/chrome/topologic.html: src/web/topologic.xhtml xslt/chrome-prepare.xslt src/chrome/topologic.js topologic-web.css.xml

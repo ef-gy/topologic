@@ -309,10 +309,7 @@ int main(int argc, char *argv[])
 {
     enum topologic::outputMode out = topologic::outGL;
 
-    if (!topologic::parseArguments (topologicState, argc, argv, out))
-    {
-        return 1;
-    }
+    efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH> (topologicState, "cartesian", "cube", 4, 4);
 
     SDL_Surface *screen;
 
