@@ -46,7 +46,7 @@ EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING
 EMXXFLAGS:=$(EMCFLAGS)
 LDFLAGS:=
 
-JSFUNCTIONS:=['_main','_setRadius','_setConstant','_setPrecision','_updateModel','_updateProjection','_interpretDrag','_setActiveDimension','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_parseJSON']
+JSFUNCTIONS:=['_main','_setRadius','_setConstant','_setPrecision','_updateModel','_updateProjection','_interpretDrag','_setActiveDimension','_forceRedraw','_setIFSParameters','_setFlameColouring','_setColour','_setFlameParameters','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_parseJSON','_getModels']
 
 DATABASE:=
 BINARIES:=$(filter-out %-glut %-gles %-sdl,$(basename $(notdir $(wildcard src/*.cpp)))) $(addprefix test-case-,$(notdir $(wildcard src/test-case/*.cpp)))

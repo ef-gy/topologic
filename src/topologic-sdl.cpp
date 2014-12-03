@@ -117,6 +117,7 @@ extern "C"
     const char *getJSON(void);
     const char *getSVG(void);
     void parseJSON(const char *);
+    const char *getModels();
 }
 
 /**\brief Is a mouse button currently being?
@@ -613,6 +614,48 @@ void parseJSON(const char *json)
     s >> v;
     topologic::parse (topologicState, v);
     topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, v);
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Get JSON list of models and formats
+ *
+ * Similar to the --version flag of the proper binary; this returns a JSON string
+ * with all the available models and formats.
+ *
+ * \returns JSON string of all the available models and formats.
+ */
+const char *getModels()
+{
+    std::ostringstream os("");
+    static std::string str;
+
+    efgy::json::value<> modelSet;
+    modelSet.toArray();
+    efgy::json::value<> formatSet;
+    formatSet.toArray();
+
+    std::set<const char *> models;
+    for (const char *m : efgy::geometry::with<GLfloat,efgy::geometry::functor::models,MAXDEPTH>(models,"*",0,0))
+    {
+        modelSet.getArray().push_back(m);
+    }
+    std::set<const char *> formats;
+    for (const char *f : efgy::geometry::with<GLfloat,efgy::geometry::functor::formats,MAXDEPTH>(formats,"*","*",0,0))
+    {
+        formatSet.getArray().push_back(f);
+    }
+
+    efgy::json::value<> modelData;
+    modelData.toObject();
+
+    modelData.getObject()["models"]  = modelSet;
+    modelData.getObject()["formats"] = formatSet;
+
+    os << efgy::json::tag() << modelData;
+
+    str = os.str();
+
+    return str.c_str();
 }
 
 /** \} */

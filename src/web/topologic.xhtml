@@ -35,27 +35,9 @@
       <fieldset data-role="controlgroup">
       <legend>Model</legend>
       <label for="model">Model</label>
-      <select id="model" onchange="topologicModel=this.value; topologicUpdateCurrentModel();">
-            <option>simplex</option>
-            <option selected="selected">cube</option>
-            <option>plane</option>
-            <option>sphere</option>
-            <option>torus</option>
-            <option>clifford-torus</option>
-            <option>dinis-surface</option>
-            <option>moebius-strip</option>
-            <option>klein-bagel</option>
-            <option>klein-bottle</option>
-            <option>sierpinski-gasket</option>
-            <option>sierpinski-carpet</option>
-            <option>random-affine-ifs</option>
-            <option>random-flame</option>
-      </select>
-      <label for="format">Format</label>
-      <select id="format" onchange="topologicFormat=this.value; topologicUpdateCurrentModel();">
-            <option selected="selected">cartesian</option>
-            <option>polar</option>
-      </select>
+      <select id="model"></select>
+      <label for="coordinateFormat">Format</label>
+      <select id="coordinateFormat"></select>
       </fieldset>
       <label for="modelDepth">Model Depth</label>
       <input type="range" id="modelDepth" name="modelDepth" onchange="topologicModelDepth=this.value; topologicUpdateCurrentModel();" min="1" max="7" step="1" value="4"/>
