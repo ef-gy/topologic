@@ -46,10 +46,10 @@
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Base Parameters</h2>
-      <label for="modelRadius">Major Radius</label>
-      <input type="range" id="modelRadius" name="modelRadius" onchange="topologicModelRadius=this.value; topologicUpdateCurrentModel();" min="1" max="30" value="1"/>
-      <label for="modelMinorRadius">Minor Radius</label>
-      <input type="range" id="modelMinorRadius" name="modelMinorRadius" onchange="topologicModelMinorRadius=this.value; topologicUpdateCurrentModel();" min="-9" max="9" value="0.5"/>
+      <label for="radius">Major Radius</label>
+      <input type="range" id="radius" min="1" max="30" value="1"/>
+      <label for="minorRadius">Minor Radius</label>
+      <input type="range" id="minorRadius" name="minorRadius" min="-9" max="9" value="0.5"/>
       <label for="modelConstant">Constant</label>
       <input type="range" id="modelConstant" name="modelConstant" onchange="topologicModelConstant=this.value; topologicUpdateCurrentModel();" min="-20" max="20" value="1"/>
       <label for="modelPrecision">Precision</label>

@@ -4,7 +4,6 @@ jQuery(document).on('touchmove', function(e) {
     }
 });
 
-var setRadius = Module.cwrap('setRadius', 'number', ['number', 'number']);
 var setConstant = Module.cwrap('setConstant', 'number', ['number']);
 var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
 var updateModel = Module.cwrap('updateModel', 'number', ['string', 'string', 'number', 'number']);
@@ -28,8 +27,6 @@ var topologicFormat='cartesian';
 var topologicModelDepth=4;
 var topologicModelRenderDepth=4;
 var topologicModelPrecision=8.5;
-var topologicModelRadius=1;
-var topologicModelMinorRadius=0.5;
 var topologicModelConstant=1;
 var topologicActiveDimension=3;
 
@@ -78,8 +75,6 @@ function parseHash()
   topologicModelDepth        = val['depth'];
   topologicModelRenderDepth  = val['renderDepth'];
   topologicModelPrecision    = val['polarPrecision'];
-  topologicModelRadius       = val['radius'];
-  topologicModelMinorRadius  = val['minorRadius'];
   topologicModelConstant     = val['constant'];
   topologicIFSIterations     = val['iterations'];
   topologicIFSSeed           = val['seed'];
@@ -203,16 +198,6 @@ function topologicUpdateCurrentModelData()
     {
         output.value=topologicModelPrecision;
     }
-    output = document.getElementById('modelRadius');
-    if (output)
-    {
-        output.value=topologicModelRadius;
-    }
-    output = document.getElementById('modelMinorRadius');
-    if (output)
-    {
-        output.value=topologicModelMinorRadius;
-    }
     output = document.getElementById('modelConstant');
     if (output)
     {
@@ -256,7 +241,6 @@ function topologicUpdateCurrentModel()
 {
     topologicUpdateCurrentModelData();
 
-    setRadius(topologicModelRadius, topologicModelMinorRadius);
     setConstant(topologicModelConstant);
     setPrecision(topologicModelPrecision);
 
@@ -371,6 +355,9 @@ jQuery(document).ready(function() {
     jQuery('#' + s).change(function() {
       console.log(s, '=', jQuery(this).val());
       settings[s] = jQuery(this).val();
+      if (typeof originalSettings[s] === 'number') {
+        settings[s] = parseFloat(settings[s]);
+      }
       parseJSON(JSON.stringify(settings));
       updateHash();
     }).val(settings[s]);
