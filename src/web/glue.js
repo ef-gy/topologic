@@ -4,9 +4,6 @@ jQuery(document).on('touchmove', function(e) {
     }
 });
 
-var setConstant = Module.cwrap('setConstant', 'number', ['number']);
-var setPrecision = Module.cwrap('setPrecision', 'number', ['number']);
-var updateModel = Module.cwrap('updateModel', 'number', ['string', 'string', 'number', 'number']);
 var setActiveDimension = Module.cwrap ('setActiveDimension', 'number', ['number']);
 var forceRedraw = Module.cwrap('forceRedraw', null, []);
 var setFlameColouring = Module.cwrap('setFlameColouring', null, ['number']);
@@ -22,12 +19,6 @@ var interpretDrag = Module.cwrap('interpretDrag', 'number', ['number','number','
 var getModels = Module.cwrap('getModels', 'string', []);
 
 var topologicMaxDepth = 7;
-var topologicModel='cube';
-var topologicFormat='cartesian';
-var topologicModelDepth=4;
-var topologicModelRenderDepth=4;
-var topologicModelPrecision=8.5;
-var topologicModelConstant=1;
 var topologicActiveDimension=3;
 
 var topologicIFSIterations=4;
@@ -70,12 +61,6 @@ function parseHash()
   forceRedraw();
 
   var val = JSON.parse(getJSON());
-  topologicModel             = val['model'];
-  topologicFormat            = val['coordinateFormat'];
-  topologicModelDepth        = val['depth'];
-  topologicModelRenderDepth  = val['renderDepth'];
-  topologicModelPrecision    = val['polarPrecision'];
-  topologicModelConstant     = val['constant'];
   topologicIFSIterations     = val['iterations'];
   topologicIFSSeed           = val['seed'];
   topologicIFSFunctions      = val['functions'];
@@ -88,7 +73,6 @@ function parseHash()
                       val['wireframe'].slice(1),
                       val['surface'].slice(1) ];
 
-  topologicUpdateDimension();
   topologicUpdateCurrentModelData();
 }
 
@@ -116,14 +100,6 @@ window.addEventListener('hashchange', parseHash, false);
 
 function topologicUpdateDimension()
 {
-    if (topologicActiveDimension < 2)
-    {
-        topologicActiveDimension = 2;
-    }
-    if (topologicActiveDimension > topologicModelRenderDepth)
-    {
-        topologicActiveDimension = topologicModelRenderDepth;
-    }
     var output = document.getElementById('activeDimension');
     if (output)
     {
@@ -134,75 +110,6 @@ function topologicUpdateDimension()
 
 function topologicUpdateCurrentModelData()
 {
-    if (topologicModel == 'sphere')
-    {
-        if (topologicModelDepth == topologicModelRenderDepth)
-        {
-            topologicModelDepth--;
-        }
-    }
-    if ((topologicModel == 'moebius-strip') || (topologicModel == 'klein-bagel') || (topologicModel == 'plane') || (topologicModel == 'klein-bottle') || (topologicModel == 'torus') || (topologicModel == 'dinis-surface'))
-    {
-        if (topologicModelDepth != 2)
-        {
-            topologicModelDepth = 2;
-        }
-    }
-    if (topologicModelDepth > topologicMaxDepth)
-    {
-        topologicModelDepth = topologicMaxDepth;
-    }
-    if (topologicModelDepth < 1)
-    {
-        topologicModelDepth = 1;
-    }
-    if (topologicModelRenderDepth < 2)
-    {
-        topologicModelRenderDepth = 2;
-    }
-    if (topologicModelRenderDepth > topologicMaxDepth)
-    {
-        topologicModelRenderDepth = topologicMaxDepth;
-    }
-    if (topologicModelRenderDepth < topologicModelDepth)
-    {
-        topologicModelRenderDepth = topologicModelDepth;
-    }
-    if (topologicActiveDimension > topologicModelRenderDepth)
-    {
-        topologicUpdateDimension();
-    }
-
-    var output = document.getElementById('model');
-    if (output)
-    {
-        output.value=topologicModel;
-    }
-    output = document.getElementById('format');
-    if (output)
-    {
-        output.value=topologicFormat;
-    }
-    output = document.getElementById('modelDepth');
-    if (output)
-    {
-        output.value=topologicModelDepth;
-    }
-    output = document.getElementById('modelRenderDepth');
-    if (output)
-    {
-        output.value=topologicModelRenderDepth;
-    }
-    output = document.getElementById('modelPrecision');
-    if (output)
-    {
-        output.value=topologicModelPrecision;
-    }
-    output = document.getElementById('modelConstant');
-    if (output)
-    {
-        output.value=topologicModelConstant;
-    }
     if (topologicIFSIterations < 2)
     {
         topologicIFSIterations = 2;
@@ -241,9 +148,6 @@ function topologicUpdateCurrentModel()
 {
     topologicUpdateCurrentModelData();
 
-    setConstant(topologicModelConstant);
-    setPrecision(topologicModelPrecision);
-
     setIFSParameters(topologicIFSIterations, topologicIFSSeed, topologicIFSFunctions, topologicIFSPreRotate ? 1 : 0, topologicIFSPostRotate ? 1 : 0);
     setFlameColouring(topologicFlameColouring);
     setFlameParameters(topologicFlameVariants);
@@ -253,7 +157,6 @@ function topologicUpdateCurrentModel()
     setColour(2, topologicColour[2][0], topologicColour[2][1], topologicColour[2][2], topologicColour[2][3]);
 
     forceRedraw();
-    updateModel(topologicFormat, topologicModel, topologicModelDepth, topologicModelRenderDepth);
 
     topologicIgnoreHashChange = true;
     window.location.hash = getHash();
