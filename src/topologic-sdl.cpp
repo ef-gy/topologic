@@ -47,11 +47,10 @@
  * the WebGL frontend to work. This is done through the magic of emscripten.
  *
  * \htmlonly
- * <iframe width="100%" height="800" src="http://ef.gy/webgl/topologic.html"
- *         frameborder="0"/>
+ * <iframe width="100%" height="800" src="https://dee.pe/r" frameborder="0"/>
  * \endhtmlonly
  *
- * \see http://ef.gy/webgl/topologic.html - current, pre-compiled version of the
+ * \see https://dee.pe/r - current, pre-compiled version of the
  *      WebGL frontend.
  */
 
@@ -73,7 +72,7 @@
 #include "SDL/SDL_opengl.h"
 
 #include <iostream>
-#include <topologic/arguments.h>
+#include <topologic/parse.h>
 
 #if !defined(MAXDEPTH)
 /**\brief Maximum render depth
