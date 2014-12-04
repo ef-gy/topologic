@@ -863,7 +863,7 @@ namespace topologic
             value.getObject()["radius"]            = parameter.radius;
             value.getObject()["minorRadius"]       = parameter.radius2;
             value.getObject()["constant"]          = parameter.constant;
-            value.getObject()["polarPrecision"]    = parameter.precision;
+            value.getObject()["precision"]         = parameter.precision;
             value.getObject()["iterations"]        = Q(parameter.iterations);
             value.getObject()["seed"]              = Q(parameter.seed);
             value.getObject()["functions"]         = Q(parameter.functions);

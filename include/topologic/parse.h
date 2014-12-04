@@ -903,9 +903,9 @@ namespace topologic
         {
             s.parameter.constant = value.getObject()["constant"].getNumber();
         }
-        if (value.getObject()["polarPrecision"].type == efgy::json::value<>::number)
+        if (value.getObject()["precision"].type == efgy::json::value<>::number)
         {
-            s.parameter.precision = value.getObject()["polarPrecision"].getNumber();
+            s.parameter.precision = value.getObject()["precision"].getNumber();
         }
         if (value.getObject()["iterations"].type == efgy::json::value<>::number)
         {
