@@ -182,3 +182,6 @@ src/chrome/topologic.js: topologic-web.js src/chrome/jquery-2.1.1.min.js src/chr
 
 src/chrome/topologic.html: src/web/topologic.xhtml xslt/chrome-prepare.xslt src/chrome/topologic.js topologic-web.css.xml
 	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/chrome-prepare.xslt $<
+
+chrome-app.zip: src/chrome/manifest.json src/chrome/topologic.html src/chrome/topologic.js src/chrome/jquery-2.1.1.min.js src/chrome/jquery.mobile-1.4.4.min.js src/chrome/background.js src/chrome/topologic-128.png src/chrome/topologic-16.png
+	zip -9jo $@ $^
