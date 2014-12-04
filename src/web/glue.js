@@ -15,9 +15,8 @@ var topologicActiveDimension=3;
 var topologicFlameColouring=false;
 
 var topologicIgnoreHashChange = false;
-var originalSettingsJSON = getJSON();
-var originalSettings = JSON.parse(originalSettingsJSON);
-var settings = JSON.parse(originalSettingsJSON);
+var originalSettings = JSON.parse(getJSON());
+var settings = {};
 
 function parseHash() {
   if (topologicIgnoreHashChange) return;
@@ -38,7 +37,18 @@ function parseHash() {
   }
   forceRedraw();
 
-  var val = JSON.parse(getJSON());
+  settings = JSON.parse(getJSON());
+
+  for (s in settings) {
+    $('#' + s).val(settings[s]);
+  }
+
+  try {
+    $('input[data-type=range]').slider('refresh');
+    $('select').selectmenu('refresh', true);
+  } catch (e) {
+    console.error(e);
+  }
 //  topologicIFSFlameColouring = val['flameColouring'];
 }
 
@@ -126,34 +136,36 @@ function updateSettings() {
   updateHash();
 }
 
-jQuery(document).ready(function() {
+$(document).ready(function() {
   models = JSON.parse(getModels());
   models['models'].forEach(function(value) {
-    jQuery('#model').append(jQuery('<option></option>').text(value));
+    $('#model').append($('<option></option>').text(value));
   });
   models['formats'].forEach(function(value) {
-    jQuery('#coordinateFormat').append(jQuery('<option></option>').text(value));
+    $('#coordinateFormat').append($('<option></option>').text(value));
   });
 
+  parseHash();
+
   for (s in settings) (function(s) {
-    jQuery('#' + s).change(function() {
-      console.log(s, '=', jQuery(this).val());
-      settings[s] = jQuery(this).val();
+    $('#' + s).change(function() {
+      console.log(s, '=', $(this).val());
+      settings[s] = $(this).val();
       if (typeof originalSettings[s] === 'number') {
         settings[s] = parseFloat(settings[s]);
       }
       updateSettings();
-    }).val(settings[s]);
+    });
   })(s);
 
   var x, y;
-  jQuery('#canvas').on({ 'touchstart' : function(ev) {
+  $('#canvas').on({ 'touchstart' : function(ev) {
     ev = ev.originalEvent.touches[0];
     x = ev.clientX;
     y = ev.clientY;
   }});
 
-  jQuery('#canvas').on({ 'touchmove' : function(ev) {
+  $('#canvas').on({ 'touchmove' : function(ev) {
     ev = ev.originalEvent.touches[0];
 
     interpretDrag(ev.clientX - x, ev.clientY - y, 0);
@@ -164,17 +176,17 @@ jQuery(document).ready(function() {
     forceRedraw();
   }});
 
-  jQuery(window).resize(function() {
+  $(window).resize(function() {
     var canvas = document.getElementById('canvas');
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
     setViewportSize(canvas.width, canvas.height);
   });
 
-  jQuery(window).resize();
+  $(window).resize();
 
-  jQuery(document).on('touchmove', function(e) {
-    if (!jQuery(e.target).parents('.ui-panel-inner')[0]) {
+  $(document).on('touchmove', function(e) {
+    if (!$(e.target).parents('.ui-panel-inner')[0]) {
       e.preventDefault();
     }
   });
