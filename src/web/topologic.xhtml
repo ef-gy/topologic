@@ -23,7 +23,7 @@
     <div data-role="panel" id="options" data-display="overlay" data-dismissible="false">
      <ul data-role="listview">
       <li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
-      <li><a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){jQuery('#export').popup('open');},100);">Export/Import...</a></li>
+      <li><a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){$('#export').popup('open');},100);">Export/Import...</a></li>
       <li>
       <label for="activeDimension">Active Dimension</label>
       <input type="range" id="activeDimension" name="activeDimension" onchange="topologicActiveDimension=this.value; topologicUpdateDimension();" min="2" max="7" step="1" value="3"/>
@@ -103,7 +103,7 @@
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Embedding</h2>
-      <p>Feel free to embed the output of this application in your presentations, blog articles or other web content. Click on <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){jQuery('#export').popup('open');},100);">Export/Import...</a> to generate SVGs, links or HTML code to embed this application directly in your site.</p>
+      <p>Feel free to embed the output of this application in your presentations, blog articles or other web content. Click on <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){$('#export').popup('open');},100);">Export/Import...</a> to generate SVGs, links or HTML code to embed this application directly in your site.</p>
       <p>The <em>Export/Import...</em> button is also available from the left-hand <a href="#options">Settings</a> menu.</p>
       </div>
       </div>
@@ -120,12 +120,8 @@
       <input type="button" value="Link" data-inline="true" onclick="document.getElementById('exportData').value = getLink();"/>
       <input type="button" value="Embed" data-inline="true" onclick="document.getElementById('exportData').value = getEmbed();"/>
       <input type="button" value="Import JSON" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>
+      <input type="button" value="Close" data-inline="true" onclick="window.location.hash = getHash();"/>
     </div>
    </div>
-   <script type='text/javascript'>if (window.location.hash == '') { window.setTimeout(function(){jQuery('#help').panel('open')},200); } parseHash(); updateHash(); window.setTimeout(function(){
-        jQuery('#model').selectmenu('refresh');
-        jQuery('#format').selectmenu('refresh');
-},200);
-</script>
   </body>
 </html>

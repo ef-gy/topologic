@@ -32,7 +32,7 @@ function parseHash() {
       JSON.parse(json);
       parseJSON(json);
     } catch (e) {
-      return;
+      console.log(e);
     }
   }
   forceRedraw();
@@ -137,6 +137,7 @@ function updateSettings() {
 }
 
 $(document).ready(function() {
+  $('select').selectmenu();
   models = JSON.parse(getModels());
   models['models'].forEach(function(value) {
     $('#model').append($('<option></option>').text(value));
@@ -145,6 +146,12 @@ $(document).ready(function() {
     $('#coordinateFormat').append($('<option></option>').text(value));
   });
 
+  $('input[data-type=range]').slider();
+  $('select').selectmenu('refresh');
+
+  if (window.location.hash == '') {
+    window.setTimeout(function(){$('#help').panel('open')},200);
+  }
   parseHash();
 
   for (s in settings) (function(s) {

@@ -22,13 +22,13 @@ Just type that in your browser's address bar and enjoy :3.
 ## OBTAINING TOPOLOGIC #######################################################
 
 The Free/Open Source Software version of this programme is available free of
-charge via git at http://github.com/ef-gy/topologic.git - to check
+charge via git at https://github.com/ef-gy/topologic.git - to check
 out a local copy of that repository, use the git command line tool like this:
 
     $ git clone git://github.com/ef-gy/topologic.git
 
 Additionally there's a paid version available on the Mac App Store at
-http://itunes.apple.com/us/app/topologic/id558300160 - this version is
+https://itunes.apple.com/us/app/topologic/id558300160 - this version is
 functionally more or less identical to the F/OSS version, but it provides a
 proper Cocoa GUI instead of the CLI/GLUT frontends. This App is rather cheap,
 however, so if you happen to have a Mac and you do like the programme then I'd
@@ -45,14 +45,14 @@ below for instructions on how to do that.
 
 Topologic is designed so that almost all of the code is template-y C++ in
 header files, much like libefgy. The API documentation for this is available
-at: http://ef.gy/documentation/topologic - the documentation may not always
+at: https://ef.gy/documentation/topologic - the documentation may not always
 be quite up to date, so, if push comes to shove just read the sources.
 
 ## OBTAINING LIBEFGY #########################################################
 
 This library is distributed free of charge under a very permissive licence.
-The public GIT repository is at http://github.com/ef-gy/libefgy.git -
-see the documentation at http://ef.gy/documentation/libefgy for more details.
+The public GIT repository is at https://github.com/ef-gy/libefgy.git -
+see the documentation at https://ef.gy/documentation/libefgy for more details.
 
 ## INSTALLATION ##############################################################
 
