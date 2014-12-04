@@ -15,7 +15,7 @@ using the WebGL client instead. A ready-to-run version that'll run straight
 in your browser without any need to install anything whatsoever - that is, if
 you happen to have a WebGL-enabled browser - is available at:
 
-http://ef.gy/webgl/topologic.html
+https://dee.pe/r
 
 Just type that in your browser's address bar and enjoy :3.
 
@@ -94,14 +94,14 @@ for your system.
 ### THE WEBGL FRONTEND #######################################################
 
 If you'd like to compile the WebGL frontend yourself instead of using the
-publicly available one at http://ef.gy/webgl/topologic.html you'll need to
-install emscripten instead of GLUT and run the following on a command line:
+publicly available one at https://dee.pe/r you'll need to install emscripten
+instead of GLUT and run the following on a command line:
 
-    $ make topologic-sdl.js
+    $ make topologic-web.html
 
 As the name suggests, the WebGL client is based on a simple SDL client. Once
 emscripten has finished compiling you can run the client by opening the file
-topologic.html in your favourite WebGL-enabled browser.
+topologic-web.html in your favourite WebGL-enabled browser.
 
 ### THE COCOA/OSX FRONTEND ###################################################
 
