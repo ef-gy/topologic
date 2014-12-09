@@ -200,8 +200,9 @@ $(document).ready(function() {
     forceRedraw();
   }});
 
+  var canvas = document.getElementById('canvas');
+
   $(window).resize(function() {
-    var canvas = document.getElementById('canvas');
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
     setViewportSize(canvas.width, canvas.height);
