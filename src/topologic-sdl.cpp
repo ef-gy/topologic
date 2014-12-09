@@ -63,9 +63,11 @@
  * grouped together in the documentation for convenience.
  */
 
-#if defined(EMSCRIPTEN)
-#include <emscripten.h>
+#if !defined(EMSCRIPTEN)
+#error "This file is only intended to be used with the emscripten compiler!"
 #endif
+
+#include <emscripten.h>
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
@@ -99,6 +101,7 @@ static topologic::state<GLfloat,MAXDEPTH> topologicState;
 // be used in foreign JS code.
 extern "C"
 {
+    int initialiseGL(void);
     void process(void);
     int interpretDrag(double, double, double);
     int setActiveDimension(int);
@@ -140,6 +143,14 @@ static bool doRender = true;
  * canvas size.
  */
 static bool forcedSize = false;
+
+/**\brief Has SDL been initialised?
+ *
+ * Set after successfully running initialiseGL(); set to true when a context is
+ * available and initialised. Only SVG/JSON exports will work until this is
+ * true.
+ */
+static bool SDLinitialised = false;
 
 /**\ingroup topologic-javascript-exports
  * \brief Render the scene
@@ -205,6 +216,11 @@ void setViewportSize(int width, int height)
  */
 void process(void)
 {
+    if (!SDLinitialised)
+    {
+        return;
+    }
+
     const SDL_VideoInfo* info = SDL_GetVideoInfo();
 
     if (info && !forcedSize)
@@ -290,9 +306,24 @@ int main(int argc, char *argv[])
 
     efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH> (topologicState, "cartesian", "cube", 4, 4);
 
+    emscripten_set_main_loop(process, 30, 0);
+
+    return 0;
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Initialise SDL and the GL context
+ *
+ * Call this function to set up the OpenGL context using standard SDL calls.
+ * Until you do so, no rendering can take place - except for SVGs, which do not
+ * rely on OpenGL.
+ *
+ * \returns 0 on success, nonzero otherwise.
+ */
+int initialiseGL(void)
+{
     SDL_Surface *screen;
 
-    // Slightly different SDL initialization
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
         std::cerr << "Unable to initialize SDL: " << SDL_GetError() << "\n";
         return 1;
@@ -300,13 +331,11 @@ int main(int argc, char *argv[])
 
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // *new*
 
-    screen = SDL_SetVideoMode( 1280, 720, 16, SDL_OPENGL | SDL_RESIZABLE ); // *changed*
+    screen = SDL_SetVideoMode( 1280, 720, 16, SDL_OPENGL | SDL_RESIZABLE );
     if ( !screen ) {
         std::cerr << "Unable to set video mode: " << SDL_GetError() << "\n";
-        return 1;
+        return 2;
     }
-
-    // Set the OpenGL state after creating the context with SDL_SetVideoMode
 
     glClearDepth(1.0f);
 
@@ -314,17 +343,7 @@ int main(int argc, char *argv[])
 
     glEnable(GL_CULL_FACE);
 
-#ifdef EMSCRIPTEN
-    emscripten_set_main_loop(process, 30, 0);
-#else
-    while (1)
-    {
-        process();
-        SDL_Delay(50);
-    }
-
-    SDL_Quit();
-#endif
+    SDLinitialised = true;
 
     return 0;
 }

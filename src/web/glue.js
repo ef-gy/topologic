@@ -8,6 +8,7 @@ var getSVG = Module.cwrap('getSVG', 'string', []);
 var parseJSON = Module.cwrap('parseJSON', null, ['string']);
 var interpretDrag = Module.cwrap('interpretDrag', 'number', ['number','number','number']);
 var getModels = Module.cwrap('getModels', 'string', []);
+var initialiseGL = Module.cwrap('initialiseGL', 'number', []);
 
 var topologicMaxDepth = 7;
 var topologicActiveDimension=3;
@@ -148,6 +149,10 @@ function downloadSVG() {
   $(window).resize();
 }
 
+function showSVG() {
+  location.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(getSVG());
+}
+
 $(document).ready(function() {
   $('select').selectmenu();
   models = JSON.parse(getModels());
@@ -202,7 +207,33 @@ $(document).ready(function() {
     setViewportSize(canvas.width, canvas.height);
   });
 
-  $(window).resize();
+  /* try to find out if we have WebGL;
+     see http://get.webgl.org/ for the source of this detection method. */
+
+  var gl = null;
+  try {
+    gl = canvas.getContext("webgl");
+  } catch (x) {
+    gl = null;
+  }
+
+  if (gl == null) {
+    try {
+      gl = canvas.getContext("experimental-webgl");
+      experimental = true;
+    } catch (x) {
+      gl = null;
+    }
+  }
+
+  if (gl) {
+    initialiseGL();
+    $(window).resize();
+  } else {
+    /* uh-oh! */
+    console.error('Sorry, it seems your browser does not support WebGL!');
+    showSVG();
+  }
 
   $(document).on('touchmove', function(e) {
     if (!$(e.target).parents('.ui-panel-inner')[0]) {
