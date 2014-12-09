@@ -984,9 +984,15 @@ static topologic::xml xml;
 
 - (IBAction)openInBrowser:(id)sender
 {
+    std::ostringstream json("");
     std::ostringstream service("");
-    
-    service << topologic::service << ":" << efgy::json::tag() << topologicState;
+
+    json << efgy::json::tag() << topologicState;
+
+    NSString *unescaped = @(json.str().c_str());
+    NSString *escaped = [unescaped stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+
+    service << topologic::service << ":" << [escaped UTF8String];
 
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@(service.str().c_str())]];
 }
