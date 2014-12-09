@@ -136,6 +136,18 @@ function updateSettings() {
   updateHash();
 }
 
+function downloadFile(name, mime, data) {
+  var link = document.createElement('a');
+  link.setAttribute('href', 'data:' + name + ';charset=utf-8,' + encodeURIComponent(data));
+  link.setAttribute('download', name);
+  link.click();
+}
+
+function downloadSVG() {
+  downloadFile(settings['depth'] + '-' + settings['model'] + '.svg', 'image/svg+xml', getSVG());
+  $(window).resize();
+}
+
 $(document).ready(function() {
   $('select').selectmenu();
   models = JSON.parse(getModels());

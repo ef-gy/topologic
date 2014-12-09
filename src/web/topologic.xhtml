@@ -24,6 +24,7 @@
      <ul data-role="listview">
       <li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
       <li><a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){$('#export').popup('open');},100);">Export/Import...</a></li>
+      <li><a href="#" data-icon="action" onclick="downloadSVG();">Save SVG</a></li>
       <li>
       <label for="activeDimension">Active Dimension</label>
       <input type="range" id="activeDimension" name="activeDimension" onchange="topologicActiveDimension=this.value; topologicUpdateDimension();" min="2" max="7" step="1" value="3"/>
@@ -103,8 +104,8 @@
       </div>
       <div data-role="collapsible" data-iconpos="right">
       <h2>Embedding</h2>
-      <p>Feel free to embed the output of this application in your presentations, blog articles or other web content. Click on <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){$('#export').popup('open');},100);">Export/Import...</a> to generate SVGs, links or HTML code to embed this application directly in your site.</p>
-      <p>The <em>Export/Import...</em> button is also available from the left-hand <a href="#options">Settings</a> menu.</p>
+      <p>Feel free to embed the output of this application in your presentations, blog articles or other web content. Click on <a href="#" data-icon="action" onclick="updateHash(); window.setTimeout(function(){$('#export').popup('open');},100);">Export/Import...</a> to generate links or HTML code to embed this application directly in your site.</p>
+      <p>The <em>Export/Import...</em> button is also available from the left-hand <a href="#options">Settings</a> menu, along with a button to download an SVG of the current state.</p>
       </div>
       </div>
     </div>
@@ -116,7 +117,6 @@
         <textarea id="exportData"></textarea>
       </div>
       <input type="button" value="Export JSON" data-inline="true" onclick="document.getElementById('exportData').value = getJSON();"/>
-      <input type="button" value="Export SVG" data-inline="true" onclick="document.getElementById('exportData').value = getSVG();"/>
       <input type="button" value="Link" data-inline="true" onclick="document.getElementById('exportData').value = getLink();"/>
       <input type="button" value="Embed" data-inline="true" onclick="document.getElementById('exportData').value = getEmbed();"/>
       <input type="button" value="Import JSON" data-inline="true" onclick="window.location.hash = document.getElementById('exportData').value;"/>

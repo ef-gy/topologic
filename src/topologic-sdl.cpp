@@ -412,7 +412,8 @@ const char *getSVG(void)
 
     if (topologicState.model)
     {
-        topologicState.model->svg(os);
+        topologicState.model->update = true;
+        topologicState.model->svg(os, true);
     }
 
     str = os.str();
