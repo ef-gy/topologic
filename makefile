@@ -6,6 +6,7 @@ MANDIR:=$(DESTDIR)$(PREFIX)/share/man
 
 NAME:=topologic
 VERSION:=11
+ICON:=documentation/2-klein-bottle.svg
 
 CC:=clang
 CXX:=clang++
@@ -183,11 +184,11 @@ src/chrome/topologic.js: topologic-web.js src/chrome/jquery-2.1.1.min.js src/chr
 src/chrome/topologic.html: src/web/topologic.xhtml xslt/chrome-prepare.xslt src/chrome/topologic.js topologic-web.css.xml
 	$(XSLTPROC) --stringparam root "$$(pwd)" -o "$@" xslt/chrome-prepare.xslt $<
 
-src/chrome/topologic-128.png: documentation/2-klein-bottle.svg
-	rsvg -w 128 -a $^ $@
+src/chrome/topologic-128.png: $(ICON)
+	rsvg -w 128 -a $^ $@ || true
 
-src/chrome/topologic-16.png: documentation/2-klein-bottle.svg
-	rsvg -w 16 -a $^ $@
+src/chrome/topologic-16.png: $(ICON)
+	rsvg -w 16 -a $^ $@ || true
 
 chrome-app.zip: src/chrome/manifest.json src/chrome/topologic.html src/chrome/topologic.js src/chrome/jquery-2.1.1.min.js src/chrome/jquery.mobile-1.4.4.min.js src/chrome/background.js src/chrome/topologic-128.png src/chrome/topologic-16.png
 	zip -9jo $@ $^
