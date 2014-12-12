@@ -5,7 +5,7 @@ INCLUDEDIR:=$(DESTDIR)$(PREFIX)/include
 MANDIR:=$(DESTDIR)$(PREFIX)/share/man
 
 NAME:=topologic
-VERSION:=10
+VERSION:=11
 
 CC:=clang
 CXX:=clang++

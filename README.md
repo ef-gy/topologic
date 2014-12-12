@@ -1,4 +1,4 @@
-# Topologic-10 ###############################################################
+# Topologic-11 ###############################################################
 
 Topologic is a programme that visualises basic primitives and fractals in
 arbitrary dimensional spaces. Primitives include simplices, cubes and spheres,
