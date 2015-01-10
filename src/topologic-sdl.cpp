@@ -478,19 +478,19 @@ const char *getModels()
     std::set<const char *> models;
     for (const char *m : efgy::geometry::with<GLfloat,efgy::geometry::functor::models,MAXDEPTH>(models,"*",0,0))
     {
-        modelSet.getArray().push_back(m);
+        modelSet.push(m);
     }
     std::set<const char *> formats;
     for (const char *f : efgy::geometry::with<GLfloat,efgy::geometry::functor::formats,MAXDEPTH>(formats,"*","*",0,0))
     {
-        formatSet.getArray().push_back(f);
+        formatSet.push(f);
     }
 
     efgy::json::value<> modelData;
     modelData.toObject();
 
-    modelData.getObject()["models"]  = modelSet;
-    modelData.getObject()["formats"] = formatSet;
+    modelData("models")  = modelSet;
+    modelData("formats") = formatSet;
 
     os << efgy::json::tag() << modelData;
 
