@@ -62,7 +62,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2012-2014 Magnus Deininger. All rights reserved.</string>
+	<string>Copyright © 2012-2015 Magnus Deininger. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>Topologic</string>
 	<key>NSPrincipalClass</key>

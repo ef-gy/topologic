@@ -7,7 +7,7 @@
  * state.
  *
  * \copyright
- * Copyright (c) 2012-2014, Topologic Project Members
+ * Copyright (c) 2012-2015, Topologic Project Members
  * \copyright
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -580,26 +580,30 @@ namespace topologic
                 return value;
             }
 
-            efgy::json::value<Q> v;
-            v.toArray();
-
-            for (unsigned int i = 0; i < d; i++)
             {
-                v.getArray().push_back(base::polarCoordinates ? fromp[i] : from[i]);
-            }
+                efgy::json::value<Q> v;
+                v.toArray();
 
-            value.getObject()["camera"].getArray().push_back(v);
-
-            v.toArray();
-            for (unsigned int i = 0; i <= d; i++)
-            {
-                for (unsigned int j = 0; j <= d; j++)
+                for (unsigned int i = 0; i < d; i++)
                 {
-                    v.getArray().push_back(transformation.transformationMatrix[i][j]);
+                    v.push(base::polarCoordinates ? fromp[i] : from[i]);
                 }
+                value("camera").push(v);
             }
 
-            value.getObject()["transformation"].getArray().push_back(v);
+            {
+                efgy::json::value<Q> v;
+                v.toArray();
+
+                for (unsigned int i = 0; i <= d; i++)
+                {
+                    for (unsigned int j = 0; j <= d; j++)
+                    {
+                        v.push(transformation.transformationMatrix[i][j]);
+                    }
+                }
+                value("transformation").push(v);
+            }
 
             return value;
         }
@@ -845,51 +849,48 @@ namespace topologic
          */
         efgy::json::value<Q> &json(efgy::json::value<Q> &value) const
         {
-            if (value.type != efgy::json::value<Q>::object)
-            {
-                value.toObject();
-            }
+            value.toObject();
 
-            value.getObject()["polar"] = polarCoordinates;
-            value.getObject()["camera"].toArray();
-            value.getObject()["transformation"].toArray();
+            value("polar") = polarCoordinates;
+            value("camera").toArray();
+            value("transformation").toArray();
             if (model)
             {
-                value.getObject()["model"]            = model->id;
-                value.getObject()["depth"]            = Q(model->depth);
-                value.getObject()["renderDepth"]      = Q(model->renderDepth);
-                value.getObject()["coordinateFormat"] = model->formatID;
+                value("model")            = model->id;
+                value("depth")            = Q(model->depth);
+                value("renderDepth")      = Q(model->renderDepth);
+                value("coordinateFormat") = model->formatID;
             }
-            value.getObject()["radius"]            = parameter.radius;
-            value.getObject()["minorRadius"]       = parameter.radius2;
-            value.getObject()["constant"]          = parameter.constant;
-            value.getObject()["precision"]         = parameter.precision;
-            value.getObject()["iterations"]        = Q(parameter.iterations);
-            value.getObject()["seed"]              = Q(parameter.seed);
-            value.getObject()["functions"]         = Q(parameter.functions);
-            value.getObject()["preRotate"]         = parameter.preRotate;
-            value.getObject()["postRotate"]        = parameter.postRotate;
-            value.getObject()["flameCoefficients"] = Q(parameter.flameCoefficients);
+            value("radius")            = parameter.radius;
+            value("minorRadius")       = parameter.radius2;
+            value("constant")          = parameter.constant;
+            value("precision")         = parameter.precision;
+            value("iterations")        = Q(parameter.iterations);
+            value("seed")              = Q(parameter.seed);
+            value("functions")         = Q(parameter.functions);
+            value("preRotate")         = parameter.preRotate;
+            value("postRotate")        = parameter.postRotate;
+            value("flameCoefficients") = Q(parameter.flameCoefficients);
 
-            value.getObject()["background"].toArray();
-            value.getObject()["wireframe"].toArray();
-            value.getObject()["surface"].toArray();
+            value("background").toArray();
+            value("wireframe").toArray();
+            value("surface").toArray();
 
-            value.getObject()["background"].getArray().push_back("rgb");
-            value.getObject()["background"].getArray().push_back(background.red);
-            value.getObject()["background"].getArray().push_back(background.green);
-            value.getObject()["background"].getArray().push_back(background.blue);
-            value.getObject()["background"].getArray().push_back(background.alpha);
-            value.getObject()["wireframe"].getArray().push_back("rgb");
-            value.getObject()["wireframe"].getArray().push_back(wireframe.red);
-            value.getObject()["wireframe"].getArray().push_back(wireframe.green);
-            value.getObject()["wireframe"].getArray().push_back(wireframe.blue);
-            value.getObject()["wireframe"].getArray().push_back(wireframe.alpha);
-            value.getObject()["surface"].getArray().push_back("rgb");
-            value.getObject()["surface"].getArray().push_back(surface.red);
-            value.getObject()["surface"].getArray().push_back(surface.green);
-            value.getObject()["surface"].getArray().push_back(surface.blue);
-            value.getObject()["surface"].getArray().push_back(surface.alpha);
+            value("background").push("rgb");
+            value("background").push(background.red);
+            value("background").push(background.green);
+            value("background").push(background.blue);
+            value("background").push(background.alpha);
+            value("wireframe").push("rgb");
+            value("wireframe").push(wireframe.red);
+            value("wireframe").push(wireframe.green);
+            value("wireframe").push(wireframe.blue);
+            value("wireframe").push(wireframe.alpha);
+            value("surface").push("rgb");
+            value("surface").push(surface.red);
+            value("surface").push(surface.green);
+            value("surface").push(surface.blue);
+            value("surface").push(surface.alpha);
 
             return value;
         }

@@ -11,7 +11,7 @@
  *
  * \copyright
  * Created by Magnus Deininger on 11/10/2013.
- * Copyright (c) 2012-2014, Topologic Project Members
+ * Copyright (c) 2012-2015, Topologic Project Members
  */
 
 #import <UIKit/UIKit.h>

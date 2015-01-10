@@ -5,7 +5,7 @@
  * model renderer instances.
  *
  * \copyright
- * Copyright (c) 2012-2014, Topologic Project Members
+ * Copyright (c) 2012-2015, Topologic Project Members
  * \copyright
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -813,27 +813,27 @@ namespace topologic
             return false;
         }
 
-        bool polar = value.getObject()["polar"].getBoolean();
+        bool polar = (bool)value("polar");
 
-        if (value.getObject()["camera"].type == efgy::json::value<>::array)
+        if (value("camera").isArray())
         {
-            efgy::json::value<> &cameras = value.getObject()["camera"];
-            for (efgy::json::value<> &c : cameras.getArray())
+            efgy::json::value<> &cameras = value("camera");
+            for (efgy::json::value<> &c : cameras.toArray())
             {
-                if (   c.type == efgy::json::value<>::array
-                    && c.getArray().size() == d)
+                if (   c.isArray()
+                    && c.size() == d)
                 {
                     for (unsigned int i = 0; i < d; i++)
                     {
-                        if (c.getArray()[i].type == efgy::json::value<>::number)
+                        if (c[i].type == efgy::json::value<>::number)
                         {
                             if (polar)
                             {
-                                s.fromp[i] = c.getArray()[i].getNumber();
+                                s.fromp[i] = c[i];
                             }
                             else
                             {
-                                s.from[i] = c.getArray()[i].getNumber();
+                                s.from[i] = c[i];
                             }
                         }
                     }
@@ -841,22 +841,22 @@ namespace topologic
             }
         }
 
-        if (value.getObject()["transformation"].type == efgy::json::value<>::array)
+        if (value("transformation").isArray())
         {
-            efgy::json::value<> &transformations = value.getObject()["transformation"];
-            for (efgy::json::value<> &t : transformations.getArray())
+            efgy::json::value<> &transformations = value("transformation");
+            for (efgy::json::value<> &t : transformations.toArray())
             {
-                if (   t.type == efgy::json::value<>::array
-                    && t.getArray().size() == ((d+1)*(d+1)))
+                if (   t.isArray()
+                    && t.size() == ((d+1)*(d+1)))
                 {
                     for (unsigned int i = 0; i <= d; i++)
                     {
                         for (unsigned int j = 0; j <= d; j++)
                         {
-                            if (t.getArray()[(i*(d+1)+j)].type == efgy::json::value<>::number)
+                            if (t[(i*(d+1)+j)].isNumber())
                             {
                                 s.transformation.transformationMatrix[i][j]
-                                    = t.getArray()[(i*(d+1)+j)].getNumber();
+                                    = t[(i*(d+1)+j)];
                             }
                         }
                     }
@@ -891,83 +891,83 @@ namespace topologic
             return false;
         }
 
-        if (value.getObject()["radius"].type == efgy::json::value<>::number)
+        if (value("radius").isNumber())
         {
-            s.parameter.radius = value.getObject()["radius"].getNumber();
+            s.parameter.radius = value("radius");
         }
-        if (value.getObject()["minorRadius"].type == efgy::json::value<>::number)
+        if (value("minorRadius").isNumber())
         {
-            s.parameter.radius2 = value.getObject()["minorRadius"].getNumber();
+            s.parameter.radius2 = value("minorRadius");
         }
-        if (value.getObject()["constant"].type == efgy::json::value<>::number)
+        if (value("constant").isNumber())
         {
-            s.parameter.constant = value.getObject()["constant"].getNumber();
+            s.parameter.constant = value("constant");
         }
-        if (value.getObject()["precision"].type == efgy::json::value<>::number)
+        if (value("precision").isNumber())
         {
-            s.parameter.precision = value.getObject()["precision"].getNumber();
+            s.parameter.precision = value("precision");
         }
-        if (value.getObject()["iterations"].type == efgy::json::value<>::number)
+        if (value("iterations").isNumber())
         {
-            s.parameter.iterations = (int)value.getObject()["iterations"].getNumber();
+            s.parameter.iterations = (int)value("iterations");
         }
-        if (value.getObject()["seed"].type == efgy::json::value<>::number)
+        if (value("seed").isNumber())
         {
-            s.parameter.seed = (int)value.getObject()["seed"].getNumber();
+            s.parameter.seed = (int)value("seed");
         }
-        if (value.getObject()["functions"].type == efgy::json::value<>::number)
+        if (value("functions").isNumber())
         {
-            s.parameter.functions = (int)value.getObject()["functions"].getNumber();
+            s.parameter.functions = (int)value("functions");
         }
-        if (value.getObject()["flameCoefficients"].type == efgy::json::value<>::number)
+        if (value("flameCoefficients").isNumber())
         {
-            s.parameter.flameCoefficients = (int)value.getObject()["flameCoefficients"].getNumber();
-        }
-
-        if (value.getObject()["preRotate"].type != efgy::json::value<>::null)
-        {
-            s.parameter.preRotate  = value.getObject()["preRotate"].getBoolean();
-        }
-        if (value.getObject()["postRotate"].type != efgy::json::value<>::null)
-        {
-            s.parameter.postRotate = value.getObject()["postRotate"].getBoolean();
+            s.parameter.flameCoefficients = (int)value("flameCoefficients");
         }
 
-        if (   value.getObject()["background"].type == efgy::json::value<>::array
-            && value.getObject()["background"].getArray().size() >= 5
-            && value.getObject()["background"].getArray()[1].type == efgy::json::value<>::number
-            && value.getObject()["background"].getArray()[2].type == efgy::json::value<>::number
-            && value.getObject()["background"].getArray()[3].type == efgy::json::value<>::number
-            && value.getObject()["background"].getArray()[4].type == efgy::json::value<>::number)
+        if (value("preRotate").type != efgy::json::value<>::null)
         {
-            s.background.red   = value.getObject()["background"].getArray()[1].getNumber();
-            s.background.green = value.getObject()["background"].getArray()[2].getNumber();
-            s.background.blue  = value.getObject()["background"].getArray()[3].getNumber();
-            s.background.alpha = value.getObject()["background"].getArray()[4].getNumber();
+            s.parameter.preRotate  = (bool)value("preRotate");
         }
-        if (   value.getObject()["wireframe"].type == efgy::json::value<>::array
-            && value.getObject()["wireframe"].getArray().size() >= 5
-            && value.getObject()["wireframe"].getArray()[1].type == efgy::json::value<>::number
-            && value.getObject()["wireframe"].getArray()[2].type == efgy::json::value<>::number
-            && value.getObject()["wireframe"].getArray()[3].type == efgy::json::value<>::number
-            && value.getObject()["wireframe"].getArray()[4].type == efgy::json::value<>::number)
+        if (value("postRotate").type != efgy::json::value<>::null)
         {
-            s.wireframe.red   = value.getObject()["wireframe"].getArray()[1].getNumber();
-            s.wireframe.green = value.getObject()["wireframe"].getArray()[2].getNumber();
-            s.wireframe.blue  = value.getObject()["wireframe"].getArray()[3].getNumber();
-            s.wireframe.alpha = value.getObject()["wireframe"].getArray()[4].getNumber();
+            s.parameter.postRotate = (bool)value("postRotate");
         }
-        if (   value.getObject()["surface"].type == efgy::json::value<>::array
-            && value.getObject()["surface"].getArray().size() >= 5
-            && value.getObject()["surface"].getArray()[1].type == efgy::json::value<>::number
-            && value.getObject()["surface"].getArray()[2].type == efgy::json::value<>::number
-            && value.getObject()["surface"].getArray()[3].type == efgy::json::value<>::number
-            && value.getObject()["surface"].getArray()[4].type == efgy::json::value<>::number)
+
+        if (   value("background").isArray()
+            && value("background").size() >= 5
+            && value("background")[1].isNumber()
+            && value("background")[2].isNumber()
+            && value("background")[3].isNumber()
+            && value("background")[4].isNumber())
         {
-            s.surface.red   = value.getObject()["surface"].getArray()[1].getNumber();
-            s.surface.green = value.getObject()["surface"].getArray()[2].getNumber();
-            s.surface.blue  = value.getObject()["surface"].getArray()[3].getNumber();
-            s.surface.alpha = value.getObject()["surface"].getArray()[4].getNumber();
+            s.background.red   = value("background")[1];
+            s.background.green = value("background")[2];
+            s.background.blue  = value("background")[3];
+            s.background.alpha = value("background")[4];
+        }
+        if (   value("wireframe").isArray()
+            && value("wireframe").size() >= 5
+            && value("wireframe")[1].isNumber()
+            && value("wireframe")[2].isNumber()
+            && value("wireframe")[3].isNumber()
+            && value("wireframe")[4].isNumber())
+        {
+            s.wireframe.red   = value("wireframe")[1];
+            s.wireframe.green = value("wireframe")[2];
+            s.wireframe.blue  = value("wireframe")[3];
+            s.wireframe.alpha = value("wireframe")[4];
+        }
+        if (   value("surface").isArray()
+            && value("surface").size() >= 5
+            && value("surface")[1].isNumber()
+            && value("surface")[2].isNumber()
+            && value("surface")[3].isNumber()
+            && value("surface")[4].isNumber())
+        {
+            s.surface.red   = value("surface")[1];
+            s.surface.green = value("surface")[2];
+            s.surface.blue  = value("surface")[3];
+            s.surface.alpha = value("surface")[4];
         }
 
         return true;
@@ -1003,28 +1003,28 @@ namespace topologic
         int depth = 4;
         int rdepth = 4;
 
-        if (value.getObject()["coordinateFormat"].type == efgy::json::value<>::string)
+        efgy::maybe<std::string> mStr = value("coordinateFormat");
+        if ((bool)mStr)
         {
-            format = value.getObject()["coordinateFormat"].getString();
+            format = mStr.just;
         }
 
-        if (value.getObject()["model"].type == efgy::json::value<>::string)
+        mStr = value("model");
+        if ((bool)mStr)
         {
-            type = value.getObject()["model"].getString();
-        }
-        else
-        {
-            return false;
+            type = mStr.just;
         }
 
-        if (value.getObject()["depth"].type == efgy::json::value<>::number)
+        efgy::maybe<typename efgy::json::value<>::numeric> mNum = value("depth");
+        if ((bool)mNum)
         {
-            depth = (int)value.getObject()["depth"].getNumber();
+            depth = mNum.just;
         }
-
-        if (value.getObject()["renderDepth"].type == efgy::json::value<>::number)
+        
+        mNum = value("renderDepth");
+        if ((bool)mNum)
         {
-            rdepth = (int)value.getObject()["renderDepth"].getNumber();
+            rdepth = mNum.just;
         }
 
         return efgy::geometry::with<Q,func,d> (s, format, type, depth, rdepth);
