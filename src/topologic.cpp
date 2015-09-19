@@ -52,9 +52,6 @@
  *
  * \returns 0 on success, nonzero otherwise.
  */
-int main (int argc, char* argv[])
-{
-    return topologic::cli<double> (argc, argv);
-}
+int main(int argc, char *argv[]) { return topologic::cli<double>(argc, argv); }
 
 /** \} */

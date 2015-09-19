@@ -43,469 +43,397 @@
 #include <topologic/parse.h>
 #include <topologic/version.h>
 
-namespace topologic
-{
-    /**\brief Parse command line arguments
-     *
-     * A function template to parse C-style command line arguments, apply the
-     * settings in those arguments to a topologic::state instance. This
-     * function will also parse XML files that have been passed in as command
-     * line arguments and set the model in the state object to match that
-     * specified as command line arguments or in XML files.
-     *
-     * As usual, later options override earlier ones - that also applies to
-     * settings in XML files. If the NOLIBRARIES macro is set then XML files
-     * will not be processed.
-     *
-     * \tparam Q   Base data type as used in the topologic::state instance
-     * \tparam dim Maximum render depth of the topologic::state instance
-     *
-     * \param[out] topologicState The topologic::state instance to populate
-     * \param[in]  argc           Number of arguments in the argv array
-     * \param[in]  argv           Command line argument array (c.f. main())
-     * \param[out] out            Output mode, e.g. topologic::outGL
-     *
-     * \returns 'true' if things went smoothly, 'false' otherwise.
-     */
-    template<typename Q, unsigned int dim>
-    bool parseArguments (state<Q, dim> &topologicState, int argc, char* argv[], enum outputMode &out)
-    {
-#if !defined (NOLIBRARIES)
-        topologic::xml XML;
+namespace topologic {
+/**\brief Parse command line arguments
+ *
+ * A function template to parse C-style command line arguments, apply the
+ * settings in those arguments to a topologic::state instance. This
+ * function will also parse XML files that have been passed in as command
+ * line arguments and set the model in the state object to match that
+ * specified as command line arguments or in XML files.
+ *
+ * As usual, later options override earlier ones - that also applies to
+ * settings in XML files. If the NOLIBRARIES macro is set then XML files
+ * will not be processed.
+ *
+ * \tparam Q   Base data type as used in the topologic::state instance
+ * \tparam dim Maximum render depth of the topologic::state instance
+ *
+ * \param[out] topologicState The topologic::state instance to populate
+ * \param[in]  argc           Number of arguments in the argv array
+ * \param[in]  argv           Command line argument array (c.f. main())
+ * \param[out] out            Output mode, e.g. topologic::outGL
+ *
+ * \returns 'true' if things went smoothly, 'false' otherwise.
+ */
+template <typename Q, unsigned int dim>
+bool parseArguments(state<Q, dim> &topologicState, int argc, char *argv[],
+                    enum outputMode &out) {
+#if !defined(NOLIBRARIES)
+  topologic::xml XML;
 #endif
-        unsigned int depth = 4, rdepth = 4;
-        std::string model = "cube";
-        std::string format = "cartesian";
+  unsigned int depth = 4, rdepth = 4;
+  std::string model = "cube";
+  std::string format = "cartesian";
 
-        if (argc > 1)
-        {
-            for (int i = 1; i < argc; i++)
-            {
-                std::string arg = argv[i];
+  if (argc > 1) {
+    for (int i = 1; i < argc; i++) {
+      std::string arg = argv[i];
 
-                if (arg == "--help")
-                {
-                    std::cout << "Usage:\n" << argv[0] << " [ options ] [ files ]\n\n"
-                              << argv[0] << " will render an SVG of a specified geometric primitive to stdout.\n\n"
-                                 "Options\n"
-                                 "  --help                  Show this help text, then exit.\n"
-                                 "  --version               Show version information, then exit.\n"
-                                 "\n"
-                                 "  --depth N               Set model depth to N\n"
-                                 "  --render-depth N        Set render depth to N\n"
-                                 "  --model M               Set model to M (cube, sphere, ...)\n"
-                                 "  --coordinate-format C   Set vector coordinate format to C (cartesian, polar, ...)\n"
-                                 "\n"
-                                 "  --iterations N          Set IFS iterations to N\n"
-                                 "  --seed N                Set the RNG seed to N (e.g. for the random-affine-ifs model)\n"
-                                 "  --functions N           Suggest that random IFSs should use N functions\n"
-                                 "  --pre-rotation          Suggest that random IFSs should add a pre-translation rotation\n"
-                                 "  --no-pre-rotation       Suggest that random IFSs should not add a pre-translation rotation\n"
-                                 "  --post-rotation         Suggest that random IFSs should add a post-translation rotation\n"
-                                 "  --no-post-rotation      Suggest that random IFSs should not add a post-translation rotation\n"
-                                 "  --flame-variants N      Suggest that random fractal flames should use N variants\n"
-                                 "\n"
-                                 "  --precision F           Set model precision to F\n"
-                                 "  --radius F              Set model radius parameter to F\n"
-                                 "  --minor-radius F        Set model minor radius parameter to F\n"
-                                 "  --constant F            Set model constant parameter to F\n"
-                                 "\n"
-                                 "  --background R G B A    Set background colour to R G B A (use values between 0 and 1)\n"
-                                 "  --wireframe R G B A     Set wireframe colour to R G B A (use values between 0 and 1)\n"
-                                 "  --surface R G B A       Set surface colour to R G B A (use values between 0 and 1)\n"
-                                 "\n"
-                                 "  --polar                 Use/manipulate polar coordinates (default)\n"
-                                 "  --cartesian             Use/manipulate cartesian coordinates\n"
-                                 "  --from D X Y ...        Set the from-point of the D-to-D-1 projection to X Y ...\n"
-                                 "  --transform D A B ...   Set the transformation matrix in D to A B ...\n"
-                                 "\n"
-                                 "  --regular-colours       Use regular colouring algorithm\n"
-                                 "  --fractal-flame-colours Use fractal flame colouring algorithm (OpenGL only)\n"
-                                 "\n"
-                                 "  --json                  Write JSON output\n"
-                                 "  --svg                   Write SVG output\n"
-                                 "\n"
-                                 "See the man page of this programme for further details; e.g. run:\n"
-                                 "man topologic\n\n";
-                    return 0;
-                }
-                else if (arg == "--version")
-                {
-                    std::cout << "Topologic/V" << version << "\n"
-                                 "libefgy/V" << efgy::version << "\n"
-                                 "Maximum render depth of this binary is " << dim << " dimensions.\n"
-                                 "Supported models:";
-                    std::set<const char *> models;
-                    for (const char *m : efgy::geometry::with<Q,efgy::geometry::functor::models,dim>(models,"*",0,0))
-                    {
-                        std::cout << " " << m;
-                    }
-                    std::cout << "\n"
-                                 "Supported vector coordinate formats:";
-                    std::set<const char *> formats;
-                    for (const char *f : efgy::geometry::with<Q,efgy::geometry::functor::formats,dim>(formats,"*","*",0,0))
-                    {
-                        std::cout << " " << f;
-                    }
-                    std::cout << "\n";
-                    return 0;
-                }
-                else if (arg == "--model")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        model = argv[i];
-                    }
-                }
-                else if (arg == "--coordinate-format")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        format = argv[i];
-                    }
-                }
-                else if (arg == "--depth")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> depth;
-                    }
-                }
-                else if (arg == "--render-depth")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> rdepth;
-                    }
-                }
-                else if (arg == "--iterations")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> topologicState.state<Q,2>::parameter.iterations;
-                    }
-                }
-                else if (arg == "--seed")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> topologicState.state<Q,2>::parameter.seed;
-                    }
-                }
-                else if (arg == "--functions")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> topologicState.state<Q,2>::parameter.functions;
-                    }
-                }
-                else if (arg == "--flame-variants")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        st >> topologicState.state<Q,2>::parameter.flameCoefficients;
-                    }
-                }
-                else if (arg == "--precision")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::parameter.precision = Q(dv);
-                    }
-                }
-                else if (arg == "--radius")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::parameter.radius = Q(dv);
-                    }
-                }
-                else if (arg == "--minor-radius")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::parameter.radius2 = Q(dv);
-                    }
-                }
-                else if (arg == "--constant")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::parameter.constant = Q(dv);
-                    }
-                }
-                else if (arg == "--background")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::background.red = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::background.green = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::background.blue = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::background.alpha = Q(dv);
-                    }
-                }
-                else if (arg == "--surface")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::surface.red = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::surface.green = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::surface.blue = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::surface.alpha = Q(dv);
-                    }
-                }
-                else if (arg == "--wireframe")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::wireframe.red = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::wireframe.green = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::wireframe.blue = Q(dv);
-                    }
-                    i++;
-                    if (i < argc)
-                    {
-                        std::stringstream st (argv[i]);
-                        double dv;
-                        st >> dv;
-                        topologicState.state<Q,2>::wireframe.alpha = Q(dv);
-                    }
-                }
-                else if (arg == "--polar")
-                {
-                    topologicState.state<Q,2>::polarCoordinates = true;
-                }
-                else if (arg == "--cartesian")
-                {
-                    topologicState.state<Q,2>::polarCoordinates = false;
-                }
-                else if (arg == "--pre-rotation")
-                {
-                    topologicState.state<Q,2>::parameter.preRotate = true;
-                }
-                else if (arg == "--no-pre-rotation")
-                {
-                    topologicState.state<Q,2>::parameter.preRotate = false;
-                }
-                else if (arg == "--post-rotation")
-                {
-                    topologicState.state<Q,2>::parameter.postRotate = true;
-                }
-                else if (arg == "--no-post-rotation")
-                {
-                    topologicState.state<Q,2>::parameter.postRotate = false;
-                }
-                else if (arg == "--regular-colours")
-                {
-                    topologicState.state<Q,2>::fractalFlameColouring = false;
-                }
-                else if (arg == "--fractal-flame-colours")
-                {
-                    topologicState.state<Q,2>::fractalFlameColouring = true;
-                }
-                else if (arg == "--from")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        int d = 0;
-                        std::stringstream st (argv[i]);
-                        st >> d;
-                        st.clear();
+      if (arg == "--help") {
+        std::cout
+            << "Usage:\n" << argv[0] << " [ options ] [ files ]\n\n" << argv[0]
+            << " will render an SVG of a specified geometric primitive to "
+               "stdout.\n\n"
+               "Options\n"
+               "  --help                  Show this help text, then exit.\n"
+               "  --version               Show version information, then "
+               "exit.\n"
+               "\n"
+               "  --depth N               Set model depth to N\n"
+               "  --render-depth N        Set render depth to N\n"
+               "  --model M               Set model to M (cube, sphere, ...)\n"
+               "  --coordinate-format C   Set vector coordinate format to C "
+               "(cartesian, polar, ...)\n"
+               "\n"
+               "  --iterations N          Set IFS iterations to N\n"
+               "  --seed N                Set the RNG seed to N (e.g. for the "
+               "random-affine-ifs model)\n"
+               "  --functions N           Suggest that random IFSs should use "
+               "N functions\n"
+               "  --pre-rotation          Suggest that random IFSs should add "
+               "a pre-translation rotation\n"
+               "  --no-pre-rotation       Suggest that random IFSs should not "
+               "add a pre-translation rotation\n"
+               "  --post-rotation         Suggest that random IFSs should add "
+               "a post-translation rotation\n"
+               "  --no-post-rotation      Suggest that random IFSs should not "
+               "add a post-translation rotation\n"
+               "  --flame-variants N      Suggest that random fractal flames "
+               "should use N variants\n"
+               "\n"
+               "  --precision F           Set model precision to F\n"
+               "  --radius F              Set model radius parameter to F\n"
+               "  --minor-radius F        Set model minor radius parameter to "
+               "F\n"
+               "  --constant F            Set model constant parameter to F\n"
+               "\n"
+               "  --background R G B A    Set background colour to R G B A "
+               "(use values between 0 and 1)\n"
+               "  --wireframe R G B A     Set wireframe colour to R G B A (use "
+               "values between 0 and 1)\n"
+               "  --surface R G B A       Set surface colour to R G B A (use "
+               "values between 0 and 1)\n"
+               "\n"
+               "  --polar                 Use/manipulate polar coordinates "
+               "(default)\n"
+               "  --cartesian             Use/manipulate cartesian "
+               "coordinates\n"
+               "  --from D X Y ...        Set the from-point of the D-to-D-1 "
+               "projection to X Y ...\n"
+               "  --transform D A B ...   Set the transformation matrix in D "
+               "to A B ...\n"
+               "\n"
+               "  --regular-colours       Use regular colouring algorithm\n"
+               "  --fractal-flame-colours Use fractal flame colouring "
+               "algorithm (OpenGL only)\n"
+               "\n"
+               "  --json                  Write JSON output\n"
+               "  --svg                   Write SVG output\n"
+               "\n"
+               "See the man page of this programme for further details; e.g. "
+               "run:\n"
+               "man topologic\n\n";
+        return 0;
+      } else if (arg == "--version") {
+        std::cout << "Topologic/V" << version << "\n"
+                                                 "libefgy/V" << efgy::version
+                  << "\n"
+                     "Maximum render depth of this binary is " << dim
+                  << " dimensions.\n"
+                     "Supported models:";
+        std::set<const char *> models;
+        for (const char *m :
+             efgy::geometry::with<Q, efgy::geometry::functor::models, dim>(
+                 models, "*", 0, 0)) {
+          std::cout << " " << m;
+        }
+        std::cout << "\n"
+                     "Supported vector coordinate formats:";
+        std::set<const char *> formats;
+        for (const char *f :
+             efgy::geometry::with<Q, efgy::geometry::functor::formats, dim>(
+                 formats, "*", "*", 0, 0)) {
+          std::cout << " " << f;
+        }
+        std::cout << "\n";
+        return 0;
+      } else if (arg == "--model") {
+        i++;
+        if (i < argc) {
+          model = argv[i];
+        }
+      } else if (arg == "--coordinate-format") {
+        i++;
+        if (i < argc) {
+          format = argv[i];
+        }
+      } else if (arg == "--depth") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> depth;
+        }
+      } else if (arg == "--render-depth") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> rdepth;
+        }
+      } else if (arg == "--iterations") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> topologicState.state<Q, 2>::parameter.iterations;
+        }
+      } else if (arg == "--seed") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> topologicState.state<Q, 2>::parameter.seed;
+        }
+      } else if (arg == "--functions") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> topologicState.state<Q, 2>::parameter.functions;
+        }
+      } else if (arg == "--flame-variants") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          st >> topologicState.state<Q, 2>::parameter.flameCoefficients;
+        }
+      } else if (arg == "--precision") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::parameter.precision = Q(dv);
+        }
+      } else if (arg == "--radius") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::parameter.radius = Q(dv);
+        }
+      } else if (arg == "--minor-radius") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::parameter.radius2 = Q(dv);
+        }
+      } else if (arg == "--constant") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::parameter.constant = Q(dv);
+        }
+      } else if (arg == "--background") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::background.red = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::background.green = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::background.blue = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::background.alpha = Q(dv);
+        }
+      } else if (arg == "--surface") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::surface.red = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::surface.green = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::surface.blue = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::surface.alpha = Q(dv);
+        }
+      } else if (arg == "--wireframe") {
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::wireframe.red = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::wireframe.green = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::wireframe.blue = Q(dv);
+        }
+        i++;
+        if (i < argc) {
+          std::stringstream st(argv[i]);
+          double dv;
+          st >> dv;
+          topologicState.state<Q, 2>::wireframe.alpha = Q(dv);
+        }
+      } else if (arg == "--polar") {
+        topologicState.state<Q, 2>::polarCoordinates = true;
+      } else if (arg == "--cartesian") {
+        topologicState.state<Q, 2>::polarCoordinates = false;
+      } else if (arg == "--pre-rotation") {
+        topologicState.state<Q, 2>::parameter.preRotate = true;
+      } else if (arg == "--no-pre-rotation") {
+        topologicState.state<Q, 2>::parameter.preRotate = false;
+      } else if (arg == "--post-rotation") {
+        topologicState.state<Q, 2>::parameter.postRotate = true;
+      } else if (arg == "--no-post-rotation") {
+        topologicState.state<Q, 2>::parameter.postRotate = false;
+      } else if (arg == "--regular-colours") {
+        topologicState.state<Q, 2>::fractalFlameColouring = false;
+      } else if (arg == "--fractal-flame-colours") {
+        topologicState.state<Q, 2>::fractalFlameColouring = true;
+      } else if (arg == "--from") {
+        i++;
+        if (i < argc) {
+          int d = 0;
+          std::stringstream st(argv[i]);
+          st >> d;
+          st.clear();
 
-                        for (int j = 0; j < d; j++)
-                        {
-                            double value;
-                            i++;
-                            if (i >= argc)
-                            {
-                                break;
-                            }
-                            st.str(argv[i]);
-                            st >> value;
-                            st.clear();
-                            topologicState.setFromCoordinate(j, Q(value), d);
-                        }
-                    }
-                }
-                else if (arg == "--transform")
-                {
-                    i++;
-                    if (i < argc)
-                    {
-                        int d = 0;
-                        std::stringstream st (argv[i]);
-                        st >> d;
-                        st.clear();
-                        
-                        for (unsigned int x = 0; x <= d; x++)
-                        {
-                            for (unsigned int y = 0; y <= d; y++)
-                            {
-                                double value;
-                                i++;
-                                if (i >= argc)
-                                {
-                                    break;
-                                }
-                                st.str(argv[i]);
-                                st >> value;
-                                st.clear();
-                                setMatrixCell(topologicState, d, x, y, Q(value));
-                            }
-                            if (i >= argc)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (arg == "--json")
-                {
-                    out = topologic::outJSON;
-                }
-                else if (arg == "--svg")
-                {
-                    out = topologic::outSVG;
-                }
-                else
-                {
-                    std::ifstream in(argv[i]);
-                    std::istreambuf_iterator<char> eos;
-                    std::string s(std::istreambuf_iterator<char>(in), eos);
-
-#if !defined (NOLIBRARIES)
-                    xml::parser p(s, arg);
-                    if (p.valid)
-                    {
-                        parse (topologicState, p);
-                        parseModel<Q,dim,updateModel> (topologicState, p);
-                    }
-                    else
-#endif
-                    {
-                        efgy::json::value<> v;
-                        s >> v;
-                        parse (topologicState, v);
-                        parseModel<Q,dim,updateModel> (topologicState, v);
-                    }
-
-                    if (topologicState.model)
-                    {
-                        format = topologicState.model->formatID;
-                        model  = topologicState.model->id;
-                        depth  = topologicState.model->depth;
-                        rdepth = topologicState.model->renderDepth;
-                    }
-                }
+          for (int j = 0; j < d; j++) {
+            double value;
+            i++;
+            if (i >= argc) {
+              break;
             }
+            st.str(argv[i]);
+            st >> value;
+            st.clear();
+            topologicState.setFromCoordinate(j, Q(value), d);
+          }
         }
+      } else if (arg == "--transform") {
+        i++;
+        if (i < argc) {
+          int d = 0;
+          std::stringstream st(argv[i]);
+          st >> d;
+          st.clear();
 
-        if (!topologicState.model)
+          for (unsigned int x = 0; x <= d; x++) {
+            for (unsigned int y = 0; y <= d; y++) {
+              double value;
+              i++;
+              if (i >= argc) {
+                break;
+              }
+              st.str(argv[i]);
+              st >> value;
+              st.clear();
+              setMatrixCell(topologicState, d, x, y, Q(value));
+            }
+            if (i >= argc) {
+              break;
+            }
+          }
+        }
+      } else if (arg == "--json") {
+        out = topologic::outJSON;
+      } else if (arg == "--svg") {
+        out = topologic::outSVG;
+      } else {
+        std::ifstream in(argv[i]);
+        std::istreambuf_iterator<char> eos;
+        std::string s(std::istreambuf_iterator<char>(in), eos);
+
+#if !defined(NOLIBRARIES)
+        xml::parser p(s, arg);
+        if (p.valid) {
+          parse(topologicState, p);
+          parseModel<Q, dim, updateModel>(topologicState, p);
+        } else
+#endif
         {
-            efgy::geometry::with<Q,updateModel,dim> (topologicState, format, model, depth, rdepth);
+          efgy::json::value<> v;
+          s >> v;
+          parse(topologicState, v);
+          parseModel<Q, dim, updateModel>(topologicState, v);
         }
 
-        return true;
+        if (topologicState.model) {
+          format = topologicState.model->formatID;
+          model = topologicState.model->id;
+          depth = topologicState.model->depth;
+          rdepth = topologicState.model->renderDepth;
+        }
+      }
     }
+  }
+
+  if (!topologicState.model) {
+    efgy::geometry::with<Q, updateModel, dim>(topologicState, format, model,
+                                              depth, rdepth);
+  }
+
+  return true;
+}
 };
 
 #endif

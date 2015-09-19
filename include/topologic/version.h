@@ -57,38 +57,37 @@
  * actual backend code of Topologic. The frontends then only really need to set
  * up an OpenGL context (if they do render to OpenGL) and handle user I/O.
  */
-namespace topologic
-{
-    /**\brief Library Version
-     *
-     * This is the library's version number. Topologic uses a very simple,
-     * single-integer versioning scheme: whenever a new version is released,
-     * this number is increased by one and used until the next release.
-     */
-    static const unsigned int version = 11;
+namespace topologic {
+/**\brief Library Version
+ *
+ * This is the library's version number. Topologic uses a very simple,
+ * single-integer versioning scheme: whenever a new version is released,
+ * this number is increased by one and used until the next release.
+ */
+static const unsigned int version = 11;
 
-    /**\brief Project web site
-     *
-     * This is the project's web site, which is displayed and linked to in
-     * various frontends. It could change, so there's no reason not to have it
-     * as a variable.
-     */
-    static const char website[] = "https://ef.gy/topologic";
+/**\brief Project web site
+ *
+ * This is the project's web site, which is displayed and linked to in
+ * various frontends. It could change, so there's no reason not to have it
+ * as a variable.
+ */
+static const char website[] = "https://ef.gy/topologic";
 
-    /**\brief Web service base URL
-     *
-     * To increase availability for users, the project provides a web service
-     * that can be used to view anything interesting that you find in any WebGL
-     * enabled browser. This is the base URL for this service.
-     */
-    static const char service[] = "https://dee.pe/r";
+/**\brief Web service base URL
+ *
+ * To increase availability for users, the project provides a web service
+ * that can be used to view anything interesting that you find in any WebGL
+ * enabled browser. This is the base URL for this service.
+ */
+static const char service[] = "https://dee.pe/r";
 
-    /**\brief Source code repository
-     *
-     * All the code is kept in this repository, except for the libefgy templates
-     * this code makes use of. Those are linked to from here, however.
-     */
-    static const char repository[] = "https://github.com/ef-gy/topologic";
+/**\brief Source code repository
+ *
+ * All the code is kept in this repository, except for the libefgy templates
+ * this code makes use of. Those are linked to from here, however.
+ */
+static const char repository[] = "https://github.com/ef-gy/topologic";
 };
 
 #endif

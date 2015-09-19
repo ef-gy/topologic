@@ -55,48 +55,39 @@
 #define MAXDEPTH 7
 #endif
 
-namespace topologic
-{
-    /**\brief Default CLI frontend main function
-     *
-     * Main function for a typical CLI-/SVG-only frontend. This is part of the
-     * library code so that it's easy to reuse where applicable.
-     *
-     * \tparam FP Floating point data type to use; something like double
-     *
-     * \param[in] argc The number of arguments that are being passed in argv.
-     * \param[in] argv The actual argument vector. The first element must be
-     *                 the name the programme was called as, the remainder are
-     *                 command line flags.
-     *
-     * \returns 0 if the function ran correctly, nonzero otherwise.
-     */
-    template<typename FP>
-    int cli (int argc, char* argv[])
-    {
-        state<FP,MAXDEPTH> topologicState;
-        enum outputMode out = outSVG;
+namespace topologic {
+/**\brief Default CLI frontend main function
+ *
+ * Main function for a typical CLI-/SVG-only frontend. This is part of the
+ * library code so that it's easy to reuse where applicable.
+ *
+ * \tparam FP Floating point data type to use; something like double
+ *
+ * \param[in] argc The number of arguments that are being passed in argv.
+ * \param[in] argv The actual argument vector. The first element must be
+ *                 the name the programme was called as, the remainder are
+ *                 command line flags.
+ *
+ * \returns 0 if the function ran correctly, nonzero otherwise.
+ */
+template <typename FP> int cli(int argc, char *argv[]) {
+  state<FP, MAXDEPTH> topologicState;
+  enum outputMode out = outSVG;
 
-        if (!parseArguments (topologicState, argc, argv, out))
-        {
-            return 1;
-        }
+  if (!parseArguments(topologicState, argc, argv, out)) {
+    return 1;
+  }
 
-        if (!topologicState.model)
-        {
-            std::cerr << "error: no model to render\n";
-        }
-        else if (out == outSVG)
-        {
-            topologicState.model->svg(std::cout, true);
-        }
-        else if (out == outJSON)
-        {
-            std::cout << efgy::json::tag() << topologicState;
-        }
+  if (!topologicState.model) {
+    std::cerr << "error: no model to render\n";
+  } else if (out == outSVG) {
+    topologicState.model->svg(std::cout, true);
+  } else if (out == outJSON) {
+    std::cout << efgy::json::tag() << topologicState;
+  }
 
-        return 0;
-    }
+  return 0;
+}
 };
 
 #endif

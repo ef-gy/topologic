@@ -94,25 +94,24 @@
  * because we need to provide C-like accessors for emscripten/JavaScript
  * callers.
  */
-static topologic::state<GLfloat,MAXDEPTH> topologicState;
+static topologic::state<GLfloat, MAXDEPTH> topologicState;
 
 // these functions are defined as 'extern "C"' to disable output name mangling;
 // when compiling with emscripten these functions are exported so that they can
 // be used in foreign JS code.
-extern "C"
-{
-    int initialiseGL(void);
-    void process(void);
-    int interpretDrag(double, double, double);
-    int setActiveDimension(int);
-    void forceRedraw(void);
-    void setFlameColouring(bool);
-    void resetColourMap(void);
-    void setViewportSize(int, int);
-    const char *getJSON(void);
-    const char *getSVG(void);
-    void parseJSON(const char *);
-    const char *getModels();
+extern "C" {
+int initialiseGL(void);
+void process(void);
+int interpretDrag(double, double, double);
+int setActiveDimension(int);
+void forceRedraw(void);
+void setFlameColouring(bool);
+void resetColourMap(void);
+void setViewportSize(int, int);
+const char *getJSON(void);
+const char *getSVG(void);
+void parseJSON(const char *);
+const char *getModels();
 }
 
 /**\brief Is a mouse button currently being?
@@ -158,10 +157,7 @@ static bool SDLinitialised = false;
  * Sets the 'doRender' variable to 'true' to make the main loop draw the
  * current scene.
  */
-void forceRedraw(void)
-{
-    doRender = true;
-}
+void forceRedraw(void) { doRender = true; }
 
 /**\ingroup topologic-javascript-exports
  * \brief Genere new colour map
@@ -169,10 +165,9 @@ void forceRedraw(void)
  * Creates a new colour map for the fractal flame rendering algorithm. The
  * colours in that map are chosen at random.
  */
-void resetColourMap(void)
-{
-    topologicState.opengl.setColourMap();
-    doRender = true;
+void resetColourMap(void) {
+  topologicState.opengl.setColourMap();
+  doRender = true;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -188,21 +183,17 @@ void resetColourMap(void)
  * \note Setting the viewport to (0,0) will reset the viewport to be queried via
  *       SDL on the next frame render cycle.
  */
-void setViewportSize(int width, int height)
-{
-    if ((width == 0) && (height == 0))
-    {
-        forcedSize = false;
-        topologicState.width  = 1280;
-        topologicState.height = 720;
-    }
-    else
-    {
-        forcedSize = true;
-        topologicState.width  = width;
-        topologicState.height = height;
-    }
-    doRender = true;
+void setViewportSize(int width, int height) {
+  if ((width == 0) && (height == 0)) {
+    forcedSize = false;
+    topologicState.width = 1280;
+    topologicState.height = 720;
+  } else {
+    forcedSize = true;
+    topologicState.width = width;
+    topologicState.height = height;
+  }
+  doRender = true;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -214,72 +205,62 @@ void setViewportSize(int width, int height)
  * envionment, in whatever place emscripten_set_main_loop() saw fit to have it
  * run in.
  */
-void process(void)
-{
-    if (!SDLinitialised)
-    {
-        return;
+void process(void) {
+  if (!SDLinitialised) {
+    return;
+  }
+
+  const SDL_VideoInfo *info = SDL_GetVideoInfo();
+
+  if (info && !forcedSize) {
+    topologicState.width = info->current_w;
+    topologicState.height = info->current_h;
+  }
+
+  SDL_Event event;
+  while (SDL_PollEvent(&event)) {
+    switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN:
+      switch (event.button.button) {
+      case 4:
+        topologicState.interpretDrag(0, 0, 30);
+        doRender = true;
+        break;
+      case 5:
+        topologicState.interpretDrag(0, 0, -30);
+        doRender = true;
+        break;
+      default:
+        buttonDown = true;
+      }
+      break;
+    case SDL_MOUSEBUTTONUP:
+      switch (event.button.button) {
+      case 4:
+      case 5:
+        break;
+      default:
+        buttonDown = false;
+      }
+      break;
+    case SDL_MOUSEMOTION:
+      if (buttonDown) {
+        topologicState.interpretDrag(event.motion.xrel, event.motion.yrel, 0);
+        doRender = true;
+      }
+      break;
+    }
+  }
+
+  if (doRender) {
+    doRender = false;
+
+    if (topologicState.model) {
+      topologicState.model->opengl(true);
     }
 
-    const SDL_VideoInfo* info = SDL_GetVideoInfo();
-
-    if (info && !forcedSize)
-    {
-        topologicState.width  = info->current_w;
-        topologicState.height = info->current_h;
-    }
-
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-        switch (event.type)
-        {
-            case SDL_MOUSEBUTTONDOWN:
-                switch (event.button.button)
-                {
-                    case 4:
-                        topologicState.interpretDrag(0, 0, 30);
-                        doRender = true;
-                        break;
-                    case 5:
-                        topologicState.interpretDrag(0, 0, -30);
-                        doRender = true;
-                        break;
-                    default:
-                        buttonDown = true;
-                }
-                break;
-            case SDL_MOUSEBUTTONUP:
-                switch (event.button.button)
-                {
-                    case 4:
-                    case 5:
-                        break;
-                    default:
-                        buttonDown = false;
-                }
-                break;
-            case SDL_MOUSEMOTION:
-                if (buttonDown)
-                {
-                    topologicState.interpretDrag(event.motion.xrel, event.motion.yrel, 0);
-                    doRender = true;
-                }
-                break;
-        }
-    }
-
-    if (doRender)
-    {
-        doRender = false;
-
-        if (topologicState.model)
-        {
-            topologicState.model->opengl(true);
-        }
-
-        SDL_GL_SwapBuffers();
-    }
+    SDL_GL_SwapBuffers();
+  }
 }
 
 /**\ingroup topologic-javascript-exports
@@ -300,15 +281,15 @@ void process(void)
  *
  * \returns 0 on success, nonzero otherwise.
  */
-int main(int argc, char *argv[])
-{
-    enum topologic::outputMode out = topologic::outGL;
+int main(int argc, char *argv[]) {
+  enum topologic::outputMode out = topologic::outGL;
 
-    efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH> (topologicState, "cartesian", "cube", 4, 4);
+  efgy::geometry::with<GLfloat, topologic::updateModel, MAXDEPTH>(
+      topologicState, "cartesian", "cube", 4, 4);
 
-    emscripten_set_main_loop(process, 30, 0);
+  emscripten_set_main_loop(process, 30, 0);
 
-    return 0;
+  return 0;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -320,32 +301,31 @@ int main(int argc, char *argv[])
  *
  * \returns 0 on success, nonzero otherwise.
  */
-int initialiseGL(void)
-{
-    SDL_Surface *screen;
+int initialiseGL(void) {
+  SDL_Surface *screen;
 
-    if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
-        std::cerr << "Unable to initialize SDL: " << SDL_GetError() << "\n";
-        return 1;
-    }
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    std::cerr << "Unable to initialize SDL: " << SDL_GetError() << "\n";
+    return 1;
+  }
 
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // *new*
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // *new*
 
-    screen = SDL_SetVideoMode( 1280, 720, 16, SDL_OPENGL | SDL_RESIZABLE );
-    if ( !screen ) {
-        std::cerr << "Unable to set video mode: " << SDL_GetError() << "\n";
-        return 2;
-    }
+  screen = SDL_SetVideoMode(1280, 720, 16, SDL_OPENGL | SDL_RESIZABLE);
+  if (!screen) {
+    std::cerr << "Unable to set video mode: " << SDL_GetError() << "\n";
+    return 2;
+  }
 
-    glClearDepth(1.0f);
+  glClearDepth(1.0f);
 
-    glEnable (GL_BLEND);
+  glEnable(GL_BLEND);
 
-    glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
 
-    SDLinitialised = true;
+  SDLinitialised = true;
 
-    return 0;
+  return 0;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -358,10 +338,9 @@ int initialiseGL(void)
  * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
  *          do anything that could fail, however, so it'll always return '0'.
  */
-int interpretDrag (double x, double y, double z)
-{
-    topologicState.interpretDrag(GLfloat(x),GLfloat(y),GLfloat(z));
-    return 0;
+int interpretDrag(double x, double y, double z) {
+  topologicState.interpretDrag(GLfloat(x), GLfloat(y), GLfloat(z));
+  return 0;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -375,10 +354,9 @@ int interpretDrag (double x, double y, double z)
  * \returns '0' if things went smoothly, nonzero otherwise. This method doesn't
  *          do anything that could fail, however, so it'll always return '0'.
  */
-int setActiveDimension(int dim)
-{
-    topologicState.setActive(dim);
-    return 0;
+int setActiveDimension(int dim) {
+  topologicState.setActive(dim);
+  return 0;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -390,9 +368,8 @@ int setActiveDimension(int dim)
  * \param[in] flameColouring Whether to enable the fractal flame colouring
  *                           algorithm.
  */
-void setFlameColouring(bool flameColouring)
-{
-    topologicState.fractalFlameColouring = flameColouring;
+void setFlameColouring(bool flameColouring) {
+  topologicState.fractalFlameColouring = flameColouring;
 }
 
 /**\ingroup topologic-javascript-exports
@@ -403,16 +380,15 @@ void setFlameColouring(bool flameColouring)
  *
  * \returns A pointer to a C-style string containing JSON model metadata.
  */
-const char *getJSON(void)
-{
-    std::ostringstream os("");
-    static std::string str;
+const char *getJSON(void) {
+  std::ostringstream os("");
+  static std::string str;
 
-    os << efgy::json::tag() << topologicState;
+  os << efgy::json::tag() << topologicState;
 
-    str = os.str();
+  str = os.str();
 
-    return str.c_str();
+  return str.c_str();
 }
 
 /**\ingroup topologic-javascript-exports
@@ -424,20 +400,18 @@ const char *getJSON(void)
  * \returns A pointer to a C-style string containing an SVG render of the
  *          currently active model.
  */
-const char *getSVG(void)
-{
-    std::ostringstream os("");
-    static std::string str;
+const char *getSVG(void) {
+  std::ostringstream os("");
+  static std::string str;
 
-    if (topologicState.model)
-    {
-        topologicState.model->update = true;
-        topologicState.model->svg(os, true);
-    }
+  if (topologicState.model) {
+    topologicState.model->update = true;
+    topologicState.model->svg(os, true);
+  }
 
-    str = os.str();
+  str = os.str();
 
-    return str.c_str();
+  return str.c_str();
 }
 
 /**\ingroup topologic-javascript-exports
@@ -448,55 +422,58 @@ const char *getSVG(void)
  *
  * \param[in] json The JSON string to parse.
  */
-void parseJSON(const char *json)
-{
-    std::string s(json);
-    efgy::json::value<> v;
-    s >> v;
-    topologic::parse (topologicState, v);
-    topologic::parseModel<GLfloat,MAXDEPTH,topologic::updateModel> (topologicState, v);
+void parseJSON(const char *json) {
+  std::string s(json);
+  efgy::json::value<> v;
+  s >> v;
+  topologic::parse(topologicState, v);
+  topologic::parseModel<GLfloat, MAXDEPTH, topologic::updateModel>(
+      topologicState, v);
 }
 
 /**\ingroup topologic-javascript-exports
  * \brief Get JSON list of models and formats
  *
- * Similar to the --version flag of the proper binary; this returns a JSON string
+ * Similar to the --version flag of the proper binary; this returns a JSON
+ *string
  * with all the available models and formats.
  *
  * \returns JSON string of all the available models and formats.
  */
-const char *getModels()
-{
-    std::ostringstream os("");
-    static std::string str;
+const char *getModels() {
+  std::ostringstream os("");
+  static std::string str;
 
-    efgy::json::value<> modelSet;
-    modelSet.toArray();
-    efgy::json::value<> formatSet;
-    formatSet.toArray();
+  efgy::json::value<> modelSet;
+  modelSet.toArray();
+  efgy::json::value<> formatSet;
+  formatSet.toArray();
 
-    std::set<const char *> models;
-    for (const char *m : efgy::geometry::with<GLfloat,efgy::geometry::functor::models,MAXDEPTH>(models,"*",0,0))
-    {
-        modelSet.push(m);
-    }
-    std::set<const char *> formats;
-    for (const char *f : efgy::geometry::with<GLfloat,efgy::geometry::functor::formats,MAXDEPTH>(formats,"*","*",0,0))
-    {
-        formatSet.push(f);
-    }
+  std::set<const char *> models;
+  for (const char *m :
+       efgy::geometry::with<GLfloat, efgy::geometry::functor::models, MAXDEPTH>(
+           models, "*", 0, 0)) {
+    modelSet.push(m);
+  }
+  std::set<const char *> formats;
+  for (
+      const char *f :
+      efgy::geometry::with<GLfloat, efgy::geometry::functor::formats, MAXDEPTH>(
+          formats, "*", "*", 0, 0)) {
+    formatSet.push(f);
+  }
 
-    efgy::json::value<> modelData;
-    modelData.toObject();
+  efgy::json::value<> modelData;
+  modelData.toObject();
 
-    modelData("models")  = modelSet;
-    modelData("formats") = formatSet;
+  modelData("models") = modelSet;
+  modelData("formats") = formatSet;
 
-    os << efgy::json::tag() << modelData;
+  os << efgy::json::tag() << modelData;
 
-    str = os.str();
+  str = os.str();
 
-    return str.c_str();
+  return str.c_str();
 }
 
 /** \} */
