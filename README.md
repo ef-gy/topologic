@@ -27,21 +27,15 @@ out a local copy of that repository, use the git command line tool like this:
 
     $ git clone git://github.com/ef-gy/topologic.git
 
-Additionally there's a paid version available on the Mac App Store at
+Additionally, there's a pre-compiled version available on the Mac App Store at
 https://itunes.apple.com/us/app/topologic/id558300160 - this version is
-functionally more or less identical to the F/OSS version, but it provides a
-proper Cocoa GUI instead of the CLI/GLUT frontends. This App is rather cheap,
-however, so if you happen to have a Mac and you do like the programme then I'd
-really appreciate it if you got a copy ;).
+functionally identical to the F/OSS version, except that you don't have to
+compile it yourself.
 
 Oh, and if you're not on a Mac but you happen to have an iPod/iPhone/iPad,
 there's an app for those, too:
 https://itunes.apple.com/us/app/topologic/id737310913 - I've really tried to
 make good use of the touch controls on those devices, promise :).
-
-Since version 9, the sources for these two frontends are also available in the
-repository if you're fine with compiling things yourself on your Mac. See
-below for instructions on how to do that.
 
 Topologic is designed so that almost all of the code is template-y C++ in
 header files, much like libefgy. The API documentation for this is available
@@ -74,34 +68,17 @@ To install the programme, run:
 
 Adjust PREFIX as appropriate.
 
-### THE GLUT FRONTEND ########################################################
-
-If all you wanted were pretty SVGs, then the regular CLI programme is all you
-needed; but if - instead - you'd want to play with things a bit, then you'll
-want to compile the GLUT version as well. To do so, you'll also need GLEW,
-FreeGLUT, OpenGL headers and a graphics card that supports OpenGL 3.2. Once
-you've verified that you meet all of these prerequisites, run:
-
-    $ make gl
-
-... to compile the GL binaries, then to install them:
-
-    # make PREFIX=/usr install-gl
-
-To install the 'topologic-glut' binary. Again, adjust PREFIX as appropriate
-for your system.
-
 ### THE WEBGL FRONTEND #######################################################
 
 If you'd like to compile the WebGL frontend yourself instead of using the
 publicly available one at https://dee.pe/r you'll need to install emscripten
-instead of GLUT and run the following on a command line:
+and run the following on a command line:
 
     $ make topologic-web.html
 
-As the name suggests, the WebGL client is based on a simple SDL client. Once
-emscripten has finished compiling you can run the client by opening the file
-topologic-web.html in your favourite WebGL-enabled browser.
+The WebGL client is based on a simple SDL client. Once emscripten has finished
+compiling you can run the client by opening the file topologic-web.html in your
+favourite WebGL-enabled browser.
 
 ### THE COCOA/OSX FRONTEND ###################################################
 
@@ -166,9 +143,9 @@ To confirm the number of dimensions that a topologic binary supports, use the
 
 ## LICENCE ###################################################################
 
-The F/OSS part of Topologic is distributed under an MIT/X style licence. For
-all practical intents and purposes that means that you can do pretty much
-whatever you want with the code, except claim that you wrote it yourself, as
-long as you point out somewhere in your documentation that you used Topologic.
+Topologic is distributed under an MIT/X style licence. For all practical intents
+and purposes that means that you can do pretty much whatever you want with the
+code, except claim that you wrote it yourself, as long as you point out
+somewhere in your documentation that you used Topologic.
 
 See the file COPYING in the repository for the exact licence terms.

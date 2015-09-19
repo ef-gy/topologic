@@ -31,3 +31,5 @@ topologic-web.css.xml
 src/chrome/topologic.html
 src/chrome/jquery*.js
 chrome-app.zip
+dependencies.mk
+topologic.tag
