@@ -40,6 +40,7 @@
 #include <ef.gy/colour-space-rgb.h>
 #include <ef.gy/maybe.h>
 #include <ef.gy/render-xml.h>
+#include <ef.gy/render-svg.h>
 #include <ef.gy/render-json.h>
 #include <ef.gy/render-css.h>
 #include <sstream>
@@ -1046,6 +1047,28 @@ static inline efgy::json::ostream<C> operator<<(efgy::json::ostream<C> stream,
   efgy::json::value<Q> v;
   return stream << pState.json(v);
 }
-};
+
+/**\brief Render model (SVG)
+ *
+ * Creates an SVG fragment containing a render of the model associated with the
+ * given state object.
+ *
+ * \param[out] stream The SVG stream to write to.
+ * \param[in]  pState The state to serialise.
+ *
+ * \returns A new copy of the input stream.
+ *
+ * \tparam C Character type for the basic_ostream reference.
+ * \tparam Q Base data type; should be a class that acts like a rational
+ *           base arithmetic type.
+ * \tparam d Maximum render depth
+ */
+template <typename C, typename Q, unsigned int d>
+static inline efgy::svg::ostream<C> operator<<(efgy::svg::ostream<C> stream,
+                                               const state<Q, d> &pState) {
+  pState.model->svg(stream.stream, true);
+  return stream;
+}
+}
 
 #endif

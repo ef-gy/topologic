@@ -81,13 +81,13 @@ template <typename FP> int cli(int argc, char *argv[]) {
   if (!topologicState.model) {
     std::cerr << "error: no model to render\n";
   } else if (out == outSVG) {
-    topologicState.model->svg(std::cout, true);
+    std::cout << efgy::svg::tag() << topologicState;
   } else if (out == outJSON) {
     std::cout << efgy::json::tag() << topologicState;
   }
 
   return 0;
 }
-};
+}
 
 #endif
