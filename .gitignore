@@ -33,3 +33,5 @@ src/chrome/jquery*.js
 chrome-app.zip
 dependencies.mk
 topologic.tag
+doxyfile
+*.db
