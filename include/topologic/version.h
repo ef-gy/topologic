@@ -72,7 +72,7 @@ static const unsigned int version = 11;
  * various frontends. It could change, so there's no reason not to have it
  * as a variable.
  */
-static const char website[] = "https://ef.gy/topologic";
+static const char website[] = "https://ef.gy/documentation/topologic";
 
 /**\brief Web service base URL
  *
