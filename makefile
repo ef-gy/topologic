@@ -192,3 +192,6 @@ src/chrome/topologic-16.png: $(ICON)
 
 chrome-app.zip: src/chrome/manifest.json src/chrome/topologic.html src/chrome/topologic.js src/chrome/jquery-2.1.1.min.js src/chrome/jquery.mobile-1.4.4.min.js src/chrome/background.js src/chrome/topologic-128.png src/chrome/topologic-16.png
 	zip -9jo $@ $^
+
+doxygen: doxyfile
+	doxygen $<
