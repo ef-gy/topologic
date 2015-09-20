@@ -72,7 +72,7 @@ namespace topologic {
  */
 template <typename FP> int cli(int argc, char *argv[]) {
   state<FP, MAXDEPTH> topologicState;
-  enum outputMode out = outSVG;
+  enum outputMode out = outNone;
 
   if (!parseArguments(topologicState, argc, argv, out)) {
     return 1;

@@ -58,6 +58,12 @@ template <typename Q, unsigned int d> class state;
  * renderer type - e.g. SVG or OpenGL.
  */
 enum outputMode {
+  /**\brief No output
+   *
+   * Do not produce any output. This is the default for the CLI programme.
+   */
+  outNone = -1,
+
   /**\brief SVG renderer label
    *
    * libefgy's SVG renderer is able to render any given model to simple
