@@ -86,7 +86,14 @@ enum outputMode {
    * The JSON output method only produces metadata and not proper image
    * renditions.
    */
-  outJSON = 4
+  outJSON = 4,
+
+  /**\brief Text metadata label
+   *
+   * Output is supposed to be a set of arguments, which could be passed to the
+   * command line topologic binary.
+   */
+  outArguments = 5
 };
 
 /**\brief Topologic global programme state object
@@ -545,7 +552,7 @@ public:
       efgy::json::value<Q> v;
       v.toArray();
 
-      for (unsigned int i = 0; i < d; i++) {
+      for (std::size_t i = 0; i < d; i++) {
         v.push(base::polarCoordinates ? fromp[i] : from[i]);
       }
       value("camera").push(v);
@@ -555,12 +562,60 @@ public:
       efgy::json::value<Q> v;
       v.toArray();
 
-      for (unsigned int i = 0; i <= d; i++) {
-        for (unsigned int j = 0; j <= d; j++) {
+      for (std::size_t i = 0; i <= d; i++) {
+        for (std::size_t j = 0; j <= d; j++) {
           v.push(transformation.transformationMatrix[i][j]);
         }
       }
       value("transformation").push(v);
+    }
+
+    return value;
+  }
+
+  /**\brief Get CLI arguments
+   *
+   * Modifies the passed-in value so that it contains the metadata that
+   * would be needed to reconstruct this state object. Then returns that
+   * value.
+   *
+   * \param[out] value The vecotr of CLI arguments to modify.
+   *
+   * \returns The value that was passed in, after it has been modified.
+   */
+  std::vector<std::string> &args(std::vector<std::string> &value) const {
+    state<Q, d - 1>::args(value);
+
+    if (!state<Q, 1>::model || (d > state<Q, 1>::model->renderDepth)) {
+      return value;
+    }
+
+    std::stringstream s("");
+
+    s << "from";
+
+    for (std::size_t i = 0; i < d; i++) {
+      s << ":" << (base::polarCoordinates ? fromp[i] : from[i]);
+    }
+
+    if (base::polarCoordinates) {
+      s << ":polar";
+    }
+
+    value.push_back(s.str());
+    s.str("");
+
+    if (!efgy::math::isIdentity(transformation.transformationMatrix)) {
+      s << "transform";
+
+      for (std::size_t i = 0; i <= d; i++) {
+        for (std::size_t j = 0; j <= d; j++) {
+          s << ":" << transformation.transformationMatrix[i][j];
+        }
+      }
+
+      value.push_back(s.str());
+      s.str("");
     }
 
     return value;
@@ -824,6 +879,63 @@ public:
     value("surface").push(surface.green);
     value("surface").push(surface.blue);
     value("surface").push(surface.alpha);
+
+    return value;
+  }
+
+  /**\brief Get CLI arguments (1D fix point)
+   *
+   * Modifies the passed-in value so that it contains the metadata that
+   * would be needed to reconstruct this state object. Then returns that
+   * value.
+   *
+   * \param[out] value The vector of arguments to modify.
+   *
+   * \returns The value that was passed in, after it has been modified.
+   */
+  std::vector<std::string> &args(std::vector<std::string> &value) const {
+    std::stringstream s("");
+    if (model) {
+      s << "model:" << model->depth << "-" << model->id << "@"
+        << model->renderDepth << ":" << model->formatID;
+      value.push_back(s.str());
+      s.str("");
+    }
+
+    s << "radius:" << parameter.radius << ":" << parameter.radius2;
+    value.push_back(s.str());
+    s.str("");
+
+    s << "constant:" << parameter.constant;
+    value.push_back(s.str());
+    s.str("");
+
+    s << "precision:" << parameter.precision;
+    value.push_back(s.str());
+    s.str("");
+
+    s << "iterations:" << parameter.iterations;
+    value.push_back(s.str());
+    s.str("");
+
+    s << "random:" << parameter.seed << ":" << parameter.functions << ":"
+      << parameter.flameCoefficients << (parameter.preRotate ? ":pre" : "")
+      << (parameter.postRotate ? ":post" : "");
+    value.push_back(s.str());
+    s.str("");
+
+    if (fractalFlameColouring) {
+      value.push_back("colour:fractal-flame");
+    } else {
+      s << "colour"
+        << ":b:" << background.red << ":" << background.green << ":"
+        << background.blue << ":" << background.alpha << ":w:" << wireframe.red
+        << ":" << wireframe.green << ":" << wireframe.blue << ":"
+        << wireframe.alpha << ":s:" << surface.red << ":" << surface.green
+        << ":" << surface.blue << ":" << surface.alpha;
+      value.push_back(s.str());
+      s.str("");
+    }
 
     return value;
   }

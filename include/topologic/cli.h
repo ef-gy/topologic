@@ -86,6 +86,13 @@ template <typename FP> int cli(int argc, char *argv[]) {
     std::cout << efgy::svg::tag() << topologicState;
   } else if (out == outJSON) {
     std::cout << efgy::json::tag() << topologicState;
+  } else if (out == outArguments) {
+    std::vector<std::string> v;
+    std::cout << "topologic";
+    for (const auto &arg : topologicState.args(v)) {
+      std::cout << " " << arg;
+    }
+    std::cout << "\n";
   }
 
   return 0;

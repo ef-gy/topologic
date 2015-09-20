@@ -121,12 +121,14 @@ enum outputMode parse(state<Q, dim> &topologicState,
       "Sets all the model type parameters. The form is: D-MODEL[@R][:FORMAT], "
       "e.g. 3-cube@4:polar. The default is 4-cube@4:cartesian.");
 
-  efgy::cli::option oformat("-{0,2}(none|json|svg)",
+  efgy::cli::option oformat("-{0,2}(none|json|svg|arguments)",
                             [&out](std::smatch &m) -> bool {
                               if (m[1] == "json") {
                                 out = topologic::outJSON;
                               } else if (m[1] == "svg") {
                                 out = topologic::outSVG;
+                              } else if (m[1] == "arguments") {
+                                out = topologic::outArguments;
                               } else {
                                 out = topologic::outNone;
                               }
@@ -196,7 +198,7 @@ enum outputMode parse(state<Q, dim> &topologicState,
                             "Set the radii used in some formulas.");
 
   efgy::cli::option oparam(
-      "-{0,2}(precision|constant):([0-9]+)",
+      "-{0,2}(precision|constant):([0-9.]+)",
       [&topologicState](std::smatch &m) -> bool {
         if (m[1] == "precision") {
           topologicState.state<Q, 2>::parameter.precision = Q(std::stold(m[2]));
@@ -216,7 +218,7 @@ enum outputMode parse(state<Q, dim> &topologicState,
       "Set the number of iterations for iterative formulae.");
 
   efgy::cli::option ofrom(
-      "-{0,2}from((:[1-9.]+){2,})(:polar)?",
+      "-{0,2}from((:[0-9.]+){2,})(:polar)?",
       [&topologicState](std::smatch &m) -> bool {
         topologicState.state<Q, 2>::polarCoordinates = (m[3] == ":polar");
         std::istringstream s(m[1]);
@@ -240,9 +242,8 @@ enum outputMode parse(state<Q, dim> &topologicState,
       "input as polar coordinates.");
 
   efgy::cli::option otransform(
-      "-{0,2}transform((:[1-9.]+){2,})(:polar)?",
+      "-{0,2}transform((:[0-9.]+){2,})",
       [&topologicState](std::smatch &m) -> bool {
-        topologicState.state<Q, 2>::polarCoordinates = (m[3] == ":polar");
         std::istringstream s(m[1]);
         std::string coord;
         std::vector<Q> v;
@@ -268,8 +269,7 @@ enum outputMode parse(state<Q, dim> &topologicState,
         return true;
       },
       "Set a tranformation matrix. Which of the matrices is set depends on the "
-      "number of coordinates given. The polar suffix treats the input as polar "
-      "coordinates.");
+      "number of coordinates given.");
 
   efgy::cli::options<>::common().apply(args);
 

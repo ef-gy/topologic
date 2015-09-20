@@ -228,7 +228,7 @@ public:
                                  XML_PARSE_NOERROR | XML_PARSE_NOWARNING)),
           xpathContext(0) {
       if (document == 0) {
-        std::cerr << "failed to parse xml file\n";
+        std::cerr << "failed to parse xml file " << filename << "\n";
         return;
       }
 
