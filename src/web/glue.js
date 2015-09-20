@@ -5,7 +5,9 @@ var setViewportSize = Module.cwrap('setViewportSize', null, ['number','number'])
 var resetColourMap = Module.cwrap('resetColourMap', null, []);
 var getJSON = Module.cwrap('getJSON', 'string', []);
 var getSVG = Module.cwrap('getSVG', 'string', []);
+var getArgs = Module.cwrap('getArgs', 'string', []);
 var parseJSON = Module.cwrap('parseJSON', null, ['string']);
+var parseArgs = Module.cwrap('parseArgs', null, ['string']);
 var interpretDrag = Module.cwrap('interpretDrag', 'number', ['number','number','number']);
 var getModels = Module.cwrap('getModels', 'string', []);
 var initialiseGL = Module.cwrap('initialiseGL', 'number', []);
@@ -22,16 +24,14 @@ var settings = {};
 function parseHash() {
   if (topologicIgnoreHashChange) return;
 
-  var json = window.location.hash.substring(1);
+  var args = window.location.hash.substring(1);
   try {
-    JSON.parse(json);
-    parseJSON(json);
+    parseArgs(args);
   } catch (e) {
     try {
       console.error(e);
-      json = decodeURIComponent(json);
-      JSON.parse(json);
-      parseJSON(json);
+      args = decodeURIComponent(args);
+      parseArgs(args);
     } catch (e) {
       console.log(e);
     }
@@ -96,23 +96,7 @@ function arrayEquals (a, b) {
 }
 
 function getHash() {
-  var data = JSON.parse(getJSON());
-
-  for (i in data) {
-    if (arrayEquals(originalSettings[i], data[i])) {
-      delete data[i];
-    } else if ((i === 'camera') || (i === 'transformation')) {
-      var t = [];
-      for (k in data[i]) {
-        if (!arrayEquals(originalSettings[i][k], data[i][k])) {
-          t.push(data[i][k]);
-        }
-      }
-      data[i] = t;
-    }
-  }
-
-  return JSON.stringify(data);
+  return getArgs();
 }
 
 function updateHash(silent) {

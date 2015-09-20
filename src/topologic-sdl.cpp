@@ -75,6 +75,7 @@
 
 #include <iostream>
 #include <topologic/parse.h>
+#include <topologic/arguments.h>
 
 #if !defined(MAXDEPTH)
 /**\brief Maximum render depth
@@ -110,7 +111,9 @@ void resetColourMap(void);
 void setViewportSize(int, int);
 const char *getJSON(void);
 const char *getSVG(void);
+const char *getArgs(void);
 void parseJSON(const char *);
+void parseArgs(const char *);
 const char *getModels();
 }
 
@@ -394,9 +397,35 @@ const char *getSVG(void) {
   std::ostringstream os("");
   static std::string str;
 
-  if (topologicState.model) {
-    topologicState.model->update = true;
-    topologicState.model->svg(os, true);
+  os << efgy::svg::tag() << topologicState;
+
+  str = os.str();
+
+  return str.c_str();
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Obtain argument string
+ *
+ * Creates a semicolon-separated list of command line arguments, which could be
+ * used to reconstruct the current state object.
+ *
+ * \returns A pointer to a C-style string containing an arguments of currently
+ *          active model.
+ */
+const char *getArgs(void) {
+  std::ostringstream os("");
+  static std::string str;
+  bool first = true;
+  std::vector<std::string> v;
+
+  for (const auto &arg : topologicState.args(v)) {
+    if (!first) {
+      os << ";";
+    } else {
+      first = false;
+    }
+    os << arg;
   }
 
   str = os.str();
@@ -419,6 +448,26 @@ void parseJSON(const char *json) {
   topologic::parse(topologicState, v);
   topologic::parseModel<GLfloat, MAXDEPTH, topologic::updateModel>(
       topologicState, v);
+}
+
+/**\ingroup topologic-javascript-exports
+ * \brief Parse CLI arguments
+ *
+ * Takes a semicolon-separated list of CLI arguments and applies them to the
+ * current global state context.
+ *
+ * \param[in] pArgs The argument string to parse.
+ */
+void parseArgs(const char *pArgs) {
+  std::istringstream s(pArgs);
+  std::string arg;
+  std::vector<std::string> args;
+
+  while (std::getline(s, arg, ';')) {
+    args.push_back(arg);
+  }
+
+  topologic::parse(topologicState, args);
 }
 
 /**\ingroup topologic-javascript-exports

@@ -879,6 +879,6 @@ static bool parseModel(state<Q, d> &s, efgy::json::value<> &value) {
 
   return efgy::geometry::with<Q, func, d>(s, format, type, depth, rdepth);
 }
-};
+}
 
 #endif

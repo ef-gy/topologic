@@ -25,7 +25,7 @@ CXXFLAGS:=$(CFLAGS) -fno-exceptions
 EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -s ASSERTIONS=1 --memory-init-file 0
 EMXXFLAGS:=$(EMCFLAGS)
 
-JSFUNCTIONS:=['_main','_interpretDrag','_setActiveDimension','_forceRedraw','_setFlameColouring','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_parseJSON','_getModels','_initialiseGL']
+JSFUNCTIONS:=['_main','_interpretDrag','_setActiveDimension','_forceRedraw','_setFlameColouring','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_getArgs','_parseJSON','_parseArgs','_getModels','_initialiseGL']
 
 BINARIES:=$(filter-out %-sdl,$(basename $(notdir $(wildcard src/*.cpp)))) $(addprefix test-case-,$(notdir $(wildcard src/test-case/*.cpp)))
 
