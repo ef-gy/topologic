@@ -62,12 +62,14 @@ namespace topologic {
  *
  * \param[out] topologicState The topologic::state instance to populate
  * \param[in]  args           Command line argument vector.
+ * \param[in]  readFiles      Try to treat unrecognised options as files.
  *
  * \returns The output mode set in the argument vector. Defaults to outNone.
  */
 template <typename Q, unsigned int dim>
 enum outputMode parse(state<Q, dim> &topologicState,
-                      const std::vector<std::string> &args) {
+                      const std::vector<std::string> &args,
+                      bool readFiles = true) {
   enum outputMode out = outNone;
 
 #if !defined(NOLIBRARIES)
@@ -77,30 +79,33 @@ enum outputMode parse(state<Q, dim> &topologicState,
   std::string model = "cube";
   std::string format = "cartesian";
 
-  efgy::cli::option oversion("-{0,2}version", [](std::smatch &) -> bool {
-    std::cout << "Topologic/V" << version << "\n"
-                                             "libefgy/V" << efgy::version
-              << "\n"
-                 "Maximum render depth of this binary is " << dim
-              << " dimensions.\n"
-                 "Supported models:";
-    std::set<const char *> models;
-    for (const char *m :
-         efgy::geometry::with<Q, efgy::geometry::functor::models, dim>(
-             models, "*", 0, 0)) {
-      std::cout << " " << m;
-    }
-    std::cout << "\n"
-                 "Supported vector coordinate formats:";
-    std::set<const char *> formats;
-    for (const char *f :
-         efgy::geometry::with<Q, efgy::geometry::functor::formats, dim>(
-             formats, "*", "*", 0, 0)) {
-      std::cout << " " << f;
-    }
-    std::cout << "\n";
-    return true;
-  }, "Print version information.");
+  efgy::cli::option oversion(
+      "-{0,2}version",
+      [](std::smatch &) -> bool {
+        std::cout << "Topologic/V" << version << "\n"
+                                                 "libefgy/V" << efgy::version
+                  << "\n"
+                     "Maximum render depth of this binary is " << dim
+                  << " dimensions.\n"
+                     "Supported models:";
+        std::set<const char *> models;
+        for (const char *m :
+             efgy::geometry::with<Q, efgy::geometry::functor::models, dim>(
+                 models, "*", 0, 0)) {
+          std::cout << " " << m;
+        }
+        std::cout << "\n"
+                     "Supported vector coordinate formats:";
+        std::set<const char *> formats;
+        for (const char *f :
+             efgy::geometry::with<Q, efgy::geometry::functor::formats, dim>(
+                 formats, "*", "*", 0, 0)) {
+          std::cout << " " << f;
+        }
+        std::cout << "\n";
+        return true;
+      },
+      "Print version information.");
 
   efgy::cli::option omodel(
       "-{0,2}model:([0-9]+)-([a-z-]+)(@([0-9]+))?(:([a-z]+))?",
@@ -118,19 +123,20 @@ enum outputMode parse(state<Q, dim> &topologicState,
       "Sets all the model type parameters. The form is: D-MODEL[@R][:FORMAT], "
       "e.g. 3-cube@4:polar. The default is 4-cube@4:cartesian.");
 
-  efgy::cli::option oformat(
-      "-{0,2}(none|json|svg|arguments)", [&out](std::smatch &m) -> bool {
-        if (m[1] == "json") {
-          out = topologic::outJSON;
-        } else if (m[1] == "svg") {
-          out = topologic::outSVG;
-        } else if (m[1] == "arguments") {
-          out = topologic::outArguments;
-        } else {
-          out = topologic::outNone;
-        }
-        return true;
-      }, "Select an output format.");
+  efgy::cli::option oformat("-{0,2}(none|json|svg|arguments)",
+                            [&out](std::smatch &m) -> bool {
+                              if (m[1] == "json") {
+                                out = topologic::outJSON;
+                              } else if (m[1] == "svg") {
+                                out = topologic::outSVG;
+                              } else if (m[1] == "arguments") {
+                                out = topologic::outArguments;
+                              } else {
+                                out = topologic::outNone;
+                              }
+                              return true;
+                            },
+                            "Select an output format.");
 
   efgy::cli::option oifs(
       "-{0,2}random:([0-9]+)(:([0-9]+))?(:([0-9]+))?(:pre)?(:post)?",
@@ -206,10 +212,12 @@ enum outputMode parse(state<Q, dim> &topologicState,
       "Set the precision, or the constant factor for some formulae.");
 
   efgy::cli::option oiterations(
-      "-{0,2}iterations:([0-9]+)", [&topologicState](std::smatch &m) -> bool {
+      "-{0,2}iterations:([0-9]+)",
+      [&topologicState](std::smatch &m) -> bool {
         topologicState.state<Q, 2>::parameter.iterations = Q(std::stoll(m[1]));
         return true;
-      }, "Set the number of iterations for iterative formulae.");
+      },
+      "Set the number of iterations for iterative formulae.");
 
   efgy::cli::option ofrom(
       "-{0,2}from((:[0-9.]+){2,})(:polar)?",
@@ -267,30 +275,32 @@ enum outputMode parse(state<Q, dim> &topologicState,
 
   efgy::cli::options<>::common().apply(args);
 
-  for (const auto &f : efgy::cli::options<>::common().remainder) {
-    std::ifstream in(f);
-    std::istreambuf_iterator<char> eos;
-    std::string s(std::istreambuf_iterator<char>(in), eos);
+  if (readFiles) {
+    for (const auto &f : efgy::cli::options<>::common().remainder) {
+      std::ifstream in(f);
+      std::istreambuf_iterator<char> eos;
+      std::string s(std::istreambuf_iterator<char>(in), eos);
 
 #if !defined(NOLIBRARIES)
-    xml::parser p(s, f);
-    if (p.valid) {
-      parse(topologicState, p);
-      parseModel<Q, dim, updateModel>(topologicState, p);
-    } else
+      xml::parser p(s, f);
+      if (p.valid) {
+        parse(topologicState, p);
+        parseModel<Q, dim, updateModel>(topologicState, p);
+      } else
 #endif
-    {
-      efgy::json::value<> v;
-      s >> v;
-      parse(topologicState, v);
-      parseModel<Q, dim, updateModel>(topologicState, v);
-    }
+      {
+        efgy::json::value<> v;
+        s >> v;
+        parse(topologicState, v);
+        parseModel<Q, dim, updateModel>(topologicState, v);
+      }
 
-    if (topologicState.model) {
-      format = topologicState.model->formatID;
-      model = topologicState.model->id;
-      depth = topologicState.model->depth;
-      rdepth = topologicState.model->renderDepth;
+      if (topologicState.model) {
+        format = topologicState.model->formatID;
+        model = topologicState.model->id;
+        depth = topologicState.model->depth;
+        rdepth = topologicState.model->renderDepth;
+      }
     }
   }
 

@@ -18,7 +18,6 @@ var topologicActiveDimension=3;
 var topologicFlameColouring=false;
 
 var topologicIgnoreHashChange = false;
-var originalSettings = JSON.parse(getJSON());
 var settings = {};
 
 function parseHash() {
@@ -65,34 +64,11 @@ function topologicUpdateDimension() {
 }
 
 function topologicUpdateCurrentModel() {
-    setFlameColouring(topologicFlameColouring);
+  setFlameColouring(topologicFlameColouring);
 
-    forceRedraw();
+  forceRedraw();
 
-    topologicIgnoreHashChange = true;
-    window.location.hash = getHash();
-    topologicIgnoreHashChange = false;
-}
-
-function arrayEquals (a, b) {
-  if (Array.isArray(a)) {
-    if (Array.isArray(b)) {
-      if (a.length === b.length) {
-        for (j in a) {
-          if (!arrayEquals(a[j], b[j])) {
-            return false;
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  } else {
-    return a == b;
-  }
+  updateHash();
 }
 
 function getHash() {
@@ -100,11 +76,11 @@ function getHash() {
 }
 
 function updateHash(silent) {
-    silent = typeof silent !== 'undefined' ? silent : true;
+  silent = typeof silent !== 'undefined' ? silent : true;
 
-    topologicIgnoreHashChange = silent;
-    window.location.hash = getHash();
-    topologicIgnoreHashChange = !silent;
+  topologicIgnoreHashChange = silent;
+  window.location.hash = getHash();
+  topologicIgnoreHashChange = !silent;
 }
 
 function getLink() {
@@ -157,10 +133,10 @@ $(document).ready(function() {
 
   for (s in settings) (function(s) {
     $('#' + s).change(function() {
-      console.log(s, '=', $(this).val());
-      settings[s] = $(this).val();
-      if (typeof originalSettings[s] === 'number') {
-        settings[s] = parseFloat(settings[s]);
+      if (typeof settings[s] === 'number') {
+        settings[s] = parseFloat($(this).val());
+      } else {
+        settings[s] = $(this).val();
       }
       updateSettings();
     });

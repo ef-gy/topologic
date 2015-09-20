@@ -467,7 +467,7 @@ void parseArgs(const char *pArgs) {
     args.push_back(arg);
   }
 
-  topologic::parse(topologicState, args);
+  topologic::parse(topologicState, args, false);
 }
 
 /**\ingroup topologic-javascript-exports
