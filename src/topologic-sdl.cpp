@@ -273,7 +273,7 @@ void process(void) {
  *
  * \returns 0 on success, nonzero otherwise.
  */
-int main(int, char *) {
+int main(int, char **) {
   efgy::geometry::with<GLfloat, topologic::updateModel, MAXDEPTH>(
       topologicState, "cartesian", "cube", 4, 4);
 
