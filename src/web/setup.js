@@ -1,6 +1,4 @@
-
 var Module = {
-  arguments: ['topologic-webgl'].concat(window.location.hash.substring(1).match(/[^+\s]+/g)),
   preRun: [],
   postRun: [],
   print: console.log,
