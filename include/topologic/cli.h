@@ -72,11 +72,13 @@ namespace topologic {
  */
 template <typename FP> int cli(int argc, char *argv[]) {
   state<FP, MAXDEPTH> topologicState;
-  enum outputMode out = outNone;
+  std::vector<std::string> args;
 
-  if (!parseArguments(topologicState, argc, argv, out)) {
-    return 1;
+  for (std::size_t i = 0; i < argc; i++) {
+    args.push_back(argv[i]);
   }
+
+  enum outputMode out = parse(topologicState, args);
 
   if (!topologicState.model) {
     std::cerr << "error: no model to render\n";

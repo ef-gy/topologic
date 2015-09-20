@@ -2,8 +2,8 @@
  * \brief Command line argument parsing
  *
  * The different frontends tend to receive command line arguments and this
- * header provides the topologic::parseArguments function to parse said command
- * line arguments in a common way.
+ * header provides the topologic::parse function to parse said command line
+ * arguments.
  *
  * \copyright
  * Copyright (c) 2012-2015, Topologic Project Members
@@ -61,15 +61,15 @@ namespace topologic {
  * \tparam dim Maximum render depth of the topologic::state instance
  *
  * \param[out] topologicState The topologic::state instance to populate
- * \param[in]  argc           Number of arguments in the argv array
- * \param[in]  argv           Command line argument array (c.f. main())
- * \param[out] out            Output mode, e.g. topologic::outGL
+ * \param[in]  args           Command line argument vector.
  *
- * \returns 'true' if things went smoothly, 'false' otherwise.
+ * \returns The output mode set in the argument vector. Defaults to outNone.
  */
 template <typename Q, unsigned int dim>
-bool parseArguments(state<Q, dim> &topologicState, int argc, char *argv[],
-                    enum outputMode &out) {
+enum outputMode parse(state<Q, dim> &topologicState,
+                      const std::vector<std::string> &args) {
+  enum outputMode out = outNone;
+
 #if !defined(NOLIBRARIES)
   topologic::xml XML;
 #endif
@@ -271,7 +271,7 @@ bool parseArguments(state<Q, dim> &topologicState, int argc, char *argv[],
       "number of coordinates given. The polar suffix treats the input as polar "
       "coordinates.");
 
-  efgy::cli::options<>::common().apply(argc, argv);
+  efgy::cli::options<>::common().apply(args);
 
   for (const auto &f : efgy::cli::options<>::common().remainder) {
     std::ifstream in(f);
@@ -305,8 +305,8 @@ bool parseArguments(state<Q, dim> &topologicState, int argc, char *argv[],
                                               depth, rdepth);
   }
 
-  return true;
+  return out;
 }
-};
+}
 
 #endif
