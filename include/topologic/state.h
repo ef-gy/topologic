@@ -339,8 +339,7 @@ public:
                      efgy::geometry::transformation::rotation<Q, d>(
                          x / (Q(M_PI) * Q(50.)), 0, d - 1) *
                      efgy::geometry::transformation::rotation<Q, d>(
-                         y / (Q(M_PI) * Q(-50.)), 1, d - 1) *
-                     reverseLookAt;
+                         y / (Q(M_PI) * Q(-50.)), 1, d - 1) * reverseLookAt;
 
     magnify(z / Q(50.));
 
@@ -449,7 +448,7 @@ public:
   bool setFromCoordinate(const unsigned int &coord, const Q &value,
                          const efgy::maybe<unsigned int> &dimension =
                              efgy::maybe<unsigned int>()) {
-    if (!active && (!dimension || ((unsigned int)dimension != d))) {
+    if (!active && (!dimension || ((unsigned int) dimension != d))) {
       return state<Q, d - 1>::setFromCoordinate(coord, value, dimension);
     }
 
@@ -489,7 +488,7 @@ public:
   const Q getFromCoordinate(const unsigned int &coord,
                             const efgy::maybe<unsigned int> &dimension =
                                 efgy::maybe<unsigned int>()) const {
-    if (!active && (!dimension || ((unsigned int)dimension != d))) {
+    if (!active && (!dimension || ((unsigned int) dimension != d))) {
       return state<Q, d - 1>::getFromCoordinate(coord);
     }
 
@@ -591,22 +590,36 @@ public:
     }
 
     std::stringstream s("");
+    bool printFrom = !base::polarCoordinates;
 
-    s << "from";
-
-    for (std::size_t i = 0; i < d; i++) {
-      s << ":" << (base::polarCoordinates ? fromp[i] : from[i]);
+    if (!printFrom) {
+      for (std::size_t i = 0; i < d; i++) {
+        if (d == 3) {
+          printFrom = printFrom || ((i == 0) ? fromp[i] != 3 : fromp[i] != 1);
+        } else {
+          printFrom =
+              printFrom || ((i == 0) ? fromp[i] != 2 : fromp[i] != 1.57);
+        }
+      }
     }
 
-    if (base::polarCoordinates) {
-      s << ":polar";
-    }
+    if (printFrom) {
+      s << "f";
 
-    value.push_back(s.str());
-    s.str("");
+      for (std::size_t i = 0; i < d; i++) {
+        s << ":" << (base::polarCoordinates ? fromp[i] : from[i]);
+      }
+
+      if (base::polarCoordinates) {
+        s << ":polar";
+      }
+
+      value.push_back(s.str());
+      s.str("");
+    }
 
     if (!efgy::math::isIdentity(transformation.transformationMatrix)) {
-      s << "transform";
+      s << "t";
 
       for (std::size_t i = 0; i <= d; i++) {
         for (std::size_t j = 0; j <= d; j++) {
@@ -779,9 +792,9 @@ public:
    * \returns 'false' because the 1D fix point does not have a 'from'
    *          point, so the function cannot succeed.
    */
-  constexpr bool setFromCoordinate(
-      const unsigned int &, const Q &,
-      const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const {
+  constexpr bool setFromCoordinate(const unsigned int &, const Q &,
+                                   const efgy::maybe<unsigned int> & =
+                                       efgy::maybe<unsigned int>()) const {
     return false;
   }
 
@@ -794,9 +807,9 @@ public:
    * \returns The default-constructed value of Q, as the 1D fix point does
    *          not have a 'from' point to query.
    */
-  constexpr const Q getFromCoordinate(
-      const unsigned int &,
-      const efgy::maybe<unsigned int> & = efgy::maybe<unsigned int>()) const {
+  constexpr const Q getFromCoordinate(const unsigned int &,
+                                      const efgy::maybe<unsigned int> & =
+                                          efgy::maybe<unsigned int>()) const {
     return Q();
   }
 
@@ -896,44 +909,76 @@ public:
   std::vector<std::string> &args(std::vector<std::string> &value) const {
     std::stringstream s("");
     if (model) {
-      s << "model:" << model->depth << "-" << model->id << "@"
-        << model->renderDepth << ":" << model->formatID;
+      s << "m:" << model->depth << "-" << model->id;
+      if (model->renderDepth != 4) {
+        s << "@" << model->renderDepth;
+      }
+      if (std::string(model->formatID) != "cartesian") {
+        s << ":" << model->formatID;
+      }
       value.push_back(s.str());
       s.str("");
     }
 
-    s << "radius:" << parameter.radius << ":" << parameter.radius2;
-    value.push_back(s.str());
-    s.str("");
+    if ((parameter.radius != 1) || (parameter.radius2 != 0.5)) {
+      s << "R:" << parameter.radius;
+      if (parameter.radius2 != 0.5) {
+        s << ":" << parameter.radius2;
+        value.push_back(s.str());
+      }
+      s.str("");
+    }
 
-    s << "constant:" << parameter.constant;
-    value.push_back(s.str());
-    s.str("");
+    if (parameter.constant != 0.9) {
+      s << "c:" << parameter.constant;
+      value.push_back(s.str());
+      s.str("");
+    }
 
-    s << "precision:" << parameter.precision;
-    value.push_back(s.str());
-    s.str("");
+    if (parameter.precision != 10) {
+      s << "p:" << parameter.precision;
+      value.push_back(s.str());
+      s.str("");
+    }
 
-    s << "iterations:" << parameter.iterations;
-    value.push_back(s.str());
-    s.str("");
+    if (parameter.iterations != 4) {
+      s << "i:" << parameter.iterations;
+      value.push_back(s.str());
+      s.str("");
+    }
 
-    s << "random:" << parameter.seed << ":" << parameter.functions << ":"
-      << parameter.flameCoefficients << (parameter.preRotate ? ":pre" : "")
-      << (parameter.postRotate ? ":post" : "");
-    value.push_back(s.str());
-    s.str("");
+    if ((parameter.seed != 0) || (parameter.functions != 3) ||
+        (parameter.flameCoefficients != 3) || !parameter.preRotate ||
+        parameter.postRotate) {
+      s << "r:" << parameter.seed << ":" << parameter.functions << ":"
+        << parameter.flameCoefficients << (parameter.preRotate ? ":pre" : "")
+        << (parameter.postRotate ? ":post" : "");
+      value.push_back(s.str());
+      s.str("");
+    }
 
     if (fractalFlameColouring) {
       value.push_back("colour:fractal-flame");
     } else {
-      s << "colour"
-        << ":b:" << background.red << ":" << background.green << ":"
-        << background.blue << ":" << background.alpha << ":w:" << wireframe.red
-        << ":" << wireframe.green << ":" << wireframe.blue << ":"
-        << wireframe.alpha << ":s:" << surface.red << ":" << surface.green
-        << ":" << surface.blue << ":" << surface.alpha;
-      value.push_back(s.str());
+      s << "colour";
+      if ((background.red != 1) || (background.green != 1) ||
+          (background.blue != 1) || (background.alpha != 1)) {
+        s << ":b:" << background.red << ":" << background.green << ":"
+          << background.blue << ":" << background.alpha;
+      }
+      if ((wireframe.red != 0) || (wireframe.green != 0) ||
+          (wireframe.blue != 0) || (wireframe.alpha != 0.8)) {
+        s << ":w:" << wireframe.red << ":" << wireframe.green << ":"
+          << wireframe.blue << ":" << wireframe.alpha;
+      }
+      if ((surface.red != 0) || (surface.green != 0) || (surface.blue != 0) ||
+          (surface.alpha != 0.2)) {
+        s << ":s:" << surface.red << ":" << surface.green << ":" << surface.blue
+          << ":" << surface.alpha;
+      }
+      if (s.str() != "colour") {
+        value.push_back(s.str());
+      }
       s.str("");
     }
 
@@ -1049,8 +1094,8 @@ public:
  * \tparam d Maximum render depth
  */
 template <typename C, typename Q, unsigned int d>
-static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
-                                               const state<Q, d> &pState) {
+    static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
+                                                   const state<Q, d> &pState) {
   stream.stream << "<t:camera";
   if (pState.polarCoordinates) {
     stream.stream << " radius='" << double(pState.fromp[0]) << "'";
@@ -1074,16 +1119,15 @@ static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
   } else {
     for (unsigned int i = 0; i <= d; i++) {
       for (unsigned int j = 0; j <= d; j++) {
-        stream.stream << " e" << i << "-" << j << "='"
-                      << double(
-                             pState.transformation.transformationMatrix[i][j])
-                      << "'";
+        stream.stream
+            << " e" << i << "-" << j << "='"
+            << double(pState.transformation.transformationMatrix[i][j]) << "'";
       }
     }
   }
   stream.stream << "/>";
 
-  return operator<<<C, Q, d - 1>(stream, pState);
+  return operator<< <C, Q, d - 1>(stream, pState);
 }
 
 /**\brief Gather model metadata (1D fix point)
@@ -1103,8 +1147,8 @@ static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
  * \tparam d Maximum render depth
  */
 template <typename C, typename Q, unsigned int d>
-static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
-                                               const state<Q, 1> &pState) {
+    static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
+                                                   const state<Q, 1> &pState) {
   stream.stream << "<t:camera mode='"
                 << (pState.polarCoordinates ? "polar" : "cartesian") << "'/>";
   if (pState.model) {
@@ -1114,30 +1158,28 @@ static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
                                                   "<t:coordinates format='"
                   << pState.model->formatID << "'/>";
   }
-  stream.stream << "<t:options radius='" << double(pState.parameter.radius)
-                << "'/>"
-                << "<t:precision polar='" << double(pState.parameter.precision)
-                << "'/>"
-                << "<t:ifs iterations='" << pState.parameter.iterations
-                << "' seed='" << pState.parameter.seed << "' functions='"
-                << pState.parameter.functions << "' pre-rotate='"
-                << (pState.parameter.preRotate ? "yes" : "no")
-                << "' post-rotate='"
-                << (pState.parameter.postRotate ? "yes" : "no") << "'/>"
-                << "<t:flame coefficients='"
-                << pState.parameter.flameCoefficients << "'/>"
-                << "<t:colour-background red='" << double(pState.background.red)
-                << "' green='" << double(pState.background.green) << "' blue='"
-                << double(pState.background.blue) << "' alpha='"
-                << double(pState.background.alpha) << "'/>"
-                << "<t:colour-wireframe red='" << double(pState.wireframe.red)
-                << "' green='" << double(pState.wireframe.green) << "' blue='"
-                << double(pState.wireframe.blue) << "' alpha='"
-                << double(pState.wireframe.alpha) << "'/>"
-                << "<t:colour-surface red='" << double(pState.surface.red)
-                << "' green='" << double(pState.surface.green) << "' blue='"
-                << double(pState.surface.blue) << "' alpha='"
-                << double(pState.surface.alpha) << "'/>";
+  stream.stream
+      << "<t:options radius='" << double(pState.parameter.radius) << "'/>"
+      << "<t:precision polar='" << double(pState.parameter.precision) << "'/>"
+      << "<t:ifs iterations='" << pState.parameter.iterations << "' seed='"
+      << pState.parameter.seed << "' functions='" << pState.parameter.functions
+      << "' pre-rotate='" << (pState.parameter.preRotate ? "yes" : "no")
+      << "' post-rotate='" << (pState.parameter.postRotate ? "yes" : "no")
+      << "'/>"
+      << "<t:flame coefficients='" << pState.parameter.flameCoefficients
+      << "'/>"
+      << "<t:colour-background red='" << double(pState.background.red)
+      << "' green='" << double(pState.background.green) << "' blue='"
+      << double(pState.background.blue) << "' alpha='"
+      << double(pState.background.alpha) << "'/>"
+      << "<t:colour-wireframe red='" << double(pState.wireframe.red)
+      << "' green='" << double(pState.wireframe.green) << "' blue='"
+      << double(pState.wireframe.blue) << "' alpha='"
+      << double(pState.wireframe.alpha) << "'/>"
+      << "<t:colour-surface red='" << double(pState.surface.red) << "' green='"
+      << double(pState.surface.green) << "' blue='"
+      << double(pState.surface.blue) << "' alpha='"
+      << double(pState.surface.alpha) << "'/>";
 
   return stream;
 }
@@ -1160,8 +1202,9 @@ static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
  * \tparam d Maximum render depth
  */
 template <typename C, typename Q, unsigned int d>
-static inline efgy::json::ostream<C> operator<<(efgy::json::ostream<C> stream,
-                                                const state<Q, d> &pState) {
+    static inline efgy::json::ostream<C> operator<<(efgy::json::ostream<C>
+                                                        stream,
+                                                    const state<Q, d> &pState) {
   efgy::json::value<Q> v;
   return stream << pState.json(v);
 }
@@ -1182,8 +1225,8 @@ static inline efgy::json::ostream<C> operator<<(efgy::json::ostream<C> stream,
  * \tparam d Maximum render depth
  */
 template <typename C, typename Q, unsigned int d>
-static inline efgy::svg::ostream<C> operator<<(efgy::svg::ostream<C> stream,
-                                               const state<Q, d> &pState) {
+    static inline efgy::svg::ostream<C> operator<<(efgy::svg::ostream<C> stream,
+                                                   const state<Q, d> &pState) {
   pState.model->svg(stream.stream, true);
   return stream;
 }
