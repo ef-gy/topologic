@@ -925,8 +925,8 @@ public:
       s << "R:" << parameter.radius;
       if (parameter.radius2 != 0.5) {
         s << ":" << parameter.radius2;
-        value.push_back(s.str());
       }
+      value.push_back(s.str());
       s.str("");
     }
 
