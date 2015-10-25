@@ -598,7 +598,8 @@ public:
           printFrom = printFrom || ((i == 0) ? fromp[i] != 3 : fromp[i] != 1);
         } else {
           printFrom =
-              printFrom || ((i == 0) ? fromp[i] != 2 : fromp[i] != 1.57);
+              printFrom ||
+              ((i == 0) ? fromp[i] != 2 : std::abs(fromp[i] - 1.57) > 0.01);
         }
       }
     }
@@ -929,7 +930,7 @@ public:
       s.str("");
     }
 
-    if (parameter.constant != 0.9) {
+    if (std::abs(parameter.constant - 0.9) > 0.01) {
       s << "c:" << parameter.constant;
       value.push_back(s.str());
       s.str("");
@@ -967,12 +968,12 @@ public:
           << background.blue << ":" << background.alpha;
       }
       if ((wireframe.red != 0) || (wireframe.green != 0) ||
-          (wireframe.blue != 0) || (wireframe.alpha != 0.8)) {
+          (wireframe.blue != 0) || (std::abs(wireframe.alpha - 0.8) > 0.01)) {
         s << ":w:" << wireframe.red << ":" << wireframe.green << ":"
           << wireframe.blue << ":" << wireframe.alpha;
       }
       if ((surface.red != 0) || (surface.green != 0) || (surface.blue != 0) ||
-          (surface.alpha != 0.2)) {
+          (std::abs(surface.alpha - 0.2) > 0.01)) {
         s << ":s:" << surface.red << ":" << surface.green << ":" << surface.blue
           << ":" << surface.alpha;
       }
