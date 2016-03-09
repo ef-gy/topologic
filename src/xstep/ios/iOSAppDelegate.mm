@@ -6,8 +6,12 @@
  * iOS frontend.
  *
  * \copyright
- * Created by Magnus Deininger on 11/10/2013.
- * Copyright (c) 2012-2015, Topologic Project Members
+ * This file is part of the Topologic project, which is released as open source
+ * under the terms of an MIT/X11-style licence, described in the COPYING file.
+ *
+ * \see Project Documentation: http://ef.gy/documentation/topologic
+ * \see Project Source Code: https://github.com/ef-gy/topologic
+ * \see Licence Terms: https://github.com/ef-gy/topologic/blob/master/COPYING
  */
 
 #import "iOSAppDelegate.h"
