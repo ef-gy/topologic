@@ -302,7 +302,6 @@
                 <outlet property="formats" destination="kDg-tb-A64" id="OuT-jd-kHa"/>
                 <outlet property="models" destination="7447" id="7480"/>
                 <outlet property="openGL" destination="678" id="1050"/>
-                <outlet property="subtypeSegmentedControl" destination="2564" id="4501"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>

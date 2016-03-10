@@ -371,7 +371,7 @@
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = src/xstep/desktop/Topologic.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
@@ -403,7 +403,7 @@
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = src/xstep/desktop/Topologic.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer: Magnus Deininger (Q4VA2E2HNK)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;

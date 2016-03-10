@@ -31,14 +31,14 @@
 		0
 	};
 	
-	NSOpenGLPixelFormat *pf = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attrs] autorelease];
+	NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
 	
 	if (!pf)
 	{
 		NSLog(@"No OpenGL pixel format");
 	}
 
-	return self = [super initWithFrame:frame pixelFormat: [pf autorelease]];
+	return self = [super initWithFrame:frame pixelFormat:pf];
 }
 
 - (void)prepareOpenGL
