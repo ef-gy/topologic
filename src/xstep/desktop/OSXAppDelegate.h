@@ -69,6 +69,10 @@
      * formats is stored.
      */
     NSPopUpButton IBOutlet *formats;
+
+    IBOutlet NSSegmentedControl *modelDepths;
+    IBOutlet NSSegmentedControl *renderDepths;
+    IBOutlet NSSegmentedControl *cameraDepths;
 }
 
 /**\brief Application window

@@ -233,10 +233,10 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E9813AF4-74CD-4E16-9921-5D61264F3FEF" label="Model Depth" paletteLabel="Model Depth" id="2566">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="27"/>
+                        <size key="minSize" width="104" height="24"/>
                         <size key="maxSize" width="264" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="2564">
-                            <rect key="frame" x="0.0" y="14" width="225" height="27"/>
+                            <rect key="frame" x="0.0" y="14" width="220" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2565">
@@ -299,9 +299,12 @@
         </window>
         <customObject id="494" customClass="OSXAppDelegate">
             <connections>
+                <outlet property="cameraDepths" destination="2570" id="Eor-m8-4BG"/>
                 <outlet property="formats" destination="kDg-tb-A64" id="OuT-jd-kHa"/>
+                <outlet property="modelDepths" destination="2564" id="ZAU-cS-S0g"/>
                 <outlet property="models" destination="7447" id="7480"/>
                 <outlet property="openGL" destination="678" id="1050"/>
+                <outlet property="renderDepths" destination="P5U-er-bLU" id="1fS-VM-P0L"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>

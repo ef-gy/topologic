@@ -304,6 +304,8 @@ static topologic::xml xml;
     [models removeAllItems];
     [formats removeAllItems];
 
+//    [modelDepths setSegmentCount:0];
+
     std::set<std::string> mod;
     int li = 2;
     int i;
