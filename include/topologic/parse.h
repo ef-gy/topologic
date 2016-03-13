@@ -111,7 +111,7 @@ public:
    * \returns 'true' if the state object has a valid model pointer at
    *          the time the function returns.
    */
-  static output pass(const argument out) { return out.model != 0; }
+  static output pass(argument out) { return out.model != 0; }
 };
 
 /**\brief Update transformation matrix of state object instance
