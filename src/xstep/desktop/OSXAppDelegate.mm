@@ -140,37 +140,37 @@ static topologic::xml xml;
 
 - (BOOL)cameraActiveCoordinate0Enabled
 {
-  return activeCamera >= 0;
+  return activeCamera >= 2;
 }
 
 - (BOOL)cameraActiveCoordinate1Enabled
 {
-  return activeCamera >= 0;
+  return activeCamera >= 2;
 }
 
 - (BOOL)cameraActiveCoordinate2Enabled
 {
-  return activeCamera >= 0;
+  return activeCamera >= 3;
 }
 
 - (BOOL)cameraActiveCoordinate3Enabled
 {
-  return activeCamera >= 1;
+  return activeCamera >= 4;
 }
 
 - (BOOL)cameraActiveCoordinate4Enabled
 {
-  return activeCamera >= 2;
+  return activeCamera >= 5;
 }
 
 - (BOOL)cameraActiveCoordinate5Enabled
 {
-  return activeCamera >= 3;
+  return activeCamera >= 6;
 }
 
 - (BOOL)cameraActiveCoordinate6Enabled
 {
-  return activeCamera >= 4;
+  return activeCamera >= 7;
 }
 
 - (NSString *)cameraActiveCoordinate0Label
@@ -234,7 +234,7 @@ static topologic::xml xml;
   [self willChangeValueForKey:@"cameraActiveCoordinate5"];
   [self willChangeValueForKey:@"cameraActiveCoordinate6"];
   
-  topologicState.setActive((unsigned int)(activeCamera+3));
+  topologicState.setActive((unsigned int)(activeCamera));
   
   [self didChangeValueForKey:@"cameraActiveCoordinate6"];
   [self didChangeValueForKey:@"cameraActiveCoordinate5"];
@@ -302,13 +302,15 @@ static topologic::xml xml;
 - (void)awakeFromNib
 {
   using namespace efgy::geometry;
-
+  
   [models removeAllItems];
+  [baseModels removeAllItems];
   [formats removeAllItems];
-
+  
   [modelDepths setSegmentCount:0];
   [renderDepths setSegmentCount:0];
-
+  [cameraDepths setSegmentCount:0];
+  
   std::set<std::string> mod;
   int li = 2;
   int i;
@@ -330,7 +332,13 @@ static topologic::xml xml;
   {
     [formats addItemWithTitle:@(f)];
   }
-
+  
+  std::set<const char*> bmods;
+  for (const char *b : with<GLfloat,functor::models,MAXDEPTH>(bmods,"*",0,0))
+  {
+    [baseModels addItemWithTitle:@(b)];
+  }
+  
   std::set<unsigned int> dep;
   i = 0;
   with<GLfloat,functor::modelDimensions,MAXDEPTH>(dep,"*",0,0);
@@ -342,20 +350,23 @@ static topologic::xml xml;
     [modelDepths setLabel:@(label.c_str()) forSegment:i];
     i++;
   }
-
+  
   std::set<unsigned int> rdep;
   i = 0;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(rdep,"*",0,0);
   [renderDepths setSegmentCount:rdep.size()];
+  [cameraDepths setSegmentCount:rdep.size()];
   for (unsigned int d : rdep)
   {
     std::string label = std::to_string(d) + "D";
     [[renderDepths cell] setTag:d forSegment:i];
+    [[cameraDepths cell] setTag:d forSegment:i];
     [renderDepths setLabel:@(label.c_str()) forSegment:i];
+    [cameraDepths setLabel:@(label.c_str()) forSegment:i];
     i++;
   }
-
-  [self setActiveCamera:0];
+  
+  [self setActiveCamera:4];
   [self setActiveCameraType:1];
   
   [self setDrawerMode:1];

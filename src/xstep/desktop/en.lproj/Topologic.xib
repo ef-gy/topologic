@@ -210,26 +210,29 @@
                             </connections>
                         </segmentedControl>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="9C25847E-FDF4-4CCC-9F0C-C9C33B671332" label="Base Model" paletteLabel="Base Model" id="1331">
+                    <toolbarItem implicitItemIdentifier="6A1481E5-AE03-4A31-B9B1-65462735AD7D" label="Base Model" paletteLabel="Base Model" id="E9m-12-9VQ" userLabel="Base Model">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="71" height="24"/>
-                        <size key="maxSize" width="186" height="28"/>
-                        <segmentedControl key="view" verticalHuggingPriority="750" id="1329">
-                            <rect key="frame" x="0.0" y="14" width="186" height="24"/>
+                        <size key="minSize" width="100" height="26"/>
+                        <size key="maxSize" width="100" height="26"/>
+                        <popUpButton key="view" verticalHuggingPriority="750" id="EG2-3S-MZI">
+                            <rect key="frame" x="0.0" y="14" width="100" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
-                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="1330">
-                                <font key="font" metaFont="system"/>
-                                <segments>
-                                    <segment label="simplex" tag="2"/>
-                                    <segment label="cube" width="56" selected="YES"/>
-                                    <segment label="sphere" width="56" tag="1"/>
-                                </segments>
-                            </segmentedCell>
-                            <connections>
-                                <binding destination="494" name="selectedLabel" keyPath="model" id="HvT-6G-IN8"/>
-                            </connections>
-                        </segmentedControl>
+                            <popUpButtonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="K71-s4-UyL">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="BE3-uS-g13">
+                                    <items>
+                                        <menuItem title="simplex" id="MV9-J7-Hw8"/>
+                                        <menuItem title="cube" state="on" id="Ebv-2R-zs8"/>
+                                        <menuItem title="sphere" id="9wd-h3-UGb"/>
+                                    </items>
+                                </menu>
+                                <connections>
+                                    <binding destination="494" name="selectedValue" keyPath="model" id="zaz-nD-5y5"/>
+                                </connections>
+                            </popUpButtonCell>
+                        </popUpButton>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E9813AF4-74CD-4E16-9921-5D61264F3FEF" label="Model Depth" paletteLabel="Model Depth" id="2566">
                         <nil key="toolTip"/>
@@ -279,7 +282,7 @@
                 <defaultToolbarItems>
                     <toolbarItem reference="6455"/>
                     <toolbarItem reference="1314"/>
-                    <toolbarItem reference="1331"/>
+                    <toolbarItem reference="E9m-12-9VQ"/>
                     <toolbarItem reference="2566"/>
                     <toolbarItem reference="HIn-hL-znx"/>
                 </defaultToolbarItems>
@@ -293,6 +296,7 @@
         </window>
         <customObject id="494" customClass="OSXAppDelegate">
             <connections>
+                <outlet property="baseModels" destination="EG2-3S-MZI" id="fwI-p5-rd6"/>
                 <outlet property="cameraDepths" destination="2570" id="Eor-m8-4BG"/>
                 <outlet property="formats" destination="kDg-tb-A64" id="OuT-jd-kHa"/>
                 <outlet property="modelDepths" destination="2564" id="ZAU-cS-S0g"/>
@@ -307,24 +311,6 @@
             <rect key="frame" x="0.0" y="0.0" width="271" height="755"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2570">
-                    <rect key="frame" x="18" y="683" width="209" height="24"/>
-                    <animations/>
-                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2571">
-                        <font key="font" metaFont="system"/>
-                        <segments>
-                            <segment label="2D" width="32" tag="-1"/>
-                            <segment label="3D" width="32" selected="YES"/>
-                            <segment label="4D" width="32" tag="1"/>
-                            <segment label="5D" width="32" tag="2"/>
-                            <segment label="6D" width="32" tag="3"/>
-                            <segment label="7D" tag="4"/>
-                        </segments>
-                    </segmentedCell>
-                    <connections>
-                        <binding destination="494" name="selectedTag" keyPath="activeCamera" id="2630"/>
-                    </connections>
-                </segmentedControl>
                 <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2614">
                     <rect key="frame" x="18" y="712" width="138" height="24"/>
                     <animations/>
@@ -661,6 +647,21 @@
                         <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="ckX-sn-z7R"/>
                     </connections>
                 </button>
+                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2570">
+                    <rect key="frame" x="18" y="683" width="110" height="24"/>
+                    <animations/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2571">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="2D" tag="-1"/>
+                            <segment label="3D" width="32" selected="YES"/>
+                            <segment label="4D" width="32" tag="1"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <binding destination="494" name="selectedTag" keyPath="activeCamera" id="2630"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
             <constraints>
                 <constraint firstItem="4481" firstAttribute="centerY" secondItem="0Ux-6m-rka" secondAttribute="centerY" id="00K-Sf-sTo"/>
@@ -692,6 +693,7 @@
                 <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="19y-Mh-83M" secondAttribute="leading" id="GeD-a1-xGR"/>
                 <constraint firstItem="4229" firstAttribute="top" secondItem="4223" secondAttribute="bottom" constant="8" symbolic="YES" id="H2u-80-2l2"/>
                 <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="d6N-J3-toV" secondAttribute="width" id="HXR-Xa-obX"/>
+                <constraint firstItem="2570" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="HlO-tM-kaS"/>
                 <constraint firstItem="4481" firstAttribute="width" secondItem="S84-hR-Mo7" secondAttribute="width" id="IVI-QG-t6S"/>
                 <constraint firstItem="4245" firstAttribute="top" secondItem="4240" secondAttribute="bottom" constant="2" id="KAL-MY-bR0"/>
                 <constraint firstItem="1KY-D6-LnR" firstAttribute="top" secondItem="i0N-PS-4gS" secondAttribute="bottom" constant="8" symbolic="YES" id="KhR-en-hBX"/>
@@ -775,7 +777,7 @@
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7447">
                     <rect key="frame" x="18" y="638" width="244" height="26"/>
                     <animations/>
-                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="7450" id="7448">
+                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="7450" id="7448" userLabel="Model">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="OtherViews" id="7449">
@@ -793,12 +795,12 @@
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kDg-tb-A64">
                     <rect key="frame" x="18" y="607" width="244" height="26"/>
                     <animations/>
-                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Xk2-Gc-6Qe" id="vTu-oG-pJm">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="vTu-oG-pJm" userLabel="Format">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="OtherViews" id="mPW-Os-Xd9">
                             <items>
-                                <menuItem title="Item 1" state="on" id="Xk2-Gc-6Qe"/>
+                                <menuItem title="Item 1" id="Xk2-Gc-6Qe"/>
                                 <menuItem title="Item 2" id="qwv-9q-aoQ"/>
                                 <menuItem title="Item 3" id="ln5-7e-Z7A"/>
                             </items>

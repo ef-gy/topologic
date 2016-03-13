@@ -48,28 +48,29 @@
      * though the openGL property.
      */
     OpenGLRenderer IBOutlet *openGL;
-
+    
     NSInteger drawerMode;
     NSInteger activeCamera;
-
+    
     NSString *model;
     NSString *format;
     NSInteger modelDepth;
     NSInteger renderDepth;
-
+    
     /**\brief Model list instance
      *
      * This is where the XIB reference for the list of models is stored.
      */
-    NSPopUpButton IBOutlet *models;
-
+    IBOutlet NSPopUpButton *models;
+    IBOutlet NSPopUpButton *baseModels;
+    
     /**\brief Coordinate format list instance
      *
      * This is where the XIB reference for the list of supported coordinate
      * formats is stored.
      */
-    NSPopUpButton IBOutlet *formats;
-
+    IBOutlet NSPopUpButton *formats;
+    
     IBOutlet NSSegmentedControl *modelDepths;
     IBOutlet NSSegmentedControl *renderDepths;
     IBOutlet NSSegmentedControl *cameraDepths;
