@@ -51,30 +51,6 @@ static topologic::xml xml;
 
 @synthesize window = _window;
 
-@synthesize cameraActiveCoordinate0;
-@synthesize cameraActiveCoordinate1;
-@synthesize cameraActiveCoordinate2;
-@synthesize cameraActiveCoordinate3;
-@synthesize cameraActiveCoordinate4;
-@synthesize cameraActiveCoordinate5;
-@synthesize cameraActiveCoordinate6;
-
-@synthesize cameraActiveCoordinate0Enabled;
-@synthesize cameraActiveCoordinate1Enabled;
-@synthesize cameraActiveCoordinate2Enabled;
-@synthesize cameraActiveCoordinate3Enabled;
-@synthesize cameraActiveCoordinate4Enabled;
-@synthesize cameraActiveCoordinate5Enabled;
-@synthesize cameraActiveCoordinate6Enabled;
-
-@synthesize cameraActiveCoordinate0Label;
-@synthesize cameraActiveCoordinate1Label;
-@synthesize cameraActiveCoordinate2Label;
-@synthesize cameraActiveCoordinate3Label;
-@synthesize cameraActiveCoordinate4Label;
-@synthesize cameraActiveCoordinate5Label;
-@synthesize cameraActiveCoordinate6Label;
-
 @synthesize model;
 @synthesize format;
 @synthesize modelDepth;
@@ -134,127 +110,9 @@ static topologic::xml xml;
   return [NSColor colorWithDeviceRed:topologicState.surface.red green:topologicState.surface.green blue:topologicState.surface.blue alpha:topologicState.surface.alpha];
 }
 
-- (BOOL)cameraActiveCoordinate0Enabled
-{
-  return activeCamera >= 2;
-}
-
-- (BOOL)cameraActiveCoordinate1Enabled
-{
-  return activeCamera >= 2;
-}
-
-- (BOOL)cameraActiveCoordinate2Enabled
-{
-  return activeCamera >= 3;
-}
-
-- (BOOL)cameraActiveCoordinate3Enabled
-{
-  return activeCamera >= 4;
-}
-
-- (BOOL)cameraActiveCoordinate4Enabled
-{
-  return activeCamera >= 5;
-}
-
-- (BOOL)cameraActiveCoordinate5Enabled
-{
-  return activeCamera >= 6;
-}
-
-- (BOOL)cameraActiveCoordinate6Enabled
-{
-  return activeCamera >= 7;
-}
-
-- (NSString *)cameraActiveCoordinate0Label
-{
-  return activeCameraType == 0 ? @"X" : @"r";
-}
-
-- (NSString *)cameraActiveCoordinate1Label
-{
-  return activeCameraType == 0 ? @"Y" : @"\u03b8\u2081";
-}
-
-- (NSString *)cameraActiveCoordinate2Label
-{
-  return activeCameraType == 0 ? @"Z" : @"\u03b8\u2082";
-}
-
-- (NSString *)cameraActiveCoordinate3Label
-{
-  return activeCameraType == 0 ? @"W" : @"\u03b8\u2083";
-}
-
-- (NSString *)cameraActiveCoordinate4Label
-{
-  return activeCameraType == 0 ? @"V" : @"\u03b8\u2084";
-}
-
-- (NSString *)cameraActiveCoordinate5Label
-{
-  return activeCameraType == 0 ? @"U" : @"\u03b8\u2085";
-}
-
-- (NSString *)cameraActiveCoordinate6Label
-{
-  return activeCameraType == 0 ? @"T" : @"\u03b8\u2086";
-}
-
 - (void)updateCamera
 {
-  [self willChangeValueForKey:@"cameraActiveCoordinate0Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate1Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate2Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate3Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate4Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate5Enabled"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate6Enabled"];
-  
-  [self willChangeValueForKey:@"cameraActiveCoordinate0Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate1Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate2Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate3Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate4Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate5Label"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate6Label"];
-  
-  [self willChangeValueForKey:@"cameraActiveCoordinate0"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate1"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate2"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate3"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate4"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate5"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate6"];
-  
   topologicState.setActive((unsigned int)(activeCamera));
-  
-  [self didChangeValueForKey:@"cameraActiveCoordinate6"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate5"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate4"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate3"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate2"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate1"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate0"];
-  
-  [self didChangeValueForKey:@"cameraActiveCoordinate6Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate5Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate4Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate3Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate2Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate1Label"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate0Label"];
-  
-  [self didChangeValueForKey:@"cameraActiveCoordinate6Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate5Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate4Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate3Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate2Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate1Enabled"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate0Enabled"];
 }
 
 - (void)translateCartesianToPolar
@@ -505,83 +363,6 @@ static topologic::xml xml;
   return topologicState.polarCoordinates ? 1 : 0;
 }
 
--(void)setCameraActiveCoordinate0:(double)newValue
-{
-  topologicState.setFromCoordinate(0, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate0
-{
-  return topologicState.getFromCoordinate(0);
-}
-
--(void)setCameraActiveCoordinate1:(double)newValue
-{
-  topologicState.setFromCoordinate(1, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate1
-{
-  return topologicState.getFromCoordinate(1);
-}
-
--(void)setCameraActiveCoordinate2:(double)newValue
-{
-  topologicState.setFromCoordinate(2, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate2
-{
-  return topologicState.getFromCoordinate(2);
-}
-
--(void)setCameraActiveCoordinate3:(double)newValue
-{
-  topologicState.setFromCoordinate(3, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate3
-{
-  return topologicState.getFromCoordinate(3);
-}
-
--(void)setCameraActiveCoordinate4:(double)newValue
-{
-  topologicState.setFromCoordinate(4, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate4
-{
-  return topologicState.getFromCoordinate(4);
-}
-
--(void)setCameraActiveCoordinate5:(double)newValue
-{
-  topologicState.setFromCoordinate(5, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate5
-{
-  return topologicState.getFromCoordinate(5);
-}
-
--(void)setCameraActiveCoordinate6:(double)newValue
-{
-  topologicState.setFromCoordinate(6, newValue);
-  [openGL setNeedsDisplay:YES];
-}
-
--(double)cameraActiveCoordinate6
-{
-  return topologicState.getFromCoordinate(6);
-}
-
 - (void)setIFSIterations:(NSInteger)value
 {
   if (topologicState.parameter.iterations != (unsigned int)value)
@@ -748,15 +529,7 @@ static topologic::xml xml;
   [self willChangeValueForKey:@"colourBackground"];
   [self willChangeValueForKey:@"colourWire"];
   [self willChangeValueForKey:@"colourSurface"];
-  
-  [self willChangeValueForKey:@"cameraActiveCoordinate0"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate1"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate2"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate3"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate4"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate5"];
-  [self willChangeValueForKey:@"cameraActiveCoordinate6"];
-  
+
   [self willChangeValueForKey:@"precision"];
   [self willChangeValueForKey:@"radius"];
   [self willChangeValueForKey:@"IFSIterations"];
@@ -775,14 +548,6 @@ static topologic::xml xml;
   [self didChangeValueForKey:@"colourBackground"];
   [self didChangeValueForKey:@"colourWire"];
   [self didChangeValueForKey:@"colourSurface"];
-  
-  [self didChangeValueForKey:@"cameraActiveCoordinate0"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate1"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate2"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate3"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate4"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate5"];
-  [self didChangeValueForKey:@"cameraActiveCoordinate6"];
   
   [self didChangeValueForKey:@"precision"];
   [self didChangeValueForKey:@"radius"];
@@ -897,34 +662,6 @@ static topologic::xml xml;
   }
   
   fb.close();
-}
-
-- (IBAction)reset1:(id)sender
-{
-  if (activeCameraType == 0)
-  {
-    [self setCameraActiveCoordinate0:1];
-  }
-  [self setCameraActiveCoordinate1:1];
-  [self setCameraActiveCoordinate2:1];
-  [self setCameraActiveCoordinate3:1];
-  [self setCameraActiveCoordinate4:1];
-  [self setCameraActiveCoordinate5:1];
-  [self setCameraActiveCoordinate6:1];
-}
-
-- (IBAction)resetPIHalf:(id)sender
-{
-  if (activeCameraType == 0)
-  {
-    [self setCameraActiveCoordinate0:M_PI_2];
-  }
-  [self setCameraActiveCoordinate1:M_PI_2];
-  [self setCameraActiveCoordinate2:M_PI_2];
-  [self setCameraActiveCoordinate3:M_PI_2];
-  [self setCameraActiveCoordinate4:M_PI_2];
-  [self setCameraActiveCoordinate5:M_PI_2];
-  [self setCameraActiveCoordinate6:M_PI_2];
 }
 
 - (IBAction)randomFlameColours:(id)sender

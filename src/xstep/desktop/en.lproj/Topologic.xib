@@ -195,54 +195,6 @@
                                                 <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1319" userLabel="Drawer Content View">
                                                     <rect key="frame" x="-3" y="174" width="271" height="445"/>
                                                     <subviews>
-                                                        <segmentedControl verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2614">
-                                                            <rect key="frame" x="18" y="402" width="138" height="24"/>
-                                                            <animations/>
-                                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2615">
-                                                                <font key="font" metaFont="system"/>
-                                                                <segments>
-                                                                    <segment label="Cartesian"/>
-                                                                    <segment label="Polar" selected="YES" tag="1"/>
-                                                                </segments>
-                                                            </segmentedCell>
-                                                            <connections>
-                                                                <binding destination="494" name="selectedTag" keyPath="activeCameraType" id="2627"/>
-                                                            </connections>
-                                                        </segmentedControl>
-                                                        <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S84-hR-Mo7">
-                                                            <rect key="frame" x="197" y="154" width="60" height="32"/>
-                                                            <animations/>
-                                                            <buttonCell key="cell" type="push" title="π/2" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iDE-hu-rDo">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="resetPIHalf:" target="494" id="AuX-RQ-fXc"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRx-QH-OeN">
-                                                            <rect key="frame" x="137" y="154" width="60" height="32"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="48" id="gn2-2E-ELS"/>
-                                                            </constraints>
-                                                            <animations/>
-                                                            <buttonCell key="cell" type="push" title="1" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C1e-yp-9Xc">
-                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="reset1:" target="494" id="yPJ-64-3yw"/>
-                                                            </connections>
-                                                        </button>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TWk-5g-bVw">
-                                                            <rect key="frame" x="18" y="164" width="38" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Reset" id="a6t-mF-5S3">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                        </textField>
                                                         <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4223">
                                                             <rect key="frame" x="18" y="136" width="79" height="17"/>
                                                             <animations/>
@@ -327,198 +279,6 @@
                                                                 <binding destination="494" name="value" keyPath="fractalFlameColouring" id="8la-wD-RNy"/>
                                                             </connections>
                                                         </button>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VbT-dk-lvj">
-                                                            <rect key="frame" x="55" y="338" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-6.2800000000000002" maxValue="6.2800000000000002" tickMarkPosition="above" sliderType="linear" id="ZMR-u6-SBt"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate0" id="sBj-91-Fde"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate0Enabled" id="sjZ-as-XS9"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HHN-fi-oDC">
-                                                            <rect key="frame" x="55" y="313" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="rz8-Gu-Zv1"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate1" id="QcK-Ui-NXM"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate1Enabled" id="6uD-fs-qri"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J5i-Oi-c1J">
-                                                            <rect key="frame" x="55" y="288" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="uzw-t7-oGZ"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate2" id="0lt-EJ-zaG"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate2Enabled" id="b5N-1l-IZp"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wT5-ZP-Wm9">
-                                                            <rect key="frame" x="55" y="263" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="n7o-uW-uVC"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate3" id="rTt-tu-UXd"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate3Enabled" id="A39-7v-0pi"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yuE-Nv-pe7">
-                                                            <rect key="frame" x="55" y="238" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="8Ne-Sq-J1T"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate4" id="76G-zW-3rE"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate4Enabled" id="ONV-pW-9hY"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d6N-J3-toV">
-                                                            <rect key="frame" x="55" y="213" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="sZa-H2-b0c"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate5" id="QYe-1K-9Fb"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate5Enabled" id="BFR-Js-lEl"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hFy-65-NCC">
-                                                            <rect key="frame" x="55" y="188" width="198" height="21"/>
-                                                            <animations/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-3.1400000000000001" maxValue="3.1400000000000001" tickMarkPosition="above" sliderType="linear" id="gxt-0J-OK7"/>
-                                                            <connections>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate6" id="2q1-WP-C8z"/>
-                                                                <binding destination="494" name="enabled" keyPath="cameraActiveCoordinate6Enabled" id="OG2-o1-858"/>
-                                                            </connections>
-                                                        </slider>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zLB-ci-JRf">
-                                                            <rect key="frame" x="18" y="340" width="33" height="17"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="29" id="7lK-by-hI4"/>
-                                                            </constraints>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="84k-KD-KBG">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate0Enabled" id="Zmp-9Y-bzK">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate0Label" id="jZx-kX-BX9"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucs-aK-Z0d">
-                                                            <rect key="frame" x="18" y="290" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="AMY-HU-cGz">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate2Enabled" id="zVG-Dl-fce">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate2Label" id="46t-yF-byG"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tc0-c3-lDf">
-                                                            <rect key="frame" x="18" y="315" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="8Cr-XS-u0q">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate1Enabled" id="tlz-Hj-3UV">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate1Label" id="q2Z-LX-5yf"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i0N-PS-4gS">
-                                                            <rect key="frame" x="18" y="265" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="Uxh-Y6-dhu">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate3Enabled" id="Vhe-Dl-clN">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate3Label" id="SWX-CN-Ydo"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1KY-D6-LnR">
-                                                            <rect key="frame" x="18" y="240" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="8uB-tu-BKV">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate4Enabled" id="vYu-2b-n7e">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate4Label" id="vg0-7E-ORl"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vEy-hM-Ojp">
-                                                            <rect key="frame" x="18" y="215" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="bJE-Bm-R8j">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate5Enabled" id="Zrm-AL-5La">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate5Label" id="ikl-8h-xYQ"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5vN-2u-Ijd">
-                                                            <rect key="frame" x="18" y="190" width="33" height="17"/>
-                                                            <animations/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="U" id="TXw-6b-ffd">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="494" name="hidden" keyPath="cameraActiveCoordinate6Enabled" id="ohe-Ci-Zt7">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="494" name="value" keyPath="cameraActiveCoordinate6Label" id="NGJ-ba-GRr"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <box verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4JA-Ng-MRx">
-                                                            <rect key="frame" x="20" y="363" width="231" height="5"/>
-                                                            <animations/>
-                                                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <font key="titleFont" metaFont="system"/>
-                                                        </box>
                                                         <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19y-Mh-83M">
                                                             <rect key="frame" x="14" y="13" width="243" height="32"/>
                                                             <animations/>
@@ -532,7 +292,7 @@
                                                             </connections>
                                                         </button>
                                                         <segmentedControl verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2570">
-                                                            <rect key="frame" x="18" y="373" width="110" height="24"/>
+                                                            <rect key="frame" x="18" y="402" width="110" height="24"/>
                                                             <animations/>
                                                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2571">
                                                                 <font key="font" metaFont="system"/>
@@ -549,98 +309,22 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="4481" firstAttribute="centerY" secondItem="0Ux-6m-rka" secondAttribute="centerY" id="00K-Sf-sTo"/>
-                                                        <constraint firstItem="2570" firstAttribute="top" secondItem="2614" secondAttribute="bottom" constant="8" id="0RG-XG-rO7"/>
-                                                        <constraint firstItem="vEy-hM-Ojp" firstAttribute="top" secondItem="1KY-D6-LnR" secondAttribute="bottom" constant="8" symbolic="YES" id="0y7-is-6Dy"/>
                                                         <constraint firstItem="4481" firstAttribute="width" secondItem="4240" secondAttribute="width" id="1Cb-wB-aSS"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="top" secondItem="Tc0-c3-lDf" secondAttribute="bottom" constant="8" symbolic="YES" id="1Lv-qv-ZMV"/>
                                                         <constraint firstItem="4481" firstAttribute="width" secondItem="4245" secondAttribute="width" id="1O9-pg-kBy"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="Fbj-BM-P6M" secondAttribute="leading" id="2EW-yW-wxD"/>
-                                                        <constraint firstItem="wT5-ZP-Wm9" firstAttribute="leading" secondItem="i0N-PS-4gS" secondAttribute="trailing" constant="8" id="30d-sk-7zg"/>
-                                                        <constraint firstItem="4240" firstAttribute="top" secondItem="S84-hR-Mo7" secondAttribute="bottom" constant="5" id="336-0l-sb2"/>
-                                                        <constraint firstItem="4JA-Ng-MRx" firstAttribute="top" secondItem="2570" secondAttribute="bottom" constant="9" id="3ZO-l7-HNT"/>
-                                                        <constraint firstItem="4481" firstAttribute="width" secondItem="eRx-QH-OeN" secondAttribute="width" id="554-Fj-vjy"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="Ucs-aK-Z0d" secondAttribute="trailing" id="5pS-ug-hAN"/>
                                                         <constraint firstItem="4223" firstAttribute="top" secondItem="4240" secondAttribute="top" constant="3" id="5wg-FI-WgZ"/>
                                                         <constraint firstItem="4245" firstAttribute="top" secondItem="4229" secondAttribute="top" constant="-3" id="7c5-uj-mZz"/>
-                                                        <constraint firstItem="Tc0-c3-lDf" firstAttribute="top" secondItem="zLB-ci-JRf" secondAttribute="bottom" constant="8" symbolic="YES" id="7o3-Hw-RFu"/>
-                                                        <constraint firstItem="2614" firstAttribute="top" secondItem="1319" secondAttribute="top" constant="20" id="8jP-rV-7PU"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="Ucs-aK-Z0d" secondAttribute="width" id="B63-05-QqT"/>
-                                                        <constraint firstItem="VbT-dk-lvj" firstAttribute="top" secondItem="2570" secondAttribute="bottom" constant="18" id="BiG-Bq-7UB"/>
-                                                        <constraint firstItem="eRx-QH-OeN" firstAttribute="top" secondItem="hFy-65-NCC" secondAttribute="bottom" constant="8" id="Ccm-Ki-Oti"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="S84-hR-Mo7" secondAttribute="trailing" id="DDk-MQ-iLE"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="i0N-PS-4gS" secondAttribute="width" id="Dea-Gw-hxA"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="vEy-hM-Ojp" secondAttribute="trailing" id="EOV-mo-Bnd"/>
-                                                        <constraint firstItem="VbT-dk-lvj" firstAttribute="leading" secondItem="zLB-ci-JRf" secondAttribute="trailing" constant="8" id="EmS-xh-5Qk"/>
                                                         <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="19y-Mh-83M" secondAttribute="trailing" id="FQj-oa-sER"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="HHN-fi-oDC" secondAttribute="width" id="G3a-yi-p34"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="wT5-ZP-Wm9" secondAttribute="trailing" id="G4j-CI-MKI"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="19y-Mh-83M" secondAttribute="leading" id="GeD-a1-xGR"/>
                                                         <constraint firstItem="4229" firstAttribute="top" secondItem="4223" secondAttribute="bottom" constant="8" symbolic="YES" id="H2u-80-2l2"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="d6N-J3-toV" secondAttribute="width" id="HXR-Xa-obX"/>
                                                         <constraint firstItem="2570" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="HlO-tM-kaS"/>
-                                                        <constraint firstItem="4481" firstAttribute="width" secondItem="S84-hR-Mo7" secondAttribute="width" id="IVI-QG-t6S"/>
                                                         <constraint firstItem="4245" firstAttribute="top" secondItem="4240" secondAttribute="bottom" constant="2" id="KAL-MY-bR0"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="top" secondItem="i0N-PS-4gS" secondAttribute="bottom" constant="8" symbolic="YES" id="KhR-en-hBX"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="yuE-Nv-pe7" secondAttribute="trailing" id="LW9-q1-lXj"/>
-                                                        <constraint firstItem="S84-hR-Mo7" firstAttribute="leading" secondItem="eRx-QH-OeN" secondAttribute="trailing" constant="12" id="MPz-hu-Ude"/>
-                                                        <constraint firstItem="yuE-Nv-pe7" firstAttribute="baseline" secondItem="1KY-D6-LnR" secondAttribute="baseline" id="PD5-Bz-v6D"/>
-                                                        <constraint firstItem="i0N-PS-4gS" firstAttribute="top" secondItem="Ucs-aK-Z0d" secondAttribute="bottom" constant="8" symbolic="YES" id="PPw-0Z-IL7"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="leading" secondItem="5vN-2u-Ijd" secondAttribute="trailing" constant="8" id="PcZ-e7-CFw"/>
                                                         <constraint firstItem="0Ux-6m-rka" firstAttribute="top" secondItem="4229" secondAttribute="bottom" constant="8" symbolic="YES" id="QeA-cu-I42"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="Tc0-c3-lDf" secondAttribute="width" id="S6b-gp-Guq"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="4223" secondAttribute="leading" id="Svw-Po-7BR"/>
-                                                        <constraint firstItem="4JA-Ng-MRx" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="TGy-f3-a3c"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="Tc0-c3-lDf" secondAttribute="leading" id="Upy-Fw-9eM"/>
-                                                        <constraint firstItem="TWk-5g-bVw" firstAttribute="baseline" secondItem="eRx-QH-OeN" secondAttribute="baseline" id="WOU-xJ-Dya"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="J5i-Oi-c1J" secondAttribute="trailing" id="Wap-ZA-eih"/>
                                                         <constraint firstItem="4481" firstAttribute="top" secondItem="4245" secondAttribute="bottom" constant="2" id="Weu-2T-pcl"/>
-                                                        <constraint firstItem="HHN-fi-oDC" firstAttribute="baseline" secondItem="Tc0-c3-lDf" secondAttribute="baseline" id="Xjp-mT-0GF"/>
                                                         <constraint firstItem="Fbj-BM-P6M" firstAttribute="top" secondItem="4481" secondAttribute="bottom" constant="8" id="YdQ-8f-N5X"/>
-                                                        <constraint firstAttribute="trailing" secondItem="4JA-Ng-MRx" secondAttribute="trailing" constant="20" id="a8O-uG-ao1"/>
                                                         <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="4481" secondAttribute="trailing" id="ac8-JB-AFV"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="yuE-Nv-pe7" secondAttribute="width" id="bGQ-pC-1ti"/>
                                                         <constraint firstItem="4481" firstAttribute="top" secondItem="0Ux-6m-rka" secondAttribute="top" constant="-3" id="bZd-2P-2jg"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="zLB-ci-JRf" secondAttribute="trailing" id="bwc-sh-dOy"/>
-                                                        <constraint firstItem="HHN-fi-oDC" firstAttribute="leading" secondItem="Tc0-c3-lDf" secondAttribute="trailing" constant="8" id="diQ-Mo-R6D"/>
-                                                        <constraint firstItem="vEy-hM-Ojp" firstAttribute="baseline" secondItem="d6N-J3-toV" secondAttribute="baseline" id="djp-pL-Uon"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="2614" secondAttribute="leading" id="dvE-dM-Re8"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="d6N-J3-toV" secondAttribute="trailing" id="e8c-uB-f99"/>
-                                                        <constraint firstItem="J5i-Oi-c1J" firstAttribute="leading" secondItem="Ucs-aK-Z0d" secondAttribute="trailing" constant="8" id="fGW-xP-3Qc"/>
-                                                        <constraint firstItem="5vN-2u-Ijd" firstAttribute="top" secondItem="vEy-hM-Ojp" secondAttribute="bottom" constant="8" symbolic="YES" id="fM3-JG-lwv"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="hFy-65-NCC" secondAttribute="trailing" id="gWL-9a-PPo"/>
-                                                        <constraint firstItem="5vN-2u-Ijd" firstAttribute="baseline" secondItem="hFy-65-NCC" secondAttribute="baseline" id="gif-n9-Cie"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="Tc0-c3-lDf" secondAttribute="trailing" id="hEf-JC-ZYu"/>
-                                                        <constraint firstItem="J5i-Oi-c1J" firstAttribute="baseline" secondItem="Ucs-aK-Z0d" secondAttribute="baseline" id="hYB-BF-hut"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="J5i-Oi-c1J" secondAttribute="width" id="hvl-nj-c7N"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="TWk-5g-bVw" secondAttribute="leading" id="imJ-1u-Giw"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="1KY-D6-LnR" secondAttribute="leading" id="jwR-Pi-kA3"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="4229" secondAttribute="leading" id="ky0-EO-6dj"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="zLB-ci-JRf" secondAttribute="width" id="l2I-yo-D1t"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="2570" secondAttribute="leading" id="mmD-0d-m5T"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="zLB-ci-JRf" secondAttribute="leading" id="msc-IN-iSc"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="wT5-ZP-Wm9" secondAttribute="width" id="n1l-vI-afg"/>
                                                         <constraint firstItem="19y-Mh-83M" firstAttribute="top" secondItem="Fbj-BM-P6M" secondAttribute="bottom" constant="20" id="n9Q-0X-Ve3"/>
                                                         <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="4240" secondAttribute="trailing" id="nJH-qB-dPk"/>
-                                                        <constraint firstItem="S84-hR-Mo7" firstAttribute="baseline" secondItem="eRx-QH-OeN" secondAttribute="baseline" id="nrZ-8Y-pYN"/>
                                                         <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="4245" secondAttribute="trailing" id="obD-Mp-TJ5"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="i0N-PS-4gS" secondAttribute="leading" id="owk-o8-cew"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="5vN-2u-Ijd" secondAttribute="leading" id="p1u-vh-tFf"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="HHN-fi-oDC" secondAttribute="trailing" id="qC9-PI-Qvs"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="5vN-2u-Ijd" secondAttribute="width" id="qY3-9C-u8K"/>
-                                                        <constraint firstItem="yuE-Nv-pe7" firstAttribute="leading" secondItem="1KY-D6-LnR" secondAttribute="trailing" constant="8" id="qhg-SZ-J8y"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="i0N-PS-4gS" secondAttribute="trailing" id="sGv-v5-Gn1"/>
-                                                        <constraint firstItem="hFy-65-NCC" firstAttribute="width" secondItem="VbT-dk-lvj" secondAttribute="width" id="soV-WY-tea"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="0Ux-6m-rka" secondAttribute="leading" id="t8o-pO-dCE"/>
-                                                        <constraint firstItem="S84-hR-Mo7" firstAttribute="baseline" secondItem="eRx-QH-OeN" secondAttribute="baseline" id="tKL-cx-0b9"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="width" secondItem="vEy-hM-Ojp" secondAttribute="width" id="tbs-L3-zOA"/>
-                                                        <constraint firstItem="Ucs-aK-Z0d" firstAttribute="leading" secondItem="vEy-hM-Ojp" secondAttribute="leading" id="tgp-CT-Ku4"/>
-                                                        <constraint firstItem="1KY-D6-LnR" firstAttribute="trailing" secondItem="5vN-2u-Ijd" secondAttribute="trailing" id="thH-JB-btW"/>
-                                                        <constraint firstItem="d6N-J3-toV" firstAttribute="leading" secondItem="vEy-hM-Ojp" secondAttribute="trailing" constant="8" id="uQ2-fr-rY7"/>
-                                                        <constraint firstItem="Fbj-BM-P6M" firstAttribute="trailing" secondItem="VbT-dk-lvj" secondAttribute="trailing" id="ubk-jc-DEm"/>
-                                                        <constraint firstAttribute="trailing" secondItem="VbT-dk-lvj" secondAttribute="trailing" constant="20" id="v6Z-R1-vqQ"/>
-                                                        <constraint firstItem="2614" firstAttribute="leading" secondItem="1319" secondAttribute="leading" constant="20" id="xa6-jg-6qh"/>
-                                                        <constraint firstItem="i0N-PS-4gS" firstAttribute="baseline" secondItem="wT5-ZP-Wm9" secondAttribute="baseline" id="yFd-Pd-jjq"/>
-                                                        <constraint firstItem="zLB-ci-JRf" firstAttribute="baseline" secondItem="VbT-dk-lvj" secondAttribute="baseline" id="ysU-M7-5Ua"/>
                                                     </constraints>
                                                     <animations/>
                                                 </customView>
