@@ -237,7 +237,12 @@ public:
     }
 
 #if !defined(NO_OPENGL)
-    if (d > 3) {
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+    if (d > 4)
+#else
+    if (d > 3)
+#endif
+    {
       opengl.context.prepared = false;
     }
 #endif
@@ -268,7 +273,12 @@ public:
     }
 
 #if !defined(NO_OPENGL)
-    if (d > 3) {
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+    if (d > 4)
+#else
+    if (d > 3)
+#endif
+    {
       opengl.context.prepared = false;
     }
 #endif
@@ -302,7 +312,12 @@ public:
     }
 
 #if !defined(NO_OPENGL)
-    if (d > 3) {
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+    if (d > 4)
+#else
+    if (d > 3)
+#endif
+    {
       opengl.context.prepared = false;
     }
 #endif
@@ -376,7 +391,12 @@ public:
 
     if (active) {
 #if !defined(NO_OPENGL)
-      if (d > 3) {
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+      if (d > 4)
+#else
+      if (d > 3)
+#endif
+      {
         opengl.prepared = false;
       }
 #endif
@@ -441,7 +461,12 @@ public:
     }
 
 #if !defined(NO_OPENGL)
-    if (d > 3) {
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+    if (d > 4)
+#else
+    if (d > 3)
+#endif
+    {
       opengl.context.prepared = false;
     }
 #endif

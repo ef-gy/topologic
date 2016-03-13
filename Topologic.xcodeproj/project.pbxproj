@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -182,6 +182,7 @@
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		34987FB41599291D0063B8B3 /* Products */ = {
 			isa = PBXGroup;
@@ -264,7 +265,7 @@
 				};
 			};
 			buildConfigurationList = 34987FAD1599291D0063B8B3 /* Build configuration list for PBXProject "Topologic" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -671,6 +672,7 @@
 				343B02E91C92BC9D003A9B52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3488261C18087F5C0075E8D2 /* Build configuration list for PBXNativeTarget "Topologic-iOS" */ = {
 			isa = XCConfigurationList;

@@ -370,7 +370,7 @@ protected:
    */
   modelType object;
 };
-};
-};
+}
+}
 
 #endif
