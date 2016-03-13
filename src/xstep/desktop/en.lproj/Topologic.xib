@@ -1024,7 +1024,7 @@
                                 <menu key="menu" id="BE3-uS-g13">
                                     <items>
                                         <menuItem title="simplex" id="MV9-J7-Hw8"/>
-                                        <menuItem title="cube" state="on" id="Ebv-2R-zs8"/>
+                                        <menuItem title="cube" id="Ebv-2R-zs8"/>
                                         <menuItem title="sphere" id="9wd-h3-UGb"/>
                                     </items>
                                 </menu>
