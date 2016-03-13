@@ -42,10 +42,6 @@ static topologic::xml xml;
 
 @synthesize openGL;
 
-@synthesize drawerVisible;
-@synthesize modelViewDrawerVisible;
-@synthesize drawerMode;
-
 @synthesize activeCamera;
 @synthesize activeCameraType;
 
@@ -273,32 +269,6 @@ static topologic::xml xml;
   topologicState.polarCoordinates = false;
 }
 
-- (NSInteger)drawerMode
-{
-  return drawerMode;
-}
-
-- (void)setDrawerMode:(NSInteger)newDrawerMode
-{
-  [self willChangeValueForKey:@"drawerVisible"];
-  [self willChangeValueForKey:@"modelViewDrawerVisible"];
-  
-  drawerMode = newDrawerMode;
-  
-  [self didChangeValueForKey:@"modelViewDrawerVisible"];
-  [self didChangeValueForKey:@"drawerVisible"];
-}
-
-- (BOOL)drawerVisible
-{
-  return drawerMode == 1;
-}
-
-- (BOOL)modelViewDrawerVisible
-{
-  return drawerMode == 2;
-}
-
 - (void)awakeFromNib
 {
   using namespace efgy::geometry;
@@ -306,7 +276,7 @@ static topologic::xml xml;
   [models removeAllItems];
   [baseModels removeAllItems];
   [formats removeAllItems];
-  
+
   [modelDepths setSegmentCount:0];
   [renderDepths setSegmentCount:0];
   [cameraDepths setSegmentCount:0];
@@ -366,11 +336,9 @@ static topologic::xml xml;
     i++;
   }
   
-  [self setActiveCamera:4];
+  [self setActiveCamera:3];
   [self setActiveCameraType:1];
-  
-  [self setDrawerMode:1];
-  
+
   [NSColor setIgnoresAlpha:NO];
   
   [self setColourBackground:[NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:1]];

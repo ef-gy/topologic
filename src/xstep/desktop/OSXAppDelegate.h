@@ -48,8 +48,7 @@
      * though the openGL property.
      */
     OpenGLRenderer IBOutlet *openGL;
-    
-    NSInteger drawerMode;
+
     NSInteger activeCamera;
     
     NSString *model;
@@ -102,33 +101,6 @@
  * delegate can tell the OpenGL context that it needs to draw itself anew.
  */
 @property (retain,readwrite) OpenGLRenderer *openGL;
-
-/**\brief Is the settings/camera controls drawer visible?
- *
- * This property is 'YES' if the settings and camera controls drawer is
- * currently visible and 'NO' otherwise.
- */
-@property (readonly) BOOL drawerVisible;
-
-/**\brief Is the model/parameters drawer visible?
- *
- * This property is 'YES' if the model and model parameters drawer is currently
- * visible and 'NO' otherwise.
- */
-@property (readonly) BOOL modelViewDrawerVisible;
-
-/**\brief Drawer mode
- *
- * Combined version of drawerVisible and modelViewDrawerVisible; The possible
- * values here are:
- *
- *   - 0 when no drawers are visible.
- *   - 1 when drawerVisible is 'YES'.
- *   - 2 when modelViewDrawerVisible is 'YES'.
- *
- * Unlike the two boolean properties, this one can be set.
- */
-@property (readwrite) NSInteger drawerMode;
 
 /**\ingroup frontend-cocoa
  * \defgroup osx-data-bindings Data bindings
