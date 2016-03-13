@@ -192,16 +192,16 @@
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="5CB8C784-D284-46C1-B8F6-D647E50EA4C2" label="Drawer" paletteLabel="Drawer" id="6455">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="119" height="25"/>
-                        <size key="maxSize" width="123" height="28"/>
+                        <size key="minSize" width="119" height="24"/>
+                        <size key="maxSize" width="130" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="6453">
-                            <rect key="frame" x="0.0" y="14" width="123" height="27"/>
+                            <rect key="frame" x="0.0" y="14" width="130" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="6454">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="Camera" width="56" selected="YES" tag="1"/>
+                                    <segment label="Camera" selected="YES" tag="1"/>
                                     <segment label="Model" width="56" tag="2"/>
                                 </segments>
                             </segmentedCell>
@@ -212,16 +212,16 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="9C25847E-FDF4-4CCC-9F0C-C9C33B671332" label="Base Model" paletteLabel="Base Model" id="1331">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="71" height="25"/>
-                        <size key="maxSize" width="180" height="28"/>
+                        <size key="minSize" width="71" height="24"/>
+                        <size key="maxSize" width="186" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="1329">
-                            <rect key="frame" x="0.0" y="14" width="180" height="27"/>
+                            <rect key="frame" x="0.0" y="14" width="186" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="1330">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="simplex" width="56" tag="2"/>
+                                    <segment label="simplex" tag="2"/>
                                     <segment label="cube" width="56" selected="YES"/>
                                     <segment label="sphere" width="56" tag="1"/>
                                 </segments>
@@ -234,20 +234,17 @@
                     <toolbarItem implicitItemIdentifier="E9813AF4-74CD-4E16-9921-5D61264F3FEF" label="Model Depth" paletteLabel="Model Depth" id="2566">
                         <nil key="toolTip"/>
                         <size key="minSize" width="104" height="24"/>
-                        <size key="maxSize" width="264" height="28"/>
+                        <size key="maxSize" width="225" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="2564">
-                            <rect key="frame" x="0.0" y="14" width="220" height="24"/>
+                            <rect key="frame" x="0.0" y="14" width="110" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2565">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="2D" width="32" tag="2"/>
+                                    <segment label="2D" tag="2"/>
                                     <segment label="3D" width="32" tag="3"/>
                                     <segment label="4D" width="32" selected="YES" tag="4"/>
-                                    <segment label="5D" tag="5"/>
-                                    <segment label="6D" tag="6"/>
-                                    <segment label="7D" tag="7"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
@@ -257,21 +254,18 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="5B151887-D41F-479D-99AF-358E80A2B777" label="Render Depth" paletteLabel="Render Depth" id="HIn-hL-znx">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="27"/>
+                        <size key="minSize" width="104" height="24"/>
                         <size key="maxSize" width="225" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="P5U-er-bLU">
-                            <rect key="frame" x="0.0" y="14" width="225" height="27"/>
+                            <rect key="frame" x="0.0" y="14" width="110" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <animations/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="j5w-sp-4nU">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="2D" width="32" tag="2"/>
+                                    <segment label="2D" tag="2"/>
                                     <segment label="3D" width="32" selected="YES" tag="3"/>
                                     <segment label="4D" width="32" tag="4"/>
-                                    <segment label="5D" tag="5"/>
-                                    <segment label="6D" tag="6"/>
-                                    <segment label="7D" tag="7"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
