@@ -298,7 +298,7 @@ int initialiseGL(void) {
 
   glEnable(GL_BLEND);
 
-  glEnable(GL_CULL_FACE);
+  glDisable(GL_CULL_FACE);
 
   SDLinitialised = true;
 

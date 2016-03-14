@@ -21,70 +21,70 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
-    if (!self.context) {
-        NSLog(@"Failed to create ES context");
-    }
-    
-    GLKView *view = (GLKView *)self.view;
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-
-    [self setupGL];
+  [super viewDidLoad];
+  
+  self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  
+  if (!self.context) {
+    NSLog(@"Failed to create ES context");
+  }
+  
+  GLKView *view = (GLKView *)self.view;
+  view.context = self.context;
+  view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+  
+  [self setupGL];
 }
 
 - (void)dealloc
-{    
-    if ([EAGLContext currentContext] == self.context) {
-        [EAGLContext setCurrentContext:nil];
-    }
+{
+  if ([EAGLContext currentContext] == self.context) {
+    [EAGLContext setCurrentContext:nil];
+  }
 }
 
 - (void)setupGL
 {
-    [EAGLContext setCurrentContext:self.context];
-
-    glEnable (GL_BLEND);
-    
-    glEnable(GL_CULL_FACE);
+  [EAGLContext setCurrentContext:self.context];
+  
+  glEnable (GL_BLEND);
+  
+  glDisable(GL_CULL_FACE);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    [EAGLContext setCurrentContext:self.context];
-
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->width  = rect.size.width  * [[UIScreen mainScreen] scale];
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->height = rect.size.height * [[UIScreen mainScreen] scale];
-
-    if ([(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model)
-    {
-        [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->opengl(true);
-    }
-    else
-    {
-        std::cerr << "no model to draw!\n";
-    }
+  [EAGLContext setCurrentContext:self.context];
+  
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->width  = rect.size.width  * [[UIScreen mainScreen] scale];
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->height = rect.size.height * [[UIScreen mainScreen] scale];
+  
+  if ([(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model)
+  {
+    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->model->opengl(true);
+  }
+  else
+  {
+    std::cerr << "no model to draw!\n";
+  }
 }
 
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer
 {
-    CGPoint translation = [recognizer translationInView:self.view];
-
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+2);
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->interpretDrag(translation.x,translation.y,0);
-
-    [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+  CGPoint translation = [recognizer translationInView:self.view];
+  
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+2);
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->interpretDrag(translation.x,translation.y,0);
+  
+  [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
 }
 
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer
 {
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+1);
-    [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->scale(recognizer.scale);
-
-    recognizer.scale = 1;
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->setActive([recognizer numberOfTouches]+1);
+  [(iOSAppDelegate*)[[UIApplication sharedApplication] delegate] state]->scale(recognizer.scale);
+  
+  recognizer.scale = 1;
 }
 
 @end
