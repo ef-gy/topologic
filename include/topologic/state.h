@@ -367,67 +367,6 @@ public:
     return state<Q, d - 1>::setActive(dim);
   }
 
-  /**\brief Update 'from' point with transformation
-   *
-   * This method updates the 'from' point of the currently active
-   * dimension so that it coincides with the current viewport's angle,
-   * then discards any further rotations of the affine transformation
-   * matrix.
-   *
-   * The result is that the affine transformation matrix is reset to an
-   * identity matrix and the 'from' point will have been updated to
-   * reflect the actual previous 'from' point; While the eye position will
-   * stay the same, the orientation of the image will be reset so that the
-   * top of the screen will point to the coordinate system's 'up' vector.
-   *
-   * \returns 'true' if realigning the currently active dimension's
-   *          viewport succeeded, 'false' otherwise. Currently this method
-   *          cannot fail, so the result is always 'true'.
-   */
-  bool realign(void) {
-    if (base::polarCoordinates) {
-      from = fromp;
-    }
-
-    if (active) {
-#if !defined(NO_OPENGL)
-#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
-      if (d > 4)
-#else
-      if (d > 3)
-#endif
-      {
-        opengl.prepared = false;
-      }
-#endif
-      Q lb = efgy::math::lengthSquared(from);
-
-      efgy::geometry::transformation::affine<Q, d> mirror;
-      /*
-      for (int i = 0; i <= d; i++)
-      {
-          mirror.transformationMatrix[i][i] = Q(-1);
-      }
-      */
-      mirror.transformationMatrix[2][2] = Q(-1);
-
-      transformation.transformationMatrix =
-          mirror.transformationMatrix * transformation.transformationMatrix *
-          mirror.transformationMatrix;
-
-      to = transformation * to;
-      from = transformation * from;
-
-      transformation = efgy::geometry::transformation::affine<Q, d>();
-
-      Q la = efgy::math::lengthSquared(from);
-
-      from = from * lb / la;
-    }
-
-    return state<Q, d - 1>::realign();
-  }
-
   /**\brief Set 'from' coordinate
    *
    * This sets the specified coordinate of the specified dimension's
@@ -766,32 +705,6 @@ public:
    *          method to fail it will always return 'true'.
    */
   bool setActive(const unsigned int &) const { return true; }
-
-  /**\brief Update 'from' point with transformation
-   *
-   * This method updates the 'from' point of the currently active
-   * dimension so that it coincides with the current viewport's angle,
-   * then discards any further rotations of the affine transformation
-   * matrix.
-   *
-   * The result is that the affine transformation matrix is reset to an
-   * identity matrix and the 'from' point will have been updated to
-   * reflect the actual previous 'from' point; While the eye position will
-   * stay the same, the orientation of the image will be reset so that the
-   * top of the screen will point to the coordinate system's 'up' vector.
-   *
-   * Since the 1D state object does not have a 'from' point, this method
-   * doesn't have anything to do but to reset the used coordinate system
-   * back to cartesian coordinates by clearing the polarCoordinates flag.
-   *
-   * \returns 'true' if realigning the currently active dimension's
-   *          viewport succeeded, 'false' otherwise. Currently this method
-   *          cannot fail, so the result is always 'true'.
-   */
-  bool realign(void) {
-    polarCoordinates = false;
-    return true;
-  }
 
   /**\brief Set 'from' coordinate
    *
