@@ -717,7 +717,9 @@
             <connections>
                 <outlet property="baseModels" destination="EG2-3S-MZI" id="fwI-p5-rd6"/>
                 <outlet property="cameraDepths" destination="Ep2-be-AOQ" id="pI4-za-AB2"/>
+                <outlet property="formats" destination="FUk-hl-kZP" id="Eom-PV-8XV"/>
                 <outlet property="modelDepths" destination="2564" id="Kg1-7Z-t23"/>
+                <outlet property="models" destination="zWD-wB-i16" id="epn-El-s6f"/>
                 <outlet property="openGL" destination="678" id="1050"/>
                 <outlet property="renderDepths" destination="P5U-er-bLU" id="ivo-FX-rzY"/>
                 <outlet property="window" destination="371" id="532"/>
