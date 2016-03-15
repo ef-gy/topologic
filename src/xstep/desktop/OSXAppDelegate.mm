@@ -127,18 +127,12 @@ static topologic::xml xml;
   topologicState.polarCoordinates = false;
 }
 
-- (void)awakeFromNib
+- (void)setUpModels
 {
   using namespace efgy::geometry;
-  
-  [models removeAllItems];
-  [baseModels removeAllItems];
-  [formats removeAllItems];
 
-  [modelDepths setSegmentCount:0];
-  [renderDepths setSegmentCount:0];
-  [cameraDepths setSegmentCount:0];
-  
+  [models removeAllItems];
+
   std::set<std::string> mod;
   int li = 2;
   int i;
@@ -154,21 +148,42 @@ static topologic::xml xml;
     
     [models addItemWithTitle:@(m.c_str())];
   }
-  
-  std::set<const char*> form;
-  for (const char *f : with<GLfloat,functor::formats,MAXDEPTH>(form,"*","cube",0,0))
-  {
-    [formats addItemWithTitle:@(f)];
-  }
-  
+}
+
+- (void)setUpBaseModels
+{
+  using namespace efgy::geometry;
+
+  [baseModels removeAllItems];
+
   std::set<const char*> bmods;
   for (const char *b : with<GLfloat,functor::models,MAXDEPTH>(bmods,"*",0,0))
   {
     [baseModels addItemWithTitle:@(b)];
   }
+}
+
+- (void)setUpFormats
+{
+  using namespace efgy::geometry;
+
+  [formats removeAllItems];
+
+  std::set<const char*> form;
+  for (const char *f : with<GLfloat,functor::formats,MAXDEPTH>(form,"*","cube",0,0))
+  {
+    [formats addItemWithTitle:@(f)];
+  }
+}
+
+- (void)setUpModelDepths
+{
+  using namespace efgy::geometry;
   
+  [modelDepths setSegmentCount:0];
+
   std::set<unsigned int> dep;
-  i = 0;
+  int i = 0;
   with<GLfloat,functor::modelDimensions,MAXDEPTH>(dep,"*",0,0);
   [modelDepths setSegmentCount:dep.size()];
   for (unsigned int d : dep)
@@ -178,22 +193,109 @@ static topologic::xml xml;
     [modelDepths setLabel:@(label.c_str()) forSegment:i];
     i++;
   }
-  
+}
+
+- (void)setUpRenderDepths
+{
+  using namespace efgy::geometry;
+
+  [renderDepths setSegmentCount:0];
+
   std::set<unsigned int> rdep;
-  i = 0;
+  int i = 0;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(rdep,"*",0,0);
   [renderDepths setSegmentCount:rdep.size()];
-  [cameraDepths setSegmentCount:rdep.size()];
   for (unsigned int d : rdep)
   {
     std::string label = std::to_string(d) + "D";
     [[renderDepths cell] setTag:d forSegment:i];
-    [[cameraDepths cell] setTag:d forSegment:i];
     [renderDepths setLabel:@(label.c_str()) forSegment:i];
+    i++;
+  }
+}
+
+- (void)setUpCameraDepths
+{
+  using namespace efgy::geometry;
+
+  [cameraDepths setSegmentCount:0];
+
+  std::set<unsigned int> rdep;
+  int i = 0;
+  with<GLfloat,functor::renderDimensions,MAXDEPTH>(rdep,"*",0,0);
+  [cameraDepths setSegmentCount:rdep.size()];
+  for (unsigned int d : rdep)
+  {
+    std::string label = std::to_string(d) + "D";
+    [[cameraDepths cell] setTag:d forSegment:i];
     [cameraDepths setLabel:@(label.c_str()) forSegment:i];
     i++;
   }
+}
+
+- (void)updateAvailableModelDepths
+{
+  using namespace efgy::geometry;
+
+  std::set<unsigned int> dep;
+  with<GLfloat,functor::modelDimensions,MAXDEPTH>(
+      dep, [model UTF8String], 0, 0);
   
+  for (unsigned int i = 0; i < [modelDepths segmentCount]; i++)
+  {
+    auto dim = [[modelDepths cell] tagForSegment:i];
+    bool enabled = (dep.find((unsigned int)dim) != dep.end());
+    
+    [modelDepths setEnabled:enabled forSegment:i];
+  }
+}
+
+- (void)updateAvailableRenderDepths
+{
+  using namespace efgy::geometry;
+
+  std::set<unsigned int> dep;
+  with<GLfloat,functor::renderDimensions,MAXDEPTH>(
+      dep, [model UTF8String],(unsigned int)[self modelDepth],0);
+
+  for (unsigned int i = 0; i < [renderDepths segmentCount]; i++)
+  {
+    auto dim = [[renderDepths cell] tagForSegment:i];
+    bool enabled = (dep.find((unsigned int)dim) != dep.end());
+
+    [renderDepths setEnabled:enabled forSegment:i];
+  }
+}
+
+- (void)updateAvailableCameraDepths
+{
+  auto rd = [self renderDepth];
+  for (unsigned int i = 0; i < [cameraDepths segmentCount]; i++)
+  {
+    auto dim = [[cameraDepths cell] tagForSegment:i];
+    bool enabled = false;
+    if (rd == 2) {
+      enabled = dim == 2;
+    } else {
+      enabled = (dim > 2) && (dim <= rd);
+    }
+    [cameraDepths setEnabled:enabled forSegment:i];
+  }
+}
+
+- (void)awakeFromNib
+{
+  using namespace efgy::geometry;
+
+  [cameraDepths setSegmentCount:0];
+
+  [self setUpModels];
+  [self setUpBaseModels];
+  [self setUpFormats];
+  [self setUpModelDepths];
+  [self setUpRenderDepths];
+  [self setUpCameraDepths];
+
   [self setActiveCamera:3];
   [self setActiveCameraType:1];
 
@@ -264,6 +366,8 @@ static topologic::xml xml;
   {
     [self updateModel];
   }
+
+  [self updateAvailableRenderDepths];
 }
 
 - (NSInteger)modelDepth
@@ -289,6 +393,8 @@ static topologic::xml xml;
   {
     [self updateModel];
   }
+
+  [self updateAvailableCameraDepths];
 }
 
 - (NSInteger)renderDepth
@@ -306,6 +412,8 @@ static topologic::xml xml;
   {
     [self updateModel];
   }
+
+  [self updateAvailableModelDepths];
 }
 
 - (NSString *)model

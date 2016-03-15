@@ -168,15 +168,15 @@
         </menu>
         <window title="Topologic" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="576" y="88" width="1070" height="672"/>
+            <rect key="contentRect" x="576" y="88" width="1050" height="652"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
-            <value key="minSize" type="size" width="700" height="650"/>
+            <value key="minSize" type="size" width="800" height="650"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="1070" height="672"/>
+                <rect key="frame" x="0.0" y="0.0" width="1050" height="652"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <splitView misplaced="YES" dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3y7-GX-vky">
-                        <rect key="frame" x="0.0" y="20" width="1050" height="652"/>
+                    <splitView dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3y7-GX-vky">
+                        <rect key="frame" x="0.0" y="0.0" width="1050" height="652"/>
                         <subviews>
                             <view misplaced="YES" id="pfO-PN-eTH">
                                 <rect key="frame" x="0.0" y="0.0" width="268" height="652"/>
@@ -185,20 +185,6 @@
                                     <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="di0-Yf-UMh" userLabel="View Controls">
                                         <rect key="frame" x="0.0" y="447" width="271" height="205"/>
                                         <subviews>
-                                            <segmentedControl verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ep2-be-AOQ">
-                                                <rect key="frame" x="18" y="162" width="110" height="24"/>
-                                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="hb1-EX-eTQ">
-                                                    <font key="font" metaFont="system"/>
-                                                    <segments>
-                                                        <segment label="2D" tag="-1"/>
-                                                        <segment label="3D" width="32" selected="YES"/>
-                                                        <segment label="4D" width="32" tag="1"/>
-                                                    </segments>
-                                                </segmentedCell>
-                                                <connections>
-                                                    <binding destination="494" name="selectedTag" keyPath="activeCamera" id="7ZH-2D-oJq"/>
-                                                </connections>
-                                            </segmentedControl>
                                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uiL-xz-cWK">
                                                 <rect key="frame" x="18" y="136" width="79" height="17"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Background" id="g3e-w5-iyr">
@@ -212,12 +198,12 @@
                                                 <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <connections>
                                                     <action selector="updateOpenGLView:" target="494" id="lTs-h7-zFv"/>
+                                                    <binding destination="494" name="value" keyPath="colourBackground" id="2Tt-nQ-QIc"/>
                                                     <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="sxV-mf-Uec">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                         </dictionary>
                                                     </binding>
-                                                    <binding destination="494" name="value" keyPath="colourBackground" id="2Tt-nQ-QIc"/>
                                                 </connections>
                                             </colorWell>
                                             <colorWell ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EHr-aJ-1pt">
@@ -225,12 +211,12 @@
                                                 <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <connections>
                                                     <action selector="updateOpenGLView:" target="494" id="GmB-BQ-EKL"/>
+                                                    <binding destination="494" name="value" keyPath="colourWire" id="YAf-dd-qDZ"/>
                                                     <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="mUG-M6-sma">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                         </dictionary>
                                                     </binding>
-                                                    <binding destination="494" name="value" keyPath="colourWire" id="YAf-dd-qDZ"/>
                                                 </connections>
                                             </colorWell>
                                             <colorWell ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QhO-fX-bxn">
@@ -238,12 +224,12 @@
                                                 <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <connections>
                                                     <action selector="updateOpenGLView:" target="494" id="IKe-4o-uqz"/>
+                                                    <binding destination="494" name="value" keyPath="colourSurface" id="Xi8-og-yTV"/>
                                                     <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="jRP-5a-yYC">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                         </dictionary>
                                                     </binding>
-                                                    <binding destination="494" name="value" keyPath="colourSurface" id="Xi8-og-yTV"/>
                                                 </connections>
                                             </colorWell>
                                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="52J-pd-H85">
@@ -291,7 +277,6 @@
                                         <constraints>
                                             <constraint firstItem="QhO-fX-bxn" firstAttribute="width" secondItem="EHr-aJ-1pt" secondAttribute="width" id="4sa-uB-KSd"/>
                                             <constraint firstItem="cQa-d7-UAv" firstAttribute="trailing" secondItem="SHc-YF-nDU" secondAttribute="trailing" id="87c-be-2es"/>
-                                            <constraint firstItem="Ep2-be-AOQ" firstAttribute="leading" secondItem="di0-Yf-UMh" secondAttribute="leading" constant="20" id="Auq-Ld-NMI"/>
                                             <constraint firstItem="cQa-d7-UAv" firstAttribute="trailing" secondItem="QhO-fX-bxn" secondAttribute="trailing" id="OuM-0w-aWq"/>
                                             <constraint firstItem="cQa-d7-UAv" firstAttribute="top" secondItem="QhO-fX-bxn" secondAttribute="bottom" constant="8" id="Q8e-Tc-4l5"/>
                                             <constraint firstItem="QhO-fX-bxn" firstAttribute="width" secondItem="SHc-YF-nDU" secondAttribute="width" id="TgA-HX-kOz"/>
@@ -331,12 +316,12 @@
                                             </popUpButton>
                                             <popUpButton verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FUk-hl-kZP">
                                                 <rect key="frame" x="18" y="381" width="244" height="26"/>
-                                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="4e3-DA-JJF" userLabel="Format">
+                                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="4e3-DA-JJF" userLabel="Format">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" title="OtherViews" id="a8W-Ar-pfy">
                                                         <items>
-                                                            <menuItem title="Item 1" state="on" id="J1X-aI-ZeV"/>
+                                                            <menuItem title="Item 1" id="J1X-aI-ZeV"/>
                                                             <menuItem title="Item 2" id="usc-Rm-lXH"/>
                                                             <menuItem title="Item 3" id="3vZ-9m-hWz"/>
                                                         </items>
@@ -455,7 +440,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3nX-ty-jq0">
-                                                <rect key="frame" x="18" y="282" width="243" height="21"/>
+                                                <rect key="frame" x="18" y="282" width="243" height="20"/>
                                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="15" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="vaC-Sx-F2f"/>
                                                 <connections>
                                                     <binding destination="494" name="value" keyPath="radius" id="p0K-AK-koj"/>
@@ -470,7 +455,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VN6-Mc-hKJ">
-                                                <rect key="frame" x="18" y="232" width="243" height="21"/>
+                                                <rect key="frame" x="18" y="232" width="243" height="20"/>
                                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.01" maxValue="15" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="Mk1-cz-4gc"/>
                                                 <connections>
                                                     <binding destination="494" name="value" keyPath="radius2" id="wI8-nW-aU8"/>
@@ -485,7 +470,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nM8-Cr-Pz5">
-                                                <rect key="frame" x="18" y="182" width="243" height="21"/>
+                                                <rect key="frame" x="18" y="182" width="243" height="20"/>
                                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-5" maxValue="5" doubleValue="0.90000000000000002" tickMarkPosition="above" sliderType="linear" id="9mL-Ow-Fbv"/>
                                                 <connections>
                                                     <binding destination="494" name="value" keyPath="constant" id="IiW-cb-aHY"/>
@@ -508,7 +493,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <slider verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SuJ-BB-b7E">
-                                                <rect key="frame" x="18" y="332" width="243" height="21"/>
+                                                <rect key="frame" x="18" y="332" width="243" height="20"/>
                                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="40" doubleValue="6" tickMarkPosition="above" sliderType="linear" id="Dum-63-UZz"/>
                                                 <connections>
                                                     <binding destination="494" name="value" keyPath="precision" id="5NQ-QZ-Zsc"/>
@@ -632,6 +617,26 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="A0DB3E56-E623-4EEC-859E-10741576C765" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="small" id="1310">
                 <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="113D23C3-A185-453C-9395-070B1C93C367" label="Camera Deform Depth" paletteLabel="Camera Deform Depth" id="10Q-bp-otq" userLabel="Active Depth">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="110" height="24"/>
+                        <size key="maxSize" width="225" height="28"/>
+                        <segmentedControl key="view" verticalHuggingPriority="750" id="Cid-wb-Qst">
+                            <rect key="frame" x="8" y="14" width="110" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="9NV-d5-buj">
+                                <font key="font" metaFont="system"/>
+                                <segments>
+                                    <segment label="2D" tag="-1"/>
+                                    <segment label="3D" width="32" selected="YES"/>
+                                    <segment label="4D" width="32" tag="1"/>
+                                </segments>
+                            </segmentedCell>
+                            <connections>
+                                <binding destination="494" name="selectedTag" keyPath="activeCamera" id="lyh-0u-38g"/>
+                            </connections>
+                        </segmentedControl>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="6A1481E5-AE03-4A31-B9B1-65462735AD7D" label="Base Model" paletteLabel="Base Model" id="E9m-12-9VQ" userLabel="Base Model">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="26"/>
@@ -657,7 +662,7 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E9813AF4-74CD-4E16-9921-5D61264F3FEF" label="Model Depth" paletteLabel="Model Depth" id="2566">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="24"/>
+                        <size key="minSize" width="110" height="24"/>
                         <size key="maxSize" width="225" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="2564" userLabel="Model Depths">
                             <rect key="frame" x="0.0" y="14" width="110" height="24"/>
@@ -677,7 +682,7 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="5B151887-D41F-479D-99AF-358E80A2B777" label="Render Depth" paletteLabel="Render Depth" id="HIn-hL-znx">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="24"/>
+                        <size key="minSize" width="110" height="24"/>
                         <size key="maxSize" width="225" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="P5U-er-bLU">
                             <rect key="frame" x="0.0" y="14" width="110" height="24"/>
@@ -699,6 +704,7 @@
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="1314"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
+                    <toolbarItem reference="10Q-bp-otq"/>
                     <toolbarItem reference="1314"/>
                     <toolbarItem reference="E9m-12-9VQ"/>
                     <toolbarItem reference="2566"/>
@@ -711,12 +717,12 @@
             <connections>
                 <binding destination="494" name="title" keyPath="selectedModelName" id="RWE-x6-ZIb"/>
             </connections>
-            <point key="canvasLocation" x="613" y="266"/>
+            <point key="canvasLocation" x="603" y="256"/>
         </window>
         <customObject id="494" customClass="OSXAppDelegate">
             <connections>
                 <outlet property="baseModels" destination="EG2-3S-MZI" id="fwI-p5-rd6"/>
-                <outlet property="cameraDepths" destination="Ep2-be-AOQ" id="pI4-za-AB2"/>
+                <outlet property="cameraDepths" destination="Cid-wb-Qst" id="kig-9e-aMC"/>
                 <outlet property="formats" destination="FUk-hl-kZP" id="Eom-PV-8XV"/>
                 <outlet property="modelDepths" destination="2564" id="Kg1-7Z-t23"/>
                 <outlet property="models" destination="zWD-wB-i16" id="epn-El-s6f"/>

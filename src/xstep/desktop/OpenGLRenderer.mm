@@ -48,7 +48,6 @@
   [[self openGLContext] makeCurrentContext];
   
   glEnable (GL_BLEND);
-  
   glDisable(GL_CULL_FACE);
 
   GLint swapInt = 1;
