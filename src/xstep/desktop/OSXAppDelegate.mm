@@ -240,14 +240,30 @@ static topologic::xml xml;
   std::set<unsigned int> dep;
   with<GLfloat,functor::modelDimensions,MAXDEPTH>(
       dep, [model UTF8String], 0, 0);
-  
+
+  auto mdim = [self modelDepth];
+  bool needsReset = false;
+
   for (unsigned int i = 0; i < [modelDepths segmentCount]; i++)
   {
     auto dim = [[modelDepths cell] tagForSegment:i];
     bool enabled = (dep.find((unsigned int)dim) != dep.end());
     
     [modelDepths setEnabled:enabled forSegment:i];
+
+    needsReset = needsReset || (!enabled && (mdim == dim));
   }
+
+  if (needsReset) {
+    for (unsigned int i = 0; i < [modelDepths segmentCount]; i++) {
+      if ([modelDepths isEnabledForSegment:i]) {
+        [self setModelDepth:[[modelDepths cell] tagForSegment:i]];
+        break;
+      }
+    }
+  }
+
+  [self updateAvailableRenderDepths];
 }
 
 - (void)updateAvailableRenderDepths
@@ -258,18 +274,38 @@ static topologic::xml xml;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(
       dep, [model UTF8String],(unsigned int)[self modelDepth],0);
 
+  auto mdim = [self renderDepth];
+  bool needsReset = false;
+
   for (unsigned int i = 0; i < [renderDepths segmentCount]; i++)
   {
     auto dim = [[renderDepths cell] tagForSegment:i];
     bool enabled = (dep.find((unsigned int)dim) != dep.end());
 
     [renderDepths setEnabled:enabled forSegment:i];
+
+    needsReset = needsReset || (!enabled && (mdim == dim));
   }
+
+  if (needsReset) {
+    for (unsigned int i = 0; i < [renderDepths segmentCount]; i++) {
+      if ([renderDepths isEnabledForSegment:i]) {
+        [self setRenderDepth:[[renderDepths cell] tagForSegment:i]];
+        break;
+      }
+    }
+  }
+
+  [self updateAvailableCameraDepths];
 }
 
 - (void)updateAvailableCameraDepths
 {
   auto rd = [self renderDepth];
+
+  auto mdim = [self activeCamera];
+  bool needsReset = false;
+
   for (unsigned int i = 0; i < [cameraDepths segmentCount]; i++)
   {
     auto dim = [[cameraDepths cell] tagForSegment:i];
@@ -279,7 +315,19 @@ static topologic::xml xml;
     } else {
       enabled = (dim > 2) && (dim <= rd);
     }
+
     [cameraDepths setEnabled:enabled forSegment:i];
+
+    needsReset = needsReset || (!enabled && (mdim == dim));
+  }
+  
+  if (needsReset) {
+    for (unsigned int i = 0; i < [cameraDepths segmentCount]; i++) {
+      if ([cameraDepths isEnabledForSegment:i]) {
+        [self setActiveCamera:[[cameraDepths cell] tagForSegment:i]];
+        break;
+      }
+    }
   }
 }
 
@@ -793,6 +841,8 @@ static topologic::xml xml;
   
   [self didChangeValueForKey:@"selectedModelName"];
   [openGL setNeedsDisplay:YES];
+
+  [self updateAvailableModelDepths];
 }
 
 - (void) updateModelParameters
