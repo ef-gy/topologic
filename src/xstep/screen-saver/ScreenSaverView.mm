@@ -49,15 +49,15 @@
 
     std::srand(std::time(0));
 
-    state->parameter.radius = 10;
+    state->parameter.radius = 1;
     state->parameter.precision = 30;
-    state->parameter.iterations = 2;
-    state->parameter.functions = 3;
+    state->parameter.iterations = 5;
+    state->parameter.functions = 5;
     state->parameter.seed = std::rand();
     state->fractalFlameColouring = true;
 
     efgy::geometry::with<GLfloat,topologic::updateModel,MAXDEPTH>(
-        *state, "cartesian", "random-flame", 4, 4);
+        *state, "cartesian", "random-affine-ifs", 4, 4);
 
     [self setAnimationTimeInterval:1/30.0];
   }
