@@ -93,7 +93,7 @@ public:
     }
 
     out.model =
-        (render::base<true> *)(new render::wrapper<Q, d, adapted, true, format>(
+        (render::base *)(new render::wrapper<Q, d, adapted, format>(
             out, tag));
 
     return out.model != 0;

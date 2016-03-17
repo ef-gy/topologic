@@ -29,6 +29,7 @@
 #include <ef.gy/render-css.h>
 #include <sstream>
 #include <type_traits>
+#include <chrono>
 
 #include <topologic/render.h>
 
@@ -914,7 +915,7 @@ public:
    * topologic::render::svg with all parameters - including the model -
    * applied and properly initialised.
    */
-  render::base<true> *model;
+  render::base *model;
 
   /**\brief libefgy SVG renderer instance; 1D fix point
    *
@@ -997,6 +998,13 @@ public:
    *      describing this colouring algorithm.
    */
   bool fractalFlameColouring;
+
+  bool keepTime;
+  bool autoscale;
+
+  std::chrono::milliseconds prepareTime;
+  std::chrono::milliseconds renderTime;
+  std::chrono::milliseconds autoscaleTarget;
 };
 
 /**\brief Gather model metadata

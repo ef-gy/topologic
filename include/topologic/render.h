@@ -127,19 +127,10 @@ public:
  *
  * The primary purpose of this class is to force certain parts of a
  * model renderer's interface to be virtual.
- *
- * \tparam isVirtual Whether the derived class should contain virtual
- *                   methods.
  */
-template <bool isVirtual = false> class base : public metadata {
+class base : public metadata {
 public:
-  /**\brief Construct with model metadata
-   *
-   * Sets the basic metadata for a model.
-   */
-  base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
-       const char *pID = "none", const char *pFormatID = "default")
-      : metadata(pDepth, pRenderDepth, pID, pFormatID) {}
+  using metadata::metadata;
 
   /**\brief Virtual destructor
    *
@@ -176,26 +167,6 @@ public:
 #endif
 };
 
-/**\brief Non-virtual model renderer base class
- *
- * This is simply an empty class, which allows a model renderer to be
- * non-virtual, which in turn would probably be handy in certain
- * situations where only a very select few models will be used and it
- * would be a good idea to highly optimise the renderers for these
- * models; by cutting down on the number of virtual functions, the
- * compiler should be able to provide slightly better code.
- */
-template <> class base<false> : public metadata {
-public:
-  /**\brief Construct with model metadata
-   *
-   * Sets the basic metadata for a model.
-   */
-  base(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
-       const char *pID = "none", const char *pFormatID = "default")
-      : metadata(pDepth, pRenderDepth, pID, pFormatID) {}
-};
-
 /**\brief Renderer base class with default methods
  *
  * This template provides some of the basic functionality shared
@@ -205,16 +176,10 @@ public:
  * \tparam Q  Base data type for calculations
  * \tparam d  Model depth; typically has to be <= the render depth
  * \tparam T  Model template; use things like efgy::geometry::cube
- * \tparam isVirtual Whether the class should contain the virtual
- *                   functions defined in renderer<true>. It'll contain
- *                   the actual functions in there either way, this
- *                   just determines if they should make the class a
- *                   virtual class.
- * \tparam format    The vector format to use.
+ * \tparam format The vector format to use.
  */
-template <typename Q, unsigned int d, template <class, unsigned int> class T,
-          bool isVirtual, typename format>
-class wrapper : public base<isVirtual> {
+template <typename Q, unsigned int d, template <class, unsigned int> class T, typename format>
+class wrapper : public base {
 public:
   /**\brief Model type
    *
@@ -250,7 +215,7 @@ public:
    */
   wrapper(stateType &pState, const format &pFormat)
       : gState(pState), object(gState.parameter, pFormat),
-        base<isVirtual>(d, rd, modelType::id(), modelType::format::id()) {}
+        base(d, rd, modelType::id(), modelType::format::id()) {}
 
   /**\brief Construct with global state, renderer and parameters
    *
@@ -265,7 +230,7 @@ public:
   wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter,
           const format &pFormat)
       : gState(pState), object(pParameter, pFormat),
-        base<isVirtual>(d, rd, modelType::id(), modelType::format::id()) {}
+        base(d, rd, modelType::id(), modelType::format::id()) {}
 
   bool svg(std::ostream &output, bool updateMatrix = false) {
     if (metadata::update) {

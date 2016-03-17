@@ -38,7 +38,7 @@
     
     if (!glView)
     {
-      NSLog( @"Couldn't initialize OpenGL view." );
+      NSLog(@"Couldn't initialize OpenGL view.");
       return nil;
     }
     
@@ -47,7 +47,7 @@
 
     state = new topologic::state<GLfloat, MAXDEPTH>();
 
-    std::srand(std::time(0));
+    std::srand((unsigned int)std::time(0));
 
     state->parameter.radius = 1;
     state->parameter.precision = 30;
@@ -69,7 +69,7 @@
 
 - (void)setUpOpenGL
 {
-  NSLog( @"setUpOpenGL..." );
+  NSLog(@"setUpOpenGL...");
 
   [[glView openGLContext] makeCurrentContext];
 
@@ -82,7 +82,7 @@
 
 - (void)dealloc
 {
-  NSLog( @"dealloc..." );
+  NSLog(@"dealloc...");
 
   [glView removeFromSuperview];
 
@@ -92,7 +92,7 @@
 
 - (void)setFrameSize:(NSSize)newSize
 {
-  NSLog( @"setFrameSize..." );
+  NSLog(@"setFrameSize...");
 
   [super setFrameSize:newSize];
   [glView setFrameSize:newSize];
@@ -108,14 +108,14 @@
 
 - (void)startAnimation
 {
-  NSLog( @"startAnimation..." );
+  NSLog(@"startAnimation...");
 
   [super startAnimation];
 }
 
 - (void)stopAnimation
 {
-  NSLog( @"stopAnimation..." );
+  NSLog(@"stopAnimation...");
 
   [super stopAnimation];
 }
@@ -134,7 +134,7 @@
 
 - (void)drawRect:(NSRect)rect
 {
-  NSLog( @"drawRect..." );
+  NSLog(@"drawRect...");
 
   [super drawRect:rect];
 
