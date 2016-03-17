@@ -273,6 +273,16 @@
                                                     <binding destination="494" name="enabled" keyPath="fractalFlameColouring" id="ljT-FQ-dli"/>
                                                 </connections>
                                             </button>
+                                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y9Q-qw-q1D">
+                                                <rect key="frame" x="18" y="169" width="235" height="18"/>
+                                                <buttonCell key="cell" type="check" title="Automatically Scale Parameters" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7wM-Wg-aC5">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <binding destination="494" name="value" keyPath="autoScaleParameters" id="YDS-6Z-Zwv"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="QhO-fX-bxn" firstAttribute="width" secondItem="EHr-aJ-1pt" secondAttribute="width" id="4sa-uB-KSd"/>

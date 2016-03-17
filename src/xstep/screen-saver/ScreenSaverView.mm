@@ -63,7 +63,7 @@
     [self setAnimationTimeInterval:1/30.0];
   }
   
-  NSLog( @"initWithFrame done" );
+  NSLog(@"initWithFrame done");
 
   return self;
 }

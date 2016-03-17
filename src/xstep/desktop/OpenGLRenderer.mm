@@ -62,23 +62,29 @@
   
   if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
   {
-    bool autoscale =
-      [(OSXAppDelegate*)[NSApp delegate] state]->autoScaleParameters;
-
-    if (autoscale) {
+    if ([[NSApp delegate] autoScaleParameters]) {
       //[[NSApp delegate] willChangeValueForKey:@"IFSIterations"];
       [[NSApp delegate] willChangeValueForKey:@"precision"];
     }
 
     [(OSXAppDelegate*)[NSApp delegate] state]->model->opengl(true);
 
-    if (autoscale) {
+    if ([[NSApp delegate] autoScaleParameters]) {
       [[NSApp delegate] didChangeValueForKey:@"precision"];
       //[[NSApp delegate] didChangeValueForKey:@"IFSIterations"];
     }
 
     if ([(OSXAppDelegate*)[NSApp delegate] state]->model->update) {
-      [self setNeedsDisplay:YES];
+      NSInvocation *inv = [NSInvocation
+          invocationWithMethodSignature:[self methodSignatureForSelector:@selector(setNeedsDisplay:)]];
+      BOOL yes = YES;
+      [inv setSelector:@selector(setNeedsDisplay:)];
+      [inv setTarget:self];
+      [inv setArgument:&yes atIndex:2];
+
+      [inv performSelector:@selector(invoke)
+           withObject:self
+           afterDelay:0.01];
     }
   }
   

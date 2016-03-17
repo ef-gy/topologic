@@ -301,6 +301,8 @@
  */
 @property (readwrite) BOOL fractalFlameColouring;
 
+@property (readwrite) BOOL autoScaleParameters;
+
 /** \} */
 
 /**\defgroup osx-data-bindings-colours Colours

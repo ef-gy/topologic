@@ -593,7 +593,7 @@ public:
 #endif
         background(Q(1), Q(1), Q(1), Q(1)), wireframe(Q(0), Q(0), Q(0), Q(0.8)),
         surface(Q(0), Q(0), Q(0), Q(0.2)), fractalFlameColouring(false),
-        model(0), autoScaleParameters(true), autoscaleTargetTime(20) {
+        model(0), autoScaleParameters(false), autoscaleTargetTime(20) {
     parameter.radius = Q(1);
     parameter.precision = Q(10);
     parameter.iterations = 4;
