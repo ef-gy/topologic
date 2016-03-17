@@ -307,23 +307,6 @@
                                     <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4s-Xj-7bp" userLabel="Model Controls">
                                         <rect key="frame" x="0.0" y="-7" width="268" height="456"/>
                                         <subviews>
-                                            <popUpButton verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zWD-wB-i16">
-                                                <rect key="frame" x="18" y="412" width="244" height="26"/>
-                                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="UpY-fC-Nty" id="sXB-Tp-rGm" userLabel="Model">
-                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="menu"/>
-                                                    <menu key="menu" title="OtherViews" id="lcj-Pf-v2X">
-                                                        <items>
-                                                            <menuItem title="Item 1" state="on" id="UpY-fC-Nty"/>
-                                                            <menuItem title="Item 2" id="9MG-pC-Zga"/>
-                                                            <menuItem title="Item 3" id="vj0-vA-4pW"/>
-                                                        </items>
-                                                    </menu>
-                                                </popUpButtonCell>
-                                                <connections>
-                                                    <binding destination="494" name="selectedValue" keyPath="selectedModelName" id="E2Z-Mu-vS7"/>
-                                                </connections>
-                                            </popUpButton>
                                             <popUpButton verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FUk-hl-kZP">
                                                 <rect key="frame" x="18" y="381" width="244" height="26"/>
                                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="4e3-DA-JJF" userLabel="Format">
@@ -533,7 +516,6 @@
                                         <constraints>
                                             <constraint firstItem="nM8-Cr-Pz5" firstAttribute="top" secondItem="CC7-4h-jnM" secondAttribute="bottom" constant="8" id="0tG-QL-IjX"/>
                                             <constraint firstItem="3nX-ty-jq0" firstAttribute="top" secondItem="Apw-06-ULU" secondAttribute="bottom" constant="8" id="2lA-O5-qq8"/>
-                                            <constraint firstItem="zWD-wB-i16" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="3gZ-9W-X7E"/>
                                             <constraint firstItem="eq0-pN-Gd0" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="6JE-uR-jWY"/>
                                             <constraint firstItem="HAA-Zg-gPa" firstAttribute="top" secondItem="M5F-6z-ATf" secondAttribute="bottom" constant="10" id="7sU-KO-b6Y"/>
                                             <constraint firstItem="MoB-W3-P92" firstAttribute="leading" secondItem="poT-pp-Hgn" secondAttribute="trailing" constant="8" id="80b-Vh-G56"/>
@@ -560,11 +542,9 @@
                                             <constraint firstItem="vbZ-yT-sQP" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="RG6-k4-rIB"/>
                                             <constraint firstAttribute="trailing" secondItem="IWB-0J-US1" secondAttribute="trailing" constant="20" id="RXD-8O-aj0"/>
                                             <constraint firstItem="nM8-Cr-Pz5" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="Rao-N5-uAl"/>
-                                            <constraint firstItem="FUk-hl-kZP" firstAttribute="top" secondItem="zWD-wB-i16" secondAttribute="bottom" constant="10" id="STr-dN-8bT"/>
                                             <constraint firstItem="WJz-Tp-VBG" firstAttribute="width" secondItem="CMI-QV-McF" secondAttribute="width" id="SdZ-Qz-HpT"/>
                                             <constraint firstItem="WJz-Tp-VBG" firstAttribute="top" secondItem="CMI-QV-McF" secondAttribute="bottom" constant="8" id="Tog-iB-3ak"/>
                                             <constraint firstItem="CMI-QV-McF" firstAttribute="leading" secondItem="8Fj-Pj-MYo" secondAttribute="trailing" constant="9" id="VqD-GG-dt7"/>
-                                            <constraint firstItem="zWD-wB-i16" firstAttribute="top" secondItem="f4s-Xj-7bp" secondAttribute="top" constant="20" id="W80-O4-6nK"/>
                                             <constraint firstItem="WJz-Tp-VBG" firstAttribute="width" secondItem="poT-pp-Hgn" secondAttribute="width" id="WpO-Rw-eSk"/>
                                             <constraint firstItem="FUk-hl-kZP" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="Wry-L8-hGa"/>
                                             <constraint firstItem="eB1-M2-rqy" firstAttribute="leading" secondItem="CMI-QV-McF" secondAttribute="trailing" constant="8" id="Yym-iy-S9V"/>
@@ -592,7 +572,6 @@
                                             <constraint firstAttribute="trailing" secondItem="Apw-06-ULU" secondAttribute="trailing" constant="20" id="wDh-dx-tlk"/>
                                             <constraint firstItem="VN6-Mc-hKJ" firstAttribute="top" secondItem="5dE-UY-99g" secondAttribute="bottom" constant="8" id="wFk-Rt-2YM"/>
                                             <constraint firstItem="vuP-fY-6AI" firstAttribute="top" secondItem="FUk-hl-kZP" secondAttribute="bottom" constant="8" id="xV1-uX-KMp"/>
-                                            <constraint firstAttribute="trailing" secondItem="zWD-wB-i16" secondAttribute="trailing" constant="20" id="yme-Hi-ahL"/>
                                             <constraint firstItem="8Fj-Pj-MYo" firstAttribute="top" secondItem="nM8-Cr-Pz5" secondAttribute="bottom" constant="8" id="zgG-wd-B9p"/>
                                             <constraint firstItem="vuP-fY-6AI" firstAttribute="leading" secondItem="f4s-Xj-7bp" secondAttribute="leading" constant="20" id="zz1-M1-8Px"/>
                                         </constraints>
@@ -650,7 +629,7 @@
                     <toolbarItem implicitItemIdentifier="6A1481E5-AE03-4A31-B9B1-65462735AD7D" label="Base Model" paletteLabel="Base Model" id="E9m-12-9VQ" userLabel="Base Model">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="26"/>
-                        <size key="maxSize" width="105" height="28"/>
+                        <size key="maxSize" width="160" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="EG2-3S-MZI">
                             <rect key="frame" x="0.0" y="14" width="105" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -735,7 +714,6 @@
                 <outlet property="cameraDepths" destination="Cid-wb-Qst" id="kig-9e-aMC"/>
                 <outlet property="formats" destination="FUk-hl-kZP" id="Eom-PV-8XV"/>
                 <outlet property="modelDepths" destination="2564" id="Kg1-7Z-t23"/>
-                <outlet property="models" destination="zWD-wB-i16" id="epn-El-s6f"/>
                 <outlet property="openGL" destination="678" id="1050"/>
                 <outlet property="renderDepths" destination="P5U-er-bLU" id="ivo-FX-rzY"/>
                 <outlet property="window" destination="371" id="532"/>

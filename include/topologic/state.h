@@ -747,7 +747,7 @@ public:
        */
 
       if (parameter.precision < 100) {
-        parameter.precision += 0.5;
+        parameter.precision += 1;
         didChangeParameter = true;
       }
     }

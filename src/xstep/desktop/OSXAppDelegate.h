@@ -56,11 +56,6 @@
     NSInteger modelDepth;
     NSInteger renderDepth;
     
-    /**\brief Model list instance
-     *
-     * This is where the XIB reference for the list of models is stored.
-     */
-    IBOutlet NSPopUpButton *models;
     IBOutlet NSPopUpButton *baseModels;
     
     /**\brief Coordinate format list instance
@@ -197,7 +192,7 @@
  * This is the qualified name of the current model, e.g. '4-cube' for a
  * tesseract. This is only updated when a new model is actually set.
  */
-@property (retain,readwrite) NSString *selectedModelName;
+@property (retain,readonly) NSString *selectedModelName;
 
 /** \} */
 

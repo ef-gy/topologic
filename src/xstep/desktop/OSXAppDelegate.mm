@@ -127,29 +127,6 @@ static topologic::xml xml;
   topologicState.polarCoordinates = false;
 }
 
-- (void)setUpModels
-{
-  using namespace efgy::geometry;
-
-  [models removeAllItems];
-
-  std::set<std::string> mod;
-  int li = 2;
-  int i;
-  for (const std::string &m : with<GLfloat,functor::modelsWithDepth,MAXDEPTH>(mod,"*",0,0))
-  {
-    std::istringstream dm (m);
-    dm >> i;
-    if (i != li)
-    {
-      li = i;
-      [[models menu] addItem:[NSMenuItem separatorItem]];
-    }
-    
-    [models addItemWithTitle:@(m.c_str())];
-  }
-}
-
 - (void)setUpBaseModels
 {
   using namespace efgy::geometry;
@@ -337,7 +314,6 @@ static topologic::xml xml;
 
   [cameraDepths setSegmentCount:0];
 
-  [self setUpModels];
   [self setUpBaseModels];
   [self setUpFormats];
   [self setUpModelDepths];
@@ -384,15 +360,6 @@ static topologic::xml xml;
 - (BOOL)autoScaleParameters
 {
   return topologicState.autoScaleParameters;
-}
-
--(void)setSelectedModelName:(NSString *)value
-{
-  if (![[self selectedModelName] isEqualToString:value])
-  {
-    [self setModelDepth:[value integerValue]];
-    [self setModel:[value substringFromIndex:[value rangeOfString:@"-"].location+1]];
-  }
 }
 
 -(NSString *)selectedModelName
@@ -847,9 +814,7 @@ static topologic::xml xml;
    [[model lowercaseString] UTF8String],
    (const unsigned int)modelDepth,
    (const unsigned int)renderDepth);
-  
-  [models selectItemWithTitle:[self selectedModelName]];
-  
+
   [self didChangeValueForKey:@"selectedModelName"];
   [openGL setNeedsDisplay:YES];
 
