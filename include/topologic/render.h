@@ -23,6 +23,8 @@
 #include <ef.gy/render-opengl.h>
 #endif
 
+#include <chrono>
+
 namespace topologic {
 /**\brief Cartesian dimension shorthands
  *
@@ -60,7 +62,7 @@ public:
   metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
            const char *pID = "none", const char *pFormatID = "default")
       : depth(pDepth), renderDepth(pRenderDepth), id(pID), formatID(pFormatID),
-        update(true) {}
+        update(true), keepTime(true) {}
 
   /**\brief Query model depth
    *
@@ -121,6 +123,12 @@ public:
    * because you changed some parameters that it may have cached.
    */
   bool update;
+
+  bool keepTime;
+
+  std::chrono::milliseconds prepareTime;
+  std::chrono::milliseconds initialTime;
+  std::chrono::milliseconds renderTime;
 };
 
 /**\brief Base class for a model renderer
@@ -173,9 +181,9 @@ public:
  * between distinct model renderers which aren't being provided by the
  * renderers in libefgy, or which only need to be passed along.
  *
- * \tparam Q  Base data type for calculations
- * \tparam d  Model depth; typically has to be <= the render depth
- * \tparam T  Model template; use things like efgy::geometry::cube
+ * \tparam Q      Base data type for calculations
+ * \tparam d      Model depth; typically has to be <= the render depth
+ * \tparam T      Model template; use things like efgy::geometry::cube
  * \tparam format The vector format to use.
  */
 template <typename Q, unsigned int d, template <class, unsigned int> class T, typename format>
@@ -186,14 +194,7 @@ public:
    * Alias of the model type that this class represents with all
    * the template parameters filled in.
    */
-  typedef T<Q, d> modelType;
-
-  /**\brief Model render depth
-   *
-   * This is the maximum depth for your models and also specifies
-   * the maximum depth of any transformations you can apply.
-   */
-  static constexpr const unsigned int rd = modelType::renderDepth;
+  using modelType = T<Q, d>;
 
   /**\brief Global state type
    *
@@ -201,7 +202,7 @@ public:
    * gather information to render a model with all the template
    * parameters filled in.
    */
-  typedef state<Q, rd> stateType;
+  using stateType = state<Q, modelType::renderDepth>;
 
   /**\brief Construct with global state and renderer
    *
@@ -215,27 +216,27 @@ public:
    */
   wrapper(stateType &pState, const format &pFormat)
       : gState(pState), object(gState.parameter, pFormat),
-        base(d, rd, modelType::id(), modelType::format::id()) {}
-
-  /**\brief Construct with global state, renderer and parameters
-   *
-   * Like the two-parameter constructor, but provides a custom
-   * parameter object.
-   *
-   * \param[in,out] pState     The global topologic::state
-   *                           instance
-   * \param[in]     pParameter The parameter instance to use
-   * \param[in]     pFormat    The vector format tag to use
-   */
-  wrapper(stateType &pState, const efgy::geometry::parameters<Q> &pParameter,
-          const format &pFormat)
-      : gState(pState), object(pParameter, pFormat),
-        base(d, rd, modelType::id(), modelType::format::id()) {}
+        base(d, modelType::renderDepth, modelType::id(),
+             modelType::format::id()) {}
 
   bool svg(std::ostream &output, bool updateMatrix = false) {
+    using namespace std::chrono;
+
+    time_point<high_resolution_clock> start;
+    
+    if (metadata::keepTime) {
+      start = high_resolution_clock::now();
+    }
+
     if (metadata::update) {
       object.calculateObject();
       metadata::update = false;
+
+      if (metadata::keepTime) {
+        metadata::prepareTime = duration_cast<milliseconds>(
+            high_resolution_clock::now() - start);
+        start = high_resolution_clock::now();
+      }
     }
 
     if (updateMatrix) {
@@ -280,15 +281,35 @@ public:
 
     gState.svg.frameEnd();
 
+    if (metadata::keepTime) {
+      metadata::renderTime = duration_cast<milliseconds>(
+          high_resolution_clock::now() - start);
+      metadata::initialTime = metadata::renderTime;
+    }
+
     return true;
   }
 
 #if !defined(NO_OPENGL)
   bool opengl(bool updateMatrix = false) {
+    using namespace std::chrono;
+
+    time_point<high_resolution_clock> start;
+
+    if (metadata::keepTime) {
+      start = high_resolution_clock::now();
+    }
+
     if (metadata::update) {
       gState.opengl.context.prepared = false;
       object.calculateObject();
       metadata::update = false;
+    
+      if (metadata::keepTime) {
+        metadata::prepareTime = duration_cast<milliseconds>(
+            high_resolution_clock::now() - start);
+        start = high_resolution_clock::now();
+      }
     }
 
     if (updateMatrix) {
@@ -311,9 +332,22 @@ public:
 
     if (!gState.opengl.context.prepared) {
       std::cerr << gState.opengl << object;
+
+      if (metadata::keepTime) {
+        metadata::initialTime = duration_cast<milliseconds>(
+            high_resolution_clock::now() - start);
+        start = high_resolution_clock::now();
+      }
     }
 
     gState.opengl.frameEnd();
+
+    if (metadata::keepTime) {
+      metadata::renderTime = duration_cast<milliseconds>(
+          high_resolution_clock::now() - start);
+    
+      return gState.autoscale();
+    }
 
     return true;
   }

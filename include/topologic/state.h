@@ -29,7 +29,6 @@
 #include <ef.gy/render-css.h>
 #include <sstream>
 #include <type_traits>
-#include <chrono>
 
 #include <topologic/render.h>
 
@@ -145,6 +144,7 @@ public:
         fromp[i] = 1.57;
       }
     }
+  
     from = fromp;
   }
 
@@ -203,19 +203,35 @@ public:
 
   /**\brief Update projection matrices
    *
-   * Resets the projection matrix' parameters and forces it to be updated
+   * Resets the projection matrix's parameters and forces it to be updated
    * with the new parameters, then keeps doing so recursively for all its
    * parent classes.
+   *
+   * \returns 'true' when matrices have been updated successfully.
    */
-  void updateMatrix(void) {
+  bool updateMatrix(void) {
     projection.aspect =
-        (d == 3) ? Q(state<Q, d - 1>::width) / Q(state<Q, d - 1>::height)
-                 : Q(1);
-    if (state<Q, d - 1>::polarCoordinates) {
+        (d == 3) ? Q(base::width) / Q(base::height) : Q(1);
+    if (base::polarCoordinates) {
       from = fromp;
     }
     projection.updateMatrix();
-    state<Q, d - 1>::updateMatrix();
+    return state<Q, d - 1>::updateMatrix();
+  }
+
+  bool invalidateCache(void) {
+#if !defined(NO_OPENGL)
+#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
+    if (d > 4)
+#else
+    if (d > 3)
+#endif
+    {
+      opengl.context.prepared = false;
+    }
+#endif
+
+    return true;
   }
 
   /**\brief Apply scale
@@ -237,16 +253,7 @@ public:
       return state<Q, d - 1>::scale(scale);
     }
 
-#if !defined(NO_OPENGL)
-#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
-    if (d > 4)
-#else
-    if (d > 3)
-#endif
-    {
-      opengl.context.prepared = false;
-    }
-#endif
+    invalidateCache();
 
     transformation =
         transformation * efgy::geometry::transformation::scale<Q, d>(scale);
@@ -269,26 +276,15 @@ public:
    *          of this method.
    */
   bool magnify(const Q &magnification) {
-    if (!active) {
-      return state<Q, d - 1>::magnify(magnification);
+    return scale(Q(1.) + magnification);
+  }
+
+  efgy::math::vector<Q, d> getFrom(void) const {
+    if (base::polarCoordinates) {
+      return fromp;
     }
 
-#if !defined(NO_OPENGL)
-#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
-    if (d > 4)
-#else
-    if (d > 3)
-#endif
-    {
-      opengl.context.prepared = false;
-    }
-#endif
-
-    transformation =
-        transformation *
-        efgy::geometry::transformation::scale<Q, d>(Q(1.) + magnification);
-
-    return true;
+    return from;
   }
 
   /**\brief Interpret trackball/mouse drag and scroll operations
@@ -312,26 +308,9 @@ public:
       return state<Q, d - 1>::interpretDrag(x, y, z);
     }
 
-#if !defined(NO_OPENGL)
-#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
-    if (d > 4)
-#else
-    if (d > 3)
-#endif
-    {
-      opengl.context.prepared = false;
-    }
-#endif
+    invalidateCache();
 
-    efgy::math::vector<Q, d> fn;
-
-    if (base::polarCoordinates) {
-      fn = fromp;
-    } else {
-      fn = from;
-    }
-
-    efgy::geometry::lookAt<Q, d> lookAt(fn, to);
+    efgy::geometry::lookAt<Q, d> lookAt(getFrom(), to);
     efgy::geometry::transformation::affine<Q, d> reverseLookAt;
     reverseLookAt.transformationMatrix = transpose(lookAt.transformationMatrix);
 
@@ -400,16 +379,7 @@ public:
       return false;
     }
 
-#if !defined(NO_OPENGL)
-#if defined(TRANSFORM_4D_IN_PIXEL_SHADER)
-    if (d > 4)
-#else
-    if (d > 3)
-#endif
-    {
-      opengl.context.prepared = false;
-    }
-#endif
+    invalidateCache();
 
     if (base::polarCoordinates) {
       fromp[coord] = value;
@@ -623,7 +593,7 @@ public:
 #endif
         background(Q(1), Q(1), Q(1), Q(1)), wireframe(Q(0), Q(0), Q(0), Q(0.8)),
         surface(Q(0), Q(0), Q(0), Q(0.2)), fractalFlameColouring(false),
-        model(0) {
+        model(0), autoScaleParameters(true), autoscaleTargetTime(20) {
     parameter.radius = Q(1);
     parameter.precision = Q(10);
     parameter.iterations = 4;
@@ -651,8 +621,11 @@ public:
    * there's not much point in projecting from a 2-space -- which would
    * result in an image in 1-space -- this method is a stub that doesn't
    * do anything.
+   *
+   * \returns 'true' because there's no 1D matrices to update so that can't
+   *          fail.
    */
-  void updateMatrix(void) const {}
+  constexpr bool updateMatrix(void) const { return true; }
 
   /**\brief Apply scale; 1D fix point
    *
@@ -665,20 +638,7 @@ public:
    *          methods, so it is not actually expected to ever be called,
    *          which means it'll always return 'false'.
    */
-  bool scale(const Q &) const { return false; }
-
-  /**\brief Apply magnification; 1D fix point
-   *
-   * Applies a scale to the affine transformation matrix; since the 1D
-   * fix point's transformation matrix is currently being ignored, this
-   * particular instance of the method will not do anything at all.
-   *
-   * \returns 'true' if things went as expected. This 1D fix point should
-   *          only be called as a fallback of the higher-level magnify()
-   *          methods, so it is not actually expected to ever be called,
-   *          which means it'll always return 'false'.
-   */
-  bool magnify(const Q &) const { return false; }
+  constexpr bool scale(const Q &) const { return false; }
 
   /**\brief Apply mouse drag; 1D fix point
    *
@@ -690,7 +650,7 @@ public:
    *          doesn't do anything that could fail it will always return
    *          'true'.
    */
-  bool interpretDrag(const Q &, const Q &, const Q &) const { return true; }
+  constexpr bool interpretDrag(const Q &, const Q &, const Q &) const { return true; }
 
   /**\brief Set active dimension
    *
@@ -705,7 +665,7 @@ public:
    *          state object succeeded. Since there is no way for this
    *          method to fail it will always return 'true'.
    */
-  bool setActive(const unsigned int &) const { return true; }
+  constexpr bool setActive(const unsigned int &) const { return true; }
 
   /**\brief Set 'from' coordinate
    *
@@ -737,6 +697,82 @@ public:
     return Q();
   }
 
+  bool autoscaleExpectModelChange(void) {
+    bool didChangeParameter = false;
+
+    if (autoScaleParameters) {
+      parameter.precision = 8;
+      didChangeParameter = true;
+    }
+    
+    if (didChangeParameter && model) {
+      model->update = true;
+    }
+
+    return true;
+  }
+
+  bool autoscale(void) {
+    bool scaleUp = false;
+    bool scaleDown = false;
+    bool didChangeParameter = false;
+
+    if (autoScaleParameters) {
+#if defined(DEBUG_AUTOSCALE)
+      std::cerr << "autoscale factors: "
+                << model->renderTime.count() << " "
+                << model->initialTime.count() << " "
+                << model->prepareTime.count() << " | "
+                << autoscaleTargetTime.count() << "\n";
+#endif
+
+      auto effectiveTime = model->initialTime + model->renderTime;
+
+      scaleUp = effectiveTime < autoscaleTargetTime * 0.75;
+      scaleDown = effectiveTime > autoscaleTargetTime * 2;
+
+#if defined(DEBUG_AUTOSCALE)
+      std::cerr << "scaling decision: "
+                << scaleDown << " "
+                << scaleUp << "\n";
+#endif
+    }
+
+    if (scaleUp) {
+      /*
+      if (parameter.iterations < 11) {
+        parameter.iterations += 1;
+        didChangeParameter = true;
+      }
+       */
+
+      if (parameter.precision < 100) {
+        parameter.precision += 0.5;
+        didChangeParameter = true;
+      }
+    }
+
+    if (scaleDown) {
+      /*
+      if (parameter.iterations >= 3) {
+        parameter.iterations -= 1;
+        didChangeParameter = true;
+      }
+       */
+
+      if (parameter.precision >= 4) {
+        parameter.precision -= 1;
+        didChangeParameter = true;
+      }
+    }
+
+    if (didChangeParameter) {
+      model->update = true;
+    }
+
+    return true;
+  }
+
   /**\brief Translate 'from' points from polar to cartesian coordinates
    *
    * Sets all the 'from' points' cartesian coordinates to the equivalent
@@ -748,7 +784,7 @@ public:
    * \note This is the 1D fix point; as there are no 1D 'from' points,
    *       this method does nothing.
    */
-  bool translatePolarToCartesian(void) const { return true; }
+  constexpr bool translatePolarToCartesian(void) const { return true; }
 
   /**\brief Translate 'from' points from cartesian to polar coordinates
    *
@@ -762,7 +798,7 @@ public:
    * \note This is the 1D fix point; as there are no 1D 'from' points,
    *       this method does nothing.
    */
-  bool translateCartesianToPolar(void) const { return true; }
+  constexpr bool translateCartesianToPolar(void) const { return true; }
 
   /**\brief Get JSON value (1D fix point)
    *
@@ -999,12 +1035,9 @@ public:
    */
   bool fractalFlameColouring;
 
-  bool keepTime;
-  bool autoscale;
+  bool autoScaleParameters;
 
-  std::chrono::milliseconds prepareTime;
-  std::chrono::milliseconds renderTime;
-  std::chrono::milliseconds autoscaleTarget;
+  std::chrono::milliseconds autoscaleTargetTime;
 };
 
 /**\brief Gather model metadata

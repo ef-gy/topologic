@@ -62,7 +62,24 @@
   
   if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
   {
+    bool autoscale =
+      [(OSXAppDelegate*)[NSApp delegate] state]->autoScaleParameters;
+
+    if (autoscale) {
+      //[[NSApp delegate] willChangeValueForKey:@"IFSIterations"];
+      [[NSApp delegate] willChangeValueForKey:@"precision"];
+    }
+
     [(OSXAppDelegate*)[NSApp delegate] state]->model->opengl(true);
+
+    if (autoscale) {
+      [[NSApp delegate] didChangeValueForKey:@"precision"];
+      //[[NSApp delegate] didChangeValueForKey:@"IFSIterations"];
+    }
+
+    if ([(OSXAppDelegate*)[NSApp delegate] state]->model->update) {
+      [self setNeedsDisplay:YES];
+    }
   }
   
   [[self openGLContext] flushBuffer];
