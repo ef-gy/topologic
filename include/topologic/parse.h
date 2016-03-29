@@ -843,24 +843,24 @@ static bool parseModel(state<Q, d> &s, efgy::json::value<> &value) {
   int depth = 4;
   int rdepth = 4;
 
-  efgy::maybe<std::string> mStr = value("coordinateFormat");
-  if ((bool)mStr) {
-    format = mStr.just;
+  auto &cformat = value("coordinateFormat");
+  if (cformat.isString()) {
+    format = cformat.asString();
   }
 
-  mStr = value("model");
-  if ((bool)mStr) {
-    type = mStr.just;
+  auto &cmodel = value("model");
+  if (cmodel.isString()) {
+    type = cmodel.asString();
   }
 
-  efgy::maybe<typename efgy::json::value<>::numeric> mNum = value("depth");
-  if ((bool)mNum) {
-    depth = mNum.just;
+  auto &cdepth = value("depth");
+  if (cdepth.isNumber()) {
+    depth = cdepth.asNumber();
   }
 
-  mNum = value("renderDepth");
-  if ((bool)mNum) {
-    rdepth = mNum.just;
+  auto &crdepth = value("renderDepth");
+  if (crdepth.isNumber()) {
+    rdepth = crdepth.asNumber();
   }
 
   return efgy::geometry::with<Q, func, d>(s, format, type, depth, rdepth);
