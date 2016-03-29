@@ -22,7 +22,6 @@
 #include <ef.gy/polar.h>
 #include <ef.gy/projection.h>
 #include <ef.gy/colour-space-rgb.h>
-#include <ef.gy/maybe.h>
 #include <ef.gy/render-xml.h>
 #include <ef.gy/render-svg.h>
 #include <ef.gy/render-json.h>
@@ -362,16 +361,14 @@ public:
    *                      happen if this is greater than or equal to the
    *                      target dimension.
    * \param[in] value     What to set this coordinate to.
-   * \param[in] dimension Target render dimension; uses the active
-   *                      dimension if the maybe contains 'nothing'.
+   * \param[in] dimension Target render dimension.
    *
    * \returns True if the from point was updated successfully, false
    *          otherwise.
    */
   bool setFromCoordinate(const unsigned int &coord, const Q &value,
-                         const efgy::maybe<unsigned int> &dimension =
-                             efgy::maybe<unsigned int>()) {
-    if (!active && (!dimension || ((unsigned int) dimension != d))) {
+                         const unsigned int &dimension) {
+    if (dimension != d) {
       return state<Q, d - 1>::setFromCoordinate(coord, value, dimension);
     }
 
@@ -390,6 +387,14 @@ public:
     return true;
   }
 
+  bool setFromCoordinate(const unsigned int &coord, const Q &value) {
+    if (!active) {
+      return state<Q, d - 1>::setFromCoordinate(coord, value);
+    }
+
+    return setFromCoordinate(coord, value, d);
+  }
+
   /**\brief Query 'from' coordinate
    *
    * Queries the specified dimension's 'from' coordinate with the index
@@ -398,17 +403,15 @@ public:
    * \param[in] coord     The index of the coordinate to get. Bad things
    *                      happen if this is greater than or equal to the
    *                      target dimension.
-   * \param[in] dimension Target render dimension; uses the active
-   *                      dimension if the maybe contains 'nothing'.
+   * \param[in] dimension Target render dimension.
    *
    * \returns The specified coordinate; bad things happen if you query a
    *          value that is out of range.
    */
   const Q getFromCoordinate(const unsigned int &coord,
-                            const efgy::maybe<unsigned int> &dimension =
-                                efgy::maybe<unsigned int>()) const {
-    if (!active && (!dimension || ((unsigned int) dimension != d))) {
-      return state<Q, d - 1>::getFromCoordinate(coord);
+                            const unsigned int &dimension) const {
+    if (dimension != d) {
+      return state<Q, d - 1>::getFromCoordinate(coord, dimension);
     }
 
     if (coord >= d) {
@@ -420,6 +423,14 @@ public:
     } else {
       return from[coord];
     }
+  }
+
+  const Q getFromCoordinate(const unsigned int &coord) const {
+    if (!active) {
+      return state<Q, d - 1>::getFromCoordinate(coord);
+    }
+
+    return getFromCoordinate(coord, d);
   }
 
   /**\brief Translate 'from' points from polar to cartesian coordinates
@@ -677,8 +688,7 @@ public:
    *          point, so the function cannot succeed.
    */
   constexpr bool setFromCoordinate(const unsigned int &, const Q &,
-                                   const efgy::maybe<unsigned int> & =
-                                       efgy::maybe<unsigned int>()) const {
+                                   const unsigned int & = 0) const {
     return false;
   }
 
@@ -692,8 +702,7 @@ public:
    *          not have a 'from' point to query.
    */
   constexpr const Q getFromCoordinate(const unsigned int &,
-                                      const efgy::maybe<unsigned int> & =
-                                          efgy::maybe<unsigned int>()) const {
+                                      const unsigned int & = 0) const {
     return Q();
   }
 
