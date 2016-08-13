@@ -2,11 +2,8 @@
 *.swp
 *.svg
 topologic
-!include/topologic
-include/ef.gy
 topologic.js
 topologic-glut
-!src/topologic*
 topologic-json.js
 !topologic-json.svg
 documentation/html

@@ -1,0 +1,4 @@
+[submodule "dependencies/libefgy"]
+	path = dependencies/libefgy
+	url = https://github.com/ef-gy/libefgy.git
+  branch = master
