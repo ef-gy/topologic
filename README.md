@@ -25,7 +25,7 @@ The Free/Open Source Software version of this programme is available free of
 charge via git at https://github.com/ef-gy/topologic.git - to check
 out a local copy of that repository, use the git command line tool like this:
 
-    $ git clone git://github.com/ef-gy/topologic.git
+    $ git clone --recursive https://github.com/ef-gy/topologic.git
 
 Additionally, there's a pre-compiled version available on the Mac App Store at
 https://itunes.apple.com/us/app/topologic/id558300160 - this version is
@@ -41,12 +41,6 @@ Topologic is designed so that almost all of the code is template-y C++ in
 header files, much like libefgy. The API documentation for this is available
 at: https://ef.gy/documentation/topologic - the documentation may not always
 be quite up to date, so, if push comes to shove just read the sources.
-
-## OBTAINING LIBEFGY #########################################################
-
-This library is distributed free of charge under a very permissive licence.
-The public GIT repository is at https://github.com/ef-gy/libefgy.git -
-see the documentation at https://ef.gy/documentation/libefgy for more details.
 
 ## INSTALLATION ##############################################################
 
@@ -87,21 +81,6 @@ included in the source bundle. I'm not entirely sure why I used to keep that
 closed-source, but now that it's open you can just open up the
 "Topologic.xcodeproj" project in Xcode on your Mac and compile the frontend
 like any other Xcode project.
-
-You should set up a symlink to ef.gy's include directory before trying to
-compile the Xcode project. To do so, make sure you check out both Topologic
-and libefgy side-by-side in your favourite projects directory, like so:
-
-    $ git clone https://github.com/ef-gy/libefgy.git
-    $ git clone https://github.com/ef-gy/topologic.git
-
-... then create the symlink:
-
-    $ cd topologic/include
-    $ ln -s ../../libefgy/include/ef.gy
-
-This isn't strictly necessary, but it helps since it avoids having to install
-the libefgy headers globally or copying things around manually.
 
 ### THE COCOA TOUCH/iOS FRONTEND #############################################
 
