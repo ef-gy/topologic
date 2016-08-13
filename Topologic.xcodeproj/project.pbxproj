@@ -470,8 +470,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = src/xstep/desktop/Topologic.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
@@ -502,8 +502,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = src/xstep/desktop/Topologic.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer: Magnus Deininger (Q4VA2E2HNK)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
@@ -740,7 +740,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -768,7 +768,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -833,6 +833,7 @@
 				ED2526C61C98C8FF00524A76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
