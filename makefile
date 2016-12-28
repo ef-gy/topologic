@@ -41,7 +41,8 @@ topologic-web.min.js: topologic-web.js
 	uglifyjs $^ -o $@ -c -m
 
 topologic-web.js.xml: topologic-web.js
-	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" > $@
+	echo "<?xml version='1.0' encoding='utf-8'?>" > $@
+	echo "<script type='text/javascript' xmlns='http://www.w3.org/1999/xhtml'><![CDATA[" >> $@
 	cat $^ >> $@
 	echo "]]></script>" >> $@
 
