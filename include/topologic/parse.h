@@ -92,8 +92,6 @@ public:
       out.model = 0;
     }
 
-    out.autoscaleExpectModelChange();
-
     out.model =
         (render::base *)(new render::wrapper<Q, d, adapted, format>(
             out, tag));

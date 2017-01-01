@@ -604,7 +604,7 @@ public:
 #endif
         background(Q(1), Q(1), Q(1), Q(1)), wireframe(Q(0), Q(0), Q(0), Q(0.8)),
         surface(Q(0), Q(0), Q(0), Q(0.2)), fractalFlameColouring(false),
-        model(0), autoScaleParameters(false), autoscaleTargetTime(20) {
+        model(0) {
     parameter.radius = Q(1);
     parameter.precision = Q(10);
     parameter.iterations = 4;
@@ -704,82 +704,6 @@ public:
   constexpr const Q getFromCoordinate(const unsigned int &,
                                       const unsigned int & = 0) const {
     return Q();
-  }
-
-  bool autoscaleExpectModelChange(void) {
-    bool didChangeParameter = false;
-
-    if (autoScaleParameters) {
-      parameter.precision = 8;
-      didChangeParameter = true;
-    }
-    
-    if (didChangeParameter && model) {
-      model->update = true;
-    }
-
-    return true;
-  }
-
-  bool autoscale(void) {
-    bool scaleUp = false;
-    bool scaleDown = false;
-    bool didChangeParameter = false;
-
-    if (autoScaleParameters) {
-#if defined(DEBUG_AUTOSCALE)
-      std::cerr << "autoscale factors: "
-                << model->renderTime.count() << " "
-                << model->initialTime.count() << " "
-                << model->prepareTime.count() << " | "
-                << autoscaleTargetTime.count() << "\n";
-#endif
-
-      auto effectiveTime = model->initialTime + model->renderTime;
-
-      scaleUp = effectiveTime < autoscaleTargetTime * 0.75;
-      scaleDown = effectiveTime > autoscaleTargetTime * 2;
-
-#if defined(DEBUG_AUTOSCALE)
-      std::cerr << "scaling decision: "
-                << scaleDown << " "
-                << scaleUp << "\n";
-#endif
-    }
-
-    if (scaleUp) {
-      /*
-      if (parameter.iterations < 11) {
-        parameter.iterations += 1;
-        didChangeParameter = true;
-      }
-       */
-
-      if (parameter.precision < 100) {
-        parameter.precision += 1;
-        didChangeParameter = true;
-      }
-    }
-
-    if (scaleDown) {
-      /*
-      if (parameter.iterations >= 3) {
-        parameter.iterations -= 1;
-        didChangeParameter = true;
-      }
-       */
-
-      if (parameter.precision >= 4) {
-        parameter.precision -= 1;
-        didChangeParameter = true;
-      }
-    }
-
-    if (didChangeParameter) {
-      model->update = true;
-    }
-
-    return true;
   }
 
   /**\brief Translate 'from' points from polar to cartesian coordinates
@@ -1043,10 +967,6 @@ public:
    *      describing this colouring algorithm.
    */
   bool fractalFlameColouring;
-
-  bool autoScaleParameters;
-
-  std::chrono::milliseconds autoscaleTargetTime;
 };
 
 /**\brief Gather model metadata

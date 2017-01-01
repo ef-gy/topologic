@@ -351,17 +351,6 @@ static topologic::xml xml;
   return topologicState.fractalFlameColouring;
 }
 
-- (void)setAutoScaleParameters:(BOOL)value
-{
-  topologicState.autoScaleParameters = value;
-  [openGL setNeedsDisplay:YES];
-}
-
-- (BOOL)autoScaleParameters
-{
-  return topologicState.autoScaleParameters;
-}
-
 -(NSString *)selectedModelName
 {
   if (topologicState.model)

@@ -23,8 +23,6 @@
 #include <ef.gy/render-opengl.h>
 #endif
 
-#include <chrono>
-
 namespace topologic {
 /**\brief Cartesian dimension shorthands
  *
@@ -62,7 +60,7 @@ public:
   metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
            const char *pID = "none", const char *pFormatID = "default")
       : depth(pDepth), renderDepth(pRenderDepth), id(pID), formatID(pFormatID),
-        update(true), keepTime(true) {}
+        update(true) {}
 
   /**\brief Query model depth
    *
@@ -123,18 +121,13 @@ public:
    * because you changed some parameters that it may have cached.
    */
   bool update;
-
-  bool keepTime;
-
-  std::chrono::milliseconds prepareTime;
-  std::chrono::milliseconds initialTime;
-  std::chrono::milliseconds renderTime;
 };
 
 /**\brief Base class for a model renderer
  *
- * The primary purpose of this class is to force certain parts of a
- * model renderer's interface to be virtual.
+ * The primary purpose of this class is to force certain parts of a model
+ * renderer's interface to be virtual, and to provide an interface that is used
+ * topologic to render its output.
  */
 class base : public metadata {
 public:
@@ -220,23 +213,9 @@ public:
              modelType::format::id()) {}
 
   bool svg(std::ostream &output, bool updateMatrix = false) {
-    using namespace std::chrono;
-
-    time_point<high_resolution_clock> start;
-    
-    if (metadata::keepTime) {
-      start = high_resolution_clock::now();
-    }
-
     if (metadata::update) {
       object.calculateObject();
       metadata::update = false;
-
-      if (metadata::keepTime) {
-        metadata::prepareTime = duration_cast<milliseconds>(
-            high_resolution_clock::now() - start);
-        start = high_resolution_clock::now();
-      }
     }
 
     if (updateMatrix) {
@@ -281,35 +260,15 @@ public:
 
     gState.svg.frameEnd();
 
-    if (metadata::keepTime) {
-      metadata::renderTime = duration_cast<milliseconds>(
-          high_resolution_clock::now() - start);
-      metadata::initialTime = metadata::renderTime;
-    }
-
     return true;
   }
 
 #if !defined(NO_OPENGL)
   bool opengl(bool updateMatrix = false) {
-    using namespace std::chrono;
-
-    time_point<high_resolution_clock> start;
-
-    if (metadata::keepTime) {
-      start = high_resolution_clock::now();
-    }
-
     if (metadata::update) {
       gState.opengl.context.prepared = false;
       object.calculateObject();
       metadata::update = false;
-    
-      if (metadata::keepTime) {
-        metadata::prepareTime = duration_cast<milliseconds>(
-            high_resolution_clock::now() - start);
-        start = high_resolution_clock::now();
-      }
     }
 
     if (updateMatrix) {
@@ -332,22 +291,9 @@ public:
 
     if (!gState.opengl.context.prepared) {
       std::cerr << gState.opengl << object;
-
-      if (metadata::keepTime) {
-        metadata::initialTime = duration_cast<milliseconds>(
-            high_resolution_clock::now() - start);
-        start = high_resolution_clock::now();
-      }
     }
 
     gState.opengl.frameEnd();
-
-    if (metadata::keepTime) {
-      metadata::renderTime = duration_cast<milliseconds>(
-          high_resolution_clock::now() - start);
-    
-      return gState.autoscale();
-    }
 
     return true;
   }

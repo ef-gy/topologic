@@ -15,7 +15,7 @@ PCCFLAGS:=-I/usr/include/libxml2
 PCLDFLAGS:=-lxml2 $(addprefix -framework ,$(FRAMEWORKS))
 endif
 CXXFLAGS:=$(CFLAGS) -fno-exceptions
-EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions -s TOTAL_MEMORY=67108864 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -s ASSERTIONS=1 --memory-init-file 0
+EMCFLAGS:=-O3 --llvm-lto 3 -fno-exceptions --memory-init-file 0 -s NO_FILESYSTEM=1 -s ELIMINATE_DUPLICATE_FUNCTIONS=1 -s OUTLINING_LIMIT=20480 -DNOVAO -DWEBGL -s ASSERTIONS=0 -s NO_EXIT_RUNTIME=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1 -s PRECISE_I64_MATH=0
 EMXXFLAGS:=$(EMCFLAGS)
 
 JSFUNCTIONS:=['_main','_interpretDrag','_setActiveDimension','_forceRedraw','_setFlameColouring','_resetColourMap','_setViewportSize','_getJSON','_getSVG','_getArgs','_parseJSON','_parseArgs','_getModels','_initialiseGL']

@@ -279,9 +279,6 @@
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
-                                                <connections>
-                                                    <binding destination="494" name="value" keyPath="autoScaleParameters" id="YDS-6Z-Zwv"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>

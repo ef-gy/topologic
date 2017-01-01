@@ -62,17 +62,7 @@
   
   if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
   {
-    if ([[NSApp delegate] autoScaleParameters]) {
-      //[[NSApp delegate] willChangeValueForKey:@"IFSIterations"];
-      [[NSApp delegate] willChangeValueForKey:@"precision"];
-    }
-
     [(OSXAppDelegate*)[NSApp delegate] state]->model->opengl(true);
-
-    if ([[NSApp delegate] autoScaleParameters]) {
-      [[NSApp delegate] didChangeValueForKey:@"precision"];
-      //[[NSApp delegate] didChangeValueForKey:@"IFSIterations"];
-    }
 
     if ([(OSXAppDelegate*)[NSApp delegate] state]->model->update) {
       NSInvocation *inv = [NSInvocation

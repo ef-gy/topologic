@@ -51,7 +51,6 @@
 
     state->parameter.radius = 1;
     state->parameter.precision = 50;
-    state->autoScaleParameters = true;
     state->parameter.iterations = 5;
     state->parameter.functions = 5;
     state->parameter.seed = std::rand();
