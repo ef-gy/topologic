@@ -7,8 +7,6 @@
 
   <xsl:strip-space elements="*"/>
 
-  <xsl:param name="root"/>
-
   <xsl:template match="/">
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text>
     <xsl:apply-templates select="node()"/>
@@ -20,19 +18,10 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="xhtml:script[@src='https://code.jquery.com/jquery-2.1.1.min.js']">
-    <script src="jquery-2.1.1.min.js"/>
-  </xsl:template>
-
-  <xsl:template match="xhtml:script[@src='https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js']">
-    <script src="jquery.mobile-1.4.4.min.js"/>
-  </xsl:template>
+  <xsl:template match="xhtml:script[@src='https://code.jquery.com/jquery-2.1.1.min.js']"/>
+  <xsl:template match="xhtml:script[@src='https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js']"/>
 
   <xsl:template match="xhtml:script[@src='topologic-web.js']">
     <script src="topologic.js"/>
-  </xsl:template>
-
-  <xsl:template match="xhtml:link[@href='topologic-web.css']">
-    <xsl:apply-templates select="document(concat($root,'/topologic-web.css.xml'))/*"/>
   </xsl:template>
 </xsl:stylesheet>
