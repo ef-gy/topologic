@@ -32,3 +32,4 @@ dependencies.mk
 topologic.tag
 doxyfile
 *.db
+*.out

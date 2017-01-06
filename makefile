@@ -6,8 +6,8 @@ VERSION:=8
 LIBRARIES:=libxml-2.0
 FRAMEWORKS:=
 
-JQUERY:=https://code.jquery.com/jquery-2.1.1.min.js
-JQUERYMOBILE:=https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js
+JQUERY:=https://code.jquery.com/jquery-2.1.1.js
+JQUERYMOBILE:=https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.js
 JQUERYMOBILECSS:=https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css
 
 ifeq ($(UNAME),Darwin)
