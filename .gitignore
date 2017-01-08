@@ -2,6 +2,7 @@
 *.swp
 *.svg
 topologic
+!include/topologic
 topologic.js
 topologic-glut
 topologic-json.js

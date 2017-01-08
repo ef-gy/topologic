@@ -214,7 +214,6 @@ public:
 
   bool svg(std::ostream &output, bool updateMatrix = false) {
     if (metadata::update) {
-      object.calculateObject();
       metadata::update = false;
     }
 
@@ -267,7 +266,6 @@ public:
   bool opengl(bool updateMatrix = false) {
     if (metadata::update) {
       gState.opengl.context.prepared = false;
-      object.calculateObject();
       metadata::update = false;
     }
 
