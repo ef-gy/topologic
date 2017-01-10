@@ -18,3 +18,4 @@ dependencies.mk
 topologic.tag
 doxyfile
 *.db
+include/libxml
