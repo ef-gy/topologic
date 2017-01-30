@@ -43,8 +43,8 @@ namespace topologic {
  * \tparam e      Number of render dimensions, e.g. >= 4 for a tesseract
  * \tparam format The vector format to use.
  */
-template <typename Q, template <class, unsigned int> class T, unsigned int d,
-          unsigned int e, typename format>
+template <typename Q, template <class, std::size_t> class T, std::size_t d,
+          std::size_t e, typename format>
 class updateModel {
 public:
   /**\brief Argument type
@@ -72,7 +72,7 @@ public:
    * \tparam tD Number of model dimensions, e.g. 4 for a tesseract
    * \tparam tF The vector format to use.
    */
-  template <class tQ, unsigned int tD>
+  template <class tQ, std::size_t tD>
   using adapted = efgy::geometry::autoAdapt<tQ, e, T<tQ, tD>, format>;
 
   /**\brief Initialise new model
@@ -131,12 +131,12 @@ public:
  *
  * \returns 'true' if the cell was updated, 'false' if not.
  */
-template <typename Q, unsigned int d>
-static bool setMatrixCell(state<Q, d> &s, const unsigned int &sd,
-                          const unsigned int &x, const unsigned int &y,
+template <typename Q, std::size_t d>
+static bool setMatrixCell(state<Q, d> &s, const std::size_t &sd,
+                          const std::size_t &x, const std::size_t &y,
                           const Q &vv) {
   if (d == sd) {
-    s.transformation.transformationMatrix[x][y] = vv;
+    s.transformation.matrix[x][y] = vv;
     return true;
   }
 
@@ -160,9 +160,9 @@ static bool setMatrixCell(state<Q, d> &s, const unsigned int &sd,
  * \returns 'true' if the cell was updated, 'false' if not. Since this
  *          function doesn't do anything by design it will always fail.
  */
-template <typename Q, unsigned int d>
-static bool setMatrixCell(state<Q, 1> &, const unsigned int &,
-                          const unsigned int &, const unsigned int &,
+template <typename Q, std::size_t d>
+static bool setMatrixCell(state<Q, 1> &, const std::size_t &,
+                          const std::size_t &, const std::size_t &,
                           const Q &) {
   return false;
 }
@@ -435,7 +435,7 @@ public:
  * \returns 'true' if the code didn't blow up trying to parse your XML,
  *          'false' if it did. Probably.
  */
-template <typename Q, unsigned int d>
+template <typename Q, std::size_t d>
 static bool parse(state<Q, d> &s, xml::parser &parser) {
   if (!parser.valid) {
     return false;
@@ -453,7 +453,7 @@ static bool parse(state<Q, d> &s, xml::parser &parser) {
 
   if (parser.updateContext("//topologic:camera[count(@*) = " + dims + "][1]")) {
     do {
-      for (unsigned int i = 0; i < d; i++) {
+      for (std::size_t i = 0; i < d; i++) {
         if ((i == 0) && ((value = parser.evaluate("@radius")) != "")) {
           s.fromp[0] = Q(std::stold(value));
           continue;
@@ -497,12 +497,12 @@ static bool parse(state<Q, d> &s, xml::parser &parser) {
   if (parser.updateContext("//topologic:transformation[count(@*) = " + dimssq +
                            "][1]")) {
     do {
-      for (unsigned int i = 0; i <= d; i++) {
-        for (unsigned int j = 0; j <= d; j++) {
+      for (std::size_t i = 0; i <= d; i++) {
+        for (std::size_t j = 0; j <= d; j++) {
           st.str("");
           st << "@e" << i << "-" << j;
           if ((value = parser.evaluate(st.str())) != "") {
-            s.transformation.transformationMatrix[i][j] = Q(std::stold(value));
+            s.transformation.matrix[i][j] = Q(std::stold(value));
           }
         }
       }
@@ -539,7 +539,7 @@ static bool parse(state<Q, d> &s, xml::parser &parser) {
  * \returns 'true' if the code didn't blow up trying to parse your XML,
  *          'false' if it did. Probably.
  */
-template <typename Q, unsigned int d>
+template <typename Q, std::size_t d>
 static bool parse(state<Q, 1> &s, xml::parser &parser) {
   if (!parser.valid) {
     return false;
@@ -635,9 +635,9 @@ static bool parse(state<Q, 1> &s, xml::parser &parser) {
  *
  * \returns 'true' if things worked out, 'false' otherwise.
  */
-template <typename Q, unsigned int d,
-          template <typename, template <class, unsigned int> class,
-                    unsigned int, unsigned int, typename> class func>
+template <typename Q, std::size_t d,
+          template <typename, template <class, std::size_t> class,
+                    std::size_t, std::size_t, typename> class func>
 static bool parseModel(state<Q, d> &s, xml::parser &parser) {
   if (!parser.valid) {
     return false;
@@ -686,7 +686,7 @@ static bool parseModel(state<Q, d> &s, xml::parser &parser) {
  * \returns 'true' if the code didn't blow up trying to parse your XML,
  *          'false' if it did. Probably.
  */
-template <typename Q, unsigned int d>
+template <typename Q, std::size_t d>
 static bool parse(state<Q, d> &s, efgy::json::value<> &value) {
   if (value.type != efgy::json::value<>::object) {
     return false;
@@ -698,7 +698,7 @@ static bool parse(state<Q, d> &s, efgy::json::value<> &value) {
     efgy::json::value<> &cameras = value("camera");
     for (efgy::json::value<> &c : cameras.toArray()) {
       if (c.isArray() && c.size() == d) {
-        for (unsigned int i = 0; i < d; i++) {
+        for (std::size_t i = 0; i < d; i++) {
           if (c[i].type == efgy::json::value<>::number) {
             if (polar) {
               s.fromp[i] = c[i];
@@ -715,10 +715,10 @@ static bool parse(state<Q, d> &s, efgy::json::value<> &value) {
     efgy::json::value<> &transformations = value("transformation");
     for (efgy::json::value<> &t : transformations.toArray()) {
       if (t.isArray() && t.size() == ((d + 1) * (d + 1))) {
-        for (unsigned int i = 0; i <= d; i++) {
-          for (unsigned int j = 0; j <= d; j++) {
+        for (std::size_t i = 0; i <= d; i++) {
+          for (std::size_t j = 0; j <= d; j++) {
             if (t[(i * (d + 1) + j)].isNumber()) {
-              s.transformation.transformationMatrix[i][j] =
+              s.transformation.matrix[i][j] =
                   t[(i * (d + 1) + j)];
             }
           }
@@ -746,7 +746,7 @@ static bool parse(state<Q, d> &s, efgy::json::value<> &value) {
  * \returns 'true' if the code didn't blow up trying to parse your XML,
  *          'false' if it did. Probably.
  */
-template <typename Q, unsigned int d>
+template <typename Q, std::size_t d>
 static bool parse(state<Q, 1> &s, efgy::json::value<> &value) {
   if (value.type != efgy::json::value<>::object) {
     return false;
@@ -828,9 +828,9 @@ static bool parse(state<Q, 1> &s, efgy::json::value<> &value) {
  *
  * \returns 'true' if things worked out, 'false' otherwise.
  */
-template <typename Q, unsigned int d,
-          template <typename, template <class, unsigned int> class,
-                    unsigned int, unsigned int, typename> class func>
+template <typename Q, std::size_t d,
+          template <typename, template <class, std::size_t> class,
+                    std::size_t, std::size_t, typename> class func>
 static bool parseModel(state<Q, d> &s, efgy::json::value<> &value) {
   if (value.type != efgy::json::value<>::object) {
     return false;

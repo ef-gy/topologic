@@ -50,7 +50,7 @@ namespace topologic {
  *
  * \returns The output mode set in the argument vector. Defaults to outNone.
  */
-template <typename Q, unsigned int dim>
+template <typename Q, std::size_t dim>
 enum outputMode parse(state<Q, dim> &topologicState,
                       const std::vector<std::string> &args,
                       bool readFiles = true) {
@@ -59,7 +59,7 @@ enum outputMode parse(state<Q, dim> &topologicState,
 #if !defined(NOLIBRARIES)
   topologic::xml XML;
 #endif
-  unsigned int depth = 4, rdepth = 4;
+  std::size_t depth = 4, rdepth = 4;
   std::string model = "cube";
   std::string format = "cartesian";
 

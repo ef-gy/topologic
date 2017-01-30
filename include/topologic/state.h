@@ -32,7 +32,7 @@
 #include <topologic/render.h>
 
 namespace topologic {
-template <typename Q, unsigned int d> class state;
+template <typename Q, std::size_t d> class state;
 
 /**\brief Output mode
  *
@@ -100,7 +100,7 @@ enum outputMode {
  * \tparam Q Base data type for calculations
  * \tparam d Maximum render depth
  */
-template <typename Q, unsigned int d> class state : public state<Q, d - 1> {
+template <typename Q, std::size_t d> class state : public state<Q, d - 1> {
 public:
   /**\brief Parent class type
    *
@@ -311,7 +311,7 @@ public:
 
     efgy::geometry::lookAt<Q, d> lookAt(getFrom(), to);
     efgy::geometry::transformation::affine<Q, d> reverseLookAt;
-    reverseLookAt.transformationMatrix = transpose(lookAt.transformationMatrix);
+    reverseLookAt.matrix = transpose(lookAt.matrix);
 
     transformation = transformation * lookAt *
                      efgy::geometry::transformation::rotation<Q, d>(
@@ -340,7 +340,7 @@ public:
    * \note The 1D state object does not have an 'active' flag, so that
    *       particular instance of the method never does anything.
    */
-  bool setActive(const unsigned int &dim) {
+  bool setActive(const std::size_t &dim) {
     active = (d == dim);
 
     return state<Q, d - 1>::setActive(dim);
@@ -366,8 +366,8 @@ public:
    * \returns True if the from point was updated successfully, false
    *          otherwise.
    */
-  bool setFromCoordinate(const unsigned int &coord, const Q &value,
-                         const unsigned int &dimension) {
+  bool setFromCoordinate(const std::size_t &coord, const Q &value,
+                         const std::size_t &dimension) {
     if (dimension != d) {
       return state<Q, d - 1>::setFromCoordinate(coord, value, dimension);
     }
@@ -387,7 +387,7 @@ public:
     return true;
   }
 
-  bool setFromCoordinate(const unsigned int &coord, const Q &value) {
+  bool setFromCoordinate(const std::size_t &coord, const Q &value) {
     if (!active) {
       return state<Q, d - 1>::setFromCoordinate(coord, value);
     }
@@ -408,8 +408,8 @@ public:
    * \returns The specified coordinate; bad things happen if you query a
    *          value that is out of range.
    */
-  const Q getFromCoordinate(const unsigned int &coord,
-                            const unsigned int &dimension) const {
+  const Q getFromCoordinate(const std::size_t &coord,
+                            const std::size_t &dimension) const {
     if (dimension != d) {
       return state<Q, d - 1>::getFromCoordinate(coord, dimension);
     }
@@ -425,7 +425,7 @@ public:
     }
   }
 
-  const Q getFromCoordinate(const unsigned int &coord) const {
+  const Q getFromCoordinate(const std::size_t &coord) const {
     if (!active) {
       return state<Q, d - 1>::getFromCoordinate(coord);
     }
@@ -493,7 +493,7 @@ public:
 
       for (std::size_t i = 0; i <= d; i++) {
         for (std::size_t j = 0; j <= d; j++) {
-          v.push(transformation.transformationMatrix[i][j]);
+          v.push(transformation.matrix[i][j]);
         }
       }
       value("transformation").push(v);
@@ -549,12 +549,12 @@ public:
       s.str("");
     }
 
-    if (!efgy::math::isIdentity(transformation.transformationMatrix)) {
+    if (!efgy::math::isIdentity(transformation.matrix)) {
       s << "t";
 
       for (std::size_t i = 0; i <= d; i++) {
         for (std::size_t j = 0; j <= d; j++) {
-          s << ":" << transformation.transformationMatrix[i][j];
+          s << ":" << transformation.matrix[i][j];
         }
       }
 
@@ -676,7 +676,7 @@ public:
    *          state object succeeded. Since there is no way for this
    *          method to fail it will always return 'true'.
    */
-  constexpr bool setActive(const unsigned int &) const { return true; }
+  constexpr bool setActive(const std::size_t &) const { return true; }
 
   /**\brief Set 'from' coordinate
    *
@@ -687,8 +687,8 @@ public:
    * \returns 'false' because the 1D fix point does not have a 'from'
    *          point, so the function cannot succeed.
    */
-  constexpr bool setFromCoordinate(const unsigned int &, const Q &,
-                                   const unsigned int & = 0) const {
+  constexpr bool setFromCoordinate(const std::size_t &, const Q &,
+                                   const std::size_t & = 0) const {
     return false;
   }
 
@@ -701,8 +701,8 @@ public:
    * \returns The default-constructed value of Q, as the 1D fix point does
    *          not have a 'from' point to query.
    */
-  constexpr const Q getFromCoordinate(const unsigned int &,
-                                      const unsigned int & = 0) const {
+  constexpr const Q getFromCoordinate(const std::size_t &,
+                                      const std::size_t & = 0) const {
     return Q();
   }
 
@@ -986,17 +986,17 @@ public:
  *           base arithmetic type.
  * \tparam d Maximum render depth
  */
-template <typename C, typename Q, unsigned int d>
+template <typename C, typename Q, std::size_t d>
     static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
                                                    const state<Q, d> &pState) {
   stream.stream << "<t:camera";
   if (pState.polarCoordinates) {
     stream.stream << " radius='" << double(pState.fromp[0]) << "'";
-    for (unsigned int i = 1; i < d; i++) {
+    for (std::size_t i = 1; i < d; i++) {
       stream.stream << " theta-" << i << "='" << double(pState.fromp[i]) << "'";
     }
   } else {
-    for (unsigned int i = 0; i < d; i++) {
+    for (std::size_t i = 0; i < d; i++) {
       if (i < sizeof(cartesianDimensions)) {
         stream.stream << " " << cartesianDimensions[i] << "='"
                       << double(pState.from[i]) << "'";
@@ -1007,14 +1007,14 @@ template <typename C, typename Q, unsigned int d>
   }
   stream.stream << "/>";
   stream.stream << "<t:transformation";
-  if (isIdentity(pState.transformation.transformationMatrix)) {
+  if (isIdentity(pState.transformation.matrix)) {
     stream.stream << " matrix='identity' depth='" << d << "'";
   } else {
-    for (unsigned int i = 0; i <= d; i++) {
-      for (unsigned int j = 0; j <= d; j++) {
+    for (std::size_t i = 0; i <= d; i++) {
+      for (std::size_t j = 0; j <= d; j++) {
         stream.stream
             << " e" << i << "-" << j << "='"
-            << double(pState.transformation.transformationMatrix[i][j]) << "'";
+            << double(pState.transformation.matrix[i][j]) << "'";
       }
     }
   }
@@ -1039,7 +1039,7 @@ template <typename C, typename Q, unsigned int d>
  *           base arithmetic type.
  * \tparam d Maximum render depth
  */
-template <typename C, typename Q, unsigned int d>
+template <typename C, typename Q, std::size_t d>
     static inline efgy::xml::ostream<C> operator<<(efgy::xml::ostream<C> stream,
                                                    const state<Q, 1> &pState) {
   stream.stream << "<t:camera mode='"
@@ -1094,7 +1094,7 @@ template <typename C, typename Q, unsigned int d>
  *           base arithmetic type.
  * \tparam d Maximum render depth
  */
-template <typename C, typename Q, unsigned int d>
+template <typename C, typename Q, std::size_t d>
     static inline efgy::json::ostream<C> operator<<(efgy::json::ostream<C>
                                                         stream,
                                                     const state<Q, d> &pState) {
@@ -1117,7 +1117,7 @@ template <typename C, typename Q, unsigned int d>
  *           base arithmetic type.
  * \tparam d Maximum render depth
  */
-template <typename C, typename Q, unsigned int d>
+template <typename C, typename Q, std::size_t d>
     static inline efgy::svg::ostream<C> operator<<(efgy::svg::ostream<C> stream,
                                                    const state<Q, d> &pState) {
   pState.model->svg(stream.stream, true);

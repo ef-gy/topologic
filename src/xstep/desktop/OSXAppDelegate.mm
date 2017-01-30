@@ -112,7 +112,7 @@ static topologic::xml xml;
 
 - (void)updateCamera
 {
-  topologicState.setActive((unsigned int)(activeCamera));
+  topologicState.setActive((std::size_t)(activeCamera));
 }
 
 - (void)translateCartesianToPolar
@@ -159,11 +159,11 @@ static topologic::xml xml;
   
   [modelDepths setSegmentCount:0];
 
-  std::set<unsigned int> dep;
+  std::set<std::size_t> dep;
   int i = 0;
   with<GLfloat,functor::modelDimensions,MAXDEPTH>(dep,"*",0,0);
   [modelDepths setSegmentCount:dep.size()];
-  for (unsigned int d : dep)
+  for (std::size_t d : dep)
   {
     std::string label = std::to_string(d) + "D";
     [[modelDepths cell] setTag:d forSegment:i];
@@ -178,11 +178,11 @@ static topologic::xml xml;
 
   [renderDepths setSegmentCount:0];
 
-  std::set<unsigned int> rdep;
+  std::set<std::size_t> rdep;
   int i = 0;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(rdep,"*",0,0);
   [renderDepths setSegmentCount:rdep.size()];
-  for (unsigned int d : rdep)
+  for (std::size_t d : rdep)
   {
     std::string label = std::to_string(d) + "D";
     [[renderDepths cell] setTag:d forSegment:i];
@@ -197,11 +197,11 @@ static topologic::xml xml;
 
   [cameraDepths setSegmentCount:0];
 
-  std::set<unsigned int> rdep;
+  std::set<std::size_t> rdep;
   int i = 0;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(rdep,"*",0,0);
   [cameraDepths setSegmentCount:rdep.size()];
-  for (unsigned int d : rdep)
+  for (std::size_t d : rdep)
   {
     std::string label = std::to_string(d) + "D";
     [[cameraDepths cell] setTag:d forSegment:i];
@@ -214,17 +214,17 @@ static topologic::xml xml;
 {
   using namespace efgy::geometry;
 
-  std::set<unsigned int> dep;
+  std::set<std::size_t> dep;
   with<GLfloat,functor::modelDimensions,MAXDEPTH>(
       dep, [model UTF8String], 0, 0);
 
   auto mdim = [self modelDepth];
   bool needsReset = false;
 
-  for (unsigned int i = 0; i < [modelDepths segmentCount]; i++)
+  for (std::size_t i = 0; i < [modelDepths segmentCount]; i++)
   {
     auto dim = [[modelDepths cell] tagForSegment:i];
-    bool enabled = (dep.find((unsigned int)dim) != dep.end());
+    bool enabled = (dep.find((std::size_t)dim) != dep.end());
     
     [modelDepths setEnabled:enabled forSegment:i];
 
@@ -232,7 +232,7 @@ static topologic::xml xml;
   }
 
   if (needsReset) {
-    for (unsigned int i = 0; i < [modelDepths segmentCount]; i++) {
+    for (std::size_t i = 0; i < [modelDepths segmentCount]; i++) {
       if ([modelDepths isEnabledForSegment:i]) {
         [self setModelDepth:[[modelDepths cell] tagForSegment:i]];
         break;
@@ -247,17 +247,17 @@ static topologic::xml xml;
 {
   using namespace efgy::geometry;
 
-  std::set<unsigned int> dep;
+  std::set<std::size_t> dep;
   with<GLfloat,functor::renderDimensions,MAXDEPTH>(
-      dep, [model UTF8String],(unsigned int)[self modelDepth],0);
+      dep, [model UTF8String],(std::size_t)[self modelDepth],0);
 
   auto mdim = [self renderDepth];
   bool needsReset = false;
 
-  for (unsigned int i = 0; i < [renderDepths segmentCount]; i++)
+  for (std::size_t i = 0; i < [renderDepths segmentCount]; i++)
   {
     auto dim = [[renderDepths cell] tagForSegment:i];
-    bool enabled = (dep.find((unsigned int)dim) != dep.end());
+    bool enabled = (dep.find((std::size_t)dim) != dep.end());
 
     [renderDepths setEnabled:enabled forSegment:i];
 
@@ -265,7 +265,7 @@ static topologic::xml xml;
   }
 
   if (needsReset) {
-    for (unsigned int i = 0; i < [renderDepths segmentCount]; i++) {
+    for (std::size_t i = 0; i < [renderDepths segmentCount]; i++) {
       if ([renderDepths isEnabledForSegment:i]) {
         [self setRenderDepth:[[renderDepths cell] tagForSegment:i]];
         break;
@@ -283,7 +283,7 @@ static topologic::xml xml;
   auto mdim = [self activeCamera];
   bool needsReset = false;
 
-  for (unsigned int i = 0; i < [cameraDepths segmentCount]; i++)
+  for (std::size_t i = 0; i < [cameraDepths segmentCount]; i++)
   {
     auto dim = [[cameraDepths cell] tagForSegment:i];
     bool enabled = false;
@@ -299,7 +299,7 @@ static topologic::xml xml;
   }
   
   if (needsReset) {
-    for (unsigned int i = 0; i < [cameraDepths segmentCount]; i++) {
+    for (std::size_t i = 0; i < [cameraDepths segmentCount]; i++) {
       if ([cameraDepths isEnabledForSegment:i]) {
         [self setActiveCamera:[[cameraDepths cell] tagForSegment:i]];
         break;
@@ -695,8 +695,8 @@ static topologic::xml xml;
     [self willChangeValueForKey:@"selectedModelName"];
     
     std::string  mo = topologicState.model->id;
-    unsigned int md = topologicState.model->depth;
-    unsigned int rd = topologicState.model->renderDepth;
+    std::size_t md = topologicState.model->depth;
+    std::size_t rd = topologicState.model->renderDepth;
     
     model       = @(mo.c_str());
     modelDepth  = md;
@@ -801,8 +801,8 @@ static topologic::xml xml;
   (topologicState,
    [[format lowercaseString] UTF8String],
    [[model lowercaseString] UTF8String],
-   (const unsigned int)modelDepth,
-   (const unsigned int)renderDepth);
+   (const std::size_t)modelDepth,
+   (const std::size_t)renderDepth);
 
   [self didChangeValueForKey:@"selectedModelName"];
   [openGL setNeedsDisplay:YES];

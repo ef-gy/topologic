@@ -38,7 +38,7 @@ namespace topologic {
 static const char cartesianDimensions[] =
     "xyzwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
 
-template <typename Q, unsigned int d> class state;
+template <typename Q, std::size_t d> class state;
 
 /**\brief Templates related to Topologic's rendering process
  *
@@ -57,7 +57,7 @@ public:
    *
    * Sets the basic metadata for a model.
    */
-  metadata(unsigned int pDepth = 0, unsigned int pRenderDepth = 0,
+  metadata(std::size_t pDepth = 0, std::size_t pRenderDepth = 0,
            const char *pID = "none", const char *pFormatID = "default")
       : depth(pDepth), renderDepth(pRenderDepth), id(pID), formatID(pFormatID),
         update(true) {}
@@ -70,7 +70,7 @@ public:
    * \returns The model depth; expect values like "2" for a
    *          square, "3" for a cube, etc.
    */
-  const unsigned int depth;
+  const std::size_t depth;
 
   /**\brief Query render depth
    *
@@ -80,7 +80,7 @@ public:
    * \returns The model renderer's depth; expect this value to be
    *          greater than or equal to the model's depth.
    */
-  const unsigned int renderDepth;
+  const std::size_t renderDepth;
 
   /**\brief Query model name
    *
@@ -179,7 +179,7 @@ public:
  * \tparam T      Model template; use things like efgy::geometry::cube
  * \tparam format The vector format to use.
  */
-template <typename Q, unsigned int d, template <class, unsigned int> class T, typename format>
+template <typename Q, std::size_t d, template <class, std::size_t> class T, typename format>
 class wrapper : public base {
 public:
   /**\brief Model type
