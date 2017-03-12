@@ -237,7 +237,7 @@ static topologic::state<GLfloat,MAXDEPTH> topologicState;
         topologicState.fractalFlameColouring = [[NSUserDefaults standardUserDefaults] boolForKey:@"fractalFlameColouring"];
         if (topologicState.fractalFlameColouring)
         {
-            topologicState.opengl.setColourMap();
+            topologicState.opengl.setColourMap(topologicState.parameter.colourMap);
         }
         [self updateModelParameters];
     }

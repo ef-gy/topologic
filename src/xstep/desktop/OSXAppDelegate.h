@@ -332,6 +332,8 @@
  */
 @property (retain,readwrite) NSColor *colourSurface;
 
+@property (readwrite) bool updateFractalFlameColours;
+
 /** \} */
 
 /** \} */

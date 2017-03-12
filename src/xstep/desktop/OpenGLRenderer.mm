@@ -59,26 +59,40 @@
   [[self openGLContext] makeCurrentContext];
   [(OSXAppDelegate*)[NSApp delegate] state]->width  = [self bounds].size.width;
   [(OSXAppDelegate*)[NSApp delegate] state]->height = [self bounds].size.height;
-  
+
+  BOOL update = NO;
+
   if ([(OSXAppDelegate*)[NSApp delegate] state]->model)
   {
     [(OSXAppDelegate*)[NSApp delegate] state]->model->opengl(true);
 
     if ([(OSXAppDelegate*)[NSApp delegate] state]->model->update) {
-      NSInvocation *inv = [NSInvocation
-          invocationWithMethodSignature:[self methodSignatureForSelector:@selector(setNeedsDisplay:)]];
-      BOOL yes = YES;
-      [inv setSelector:@selector(setNeedsDisplay:)];
-      [inv setTarget:self];
-      [inv setArgument:&yes atIndex:2];
-
-      [inv performSelector:@selector(invoke)
-           withObject:self
-           afterDelay:0.01];
+      update = YES;
     }
   }
   
   [[self openGLContext] flushBuffer];
+
+  // we need to initialise the renderer before we can set the colour map - the
+  // initialisation code will actually just generate a random map, which we
+  // don't want here, since we want to use the properly set one.
+  if ([(OSXAppDelegate*)[NSApp delegate] updateFractalFlameColours]) {
+    [(OSXAppDelegate*)[NSApp delegate] setUpdateFractalFlameColours:false];
+    [(OSXAppDelegate*)[NSApp delegate] state]->opengl.setColourMap([(OSXAppDelegate*)[NSApp delegate] state]->parameter.colourMap);
+    update = YES;
+  }
+
+  if (update) {
+    NSInvocation *inv = [NSInvocation
+                         invocationWithMethodSignature:[self methodSignatureForSelector:@selector(setNeedsDisplay:)]];
+    [inv setSelector:@selector(setNeedsDisplay:)];
+    [inv setTarget:self];
+    [inv setArgument:&update atIndex:2];
+
+    [inv performSelector:@selector(invoke)
+              withObject:self
+              afterDelay:0.01];
+  }
 }
 
 - (BOOL) isOpaque

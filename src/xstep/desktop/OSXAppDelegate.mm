@@ -67,6 +67,7 @@ static topologic::xml xml;
 @synthesize FlameVariants;
 @synthesize IFSPreRotate;
 @synthesize IFSPostRotate;
+@synthesize updateFractalFlameColours;
 
 @synthesize models;
 @synthesize formats;
@@ -343,6 +344,10 @@ static topologic::xml xml;
 - (void)setFractalFlameColouring:(BOOL)value
 {
   topologicState.fractalFlameColouring = value;
+  if (topologicState.fractalFlameColouring)
+  {
+    [self setUpdateFractalFlameColours:true];
+  }
   [openGL setNeedsDisplay:YES];
 }
 
@@ -789,7 +794,7 @@ static topologic::xml xml;
 
 - (IBAction)randomFlameColours:(id)sender
 {
-  topologicState.opengl.setColourMap();
+  topologicState.opengl.setColourMap(topologicState.parameter.colourMap);
   [openGL setNeedsDisplay:YES];
 }
 
